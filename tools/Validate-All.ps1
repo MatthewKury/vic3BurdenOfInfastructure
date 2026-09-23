@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)] [string]$GamePath,
     [string]$ModPath,
-    [string]$SeedInputsDirectory
+    [string]$SeedInputsDirectory,
+    [string]$CmfPath
 )
 
 $ErrorActionPreference = 'Stop'
@@ -10,6 +11,9 @@ if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
 & (Join-Path $PSScriptRoot 'Test-ModStructure.ps1') -ModPath $ModPath
 & (Join-Path $PSScriptRoot 'Test-Seed.ps1') -ModPath $ModPath
 & (Join-Path $PSScriptRoot 'Test-ShadowSources.ps1') -ModPath $ModPath -GamePath $GamePath
+if ($CmfPath) {
+    & (Join-Path $PSScriptRoot 'Test-CMFCompatibility.ps1') -ModPath $ModPath -CmfPath $CmfPath
+}
 if ($SeedInputsDirectory) {
     & (Join-Path $PSScriptRoot 'Test-SeedReproducibility.ps1') -ModPath $ModPath `
         -PairsPath (Join-Path $SeedInputsDirectory 'pairs.txt') `

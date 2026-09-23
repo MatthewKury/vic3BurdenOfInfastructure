@@ -33,5 +33,18 @@ Include the optional input directory in the combined command:
 .\tools\Validate-All.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game' -SeedInputsDirectory C:\temp\boi-seed-inputs
 ```
 
+To check BOI alongside an installed Community Mod Framework, add its workshop
+directory. CMF is an optional companion: BOI does not consume CMF services and
+must not declare it as a dependency.
+
+```powershell
+.\tools\Validate-All.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game' -CmfPath 'C:\Program Files (x86)\Steam\steamapps\workshop\content\529340\3385002128'
+```
+
+`Test-CMFCompatibility.ps1` verifies CMF's identity, then fails if CMF and BOI
+share a game-data path or define the same key in a shared `common` domain. It is
+a static conflict check; keep CMF above BOI in the playset and complete a game
+startup smoke test after every CMF update.
+
 These scripts are static checks. Launch the game and inspect its logs to verify
 engine acceptance and campaign behavior.

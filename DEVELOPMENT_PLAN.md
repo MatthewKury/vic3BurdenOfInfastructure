@@ -14,6 +14,11 @@ files have reproducible source instructions. The main remaining risks are
 patch-sensitive overrides, AI behavior, opening horse-market balance, and the
 large compatibility footprint created by overriding every state-region file.
 
+Community Mod Framework is an optional companion, not a BOI dependency. A
+static compatibility check confirms no shared game-data paths or common-domain
+keys against CMF 1.65.0; rerun it and complete a startup smoke test after CMF
+updates. See `tools/Test-CMFCompatibility.ps1`.
+
 At the time of this review:
 
 - all referenced graphics were present;
