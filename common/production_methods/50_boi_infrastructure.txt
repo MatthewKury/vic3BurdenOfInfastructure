@@ -1,0 +1,272 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Infrastructure building PMs
+#
+#  TWO groups, deliberately independent:
+#
+#   pmg_boi_infrastructure_method  (below, part 1)
+#       400 technical staff, goods in, infrastructure out.
+#       Follows TECHNOLOGY.
+#
+#   pmg_boi_road_administration    (below, part 2)
+#       100 administrative staff. Follows the BUREAUCRACY LAW,
+#       changing WHO holds the jobs. Same headcount either way.
+#
+#  Exactly one PM per group is active, which is what lets the two
+#  axes vary independently. This is vanilla's own Government
+#  Administration structure (base / bureaucrat_professionalism /
+#  religious_administration).
+#
+#  These are COST CENTRES. Note the total absence of any
+#  goods_output_ line: infrastructure is emitted as a STATE
+#  MODIFIER, not a salable good, exactly as Government
+#  Administration emits country_bureaucracy_add. The state pays the
+#  wages and buys the inputs and receives no revenue whatsoever.
+#
+#  Prices for the "# N" comments: horses 30, tools 40,
+#  transportation 30, oil 40, automobiles 100.
+# ================================================================
+
+
+# ================================================================
+#  PART 1 — Method ladder (400 technical staff, follows tech)
+#
+#  Laborers 400 -> 125, machinists 0 -> 175, engineers 0 -> 100.
+#  Technical headcount stays flat at 400; only the skill mix moves.
+#  Efficiency improves with era: £20 -> £15 per point of infra.
+# ================================================================
+
+
+# ── Tier 1: Cart Roads (1836, no tech gate) ─────────────────────
+# Horse-drawn haulage over dirt roads. Pure manual labour.
+# £300 of horses for 15 infrastructure.
+
+pm_boi_cart_roads = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 10 # 300
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 400
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 15
+		}
+	}
+}
+
+
+# ── Tier 2: Macadam Roads (era 2) ───────────────────────────────
+# Engineered crushed-stone surfaces. Still labour-heavy, but tools
+# and the first machinists appear.
+
+pm_boi_macadam_roads = {
+	texture = "gfx/interface/icons/production_method_icons/standard_labor.dds"
+
+	unlocking_technologies = {
+		mechanical_tools
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 12 # 360
+			goods_input_tools_add = 3   # 120
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 350
+			building_employment_machinists_add = 50
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 22
+		}
+	}
+}
+
+
+# ── Tier 3: Rail Network (era 3) ────────────────────────────────
+# Rail freight takes over trunk haulage; horses retreat to
+# last-mile cartage. NOTE transportation is a local = yes good, so
+# this PM only functions where a railway sits in the same state.
+
+pm_boi_rail_network = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	unlocking_technologies = {
+		steel_railway_cars
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 8           # 240
+			goods_input_transportation_add = 10  # 300
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 275
+			building_employment_machinists_add = 100
+			building_employment_engineers_add = 25
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 30
+		}
+	}
+}
+
+
+# ── Tier 4: Motor Roads (era 4) ─────────────────────────────────
+# The horse leaves the system entirely. Mechanised road building.
+
+pm_boi_motor_roads = {
+	texture = "gfx/interface/icons/production_method_icons/public_motor_carriages.dds"
+
+	unlocking_technologies = {
+		combustion_engine
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 12 # 360
+			goods_input_oil_add = 5             # 200
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 200
+			building_employment_machinists_add = 150
+			building_employment_engineers_add = 50
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 38
+		}
+	}
+}
+
+
+# ── Tier 5: Modern Highways (era 5) ─────────────────────────────
+# Gated on paved_roads, which vanilla also uses as the threshold
+# for its own PAVED_ROAD_MIN_INFRASTRUCTURE define.
+
+pm_boi_modern_highways = {
+	texture = "gfx/interface/icons/production_method_icons/motorised_logistics.dds"
+
+	unlocking_technologies = {
+		paved_roads
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 15 # 450
+			goods_input_automobiles_add = 3     # 300
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 125
+			building_employment_machinists_add = 175
+			building_employment_engineers_add = 100
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 48
+		}
+	}
+}
+
+
+# ================================================================
+#  PART 2 — Administration (100 staff, follows Bureaucracy law)
+#
+#  Same 100 jobs in every case; only WHO holds them changes.
+#  Aristocratic -> bureaucratic -> clerical.
+#
+#  This gives the Bureaucracy law a real political consequence:
+#  under Hereditary Bureaucrats every state employs 50 aristocrats
+#  per infrastructure level, which is a large state-funded boost to
+#  Landowner political strength across a whole empire.
+#
+#  pm_boi_appointed_surveyors is the guaranteed fallback: it uses
+#  disallowing_laws rather than an unlocking_laws gate, so it stays
+#  valid whenever the other two do not apply. One PM in a group
+#  must ALWAYS be valid.
+# ================================================================
+
+
+# ── Appointed Bureaucrats (default / fallback) ──────────────────
+# County surveyors and a professional civil service.
+
+pm_boi_appointed_surveyors = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 50
+			building_employment_clerks_add = 50
+		}
+	}
+}
+
+
+# ── Hereditary Bureaucrats / Crownland Diets ────────────────────
+# The local landowner IS the road warden - corvee labour
+# administered by the squire, with few professionals involved.
+
+pm_boi_manorial_roadwardens = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_aristocrats.dds"
+
+	unlocking_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_aristocrats_add = 50
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 25
+		}
+	}
+}
+
+
+# ── Elected Bureaucrats ─────────────────────────────────────────
+# Local road boards and turnpike trusts, staffed by literate
+# townsmen. Commercial administration rather than state
+# administration.
+
+pm_boi_elected_road_boards = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_academics.dds"
+
+	unlocking_laws = {
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 75
+		}
+	}
+}

@@ -1,0 +1,16 @@
+﻿# Burden of Infrastructure — Base urban transport horse input
+# Early-load shadow of vanilla 1.13.11 common/production_methods/06_urban_center.txt.
+# Adds 1 horse per level; preserves the base output of 2 transportation.
+# Expected: one additional duplicate-key log entry from vanilla.
+# Re-diff this complete block against vanilla after game updates.
+
+pm_no_public_transport = {
+	texture = "gfx/interface/icons/production_method_icons/no_public_transport.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 1 # BOI: horse-drawn urban transport
+			goods_output_transportation_add = 2
+		}
+	}
+}

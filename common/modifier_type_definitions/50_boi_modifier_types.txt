@@ -1,0 +1,59 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Modifier Type Definitions
+#
+#  CRITICAL, AND NOT OBVIOUS: adding a good to common/goods/ does
+#  NOT create its goods_input_/goods_output_ modifier types. They
+#  must be declared here by hand, one entry per good per direction
+#  per operation, or every production method referencing them is
+#  rejected at load with:
+#
+#    "Unknown modifier type: goods_input_horses_add. It is either
+#     invalid, or a potential dynamic modifier type definition
+#     missing from the database."
+#
+#  The good itself loads fine, which makes this confusing to
+#  diagnose - the good exists, but nothing can produce or consume
+#  it, so it silently does nothing anywhere in the mod.
+#
+#  Vanilla declares 44 goods_input_*_add types this way in
+#  common/modifier_type_definitions/01_building_modifier_types.txt,
+#  and it does NOT declare every combination for every good - only
+#  the ones actually used. Format below matches vanilla's exactly.
+#
+#  The _mult entries are not currently used by any production
+#  method in this mod. They are declared anyway because the UI and
+#  various vanilla systems can reference them, and an undeclared
+#  type is a hard error rather than a silent no-op.
+# ================================================================
+
+goods_input_horses_add={
+	decimals=1
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_horses_add={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_input_horses_mult={
+	decimals=0
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_horses_mult={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}

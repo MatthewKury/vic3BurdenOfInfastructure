@@ -1,0 +1,28 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Goods
+#
+#  horses: the pre-rail infrastructure input. Consumed by the
+#  Infrastructure building (early PMs), the transport PMs on
+#  resource buildings, and cavalry unit upkeep.
+#
+#  cost = 30 places it with meat, coal and transportation:
+#  above grain (20, it is worth more than its fodder) and below
+#  tools (40, it is a rural product not a manufactured one).
+#
+#  NOT local — horses can be shipped between states and traded,
+#  which is what lets a state without pasture still run its
+#  Infrastructure building. (Contrast transportation, which IS
+#  local = yes and therefore only usable where a railway sits.)
+#
+#  See BALANCE.md for the full costing derivation.
+# ================================================================
+
+horses = {
+	texture = "gfx/interface/icons/goods_icons/meat.dds"
+	cost = 30
+	category = staple
+
+	obsession_chance = 1
+
+	consumption_tax_cost = 200
+}

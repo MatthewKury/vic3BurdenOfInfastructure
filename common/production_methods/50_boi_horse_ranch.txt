@@ -1,0 +1,87 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Horse Ranch production methods
+#
+#  Deliberately calibrated against vanilla's livestock ranch so the
+#  two compete on even terms for arable land:
+#      livestock  net +300 -> +390 -> +550
+#      horses     net +360 -> +500 -> +600
+#
+#  Inline "# N" comments are quantity x base price, the same
+#  convention vanilla uses. horses = 30, grain = 20, tools = 40.
+#
+#  Employment 5000/level throughout, shifting slightly toward
+#  machinists as the ranch modernises - mirroring vanilla's
+#  pm_open_air_stockyards -> pm_slaughterhouses arc.
+# ================================================================
+
+
+# ── Tier 1: Open Pasture (1836) ─────────────────────────────────
+# NO unlocking technology. Horses are the game-start infrastructure
+# input; gating this would leave 1836 with no horse supply at all.
+
+pm_boi_open_pasture = {
+	texture = "gfx/interface/icons/production_method_icons/open_air_stockyards.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_output_horses_add = 12 # 360
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 4000
+			building_employment_farmers_add = 1000
+		}
+	}
+}
+
+
+# ── Tier 2: Selective Breeding (era 2) ──────────────────────────
+# Fodder-fed stock on enclosed paddocks. Grain in, more horses out.
+
+pm_boi_selective_breeding = {
+	texture = "gfx/interface/icons/production_method_icons/standard_fences.dds"
+
+	unlocking_technologies = {
+		intensive_agriculture
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_grain_add = 5   # 100
+			goods_output_horses_add = 20 # 600
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 3900
+			building_employment_farmers_add = 1000
+			building_employment_machinists_add = 100
+		}
+	}
+}
+
+
+# ── Tier 3: Stud Farms (era 3) ──────────────────────────────────
+# Pedigree breeding operations - heavy feed and equipment, but the
+# highest yield per acre.
+
+pm_boi_stud_farms = {
+	texture = "gfx/interface/icons/production_method_icons/cavalry.dds"
+
+	unlocking_technologies = {
+		improved_fertilizer
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_grain_add = 8   # 160
+			goods_input_tools_add = 2   # 80
+			goods_output_horses_add = 28 # 840
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 3750
+			building_employment_farmers_add = 1000
+			building_employment_machinists_add = 250
+		}
+	}
+}

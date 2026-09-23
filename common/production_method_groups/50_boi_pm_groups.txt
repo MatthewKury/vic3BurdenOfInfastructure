@@ -1,0 +1,89 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Production Method Groups
+#
+#  Public-service groups use most_productive. Horse Ranches use
+#  most_profitable because they sell a good and face input prices.
+#
+#  The default is most_profitable, which is meaningless on a
+#  building with no salable output: the Infrastructure and Harbour
+#  Works buildings emit a state modifier rather than a good, so
+#  they have no revenue for the AI to compare. Vanilla sets
+#  most_productive on all three Government Administration groups
+#  for exactly this reason. Without it, AI countries would pick
+#  their infrastructure methods essentially at random.
+# ================================================================
+
+
+# ── Horse Ranch ─────────────────────────────────────────────────
+
+pmg_boi_horse_ranch_method = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	ai_selection = most_profitable
+
+	production_methods = {
+		pm_boi_open_pasture
+		pm_boi_selective_breeding
+		pm_boi_stud_farms
+	}
+}
+
+
+# ── Infrastructure: technology ladder ───────────────────────────
+
+pmg_boi_infrastructure_method = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_cart_roads
+		pm_boi_macadam_roads
+		pm_boi_rail_network
+		pm_boi_motor_roads
+		pm_boi_modern_highways
+	}
+}
+
+
+# ── Infrastructure: administration (Bureaucracy law) ────────────
+# Exactly one of these is ever valid at a time, since the three
+# law gates are mutually exclusive and the appointed variant
+# covers every case the other two do not.
+
+pmg_boi_road_administration = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_appointed_surveyors
+		pm_boi_manorial_roadwardens
+		pm_boi_elected_road_boards
+	}
+}
+
+
+# ── Harbour Works: technology ladder ────────────────────────────
+
+pmg_boi_harbour_method = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_coastal_lighters
+		pm_boi_steam_lighters
+		pm_boi_electrified_quays
+	}
+}
+
+
+# ── Harbour Works: administration (Bureaucracy law) ─────────────
+
+pmg_boi_harbour_administration = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_appointed_harbourmasters
+		pm_boi_manorial_harbour_dues
+		pm_boi_elected_harbour_trusts
+	}
+}

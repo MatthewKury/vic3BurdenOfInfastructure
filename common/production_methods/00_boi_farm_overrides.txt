@@ -1,0 +1,47 @@
+﻿# Burden of Infrastructure — Farm draft-animal inputs
+# Early-load shadows of vanilla 1.13.11 common/production_methods/02_agro.txt.
+# Ox-Powered Plows: 2 horses per level on all five crop farm types.
+# Harvesting Tools: 1 horse per level, including rice farms.
+# Steam threshers and tractor methods consume no horses.
+# Expected: three additional duplicate-key log entries from vanilla.
+# Re-diff these complete blocks against vanilla after game updates.
+
+pm_tools_disabled = {
+	texture = "gfx/interface/icons/production_method_icons/no_tool_use.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 2 # BOI: draft animals
+		}
+	}
+}
+
+pm_tools = {
+	texture = "gfx/interface/icons/production_method_icons/harvesting_tools.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_tools_add = 2
+			goods_input_horses_add = 1 # BOI: draft animals
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -1000
+		}
+	}
+}
+
+pm_tools_building_rice_farm = {
+	texture = "gfx/interface/icons/production_method_icons/harvesting_tools.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_tools_add = 4
+			goods_input_horses_add = 1 # BOI: draft animals
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -2000
+		}
+	}
+}

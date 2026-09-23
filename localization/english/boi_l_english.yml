@@ -1,0 +1,55 @@
+﻿l_english:
+
+ # ── Goods ─────────────────────────────────────────────────────────────────────
+ # NOTE: this file MUST be saved as UTF-8 WITH BOM. Victoria 3 rejects plain
+ # UTF-8 .yml outright - the whole file fails to load and every key in it is
+ # reported as missing, which looks like dozens of unrelated errors.
+ horses:0 "Horses"
+
+ # ── Buildings ─────────────────────────────────────────────────────────────────
+ # Vanilla buildings and goods have no _desc loc keys - the UI builds their
+ # descriptions out of the active production methods - so none are defined here.
+ # The _lens_option key is the "Expand X" label in the construction lens.
+
+ building_boi_horse_ranch:0 "Horse Ranches"
+ building_boi_horse_ranch_lens_option:0 "Expand $building_boi_horse_ranch$"
+
+ building_boi_infrastructure:0 "Public Works"
+ building_boi_infrastructure_lens_option:0 "Expand $building_boi_infrastructure$"
+
+ building_boi_harbour_works:0 "Harbour Works"
+ building_boi_harbour_works_lens_option:0 "Expand $building_boi_harbour_works$"
+
+ # ── Production Method Groups ──────────────────────────────────────────────────
+ pmg_boi_horse_ranch_method:0 "Breeding Method"
+ pmg_boi_infrastructure_method:0 "Haulage Method"
+ pmg_boi_road_administration:0 "Road Administration"
+ pmg_boi_harbour_method:0 "Harbour Method"
+ pmg_boi_harbour_administration:0 "Harbour Administration"
+
+ # ── Horse Ranch Production Methods ────────────────────────────────────────────
+ pm_boi_open_pasture:0 "Open Pasture"
+ pm_boi_selective_breeding:0 "Selective Breeding"
+ pm_boi_stud_farms:0 "Stud Farms"
+
+ # ── Public Works: Haulage Method ──────────────────────────────────────────────
+ pm_boi_cart_roads:0 "Cart Roads"
+ pm_boi_macadam_roads:0 "Macadam Roads"
+ pm_boi_rail_network:0 "Rail Network"
+ pm_boi_motor_roads:0 "Motor Roads"
+ pm_boi_modern_highways:0 "Modern Highways"
+
+ # ── Public Works: Road Administration ─────────────────────────────────────────
+ pm_boi_appointed_surveyors:0 "County Surveyors"
+ pm_boi_manorial_roadwardens:0 "Manorial Road Wardens"
+ pm_boi_elected_road_boards:0 "Elected Road Boards"
+
+ # ── Harbour Works: Harbour Method ─────────────────────────────────────────────
+ pm_boi_coastal_lighters:0 "Coastal Lighters"
+ pm_boi_steam_lighters:0 "Steam Lighters"
+ pm_boi_electrified_quays:0 "Electrified Quays"
+
+ # ── Harbour Works: Harbour Administration ─────────────────────────────────────
+ pm_boi_appointed_harbourmasters:0 "Appointed Harbourmasters"
+ pm_boi_manorial_harbour_dues:0 "Manorial Harbour Dues"
+ pm_boi_elected_harbour_trusts:0 "Elected Harbour Trusts"

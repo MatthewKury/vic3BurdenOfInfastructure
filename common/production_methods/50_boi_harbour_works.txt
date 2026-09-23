@@ -1,0 +1,187 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Harbour Works PMs
+#
+#  Coastal-only second infrastructure avenue, paid for in merchant
+#  marine. Same two-group structure as the Infrastructure building:
+#  375 technical (follows tech) + 125 administrative (follows the
+#  Bureaucracy law).
+#
+#  Priced at the SAME £/infra as the Infrastructure building on
+#  purpose. Coastal states do not get cheaper infrastructure, they
+#  get MORE TOTAL CAPACITY - and they pay in merchant marine, which
+#  carries its own opportunity cost in prestige and trade.
+#
+#  Technology gates deliberately match vanilla's own port ladder
+#  (gantry_cranes -> pm_industrial_port, concrete_dockyards ->
+#  pm_modern_port) so harbour modernisation stays in step with it.
+#
+#  Prices: merchant_marine 50, coal 30, electricity 30.
+# ================================================================
+
+
+# ================================================================
+#  PART 1 — Method ladder (375 technical staff, follows tech)
+# ================================================================
+
+
+# ── Tier 1: Coastal Lighters (1836, no tech gate) ───────────────
+# Lightermen and stevedores working cargo by hand and barge.
+
+pm_boi_coastal_lighters = {
+	texture = "gfx/interface/icons/production_method_icons/anchorage.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_merchant_marine_add = 4 # 200
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 375
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 10
+		}
+	}
+}
+
+
+# ── Tier 2: Steam Lighters (era 3) ──────────────────────────────
+# Steam cranes and powered barges. Machinists arrive.
+
+pm_boi_steam_lighters = {
+	texture = "gfx/interface/icons/production_method_icons/industrial_port.dds"
+
+	unlocking_technologies = {
+		gantry_cranes
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_merchant_marine_add = 5 # 250
+			goods_input_coal_add = 3            # 90
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 275
+			building_employment_machinists_add = 100
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 18
+		}
+	}
+}
+
+
+# ── Tier 3: Electrified Quays (era 4) ───────────────────────────
+# Electrified quaysides. Crane and winch operators displace
+# stevedores wholesale. (Deliberately NOT "container" anything -
+# containerisation is a 1950s development, well outside the game's
+# 1836-1936 window.)
+
+pm_boi_electrified_quays = {
+	texture = "gfx/interface/icons/production_method_icons/modern_port.dds"
+
+	unlocking_technologies = {
+		concrete_dockyards
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_merchant_marine_add = 6 # 300
+			goods_input_electricity_add = 4     # 120
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = 175
+			building_employment_machinists_add = 150
+			building_employment_engineers_add = 50
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 25
+		}
+	}
+}
+
+
+# ================================================================
+#  PART 2 — Administration (125 staff, follows Bureaucracy law)
+#
+#  Docks skew clerical at every tier - manifests, customs entries
+#  and harbour dues are paperwork a road never generates - so
+#  clerks run higher here than on the Infrastructure building.
+#
+#  As there, the appointed variant is the guaranteed fallback via
+#  disallowing_laws.
+# ================================================================
+
+
+# ── Appointed Bureaucrats (default / fallback) ──────────────────
+
+pm_boi_appointed_harbourmasters = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 50
+			building_employment_clerks_add = 75
+		}
+	}
+}
+
+
+# ── Hereditary Bureaucrats / Crownland Diets ────────────────────
+# Harbour dues are a hereditary right of the local magnate.
+
+pm_boi_manorial_harbour_dues = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_aristocrats.dds"
+
+	unlocking_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_aristocrats_add = 50
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 50
+		}
+	}
+}
+
+
+# ── Elected Bureaucrats ─────────────────────────────────────────
+# Harbour trusts and boards of commissioners - the most clerical
+# arrangement in the mod.
+
+pm_boi_elected_harbour_trusts = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_academics.dds"
+
+	unlocking_laws = {
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 100
+		}
+	}
+}

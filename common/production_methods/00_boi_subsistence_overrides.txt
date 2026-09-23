@@ -1,0 +1,69 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Subsistence pasture shadows
+#
+#  EARLY-LOAD OVERRIDE FILE. Same first-read-wins mechanism as the
+#  other 00_boi_ shadows; expect two "Duplicated key" lines at
+#  launch from common/production_methods/12_subsistence.txt.
+#
+#  WHAT CHANGED: a small horse output added to subsistence pasture,
+#  tagged "# BOI:". Nothing removed.
+#
+#  WHY: pm_road_carts now demands horses on every mine, plantation,
+#  vineyard, logging camp and oil rig in the world from 1836. This
+#  gives every pastoral state a permanent baseline horse supply
+#  that cannot be destroyed, damping the game-start price spike and
+#  keeping rural and unincorporated regions viable when nobody has
+#  built a Horse Ranch yet.
+#
+#  WHY THESE TWO SPECIFICALLY: pm_home_workshops_building_* and
+#  pm_home_workshops_no_building_* are the two halves of ONE PM
+#  group, split on law_collectivized_agriculture - exactly one is
+#  always active. Covering both therefore guarantees the trickle
+#  applies under every set of laws. The pm_serfdom_* variants sit
+#  in a separate, additive group and are deliberately NOT touched.
+#
+#  These are subsistence PASTURE only - grazing land, where horses
+#  actually live. Subsistence farms, orchards, rice farms and
+#  fishing villages are untouched. If the floor proves too thin in
+#  play, extending to pm_*_building_subsistence_farm is the first
+#  thing to try.
+#
+#  NOTE this is a small net BUFF to subsistence output (+0.25
+#  horses, about +7.5 in goods value against the block's existing
+#  ~20). That is deliberate - the alternative was cutting an
+#  existing output, which would have been far more invasive.
+#
+#  PATCH SENSITIVITY: full copies of vanilla 1.13. Re-diff against
+#  12_subsistence.txt after every game update.
+# ================================================================
+
+pm_home_workshops_no_building_subsistence_pasture = {
+	texture = "gfx/interface/icons/production_method_icons/no_home_workshops.dds"
+	unlocking_laws = {
+		law_collectivized_agriculture
+	}
+
+	building_modifiers = {
+		workforce_scaled = { # 20
+			goods_output_meat_add = 0.33 # 10
+			goods_output_fabric_add = 0.5 # 10
+			goods_output_horses_add = 0.25 # 7.5   # BOI: baseline horse supply
+		}
+	}
+}
+
+pm_home_workshops_building_subsistence_pasture = {
+	texture = "gfx/interface/icons/production_method_icons/home_workshops.dds"
+	disallowing_laws = {
+		law_collectivized_agriculture
+	}
+
+	building_modifiers = {
+		workforce_scaled = { # 22.5
+			goods_output_clothes_add = 0.25 # 0.75
+			goods_output_furniture_add = 0.25 # 0.75
+			goods_output_liquor_add = 0.25 # 0.75
+			goods_output_horses_add = 0.25 # 7.5   # BOI: baseline horse supply
+		}
+	}
+}

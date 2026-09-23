@@ -1,0 +1,296 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Cavalry upkeep shadows
+#
+#  EARLY-LOAD OVERRIDE FILE, same first-read-wins mechanism as the
+#  production method shadows. Expect four "Duplicated key ... will
+#  not be created from file: common/combat_unit_types/
+#  00_land_combat_unit_types.txt" lines at launch. Expected.
+#
+#  WHAT CHANGED: one "# BOI:" tagged goods_input_horses_add line in
+#  each upkeep_modifier. Nothing else is touched.
+#
+#  Army goods consumption lives HERE, on combat unit types via
+#  upkeep_modifier - NOT in common/production_methods/05_military.txt,
+#  which holds only training, tactics and naval-doctrine PMs and has
+#  no per-unit-type entries at all.
+#
+#  Vanilla already feeds cavalry grain (fodder). Horses here are
+#  remounts, added on top, mirroring vanilla's own 1/1/1/2 grain
+#  pattern so lancers stay the most expensive to keep:
+#      hussars     20 -> 50 upkeep in goods value
+#      dragoons    +30
+#      cuirassiers +30
+#      lancers     +60
+#
+#  Untouched: infantry, artillery, tanks, marines - none of which
+#  should want horses.
+#
+#  PATCH SENSITIVITY: full copies of vanilla 1.13. Re-diff against
+#  00_land_combat_unit_types.txt after every game update. Note the
+#  culture-gated combat_unit_image blocks must be carried through
+#  intact, including the final untriggered fallback.
+# ================================================================
+
+
+combat_unit_type_hussars = {
+	group = combat_unit_group_cavalry
+	max_manpower = 1000
+	supply_capacity = 25
+
+	upkeep_modifier = {
+		goods_input_grain_add = 1
+		goods_input_horses_add = 1 # BOI: remounts
+    }
+
+    battle_modifier = {
+        unit_offense_add = 17 # BOI: horse upkeep makes Hussars a stronger early mobile force
+        unit_defense_add = 10
+        unit_morale_loss_add = 10
+        unit_naval_invasion_efficiency_mult = -0.25
+    }
+
+    formation_modifier = {
+        military_formation_mobilization_speed_mult = 0.25
+        military_formation_army_movement_speed_mult = 0.25
+    }
+
+	unlocking_technologies = { standing_army }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = east_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_east_asian_hussar.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = south_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_south_asian_hussar.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = african
+        }
+        texture = "gfx/unit_illustrations/cavalry_african_hussar.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = arabic
+        }
+        texture = "gfx/unit_illustrations/cavalry_arabic_hussar.dds"
+    }
+
+    combat_unit_image = {
+        # fallback
+        texture = "gfx/unit_illustrations/cavalry_eu_hussar.dds"
+    }
+
+    upgrades = {
+        combat_unit_type_dragoons
+        combat_unit_type_cuirassiers
+        combat_unit_type_lancers
+    }
+}
+
+combat_unit_type_dragoons = {
+	group = combat_unit_group_cavalry
+	max_manpower = 1000
+	supply_capacity = 40
+
+	upkeep_modifier = {
+		goods_input_grain_add = 1
+		goods_input_small_arms_add = 2
+		goods_input_horses_add = 1 # BOI: remounts
+	}
+
+	battle_modifier = {
+		unit_offense_add = 20
+		unit_defense_add = 25
+        unit_morale_loss_add = 8
+        unit_occupation_mult = 0.3
+        unit_naval_invasion_efficiency_mult = -0.25
+        #should get modifiers to mobile/surprise battle conditions appearing
+    }
+
+    formation_modifier = {
+        military_formation_mobilization_speed_mult = 0.15 # BOI: mounted mobility
+        military_formation_army_movement_speed_mult = 0.15 # BOI: mounted mobility
+    }
+
+	unlocking_technologies = { line_infantry }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = east_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_east_asian_dragoon.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = south_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_south_asian_dragoon.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = african
+        }
+        texture = "gfx/unit_illustrations/cavalry_african_dragoon.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = arabic
+        }
+        texture = "gfx/unit_illustrations/cavalry_arabic_dragoon.dds"
+    }
+
+    combat_unit_image = {
+        # fallback
+        texture = "gfx/unit_illustrations/cavalry_eu_dragoon.dds"
+    }
+
+    upgrades = {
+        combat_unit_type_cuirassiers
+        combat_unit_type_lancers
+    }
+}
+
+combat_unit_type_cuirassiers = {
+	group = combat_unit_group_cavalry
+	max_manpower = 1000
+	supply_capacity = 40
+
+	upkeep_modifier = {
+		goods_input_grain_add = 1
+		goods_input_small_arms_add = 2
+		goods_input_horses_add = 1 # BOI: remounts
+	}
+
+	battle_modifier = {
+		unit_offense_add = 25
+		unit_defense_add = 20
+        unit_morale_loss_add = 8
+        unit_occupation_mult = 0.3
+        unit_naval_invasion_efficiency_mult = -0.25
+    }
+
+    formation_modifier = {
+        military_formation_mobilization_speed_mult = 0.10 # BOI: mounted mobility
+        military_formation_army_movement_speed_mult = 0.10 # BOI: mounted mobility
+    }
+
+	unlocking_technologies = { line_infantry }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = east_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_east_asian_cuirassier.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = south_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_south_asian_cuirassier.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = african
+        }
+        texture = "gfx/unit_illustrations/cavalry_african_cuirassier.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = arabic
+        }
+        texture = "gfx/unit_illustrations/cavalry_arabic_cuirassier.dds"
+    }
+
+    combat_unit_image = {
+        # fallback
+        texture = "gfx/unit_illustrations/cavalry_eu_cuirassier.dds"
+    }
+
+    upgrades = {
+        combat_unit_type_dragoons
+        combat_unit_type_lancers
+    }
+}
+
+combat_unit_type_lancers = {
+	group = combat_unit_group_cavalry
+	max_manpower = 1000
+	supply_capacity = 70
+
+	upkeep_modifier = {
+		goods_input_grain_add = 2
+		goods_input_small_arms_add = 2
+		goods_input_iron_add = 2
+		goods_input_horses_add = 2 # BOI: remounts
+    }
+
+    battle_modifier = {
+        unit_offense_add = 30
+        unit_defense_add = 20
+        unit_morale_loss_add = 6
+        unit_kill_rate_add = 0.05
+        unit_morale_loss_mult = 0.05
+        unit_occupation_mult = 0.3
+        unit_naval_invasion_efficiency_mult = -0.25
+    }
+
+    formation_modifier = {
+        military_formation_mobilization_speed_mult = 0.10 # BOI: mounted mobility
+        military_formation_army_movement_speed_mult = 0.10 # BOI: mounted mobility
+    }
+
+	unlocking_technologies = { napoleonic_warfare }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = east_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_east_asian_lancer.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = south_asian
+        }
+        texture = "gfx/unit_illustrations/cavalry_south_asian_lancer.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = african
+        }
+        texture = "gfx/unit_illustrations/cavalry_african_lancer.dds"
+    }
+
+    combat_unit_image = {
+        trigger = {
+            has_culture_graphics = arabic
+        }
+        texture = "gfx/unit_illustrations/cavalry_arabic_lancer.dds"
+    }
+
+    combat_unit_image = {
+        # fallback
+        texture = "gfx/unit_illustrations/cavalry_eu_lancer.dds"
+    }
+
+    upgrades = {
+        combat_unit_type_dragoons
+        combat_unit_type_cuirassiers
+    }
+}

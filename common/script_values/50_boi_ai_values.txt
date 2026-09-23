@@ -1,0 +1,136 @@
+﻿# All values are evaluated in STATE scope, as required by building ai_value.
+# Absolute spare infrastructure; unlike vanilla state_infrastructure_balance,
+# this still detects a deficit when total infrastructure is zero.
+boi_ai_spare_infrastructure = {
+	value = infrastructure
+	subtract = infrastructure_usage
+}
+
+# Exclusive bands: >=30, [15,30), [5,15), [0,5), [-20,0), <-20.
+boi_ai_infrastructure_urgency = {
+	value = 0.25
+	if = {
+		limit = { boi_ai_spare_infrastructure < -20 }
+		value = 6
+	}
+	else_if = {
+		limit = { boi_ai_spare_infrastructure < 0 }
+		value = 4
+	}
+	else_if = {
+		limit = { boi_ai_spare_infrastructure < 5 }
+		value = 2
+	}
+	else_if = {
+		limit = { boi_ai_spare_infrastructure < 15 }
+		value = 1.5
+	}
+	else_if = {
+		limit = { boi_ai_spare_infrastructure < 30 }
+		value = 0.75
+	}
+}
+
+# Existing Public Works determines the relevant input. A first building uses
+# horses as the conservative default; research alone does not imply a rail PM.
+# Rail Network also consumes horses, but transportation is its main price signal.
+boi_ai_public_works_input_price = {
+	value = boi_ai_horse_input_price
+	if = {
+		limit = {
+			any_scope_building = {
+				is_building_type = building_boi_infrastructure
+				OR = {
+					has_active_production_method = pm_boi_rail_network
+					has_active_production_method = pm_boi_motor_roads
+					has_active_production_method = pm_boi_modern_highways
+				}
+			}
+		}
+		value = boi_ai_transportation_input_price
+	}
+}
+
+# Local price deviations from base price, with a neutral band inside +/-25%.
+# Expensive inputs lower consumer priority; cheap inputs raise it. The maximum
+# adjustment is +/-20%, so even expensive inputs cannot erase deficit urgency.
+boi_ai_horse_input_price = {
+	value = 1
+	if = {
+		limit = { sg:horses = { state_goods_pricier >= 0.5 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_pricier >= 0.25 } }
+		value = 0.9
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_cheaper >= 0.5 } }
+		value = 1.2
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_cheaper >= 0.25 } }
+		value = 1.1
+	}
+}
+
+boi_ai_transportation_input_price = {
+	value = 1
+	if = {
+		limit = { sg:transportation = { state_goods_pricier >= 0.5 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_pricier >= 0.25 } }
+		value = 0.9
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_cheaper >= 0.5 } }
+		value = 1.2
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_cheaper >= 0.25 } }
+		value = 1.1
+	}
+}
+
+boi_ai_merchant_marine_input_price = {
+	value = 1
+	if = {
+		limit = { sg:merchant_marine = { state_goods_pricier >= 0.5 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { sg:merchant_marine = { state_goods_pricier >= 0.25 } }
+		value = 0.9
+	}
+	else_if = {
+		limit = { sg:merchant_marine = { state_goods_cheaper >= 0.5 } }
+		value = 1.2
+	}
+	else_if = {
+		limit = { sg:merchant_marine = { state_goods_cheaper >= 0.25 } }
+		value = 1.1
+	}
+}
+
+# Railways PRODUCE transportation: expensive output raises their priority.
+boi_ai_railway_output_price = {
+	value = 1
+	if = {
+		limit = { sg:transportation = { state_goods_pricier >= 0.5 } }
+		value = 1.2
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_pricier >= 0.25 } }
+		value = 1.1
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_cheaper >= 0.5 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { sg:transportation = { state_goods_cheaper >= 0.25 } }
+		value = 0.9
+	}
+}

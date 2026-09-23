@@ -1,0 +1,191 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Haulage PM shadows (horse demand)
+#
+#  EARLY-LOAD OVERRIDE FILE. See 00_boi_rail_port_overrides.txt for
+#  how the first-read-wins shadowing works and why the "Duplicated
+#  key" log lines are expected.
+#
+#  WHAT CHANGED: horse inputs added, tagged "# BOI:". Nothing is
+#  removed from any of these blocks.
+#
+#  THE LADDER, for anyone re-diffing this later. Vanilla's haulage
+#  progression on mines, plantations, vineyards, logging camps and
+#  oil rigs is:
+#
+#      pm_road_carts               (no tech)         <- horses 3
+#        -> pm_rail_transport_*    (railways)        <- horses 1
+#        -> pm_log_carts / etc.    (electric_railway)   untouched
+#
+#  Two naming traps worth knowing:
+#   - pm_road_carts is EMPTY in vanilla (texture only). It is the
+#     "no rail automation" default tier that every extraction
+#     building starts on in 1836 - which is exactly why it is the
+#     right home for horse-drawn haulage.
+#   - pm_log_carts is NOT a horse cart. Despite the name it is the
+#     MOST ADVANCED logging transport tier, gated on
+#     electric_railway. It is deliberately left untouched.
+#
+#  Horses on rail tiers represent last-mile cartage to and from the
+#  railhead, which is why they taper to 1 and vanish entirely at
+#  the electric/refrigerated tiers.
+#
+#  The refrigeration ladders (pm_unrefrigerated ->
+#  pm_refrigerated_storage_* -> pm_refrigerated_rail_cars_*) and
+#  pm_flash_freezing_* are cold-chain, not haulage, and are NOT
+#  touched at all.
+#
+#  Source files for re-diffing after a patch:
+#    pm_road_carts, pm_rail_transport_mine        -> 03_mines.txt
+#    pm_steam_rail_transport                      -> 04_plantations.txt
+#    pm_rail_transport_building_logging_camp,
+#    pm_rail_transport_building_oil_rig,
+#    pm_tanker_cars                               -> 09_misc_resource.txt
+# ================================================================
+
+
+# ── Base haulage tier: horse-drawn road carts ───────────────────
+# Vanilla defines this as an empty PM - a texture and nothing else.
+# One override here reaches 18 PM groups: every mine, plantation,
+# vineyard, logging camp and oil rig in the game.
+#
+# This is the mod's main pre-rail pressure: haulage costs horses
+# until you build a railway to escape it.
+
+pm_road_carts = {
+	texture = "gfx/interface/icons/production_method_icons/no_rail_transport.dds"
+
+	# BOI: horse-drawn haulage now costs horses
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 3 # 90
+		}
+	}
+}
+
+
+# ── Rail tiers: last-mile cartage only ──────────────────────────
+
+pm_rail_transport_mine = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+	state_modifiers = {
+		workforce_scaled = {
+			state_pollution_generation_add = 10
+		}
+	}
+
+	unlocking_technologies = {
+		railways
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			# input goods
+			goods_input_transportation_add = 5
+			goods_input_horses_add = 1 # 30   # BOI: last-mile cartage
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -1000
+		}
+	}
+}
+
+pm_steam_rail_transport = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_pollution_generation_add = 10
+		}
+	}
+
+	unlocking_technologies = {
+		railways
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			# input goods
+			goods_input_transportation_add = 5
+			goods_input_horses_add = 1 # 30   # BOI: last-mile cartage
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -1000
+		}
+	}
+}
+
+pm_rail_transport_building_logging_camp = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_pollution_generation_add = 15
+		}
+	}
+
+	unlocking_technologies = {
+		railways
+	}
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 5
+			goods_input_horses_add = 1 # 30   # BOI: last-mile cartage
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -1000
+		}
+	}
+}
+
+pm_rail_transport_building_oil_rig = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_pollution_generation_add = 5
+		}
+	}
+
+	unlocking_technologies = {
+		railways
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 5
+			goods_input_horses_add = 1 # 30   # BOI: last-mile cartage
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -1000
+		}
+	}
+}
+
+pm_tanker_cars = {
+	texture = "gfx/interface/icons/production_method_icons/tanker_cars.dds"
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_pollution_generation_add = 10
+		}
+	}
+
+	unlocking_technologies = {
+		steel_railway_cars
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 10
+			goods_input_horses_add = 1 # 30   # BOI: last-mile cartage
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -2000
+		}
+	}
+}

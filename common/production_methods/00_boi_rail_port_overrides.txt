@@ -1,0 +1,326 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Railway & Port PM shadows
+#
+#  EARLY-LOAD OVERRIDE FILE. The production method database is
+#  first-read-wins in ASCII filename order, so "00_boi_" sorts
+#  before vanilla's "11_private_infrastructure.txt" and these
+#  copies win. Vanilla logs one harmless line per key:
+#      "Duplicated key pm_X will not be created from file:
+#       common/production_methods/11_private_infrastructure.txt"
+#  That is EXPECTED. Only the duplicated keys are discarded - the
+#  rest of the vanilla file still loads normally.
+#
+#  WHAT CHANGED: every "state_infrastructure_add" line has been
+#  removed. That is the whole point of the mod - infrastructure is
+#  no longer a free by-product of railways and ports, it comes from
+#  building_boi_infrastructure and building_boi_harbour_works.
+#
+#  WHAT DELIBERATELY DID NOT CHANGE:
+#   - goods_output_transportation_add / _merchant_marine_add stay.
+#     Mines, plantations, logging camps, fishing wharves and oil
+#     rigs all consume transportation in their automation PMs, and
+#     the Infrastructure building's own later PMs consume it too.
+#     Removing it would break vanilla.
+#   - state_pollution_generation_add stays. Several of these
+#     state_modifiers blocks carry pollution alongside the
+#     infrastructure line; only the infrastructure line goes.
+#   - required_input_goods on the electric trains stays (it sits
+#     AFTER the state_modifiers block in vanilla - easy to lose).
+#
+#  PATCH SENSITIVITY: each block below is a full copy of vanilla
+#  1.13 with one line removed, tagged "# BOI:". After every game
+#  update, re-diff against vanilla 11_private_infrastructure.txt
+#  and re-apply upstream changes.
+#
+#  NOT shadowed: pm_anchorage (has no state_infrastructure_add),
+#  and the passenger-carriage PMs (transportation output only).
+# ================================================================
+
+
+# ================================================================
+#  PORTS - state_modifiers block removed entirely
+#  (it contained nothing but the infrastructure line)
+#  Was: basic 3, industrial 4, modern 5.
+# ================================================================
+
+pm_basic_port = {
+	texture = "gfx/interface/icons/production_method_icons/basic_port.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_clippers_add = 6 # 360
+			goods_output_merchant_marine_add = 9 # 450
+		}
+		level_scaled = {
+			building_employment_laborers_add = 700
+			building_employment_clerks_add = 200
+			building_employment_bureaucrats_add = 100
+		}
+	}
+
+	# BOI: removed state_modifiers { state_infrastructure_add = 3 }
+}
+
+pm_industrial_port = {
+	texture = "gfx/interface/icons/production_method_icons/industrial_port.dds"
+
+	unlocking_technologies = {
+		gantry_cranes
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_steamers_add = 5 # 350
+			goods_input_coal_add = 5 # 150
+			goods_output_merchant_marine_add = 20 # 1000
+		}
+		level_scaled = {
+			building_employment_laborers_add = 500
+			building_employment_machinists_add = 200
+			building_employment_clerks_add = 200
+			building_employment_bureaucrats_add = 100
+		}
+	}
+
+	# BOI: removed state_modifiers { state_infrastructure_add = 4 }
+}
+
+pm_modern_port = {
+	texture = "gfx/interface/icons/production_method_icons/modern_port.dds"
+	unlocking_technologies = {
+		concrete_dockyards
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_steamers_add = 5 # 350
+			goods_input_oil_add = 10 # 400
+			goods_output_merchant_marine_add = 30 # 1500
+		}
+		level_scaled = {
+			building_employment_laborers_add = 400
+			building_employment_machinists_add = 250
+			building_employment_engineers_add = 50
+			building_employment_clerks_add = 200
+			building_employment_bureaucrats_add = 100
+		}
+	}
+
+	# BOI: removed state_modifiers { state_infrastructure_add = 5 }
+}
+
+
+# ================================================================
+#  RAILWAYS - infrastructure line removed, pollution kept
+#  Was: early 20, steam 25, steam_p3 30, electric 30,
+#       electric_p3 40, diesel 40, diesel_p3 55.
+# ================================================================
+
+pm_early_trains = {
+	texture = "gfx/interface/icons/production_method_icons/experimental_trains.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 5 # 300
+			goods_input_coal_add = 2 # 60
+			goods_output_transportation_add = 20 # 600
+		}
+		level_scaled = {
+			building_employment_laborers_add = 600
+			building_employment_machinists_add = 200
+			building_employment_clerks_add = 200
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			# BOI: removed state_infrastructure_add = 20
+			state_pollution_generation_add = 25
+		}
+	}
+}
+
+pm_steam_trains = {
+	texture = "gfx/interface/icons/production_method_icons/trains_steam.dds"
+	replacement_if_valid = pm_steam_trains_principle_transport_3
+
+	unlocking_technologies = {
+		steel_railway_cars
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 5 # 300
+			goods_input_coal_add = 5 # 150
+			goods_output_transportation_add = 25 # 750
+		}
+		level_scaled = {
+			building_employment_laborers_add = 500
+			building_employment_machinists_add = 300
+			building_employment_clerks_add = 200
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			# BOI: removed state_infrastructure_add = 25
+			state_pollution_generation_add = 20
+		}
+	}
+}
+
+pm_steam_trains_principle_transport_3 = {
+	texture = "gfx/interface/icons/production_method_icons/trains_steam.dds"
+	is_hidden_when_unavailable = yes
+
+	unlocking_principles = {
+		principle_transport_3
+	}
+
+	unlocking_technologies = {
+		steel_railway_cars
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 6 # 300
+			goods_input_coal_add = 6 # 150
+			goods_output_transportation_add = 30 # 750
+		}
+		level_scaled = {
+			building_employment_laborers_add = 500
+			building_employment_machinists_add = 300
+			building_employment_clerks_add = 200
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			# BOI: removed state_infrastructure_add = 30
+			state_pollution_generation_add = 25
+		}
+	}
+}
+
+pm_electric_trains = {
+	texture = "gfx/interface/icons/production_method_icons/trains_electric.dds"
+	replacement_if_valid = pm_electric_trains_principle_transport_3
+
+	unlocking_technologies = {
+		electric_railway
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 5 # 300
+			goods_input_electricity_add = 8 # 240
+			goods_output_transportation_add = 35 # 1050
+		}
+		level_scaled = {
+			building_employment_laborers_add = 400
+			building_employment_machinists_add = 350
+			building_employment_engineers_add = 50
+			building_employment_clerks_add = 200
+		}
+	}
+
+	# BOI: removed state_modifiers { state_infrastructure_add = 30 }
+	# (no pollution line on the electric trains, so the whole block goes)
+
+	required_input_goods = electricity
+}
+
+pm_electric_trains_principle_transport_3 = {
+	texture = "gfx/interface/icons/production_method_icons/trains_electric.dds"
+	is_hidden_when_unavailable = yes
+
+	unlocking_principles = {
+		principle_transport_3
+	}
+
+	unlocking_technologies = {
+		electric_railway
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 6 # 360
+			goods_input_electricity_add = 10 # 300
+			goods_output_transportation_add = 45 # 1350
+		}
+		level_scaled = {
+			building_employment_laborers_add = 400
+			building_employment_machinists_add = 350
+			building_employment_engineers_add = 50
+			building_employment_clerks_add = 200
+		}
+	}
+
+	# BOI: removed state_modifiers { state_infrastructure_add = 40 }
+
+	required_input_goods = electricity
+}
+
+pm_diesel_trains = {
+	texture = "gfx/interface/icons/production_method_icons/trains_diesel.dds"
+	replacement_if_valid = pm_diesel_trains_principle_transport_3
+
+	unlocking_technologies = {
+		compression_ignition
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 5 # 300
+			goods_input_oil_add = 6 # 240
+			goods_output_transportation_add = 40 # 1200
+		}
+		level_scaled = {
+			building_employment_laborers_add = 400
+			building_employment_machinists_add = 300
+			building_employment_engineers_add = 100
+			building_employment_clerks_add = 200
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			# BOI: removed state_infrastructure_add = 40
+			state_pollution_generation_add = 15
+		}
+	}
+}
+
+pm_diesel_trains_principle_transport_3 = {
+	texture = "gfx/interface/icons/production_method_icons/trains_diesel.dds"
+	is_hidden_when_unavailable = yes
+
+	unlocking_principles = {
+		principle_transport_3
+	}
+
+	unlocking_technologies = {
+		compression_ignition
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_engines_add = 6 # 360
+			goods_input_oil_add = 8 # 320
+			goods_output_transportation_add = 50 # 1500
+		}
+		level_scaled = {
+			building_employment_laborers_add = 400
+			building_employment_machinists_add = 300
+			building_employment_engineers_add = 100
+			building_employment_clerks_add = 200
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			# BOI: removed state_infrastructure_add = 55
+			state_pollution_generation_add = 20
+		}
+	}
+}

@@ -1,0 +1,38 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Building Groups
+#
+#  bg_boi_public_works exists because NO vanilla building sits
+#  directly in an intermediate building group. Every vanilla
+#  building lives in a LEAF group:
+#      bg_infrastructure
+#        -> bg_public_infrastructure
+#             -> bg_construction        (building_construction_sector)
+#        -> bg_private_infrastructure   (building_railway, building_port)
+#        -> bg_canals                   (Suez, Panama)
+#      bg_government
+#        -> bg_bureaucracy              (building_government_administration)
+#
+#  Public Works and Harbour Works were originally placed directly
+#  in bg_public_infrastructure, which no vanilla building does.
+#  This group restores the vanilla shape.
+#
+#  Everything meaningful is inherited from bg_public_infrastructure
+#  and bg_infrastructure above it:
+#      is_government_funded = yes   (the state pays wages + inputs)
+#      lens = development           (which construction tab it shows in)
+#      category = development
+#      always_possible = yes
+#      stateregion_max_level = yes   (only matters with has_max_level = yes)
+#      urbanization = 5
+#
+#  Public Works and Harbour Works intentionally do not set has_max_level, so
+#  their maximum remains unlimited like vanilla Railways. Revisit after
+#  campaign testing. Deliberately NOT set: infrastructure_usage_per_level. Neither
+#  parent declares one, so these buildings consume no infrastructure
+#  themselves - which is correct for something whose whole purpose
+#  is producing it.
+# ================================================================
+
+bg_boi_public_works = {
+	parent_group = bg_public_infrastructure
+}

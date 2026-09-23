@@ -1,0 +1,214 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Buildings
+#
+#  Three new buildings. The separate railway shadow adjusts vanilla AI.
+#
+#  building_boi_horse_ranch      bg_ranching, private, no tech gate
+#  building_boi_infrastructure   bg_public_infrastructure, govt-funded
+#  building_boi_harbour_works    bg_public_infrastructure, coastal only
+#
+#  The two infrastructure buildings are pure COST CENTRES, built on
+#  the same pattern as vanilla's Government Administration: they
+#  emit a state modifier (state_infrastructure_add) instead of a
+#  salable good, so they have no goods_output at all. The state
+#  pays the wages and buys the inputs. See BALANCE.md.
+#
+#  Public Works and Harbour Works have no explicit maximum level, matching
+#  vanilla Railways. Their inherited stateregion_max_level setting only changes
+#  the scope of a cap when has_max_level = yes, which none of these buildings
+#  sets. This is an intentional assumption to revisit after AI/balance testing.
+#  Neither group declares infrastructure_usage_per_level, so an infrastructure
+#  building does not itself consume infrastructure - which is correct.
+# ================================================================
+
+
+# ── Horse Ranch ─────────────────────────────────────────────────
+# The horse supply. Deliberately mirrors building_livestock_ranch
+# (same group, same city_type, same terrain, same construction
+# cost) so the two compete on even terms for arable land.
+#
+# CRITICAL: no unlocking_technologies. Vanilla's livestock ranch
+# requires 'enclosure', but horses are the 1836 infrastructure
+# input - if this were tech-gated the game would open with no horse
+# supply, no working Infrastructure buildings, and a global
+# infrastructure collapse. It must be buildable on day one.
+#
+# bg_ranching supplies should_auto_expand = default_auto_expand_rule,
+# so private capital will grow ranches on its own once demand exists.
+
+building_boi_horse_ranch = {
+	building_group = bg_ranching
+
+	icon = "gfx/interface/icons/building_icons/cattle_ranch.dds"
+
+	# NO city_type. A building that declares one must also be mapped
+	# to a 3D mesh in gfx/map/city_data/city_types/*.txt - 34 files,
+	# one per culture x hub type - or it has no "backing building"
+	# and cannot be placed. building_livestock_ranch and every
+	# plantation are mapped in default_farm.txt; this one was in
+	# none of them. Vanilla's building_railway sets no city_type at
+	# all and works fine, so we follow that: fully functional, just
+	# no model on the map. levels_per_mesh is dropped with it, since
+	# it only governs mesh placement.
+
+	production_method_groups = {
+		pmg_boi_horse_ranch_method
+	}
+
+	required_construction = construction_cost_low
+
+	terrain_manipulator = pasture
+	ownership_type = self
+
+	# Horses gate the entire infrastructure system, so the AI needs
+	# to treat ranches as more than an ordinary farm. Below railway
+	# (2000) but well above a default rural building.
+	ai_value = {
+		value = 1200
+	}
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_farming.dds"
+}
+
+
+# ── Infrastructure ──────────────────────────────────────────────
+# The heart of the mod. Converts horses (early) and transportation
+# (later) into state infrastructure, at a permanent net loss.
+#
+# Two production method groups on purpose:
+#   pmg_boi_infrastructure_method  - 400 technical staff, goods in,
+#                                    infrastructure out. Follows TECH.
+#   pmg_boi_road_administration    - 100 admin staff. Follows the
+#                                    BUREAUCRACY LAW, changing who
+#                                    holds the jobs (aristocrats /
+#                                    bureaucrats / clerks).
+# Exactly one PM per group is active, which is what lets the two
+# axes vary independently - the same structure vanilla uses on
+# Government Administration.
+
+building_boi_infrastructure = {
+	# bg_boi_public_works, not bg_public_infrastructure directly -
+	# no vanilla building occupies an intermediate group. See
+	# common/building_groups/50_boi_building_groups.txt.
+	building_group = bg_boi_public_works
+
+	# Assumption: deliberately unlimited, matching building_railway. Revisit
+	# after campaign testing establishes whether this permits overbuilding.
+
+	# NOT construction_camp.dds - that is vanilla's Construction
+	# Sector icon, and both buildings sit in the Development lens, so
+	# Public Works was effectively invisible: it read as a second
+	# Construction Sector. Terminus art is distinct and reads as
+	# civil infrastructure.
+	icon = "gfx/interface/icons/building_icons/building_victoria_terminus.dds"
+
+	# No city_type / levels_per_mesh - see the note on the Horse
+	# Ranch above. Railways manage without one too.
+
+	production_method_groups = {
+		pmg_boi_infrastructure_method
+		pmg_boi_road_administration
+	}
+
+	required_construction = construction_cost_medium
+
+	# MUST be no_ownership: the engine rejects any building whose
+	# group is is_government_funded = yes with a different
+	# ownership_type ("Building type X is goverment funded but
+	# ownership_type is not equal to no_ownership"). Government
+	# buildings have no owner - the state simply runs them.
+	ownership_type = no_ownership
+
+	# State-scoped priority: infrastructure urgency dominates input prices.
+	ai_value = {
+		value = 3000
+		multiply = boi_ai_infrastructure_urgency
+		multiply = boi_ai_public_works_input_price
+	}
+
+	# Auto-expansion needs a building with its toggle enabled. Grow only in
+	# states with less than 5 spare infrastructure, after this building reaches
+	# 90% staffing, never while this same building is already queued, and never
+	# while the state owner is in default.
+	should_auto_expand = {
+		occupancy >= 0.9
+		state = {
+			infrastructure_delta < 5
+			owner = { in_default = no }
+			NOT = {
+				any_scope_building = {
+					is_building_type = building_boi_infrastructure
+					is_under_construction = yes
+				}
+			}
+		}
+	}
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_railways.dds"
+}
+
+
+# ── Harbour Works ───────────────────────────────────────────────
+# Coastal-only second infrastructure avenue, paid for in merchant
+# marine. This is the ONLY way a production method can be made
+# conditional on geography: PMs have no trigger of any kind, so the
+# condition has to live on the building via potential = { }.
+#
+# Deliberately government-funded rather than a PM group bolted onto
+# vanilla's building_port: ports are privately owned, PM groups
+# default to ai_selection = most_profitable, and a PM that produces
+# a state modifier rather than a salable good has no profit signal -
+# so AI-owned ports would never have selected it and the whole
+# feature would have been player-only.
+
+building_boi_harbour_works = {
+	building_group = bg_boi_public_works
+
+	# Assumption: deliberately unlimited, matching building_railway. Revisit
+	# after campaign testing establishes whether this permits overbuilding.
+
+	icon = "gfx/interface/icons/building_icons/building_port.dds"
+
+	# No city_type / levels_per_mesh - see the Horse Ranch note.
+	# The coastal restriction comes from potential below, NOT from
+	# city_type = port, so dropping it costs nothing functionally.
+
+	potential = {
+		is_coastal = yes
+	}
+
+	production_method_groups = {
+		pmg_boi_harbour_method
+		pmg_boi_harbour_administration
+	}
+
+	required_construction = construction_cost_medium
+
+	# no_ownership, for the same reason as building_boi_infrastructure
+	# above - required for every is_government_funded building group.
+	ownership_type = no_ownership
+
+	ai_value = {
+		value = 1500
+		multiply = boi_ai_infrastructure_urgency
+		multiply = boi_ai_merchant_marine_input_price
+	}
+
+	# Same safeguard as Public Works, evaluated separately so either source can
+	# be auto-expanded in a coastal state when its own toggle is enabled.
+	should_auto_expand = {
+		occupancy >= 0.9
+		state = {
+			infrastructure_delta < 5
+			owner = { in_default = no }
+			NOT = {
+				any_scope_building = {
+					is_building_type = building_boi_harbour_works
+					is_under_construction = yes
+				}
+			}
+		}
+	}
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_harbour.dds"
+}
