@@ -6,6 +6,9 @@
  # reported as missing, which looks like dozens of unrelated errors.
  horses:0 "Horses"
 
+ # ── State Traits ───────────────────────────────────────────────────────────────
+ state_trait_boi_horse_breeding_traditions:0 "Horse-Breeding Traditions"
+
  # ── Buildings ─────────────────────────────────────────────────────────────────
  # Vanilla buildings and goods have no _desc loc keys - the UI builds their
  # descriptions out of the active production methods - so none are defined here.

@@ -39,7 +39,7 @@
 building_boi_horse_ranch = {
 	building_group = bg_ranching
 
-	icon = "gfx/interface/icons/building_icons/cattle_ranch.dds"
+	icon = "gfx/interface/icons/building_icons/boi_horse_ranch.dds"
 
 	# NO city_type. A building that declares one must also be mapped
 	# to a 3D mesh in gfx/map/city_data/city_types/*.txt - 34 files,
@@ -95,12 +95,9 @@ building_boi_infrastructure = {
 	# Assumption: deliberately unlimited, matching building_railway. Revisit
 	# after campaign testing establishes whether this permits overbuilding.
 
-	# NOT construction_camp.dds - that is vanilla's Construction
-	# Sector icon, and both buildings sit in the Development lens, so
-	# Public Works was effectively invisible: it read as a second
-	# Construction Sector. Terminus art is distinct and reads as
-	# civil infrastructure.
-	icon = "gfx/interface/icons/building_icons/building_victoria_terminus.dds"
+	# Stone bridge and tools distinguish Public Works from other
+	# Development buildings and the coastal Harbour Works icon.
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
 
 	# No city_type / levels_per_mesh - see the note on the Horse
 	# Ranch above. Railways manage without one too.
@@ -167,7 +164,7 @@ building_boi_harbour_works = {
 	# Assumption: deliberately unlimited, matching building_railway. Revisit
 	# after campaign testing establishes whether this permits overbuilding.
 
-	icon = "gfx/interface/icons/building_icons/building_port.dds"
+	icon = "gfx/interface/icons/building_icons/boi_harbour_works.dds"
 
 	# No city_type / levels_per_mesh - see the Horse Ranch note.
 	# The coastal restriction comes from potential below, NOT from

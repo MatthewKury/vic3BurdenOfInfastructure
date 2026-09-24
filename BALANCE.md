@@ -350,13 +350,14 @@ self-curing horse shortage.
 
 | Building | Levels | Count | Gate |
 |---|---|---|---|
-| Public Works | 2 | 675 | every owned state |
-| Harbour Works | 1 | 372 | state region declares a port hub |
-| Horse Ranch | **3** | 236 | curated — see below |
+| Public Works | 1–6 | 20 | replaces starting Port and Railway infrastructure |
+| Harbour Works | 1–2 | 139 | replaces starting Port infrastructure where a port hub exists |
+| Horse Ranch | **1–8** | 225 | curated; 857 total levels — see below |
 
-**Primary owner only.** 219 of the 675 owned states are split between two or
-more countries. Seeding every `region_state` would double-allocate the state
-region's shared arable land, so only the first owner is seeded.
+**Infrastructure follows the actual state owner.** The generated plan covers
+each starting owner separately, including split state regions. It seeds 40
+Public Works levels and 141 Harbour Works levels across 155 owner-state records.
+The audit is in [`tools/STARTING_INFRASTRUCTURE_1836.md`](tools/STARTING_INFRASTRUCTURE_1836.md).
 
 **Horse Ranches are curated, and this cost a crash to learn.** Ranches are rural
 and consume arable land, but a state's *real* arable land depends on
@@ -366,17 +367,21 @@ it has **1**. Seeding on the declared figure over-allocated 10 states and logged
 `State X is using an excess of N arable land` immediately before a hard crash in
 world init.
 
-Ranches are now restricted to states that are **core** (owner's primary culture
+The original 236 ranch states were restricted to states that are **core** (owner's primary culture
 is a homeland culture of the state — a proxy for incorporated), **sole owner** of
 their region, **low industry** (vanilla seeds ≤1 industrial building), and
 declare **arable_land ≥ 25**. That excludes all 10 known failures and lands on
-236 agrarian core states — Aquitaine, Abruzzo, Alabama, Banat and the like —
-while correctly skipping industrial cores such as Home Counties, Île-de-France
-and New York.
+236 agrarian core states — Aquitaine, Abruzzo, Alabama, Banat and the like.
+Fourteen additional core, sole-owner, incorporated states with adequate declared
+arable headroom now receive ranches, including Limousin, Yorkshire, Tohoku and
+Fez. Fifteen of the original 236 states are explicitly unincorporated despite
+passing the core-culture proxy; their previously safe three levels are an upper
+bound. Baseline levels of 4/6/8 by declared arable land are reduced according
+to regional horse-breeding suitability; 25 candidate states lose their ranches.
 
-The trade-off is fewer seeded horses than the original 636-state plan. The
-subsistence pasture trickle carries the rest of the world, and players and the AI
-build ranches where demand appears. Public Works and Harbour Works are not rural,
+The trade-off is fewer seeded ranch states than the original 636-state plan.
+The subsistence pasture trickle is small relative to the opening horse demand;
+players and the AI still need to expand ranches. Public Works and Harbour Works are not rural,
 cost no arable land, and are seeded everywhere they apply.
 
 **Colonised states are deliberately not seeded.** History only covers states
@@ -496,11 +501,15 @@ intended shape — horses are an early-game burden that industrialisation escape
 
 ### The caveat that matters: horses will not trade at par
 
-Seeded supply is **8,496 horses/week** (236 states × 3 levels × 12). Public
-Works demand alone is **13,500/week** (675 states × 2 levels × 10), before
-counting `pm_road_carts` at 3/level on every mine, plantation, logging camp and
-oil rig on Earth. Horses will therefore open **well above** their £30 base price,
-and the table above scales linearly with that:
+Seeded Horse Ranch supply is **10,284 horses/week before state modifiers**
+(857 levels × 12). Static known demand is **10,494/week**:
+400 Public Works, 7,059 haulage, 2,257 farm draft animals, and 778 cavalry.
+The new ranch locations, level choices, and land audit are documented in
+[`tools/HORSE_SEED_1836.md`](tools/HORSE_SEED_1836.md).
+Subsistence pastures add some supply, while dynamically created Urban Centers
+add demand. Ranch supply is **210/week below** this known demand before pasture
+output and state modifiers. Actual opening prices and shortages must be measured by market;
+the cost examples below scale with horse price:
 
 | Building | Margin | @30 (par) | @45 (1.5×) | @60 (2×) |
 |---|---|---|---|---|

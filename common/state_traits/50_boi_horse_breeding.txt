@@ -1,0 +1,9 @@
+﻿# Regional horse-breeding traditions. This improves horse output specifically;
+# the existing ranching throughput traits continue to affect all ranch goods.
+state_trait_boi_horse_breeding_traditions = {
+	icon = "gfx/interface/icons/state_trait_icons/boi_horse_breeding_traditions.dds"
+
+	modifier = {
+		goods_output_horses_mult = 0.10
+	}
+}

@@ -10,16 +10,19 @@ $ErrorActionPreference = 'Stop'
 if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
 $awk = Get-Command awk -ErrorAction Stop
 $previous = Get-Content -LiteralPath $OwnedRegionsPath
-if ($previous -ne ($previous | Sort-Object)) {
-    throw 'owned_regions.txt is not sorted. Regenerate it through tools/REGENERATE.md before testing reproducibility.'
+$sorted = @($previous | Sort-Object)
+for ($i = 0; $i -lt $previous.Count; $i++) {
+    if ($previous[$i] -cne $sorted[$i]) {
+        throw 'owned_regions.txt is not sorted. Regenerate it through tools/REGENERATE.md before testing reproducibility.'
+    }
 }
 
 $first = Join-Path $env:TEMP 'boi-seed-first.txt'
 $second = Join-Path $env:TEMP 'boi-seed-second.txt'
 try {
-    & $awk.Source '-f' (Join-Path $ModPath 'tools/gen_seed.awk') $PairsPath $RanchPath $OwnedRegionsPath 1> $first
+    & $awk.Source '-f' (Join-Path $ModPath 'tools/gen_seed.awk') $PairsPath $RanchPath $OwnedRegionsPath (Join-Path $ModPath 'tools/horse_seed_additions.tsv') (Join-Path $ModPath 'tools/horse_seed_holds.tsv') (Join-Path $ModPath 'tools/infrastructure_seed_plan.tsv') (Join-Path $ModPath 'tools/horse_seed_reductions.tsv') 1> $first
     if ($LASTEXITCODE -ne 0) { throw 'First seed generation failed.' }
-    & $awk.Source '-f' (Join-Path $ModPath 'tools/gen_seed.awk') $PairsPath $RanchPath $OwnedRegionsPath 1> $second
+    & $awk.Source '-f' (Join-Path $ModPath 'tools/gen_seed.awk') $PairsPath $RanchPath $OwnedRegionsPath (Join-Path $ModPath 'tools/horse_seed_additions.tsv') (Join-Path $ModPath 'tools/horse_seed_holds.tsv') (Join-Path $ModPath 'tools/infrastructure_seed_plan.tsv') (Join-Path $ModPath 'tools/horse_seed_reductions.tsv') 1> $second
     if ($LASTEXITCODE -ne 0) { throw 'Second seed generation failed.' }
     if (-not ((Get-FileHash -LiteralPath $first -Algorithm SHA256).Hash -eq (Get-FileHash -LiteralPath $second -Algorithm SHA256).Hash)) {
         throw 'Identical seed inputs produced different outputs.'

@@ -18,7 +18,7 @@
 # ================================================================
 
 horses = {
-	texture = "gfx/interface/icons/goods_icons/meat.dds"
+	texture = "gfx/interface/icons/goods_icons/boi_horses.dds"
 	cost = 30
 	category = staple
 

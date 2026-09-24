@@ -1,0 +1,17 @@
+# State<TAB>Horse Ranch levels. New ranches only; core, sole-owner, incorporated,
+# and declared arable headroom were checked against the installed 1.13 history.
+# Historic horse regions and arable states near opening horse demand.
+STATE_AUVERGNE_LIMOUSIN	6
+STATE_YORKSHIRE	6
+STATE_LOWLANDS	5
+STATE_ORYOL	5
+STATE_KAZAN	5
+STATE_OHIO	5
+STATE_TOHOKU	5
+STATE_HUDAVENDIGAR	4
+STATE_LOWER_EGYPT	4
+STATE_FEZ	4
+STATE_BAVARIA	4
+STATE_MORAVIA	4
+STATE_ZHILI	4
+STATE_NEW_CASTILE	4

@@ -21,12 +21,18 @@ for f in "$GAME"/map_data/state_regions/*.txt; do
   sed -E 's/(arable_resources = \{[^}]*)\}/\1"building_boi_horse_ranch" }/' \
     "$f" > "$MOD/map_data/state_regions/$(basename "$f")"
 done
+
+# Reapply the 12 Horse-Breeding Traditions assignments after copying vanilla.
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File \
+  "$MOD/tools/Add-HorseBreedingTrait.ps1"
 ```
 
-Expect **16 files** and **675** insertions:
+Expect **16 files**, **675** Horse Ranch whitelist insertions, and **12**
+Horse-Breeding Traditions assignments:
 
 ```bash
 grep -h "building_boi_horse_ranch" "$MOD"/map_data/state_regions/*.txt | wc -l
+grep -h "state_trait_boi_horse_breeding_traditions" "$MOD"/map_data/state_regions/*.txt | wc -l
 ```
 
 ## 2. The 1836 world seed
@@ -37,8 +43,9 @@ created during world initialization start staffed**.
 Extract the two inputs, then generate:
 
 ```bash
-# state -> owner (1148 pairs, 675 unique states, 219 split)
+# state -> owner (1147 actual pairs, 675 unique states; comments excluded)
 awk '
+  { sub(/#.*/, "") }
   /^[[:space:]]*"?s:STATE_[A-Z_]+"?[[:space:]]*=/ { s=$1; gsub(/"/,"",s); sub(/^s:/,"",s); st=s }
   /country[[:space:]]*=[[:space:]]*"?c:/ { if (match($0,/c:[A-Z_]+/)) print st"\t"substr($0,RSTART+2,RLENGTH-2) }
 ' "$GAME/common/history/states/00_states.txt" > /tmp/pairs.txt
@@ -95,6 +102,8 @@ awk -f "$MOD/tools/curate.awk" /tmp/pairs.txt /tmp/tag_cultures.txt \
 grep "	RANCH" /tmp/curated.txt | cut -f1 | sort > /tmp/ranch.txt
 
 awk -f "$MOD/tools/gen_seed.awk" /tmp/pairs.txt /tmp/ranch.txt /tmp/owned_regions.txt \
+  "$MOD/tools/horse_seed_additions.tsv" "$MOD/tools/horse_seed_holds.tsv" \
+  "$MOD/tools/infrastructure_seed_plan.tsv" "$MOD/tools/horse_seed_reductions.tsv" \
   > "$MOD/common/history/buildings/zz_boi_buildings.txt"
 ```
 
@@ -106,7 +115,7 @@ is adapted.
 Expected output on 1.13 — the script prints these counts to stderr:
 
 ```
-generated: 675 Public Works, 372 Harbour Works, 236 Horse Ranches
+generated: 20 Public Works (40 levels), 139 Harbour Works (141 levels), 225 Horse Ranches (857 levels)
 ```
 
 ### Why Horse Ranches are curated
@@ -124,8 +133,15 @@ State New South Welsh Northern Territory is using an excess of 3 arable land (to
 
 immediately before a hard crash during world initialization. `curate.awk`
 therefore requires **core + sole owner + low industry + arable >= 25**, which
-excludes all 10 known failures. Tighten `MINARABLE` or `MAXIND` in that file if
-new over-allocation warnings ever appear.
+excludes all 10 known failures. Fifteen previously seeded states are explicitly
+unincorporated despite passing the core-culture proxy. Their previously tested
+three levels in `horse_seed_holds.tsv` are an upper bound. Incorporated baseline
+states receive 4/6/8 levels according to declared arable land (<50 / 50-99 /
+100+), then the reviewed reductions in `horse_seed_reductions.tsv` are applied.
+Fourteen new core, sole-owner, incorporated states with at least 12
+declared arable levels left after seeding are listed in
+`horse_seed_additions.tsv`. Recheck this audit after every game patch; declared
+headroom is a static proxy, not an in-game guarantee.
 
 Sanity checks:
 
