@@ -1,0 +1,110 @@
+﻿# Vanilla 1.13.11 supply shadows. Re-diff after game updates.
+# Basic Supplies is copied unchanged to preserve the vanilla display order.
+# Extra Supplies adds horse supply and 0.25 horse upkeep.
+
+mobilization_option_basic_supplies = {
+	texture = "gfx/interface/icons/mobilization_options/basic_supplies.dds"
+	can_be_turned_off = {
+		custom_tooltip = {
+		    text = mobilization_option_basic_supplies_can_be_turned_off_tt
+			always = no
+		}
+	}
+	upkeep_modifier = {
+		goods_input_grain_add = 0.75
+	}
+	upkeep_modifier_unscaled = {
+        goods_input_small_arms_mult = 0.5
+        goods_input_artillery_mult = 0.5
+		goods_input_ammunition_mult = 0.5
+        goods_input_oil_mult = 0.5
+        goods_input_radios_mult = 0.5
+        goods_input_tanks_mult = 0.5
+	}
+
+	unit_modifier = {
+		# empty on purpose - this is the minimum mobilization cost
+	}
+	ai_weight = {
+		value = 1
+	}
+
+	group = supplies
+}
+
+mobilization_option_extra_supplies = {
+	texture = "gfx/interface/icons/mobilization_options/extra_supplies.dds"
+
+	possible = {
+		market ?= {
+			mg:groceries ?= {
+				has_potential_supply = yes
+			}
+			mg:horses ?= {
+				has_potential_supply = yes
+			}
+		}
+	}
+
+	unlocking_technologies = {
+		army_reserves
+	}
+
+	on_deactivate_while_mobilized = {
+		custom_tooltip = {
+			text = mobilization_option_it_hurts_morale_when_you_remove_supplies_while_in_combat_tt
+			every_combat_unit = {
+				add_morale = {
+					value = morale
+					multiply = -0.5
+				}
+			}
+		}
+	}
+
+	upkeep_modifier = {
+		goods_input_groceries_add = 1.5
+		goods_input_horses_add = 0.25 # BOI: pack animals for extra supplies
+	}
+	upkeep_modifier_unscaled = {
+        goods_input_small_arms_mult = 0.25
+        goods_input_artillery_mult = 0.25
+		goods_input_ammunition_mult = 0.25
+        goods_input_oil_mult = 0.25
+        goods_input_radios_mult = 0.25
+        goods_input_tanks_mult = 0.25
+	}
+
+	unit_modifier = {
+		unit_morale_loss_mult = -0.05
+		unit_offense_mult = 0.1
+		unit_defense_mult = 0.1
+	}
+	ai_weight = {
+		value = 1
+
+		if = {
+			limit = {
+				c:SPC ?= this
+				scope:military_formation ?= {
+					any_combat_unit = {
+						building = {
+							state = {
+								state_region = {
+									OR = {
+										this = s:STATE_ARAGON
+										this = s:STATE_CATALONIA
+									}
+								}
+							}
+						}
+						percent >= 0.2
+					}
+				}
+			}
+			add = -1000000
+		}
+	}
+
+	group = supplies
+}

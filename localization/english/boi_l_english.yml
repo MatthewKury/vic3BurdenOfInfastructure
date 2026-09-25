@@ -6,6 +6,22 @@
  # reported as missing, which looks like dozens of unrelated errors.
  horses:0 "Horses"
 
+ # ── Horse modifier labels ────────────────────────────────────────────────────
+ goods_input_horses_add:0 "@horses! Horses input"
+ goods_input_horses_add_desc:0 "The amount of @horses! Horses consumed by buildings and armies"
+ goods_output_horses_add:0 "@horses! Horses output"
+ goods_output_horses_add_desc:0 "The amount of @horses! Horses produced by buildings"
+ goods_input_horses_mult:0 "Building @horses! Horses input"
+ goods_input_horses_mult_desc:0 "The amount of @horses! Horses consumed by buildings"
+ goods_output_horses_mult:0 "Building @horses! Horses output"
+ goods_output_horses_mult_desc:0 "The amount of @horses! Horses produced by buildings"
+
+ # ── Army Mobilization Options ─────────────────────────────────────────────────
+ mobilization_option_boi_horseback_recon:0 "Horseback Reconnaissance"
+ mobilization_option_boi_horseback_recon_desc:0 "Mounted scouts use horses to survey terrain and locate enemy positions."
+ mobilization_option_boi_horse_drawn_transport:0 "Horse-Drawn Transport"
+ mobilization_option_boi_horse_drawn_transport_desc:0 "Horse-drawn wagons move the army without the strain of a forced march."
+
  # ── State Traits ───────────────────────────────────────────────────────────────
  state_trait_boi_horse_breeding_traditions:0 "Horse-Breeding Traditions"
 

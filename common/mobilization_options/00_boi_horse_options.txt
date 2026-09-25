@@ -1,0 +1,58 @@
+﻿# Horseback scouting is an early, lower-powered counterpart to motorized recon.
+mobilization_option_boi_horseback_recon = {
+	texture = "gfx/interface/icons/goods_icons/boi_horses.dds"
+	possible = {
+		market ?= {
+			mg:horses ?= { has_potential_supply = yes }
+		}
+	}
+	upkeep_modifier = {
+		goods_input_horses_add = 0.5
+	}
+	unit_modifier = {
+		unit_occupation_mult = 0.25
+		military_formation_army_movement_speed_mult = 0.1
+		character_battle_condition_surprise_maneuver_mult = 0.25
+	}
+	ai_weight = { value = 1 }
+	group = reconnaissance
+}
+
+# An early transport choice: the same movement bonus as Forced March,
+# less mobilization speed, and horse upkeep in place of morale loss.
+mobilization_option_boi_horse_drawn_transport = {
+	texture = "gfx/interface/icons/goods_icons/boi_horses.dds"
+	possible = {
+		scope:military_formation = {
+			NOR = {
+				has_mobilization_option = mobilization_option:mobilization_option_forced_march
+				has_mobilization_option = mobilization_option:mobilization_option_truck_transport
+				has_mobilization_option = mobilization_option:mobilization_option_rail_transport
+			}
+		}
+		market ?= {
+			mg:horses ?= { has_potential_supply = yes }
+		}
+	}
+	upkeep_modifier = {
+		goods_input_horses_add = 0.5
+	}
+	unit_modifier = {
+		military_formation_army_movement_speed_mult = 0.125
+		military_formation_mobilization_speed_mult = 0.15
+	}
+	# Below Rail/Truck (1), but above Forced March (0 or 0.5) when
+	# horses cost less than 25% above their base price.
+	ai_weight = {
+		value = 0.25
+		if = {
+			limit = {
+				market = {
+					mg:horses = { market_goods_pricier < 0.25 }
+				}
+			}
+			value = 0.75
+		}
+	}
+	group = transport
+}

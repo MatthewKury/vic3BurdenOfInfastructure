@@ -13,8 +13,11 @@ This is an experimental release for **Victoria 3 1.13.x**. The mod descriptor de
 | **Public Works** | Government-funded land infrastructure, from cart roads to modern highways. |
 | **Harbour Works** | Government-funded coastal infrastructure, from lighters to electrified quays. |
 | **Horse-Breeding Traditions** | A regional state trait that improves horse output. |
+| **Horse mobilization options** | Horseback Reconnaissance and Horse-Drawn Transport consume horses while mobilized. |
 
-Existing railway and port production methods no longer provide infrastructure directly. Several existing farm, mine, plantation, subsistence, urban transport, and cavalry definitions are adjusted to account for horses. The 1836 setup includes starting Public Works, Harbour Works, and Horse Ranches so the new supply chain can function from the beginning of a campaign.
+Existing railway and port production methods no longer provide infrastructure directly. Several existing farm, mine, plantation, subsistence, urban transport, and cavalry definitions are adjusted to account for horses. Horseback Reconnaissance is a weaker early alternative to Motorized Reconnaissance. Horse-Drawn Transport gives the movement bonus of Forced March with a smaller mobilization speed bonus, no morale penalty, and a horse cost; it is mutually exclusive with the other transport choices. The 1836 setup includes starting Public Works, Harbour Works, and Horse Ranches so the new supply chain can function from the beginning of a campaign.
+
+Extra Supplies also requires potential horse supply and consumes 0.25 horses while mobilized, alongside its existing grocery cost.
 
 The mod includes distinct icons for horses, the three new buildings, and Horse-Breeding Traditions. A separate texticon definition displays the horse good in compact UI text, such as budget details.
 
