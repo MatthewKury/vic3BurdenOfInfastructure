@@ -1,0 +1,84 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Road Financing ideologies
+#
+#  Each ideology holds ONLY a lawgroup_boi_road_financing stance, so
+#  it changes nothing else about the interest group that carries it.
+#
+#  These are not in any vanilla interest group definition. They are
+#  attached at runtime by boi_road_financing_setup_effect
+#  (common/scripted_effects/50_boi_road_financing_effects.txt), the
+#  same way vanilla attaches ideology_pro_slavery to Landowners from
+#  common/history/global/00_global.txt. That avoids shadowing dozens
+#  of vanilla ideology blocks.
+#
+#  Given to:
+#   ideology_boi_manorial_roads      Landowners
+#   ideology_boi_free_roads          Rural Folk, Trade Unions
+#   ideology_boi_turnpike_interest   Petty Bourgeoisie
+#   ideology_boi_road_investors      Industrialists
+#   ideology_boi_national_roads      Intelligentsia, Armed Forces
+#  Devout get none.
+#
+#  Icons are borrowed from vanilla ideologies for now.
+# ================================================================
+
+
+# Free labour and roads to the estates; they sit on the turnpike
+# trusts; public highways mean land tax.
+ideology_boi_manorial_roads = {
+	icon = "gfx/interface/icons/ideology_icons/paternalistic.dds"
+
+	lawgroup_boi_road_financing = {
+		law_boi_statute_labour = strongly_approve
+		law_boi_turnpike_trusts = approve
+		law_boi_public_highways = disapprove
+	}
+}
+
+# They do the road duty AND pay the tolls.
+ideology_boi_free_roads = {
+	icon = "gfx/interface/icons/ideology_icons/populist.dds"
+
+	lawgroup_boi_road_financing = {
+		law_boi_statute_labour = strongly_disapprove
+		law_boi_turnpike_trusts = disapprove
+		law_boi_public_highways = approve
+	}
+}
+
+# Toll-keeper jobs, trust investments, innkeepers and the coaching
+# trade.
+ideology_boi_turnpike_interest = {
+	icon = "gfx/interface/icons/ideology_icons/market_liberal.dds"
+
+	lawgroup_boi_road_financing = {
+		law_boi_statute_labour = disapprove
+		law_boi_turnpike_trusts = strongly_approve
+		law_boi_public_highways = neutral
+	}
+}
+
+# Capitalists sit on the turnpike trusts as investors (10 per Public
+# Works level) and want roads run as a business; a state highway corps
+# is acceptable but earns them nothing. Statute labour is unfree,
+# unreliable labour.
+ideology_boi_road_investors = {
+	icon = "gfx/interface/icons/ideology_icons/laissez_faire.dds"
+
+	lawgroup_boi_road_financing = {
+		law_boi_statute_labour = disapprove
+		law_boi_turnpike_trusts = approve
+		law_boi_public_highways = neutral
+	}
+}
+
+# Rational administration, military roads.
+ideology_boi_national_roads = {
+	icon = "gfx/interface/icons/ideology_icons/modernizer.dds"
+
+	lawgroup_boi_road_financing = {
+		law_boi_statute_labour = disapprove
+		law_boi_turnpike_trusts = disapprove
+		law_boi_public_highways = approve
+	}
+}

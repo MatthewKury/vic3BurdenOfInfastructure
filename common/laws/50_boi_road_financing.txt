@@ -1,0 +1,136 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Road Financing laws
+#
+#  Three answers to "who pays for Public Works?":
+#
+#   law_boi_statute_labour   peasants, in unpaid road duty
+#   law_boi_turnpike_trusts  road users, in tolls
+#   law_boi_public_highways  the treasury, from general taxation
+#
+#  The laws themselves carry only FLAT, country-wide effects, so
+#  nothing here can stack per building. Everything that should grow
+#  with the road network lives on the matching production method in
+#  pmg_boi_road_financing (50_boi_infrastructure.txt, part 3).
+#
+#  Public Highways is the baseline: under it Public Works behaves
+#  exactly as it did before this law group existed, so BALANCE.md
+#  stays valid. The other two are discounts with side effects and a
+#  group that profits from them.
+#
+#  IG stances come from the five ideologies in
+#  common/ideologies/50_boi_road_ideologies.txt, attached at game
+#  start by boi_road_financing_setup_effect.
+# ================================================================
+
+
+# ── Statute Labour ──────────────────────────────────────────────
+# Rural households owe days of road work and bring their own teams.
+# The squire decides where the parish's duty is spent.
+# Listed first so that, if the engine ever auto-assigns a law in
+# this group, it lands on the historical norm.
+
+law_boi_statute_labour = {
+	group = lawgroup_boi_road_financing
+
+	icon = "gfx/interface/icons/law_icons/boi_statute_labour.dds"
+
+	progressiveness = -50
+
+	modifier = {
+		# Manor-house comfort. Vanilla's comparable amendment gives +3.
+		building_group_bg_manor_houses_aristocrats_standard_of_living_add = 2
+		# The squire's local authority.
+		country_aristocrats_pol_str_mult = 0.10
+	}
+
+	ai_enact_weight_modifier = { #Petitions
+		value = 0
+
+		if = {
+			limit = { ai_has_enact_weight_modifier_journal_entries = yes }
+			add = 750
+		}
+	}
+}
+
+
+# ── Turnpike Trusts ─────────────────────────────────────────────
+# Local trusts of gentry and merchants maintain the roads and charge
+# tolls. Cheap for the treasury; tolls slow trade everywhere.
+
+law_boi_turnpike_trusts = {
+	group = lawgroup_boi_road_financing
+
+	icon = "gfx/interface/icons/law_icons/boi_turnpike_trusts.dds"
+
+	progressiveness = 0
+
+	modifier = {
+		# Tolls. Mirrors vanilla's road-maintenance decree (+0.05).
+		state_market_access_price_impact = -0.05
+
+		# Trust investors: capital raised locally goes further.
+		# Efficiency, not contribution - contribution would take a
+		# larger share of their income, which is a cost to them.
+		state_shopkeepers_investment_pool_efficiency_mult = 0.10
+		state_aristocrats_investment_pool_efficiency_mult = 0.10
+		state_capitalists_investment_pool_efficiency_mult = 0.10
+
+		# The trustees' political weight.
+		country_shopkeepers_pol_str_mult = 0.10
+		country_aristocrats_pol_str_mult = 0.05
+		country_capitalists_pol_str_mult = 0.05
+	}
+
+	ai_enact_weight_modifier = { #Petitions
+		value = 0
+
+		# Tolls are what a state in debt reaches for.
+		if = {
+			limit = { scaled_debt > 0 }
+			add = 100
+		}
+
+		if = {
+			limit = { ai_has_enact_weight_modifier_journal_entries = yes }
+			add = 750
+		}
+	}
+}
+
+
+# ── Public Highways ─────────────────────────────────────────────
+# A state engineering corps paid from general taxation - Ponts et
+# Chaussees, Chausseebau. No modifier: its appeal is that it takes
+# the cost off everyone except the treasury.
+
+law_boi_public_highways = {
+	group = lawgroup_boi_road_financing
+
+	icon = "gfx/interface/icons/law_icons/boi_public_highways.dds"
+
+	progressiveness = 50
+
+	ai_enact_weight_modifier = { #Petitions
+		value = 0
+
+		# A solvent state with modernisers in government. (Not
+		# Industrialists: they are neutral on this law, preferring
+		# turnpikes.)
+		if = {
+			limit = {
+				scaled_debt <= 0
+				OR = {
+					ig:ig_intelligentsia ?= { is_in_government = yes }
+					ig:ig_armed_forces ?= { is_in_government = yes }
+				}
+			}
+			add = 150
+		}
+
+		if = {
+			limit = { ai_has_enact_weight_modifier_journal_entries = yes }
+			add = 750
+		}
+	}
+}

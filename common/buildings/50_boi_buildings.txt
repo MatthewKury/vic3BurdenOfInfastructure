@@ -75,14 +75,17 @@ building_boi_horse_ranch = {
 # The heart of the mod. Converts horses (early) and transportation
 # (later) into state infrastructure, at a permanent net loss.
 #
-# Two production method groups on purpose:
+# Three production method groups on purpose:
 #   pmg_boi_infrastructure_method  - 400 technical staff, goods in,
 #                                    infrastructure out. Follows TECH.
 #   pmg_boi_road_administration    - 100 admin staff. Follows the
 #                                    BUREAUCRACY LAW, changing who
 #                                    holds the jobs (aristocrats /
 #                                    bureaucrats / clerks).
-# Exactly one PM per group is active, which is what lets the two
+#   pmg_boi_road_financing         - no staff of its own. Follows the
+#                                    ROAD FINANCING LAW: who pays
+#                                    (peasants / tolls / treasury).
+# Exactly one PM per group is active, which is what lets the three
 # axes vary independently - the same structure vanilla uses on
 # Government Administration.
 
@@ -105,6 +108,7 @@ building_boi_infrastructure = {
 	production_method_groups = {
 		pmg_boi_infrastructure_method
 		pmg_boi_road_administration
+		pmg_boi_road_financing
 	}
 
 	required_construction = construction_cost_medium

@@ -1,0 +1,18 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Law Groups
+#
+#  Road Financing: WHO pays for Public Works. See
+#  PROPOSAL_ROAD_FINANCING.md for the design.
+#
+#  Vanilla keeps every law group in common/law_groups/00_laws.txt,
+#  so a new key in its own file does not collide with anything.
+#
+#  ideological_opinion_impact 0.5 matches lawgroup_taxation: the
+#  question matters to interest groups, but it is not a land-reform
+#  sized fight.
+# ================================================================
+
+lawgroup_boi_road_financing = {
+	law_group_category = economy
+	ideological_opinion_impact = 0.5
+}

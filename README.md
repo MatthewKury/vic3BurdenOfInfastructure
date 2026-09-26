@@ -14,10 +14,13 @@ This is an experimental release for **Victoria 3 1.13.x**. The mod descriptor de
 | **Harbour Works** | Government-funded coastal infrastructure, from lighters to electrified quays. |
 | **Horse-Breeding Traditions** | A regional state trait that improves horse output. |
 | **Horse mobilization options** | Horseback Reconnaissance and Horse-Drawn Transport consume horses while mobilized. |
+| **Road Financing laws** | Statute Labour, Turnpike Trusts, or Public Highways decide who pays for Public Works: peasants, road users, or the treasury. |
 
 Existing railway and port production methods no longer provide infrastructure directly. Several existing farm, mine, plantation, subsistence, urban transport, and cavalry definitions are adjusted to account for horses. Horseback Reconnaissance is a weaker early alternative to Motorized Reconnaissance. Horse-Drawn Transport gives the movement bonus of Forced March with a smaller mobilization speed bonus, no morale penalty, and a horse cost; it is mutually exclusive with the other transport choices. The 1836 setup includes starting Public Works, Harbour Works, and Horse Ranches so the new supply chain can function from the beginning of a campaign.
 
 Extra Supplies also requires potential horse supply and consumes 0.5 horses while mobilized, alongside its existing grocery cost.
+
+A new economy law group, **Road Financing**, decides who pays for Public Works. Public Highways keeps the full cost on the treasury. Statute Labour and Turnpike Trusts make Public Works cheaper but have side effects: Statute Labour lowers infrastructure output and peasant living standards, and Turnpike Trusts improve infrastructure by 15% but reduce market access. Each benefits a particular group: Landowners under Statute Labour, and the Petty Bourgeoisie and Industrialists (with Landowners) under Turnpike Trusts. Interest groups take sides through new road-financing ideologies added at game start. Britain and the United States start with Turnpike Trusts, France and Prussia with Public Highways, and all other countries with Statute Labour.
 
 The mod includes distinct icons for horses, the three new buildings, and Horse-Breeding Traditions. A separate texticon definition displays the horse good in compact UI text, such as budget details.
 

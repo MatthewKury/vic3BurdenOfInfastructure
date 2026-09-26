@@ -1,0 +1,79 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Road Financing setup
+#
+#  Country scope. Safe to run any number of times: every step checks
+#  first and only fills in what is missing.
+#
+#  Called from:
+#   common/history/global/zz_boi_road_financing.txt  (game start)
+#   boi_road_financing.1  (yearly pulse and on_country_formed - covers
+#                          released and formed countries, and any
+#                          event that rebuilds an IG's ideologies)
+# ================================================================
+
+boi_road_financing_setup_effect = {
+	# ── Fallback law, only if the country has none in the group ──
+	# Historical 1836 exceptions (GBR, USA, FRA, PRU) are set
+	# unconditionally in the global history file, so they win even
+	# if the engine auto-assigned something first.
+	if = {
+		limit = {
+			NOR = {
+				has_law = law_type:law_boi_statute_labour
+				has_law = law_type:law_boi_turnpike_trusts
+				has_law = law_type:law_boi_public_highways
+			}
+		}
+		activate_law = law_type:law_boi_statute_labour
+	}
+
+	# ── Interest-group stances ──
+	ig:ig_landowners ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_manorial_roads } }
+			add_ideology = ideology_boi_manorial_roads
+		}
+	}
+	ig:ig_rural_folk ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_free_roads } }
+			add_ideology = ideology_boi_free_roads
+		}
+	}
+	ig:ig_trade_unions ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_free_roads } }
+			add_ideology = ideology_boi_free_roads
+		}
+	}
+	ig:ig_petty_bourgeoisie ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_turnpike_interest } }
+			add_ideology = ideology_boi_turnpike_interest
+		}
+	}
+	ig:ig_industrialists ?= {
+		# Saves from before 2026-09-26's change gave Industrialists
+		# National Roads; swap it for Road Investors.
+		if = {
+			limit = { has_ideology = ideology:ideology_boi_national_roads }
+			remove_ideology = ideology_boi_national_roads
+		}
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_road_investors } }
+			add_ideology = ideology_boi_road_investors
+		}
+	}
+	ig:ig_intelligentsia ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_national_roads } }
+			add_ideology = ideology_boi_national_roads
+		}
+	}
+	ig:ig_armed_forces ?= {
+		if = {
+			limit = { NOT = { has_ideology = ideology:ideology_boi_national_roads } }
+			add_ideology = ideology_boi_national_roads
+		}
+	}
+}

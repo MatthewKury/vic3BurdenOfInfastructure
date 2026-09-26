@@ -1,0 +1,25 @@
+﻿# ================================================================
+#  Burden of Infrastructure — on_action hooks
+#
+#  events = { } lists ONLY. Those merge additively with vanilla and
+#  other mods; an effect = { } block here would replace vanilla's
+#  (last-read wins) and silently break it. See
+#  VIC3_MODDING_LESSONS.md, section 1.
+#
+#  on_game_started has no root scope, so game-start setup lives in
+#  common/history/global/zz_boi_road_financing.txt instead.
+# ================================================================
+
+# Root = country
+on_yearly_pulse_country = {
+	events = {
+		boi_road_financing.1
+	}
+}
+
+# Root = country
+on_country_formed = {
+	events = {
+		boi_road_financing.1
+	}
+}

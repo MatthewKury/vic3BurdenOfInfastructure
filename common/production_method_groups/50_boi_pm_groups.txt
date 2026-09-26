@@ -61,6 +61,23 @@ pmg_boi_road_administration = {
 }
 
 
+# ── Infrastructure: financing (Road Financing law) ──────────────
+# Same one-valid-at-a-time structure as the administration group:
+# the three law gates are mutually exclusive and Public Highways
+# covers every case the other two do not.
+
+pmg_boi_road_financing = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_public_highways
+		pm_boi_turnpike_tolls
+		pm_boi_statute_labour
+	}
+}
+
+
 # ── Harbour Works: technology ladder ────────────────────────────
 
 pmg_boi_harbour_method = {

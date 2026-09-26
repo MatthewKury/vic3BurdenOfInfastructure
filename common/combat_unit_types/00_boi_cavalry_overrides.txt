@@ -6,21 +6,20 @@
 #  not be created from file: common/combat_unit_types/
 #  00_land_combat_unit_types.txt" lines at launch. Expected.
 #
-#  WHAT CHANGED: one "# BOI:" tagged goods_input_horses_add line in
-#  each upkeep_modifier. Nothing else is touched.
+#  UPKEEP CHANGES: horses replace the vanilla grain input in
+#  each upkeep_modifier. Combat and mobility changes are tagged below.
 #
 #  Army goods consumption lives HERE, on combat unit types via
 #  upkeep_modifier - NOT in common/production_methods/05_military.txt,
 #  which holds only training, tactics and naval-doctrine PMs and has
 #  no per-unit-type entries at all.
 #
-#  Vanilla already feeds cavalry grain (fodder). Horses here are
-#  remounts, added on top, mirroring vanilla's own 1/1/1/2 grain
-#  pattern so lancers stay the most expensive to keep:
-#      hussars     20 -> 50 upkeep in goods value
-#      dragoons    +30
-#      cuirassiers +30
-#      lancers     +60
+#  Horses replace direct grain upkeep, at 1/1/1/2 units.
+#  Base-price goods upkeep (excluding wages and other modifiers):
+#      hussars     30
+#      dragoons    150
+#      cuirassiers 150
+#      lancers     260
 #
 #  Untouched: infantry, artillery, tanks, marines - none of which
 #  should want horses.
@@ -38,7 +37,6 @@ combat_unit_type_hussars = {
 	supply_capacity = 25
 
 	upkeep_modifier = {
-		goods_input_grain_add = 1
 		goods_input_horses_add = 1 # BOI: remounts
     }
 
@@ -102,7 +100,6 @@ combat_unit_type_dragoons = {
 	supply_capacity = 40
 
 	upkeep_modifier = {
-		goods_input_grain_add = 1
 		goods_input_small_arms_add = 2
 		goods_input_horses_add = 1 # BOI: remounts
 	}
@@ -168,7 +165,6 @@ combat_unit_type_cuirassiers = {
 	supply_capacity = 40
 
 	upkeep_modifier = {
-		goods_input_grain_add = 1
 		goods_input_small_arms_add = 2
 		goods_input_horses_add = 1 # BOI: remounts
 	}
@@ -233,7 +229,6 @@ combat_unit_type_lancers = {
 	supply_capacity = 70
 
 	upkeep_modifier = {
-		goods_input_grain_add = 2
 		goods_input_small_arms_add = 2
 		goods_input_iron_add = 2
 		goods_input_horses_add = 2 # BOI: remounts

@@ -1,0 +1,29 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Road Financing at game start
+#
+#  Sets each country's starting Road Financing law and attaches the
+#  road ideologies to its interest groups. Vanilla does the same
+#  thing for ideology_pro_slavery in history/global/00_global.txt.
+#
+#  zz_ so it runs after vanilla's global history. If this block
+#  does not run for any reason, boi_road_financing.1 on the yearly
+#  pulse fills the same gaps a year in (with Statute Labour, not the
+#  historical exceptions below).
+# ================================================================
+
+GLOBAL = {
+	# ── Historical exceptions, set unconditionally ──
+	# The turnpike era at its peak. Britain had also just abolished
+	# statute labour in the Highway Act 1835.
+	c:GBR ?= { activate_law = law_type:law_boi_turnpike_trusts }
+	c:USA ?= { activate_law = law_type:law_boi_turnpike_trusts }
+
+	# Ponts et Chaussees; Chausseebau.
+	c:FRA ?= { activate_law = law_type:law_boi_public_highways }
+	c:PRU ?= { activate_law = law_type:law_boi_public_highways }
+
+	# ── Everyone: Statute Labour if no law yet, plus ideologies ──
+	every_country = {
+		boi_road_financing_setup_effect = yes
+	}
+}

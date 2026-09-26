@@ -72,3 +72,38 @@
  pm_boi_appointed_harbourmasters:0 "Appointed Harbourmasters"
  pm_boi_manorial_harbour_dues:0 "Manorial Harbour Dues"
  pm_boi_elected_harbour_trusts:0 "Elected Harbour Trusts"
+
+ # ── Public Works: Financing ───────────────────────────────────────────────────
+ pmg_boi_road_financing:0 "Road Financing"
+ pm_boi_public_highways:0 "Public Highways"
+ pm_boi_turnpike_tolls:0 "Turnpike Tolls"
+ pm_boi_statute_labour:0 "Statute Labour"
+
+ # ── Laws: Road Financing ──────────────────────────────────────────────────────
+ lawgroup_boi_road_financing:0 "Road Financing"
+ lawgroup_boi_road_financing_desc:0 "Who pays to build and maintain the country's roads."
+
+ law_boi_statute_labour:0 "Statute Labour"
+ law_boi_statute_labour_desc:0 "Every rural household owes days of work on the roads each year and must bring its own horse and cart. The local landowner decides where that labour is spent."
+
+ law_boi_turnpike_trusts:0 "Turnpike Trusts"
+ law_boi_turnpike_trusts_desc:0 "Local trusts of gentry and merchants build and maintain the roads and recover the cost through tolls on everyone who uses them."
+
+ law_boi_public_highways:0 "Public Highways"
+ law_boi_public_highways_desc:0 "A state engineering corps builds and maintains the roads, paid for out of general taxation."
+
+ # ── Ideologies: Road Financing ────────────────────────────────────────────────
+ ideology_boi_manorial_roads:0 "Manorial Roads"
+ ideology_boi_manorial_roads_desc:0 "#lore This group believes the roads are the landowner's business, built by the parish's labour and run by its gentlemen.#!"
+
+ ideology_boi_free_roads:0 "Free Roads"
+ ideology_boi_free_roads_desc:0 "#lore This group resents both the road duty and the tollgate, and wants the roads paid for by the state.#!"
+
+ ideology_boi_turnpike_interest:0 "Turnpike Interest"
+ ideology_boi_turnpike_interest_desc:0 "#lore This group profits from the turnpike trusts, as trustees, investors, toll-keepers and innkeepers.#!"
+
+ ideology_boi_road_investors:0 "Road Investors"
+ ideology_boi_road_investors_desc:0 "#lore This group invests in the turnpike trusts and believes roads, like any other enterprise, should pay for themselves.#!"
+
+ ideology_boi_national_roads:0 "National Roads"
+ ideology_boi_national_roads_desc:0 "#lore This group wants a single national road network, engineered and paid for by the state.#!"

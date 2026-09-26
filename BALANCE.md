@@ -1,4 +1,4 @@
-# Burden of Infrastructure — Costing & Balance
+﻿# Burden of Infrastructure — Costing & Balance
 
 All figures derived from **vanilla Victoria 3 1.13**. Values in £ are
 `quantity × base price`, the same convention as vanilla's inline `# 300`
@@ -325,11 +325,19 @@ invasive. If the floor proves too thin, extending to
 
 ### Cavalry upkeep
 
-Vanilla already feeds cavalry grain (fodder). Horses represent remounts, added
-**on top of** existing inputs.
+Horses replace direct grain upkeep for all four cavalry types. Small arms and
+iron requirements remain unchanged.
 
-| Unit | Current | + horses | Upkeep £ before → after |
-|---|---|---|---|
+| Unit | BOI goods inputs | Base-price upkeep £, vanilla → BOI |
+|---|---|---|
+| hussars | horses 1 | 20 → 30 |
+| dragoons | small_arms 2, horses 1 | 140 → 150 |
+| cuirassiers | small_arms 2, horses 1 | 140 → 150 |
+| lancers | small_arms 2, iron 2, horses 2 | 240 → 260 |
+
+These are base goods costs only, excluding wages, training methods,
+mobilization options, and consumption modifiers. Actual costs vary with prices.
+---|---|---|---|
 | hussars | grain 1 | **1** | 20 → 50 |
 | dragoons | grain 1, small_arms 2 | **1** | 20 + arms → +30 |
 | cuirassiers | grain 1, small_arms 2 | **1** | +30 |

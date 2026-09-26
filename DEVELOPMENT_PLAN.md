@@ -159,8 +159,13 @@ Test at least the following:
    states.
 6. Test whether Hereditary Bureaucrats creates a self-reinforcing Landowner
    political trap through state-funded aristocrat employment.
-7. Test colonization: newly colonized states intentionally receive no seeded
-   buildings and must remain recoverable through normal AI and player building.
+. Road Financing: confirm the road ideologies appear on interest-group panels and
+   move law approval, that every country starts with a Road Financing law, and
+   that released or formed countries pick both up within a year.
+9. Road Financing: check whether Statute Labour plus Hereditary Bureaucrats
+   locks in Landowner power (see item 6), and whether the AI ever leaves
+   Statute Labour. Tuning order: the farm/ranch throughput bonus, then the
+   aristocrat political-strength bonus.
 
 Primary tuning controls, in order:
 

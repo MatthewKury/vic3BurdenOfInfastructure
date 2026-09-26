@@ -1,7 +1,7 @@
 ﻿# ================================================================
 #  Burden of Infrastructure — Infrastructure building PMs
 #
-#  TWO groups, deliberately independent:
+#  THREE groups, deliberately independent:
 #
 #   pmg_boi_infrastructure_method  (below, part 1)
 #       400 technical staff, goods in, infrastructure out.
@@ -10,6 +10,10 @@
 #   pmg_boi_road_administration    (below, part 2)
 #       100 administrative staff. Follows the BUREAUCRACY LAW,
 #       changing WHO holds the jobs. Same headcount either way.
+#
+#   pmg_boi_road_financing         (below, part 3)
+#       No staff of its own. Follows the ROAD FINANCING LAW,
+#       changing WHO PAYS: discounts and their side effects.
 #
 #  Exactly one PM per group is active, which is what lets the two
 #  axes vary independently. This is vanilla's own Government
@@ -267,6 +271,121 @@ pm_boi_elected_road_boards = {
 		level_scaled = {
 			building_employment_bureaucrats_add = 25
 			building_employment_clerks_add = 75
+		}
+	}
+}
+
+
+# ================================================================
+#  PART 3 — Financing (no staff of its own, follows Road Financing law)
+#
+#  Who pays. Each PM is unlocked by exactly one law in
+#  lawgroup_boi_road_financing (common/laws/50_boi_road_financing.txt),
+#  and pm_boi_public_highways is the fallback via disallowing_laws -
+#  the same one-always-valid pattern as part 2.
+#
+#  Only effects that should GROW with the road network live here
+#  (scaled per level). Flat country-wide effects sit on the laws, so
+#  they cannot stack across hundreds of buildings.
+#
+#  Public Highways is the baseline and changes nothing: BALANCE.md
+#  numbers are all "under Public Highways".
+# ================================================================
+
+
+# ── Public Highways (default / fallback) ────────────────────────
+# Paid from general taxation. No discount, no side effect.
+
+pm_boi_public_highways = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_boi_statute_labour
+		law_boi_turnpike_trusts
+	}
+}
+
+
+# ── Turnpike Trusts ─────────────────────────────────────────────
+# Tolls pay for upkeep, so the state buys 50% fewer goods, and the
+# trust's own road gangs replace 60 state-paid labourers per level.
+# In their place the state employs 50 toll-keepers (shopkeepers,
+# Petty Bourgeoisie), who keep part of the toll take, and 10 trust
+# investors (capitalists, Industrialists). Wage weights are 1 / 3 / 5,
+# so the swap is a small net wage increase (-60 + 150 + 50 = +140
+# laborer-equivalents): about GBP 17 a level at 1836 wages, against
+# a GBP 150 goods saving at Cart Roads. (-100 laborers was tried; it
+# saved only ~GBP 5 more and left 25 laborers at Modern Highways.)
+# Toll income paid for engineered, well-kept roads (McAdam and
+# Telford both worked for turnpike trusts): +15% infrastructure in
+# the state. UNSCALED, so it applies once per state however many
+# levels there are - a percentage, not a per-level stack. It
+# multiplies ALL of the state's infrastructure, including Harbour
+# Works and the population floor.
+# The market-access cost of tolls is on the law, not here.
+
+pm_boi_turnpike_tolls = {
+	texture = "gfx/interface/icons/production_method_icons/merchant_guilds.dds"
+
+	unlocking_laws = {
+		law_boi_turnpike_trusts
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.5
+			# Stands in for toll income: no modifier can route money
+			# to a specific pop, and government buildings have no
+			# revenue. Applies only to shopkeepers in this building.
+			building_shopkeepers_standard_of_living_add = 2
+		}
+
+		level_scaled = {
+			# Must stay below the smallest haulage-tier laborer count
+			# (125, Modern Highways) or employment goes negative.
+			building_employment_laborers_add = -60
+			building_employment_shopkeepers_add = 50
+			building_employment_capitalists_add = 10
+		}
+	}
+
+	state_modifiers = {
+		unscaled = {
+			state_infrastructure_mult = 0.15
+		}
+	}
+}
+
+
+# ── Statute Labour ──────────────────────────────────────────────
+# Peasants owe road days and bring their own horses and carts:
+# 40% fewer goods bought. Unwilling, untrained labour builds worse
+# roads: -4 infrastructure per level, a flat cut that hurts most in
+# the early game (27% of Cart Roads, 8% of Modern Highways).
+# The squire decides where the duty goes, so estate farms and
+# ranches (incl. Horse Ranches, bg_ranching) run 1% better per level.
+
+pm_boi_statute_labour = {
+	texture = "gfx/interface/icons/production_method_icons/corvee_labor.dds"
+
+	unlocking_laws = {
+		law_boi_statute_labour
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.4
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = -4
+			building_group_bg_subsistence_agriculture_peasants_standard_of_living_add = -0.25
+			building_group_bg_agriculture_throughput_add = 0.01
+			building_group_bg_ranching_throughput_add = 0.01
 		}
 	}
 }

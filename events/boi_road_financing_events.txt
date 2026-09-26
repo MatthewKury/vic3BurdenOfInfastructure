@@ -1,0 +1,19 @@
+﻿namespace = boi_road_financing
+
+# ================================================================
+#  Burden of Infrastructure — Road Financing maintenance
+#
+#  Hidden. Re-runs the idempotent setup effect so that released and
+#  formed countries, and interest groups whose ideologies an event
+#  has rebuilt, pick up the road ideologies and a Road Financing
+#  law. Hooked from common/on_actions/zz_boi_on_actions.txt.
+# ================================================================
+
+boi_road_financing.1 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		boi_road_financing_setup_effect = yes
+	}
+}
