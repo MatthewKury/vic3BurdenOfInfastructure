@@ -1,0 +1,1015 @@
+﻿# BOI: Type shadow of vanilla `military_formation_panel`
+# (gui/military_formation_panel.gui). Replaces a full copy of that 7,700-line file.
+#
+# WHY: The bulk-selection view (several formations selected) shows mobilization
+# option groups in a 3-column grid of unwrapped rows. BOI's four-wide Transport
+# and Reconnaissance groups overflow it.
+#
+# FIX: one line, tagged "# BOI:", which drops the grid to 2 columns.
+#
+# LOAD ORDER: GUI types are first-read-wins; `01_` sorts before vanilla
+# `military_formation_panel.gui`, so only this type is replaced and the rest of
+# the vanilla file loads normally.
+#
+# PATCH-SENSITIVE: re-diff against vanilla `type military_formation_panel` after
+# every game update.
+
+@panel_width_minus_30 = 510
+@panel_width_minus_20 = 520
+@panel_width_minus_10 = 530			# used to be 450
+@panel_width = 540  				# used to be 460
+@panel_width_half = 270				# used to be 230
+@panel_width_plus_10 = 550  		# used to be 470
+@panel_width_plus_14 = 554			# used to be 474
+@panel_width_plus_14_half = 277		# used to be 237
+@panel_width_plus_20 = 560			# used to be 480
+@panel_width_plus_30 = 570			# used to be 490
+@panel_width_plus_70 = 610			# used to be 530
+@ship_queue_item_width = 540
+@ship_queue_item_height = 40
+@military_formation_grid_spacing = 15
+
+types boi_military_formation_panel_types {
+	type military_formation_panel = default_block_window_two_lines
+    {
+        name = "military_formation_panel"
+        datacontext = "[FormationPanel.GetFormation]"
+
+        blockoverride "window_header_name"
+        {
+            text = "MILITARY_FORMATION_PANEL_TITLE"
+        }
+
+		blockoverride "window_header_name_line_two"
+		{
+			text = "MILITARY_FORMATION_SUBTITLE"
+		}
+
+		blockoverride "animation_state_block" {
+			state = {
+				name = _show
+				on_start = "[PdxGuiTriggerAllAnimations(Select_CString( FormationPanel.GetFormation.IsArmy, 'army_sound', 'fleet_sound' ))]"
+			}
+
+			state = {
+				name = "army_sound"
+
+				start_sound = {
+					soundeffect = "event:/SFX/UI/SideBar/military"
+				}
+			}
+
+			state = {
+				name = "fleet_sound"
+				using = fleet_panel_open
+			}
+
+		}
+
+		blockoverride "pin_visibility" {
+			visible = "[MilitaryFormation.GetCountry.IsLocalPlayer]"
+		}
+
+		blockoverride "pin_properties" {
+			visible = "[MilitaryFormation.IsPinnedInOutliner]"
+			onclick = "[MilitaryFormation.TogglePinInOutliner]"
+			tooltip = "UNPIN_MILITARY_FORMATION"
+		}
+
+		blockoverride "unpin_properties" {
+			visible = "[Not(MilitaryFormation.IsPinnedInOutliner)]"
+			onclick = "[MilitaryFormation.TogglePinInOutliner]"
+			tooltip = "PIN_MILITARY_FORMATION"
+		}
+
+		blockoverride "goto_visibility" {}
+
+		blockoverride "goto_properties" {
+			onclick = "[MilitaryFormation.ZoomToMapMarkerPosition]"
+			tooltip = "ZOOM_TO_MILITARY_FORMATION"
+			enabled = "[Not( MilitaryFormation.IsZoomingToMapMarkerPosition )]"
+		}
+
+		blockoverride "goto_button" {
+			button_icon_goto = {
+				size = { 30 30 }
+				datacontext = "[MilitaryFormation.GetCountry]"
+				tooltip = "GO_TO_BUTTON_COUNTRY"
+				onclick = "[InformationPanelBar.OpenCountryPanel(Country.Self)]"
+				input_action = "go_to_details"
+			}
+		}
+
+
+		blockoverride "edit_visibility" {
+			visible = "[MilitaryFormation.GetCountry.IsLocalPlayer]"
+		}
+
+		blockoverride "edit_tooltip" {
+			tooltip = "CUSTOMIZE_NAME_AND_EMBLEM"
+		}
+
+		blockoverride "edit_properties" {
+			onclick = "[PopupManager.ShowMilitaryFormationChangeName(MilitaryFormation.Self)]"
+		}
+
+		blockoverride "fixed_top"
+		{
+			vbox = {
+				visible = "[Not(FormationPanel.HasSelectionView)]"
+
+				top_illu = {
+					visible = "[MilitaryFormation.IsFleet]"
+					size = { @panel_width_plus_20 210 }
+					datacontext = "[GetPlayer]"
+
+					blockoverride "illu" {
+						texture = "gfx/interface/illustrations/top_illus/top_illu_navy.dds"
+					}
+
+					### FORMATION STATS
+					flowcontainer = {
+						parentanchor = center
+						direction = vertical
+						spacing = 3
+						margin_bottom = 5
+
+						military_formation_top_illu_info_fleet = {
+							blockoverride "military_formation_icon_and_bars_size" {
+								size = { 210 80 }
+							}
+
+							blockoverride "first_bar_size" {
+								size = { 155 25 }
+							}
+
+							blockoverride "second_bar_size" {
+								size = { 138 18 }
+							}
+
+							blockoverride "third_bar_size" {
+								size = { 155 18 }
+							}
+						}
+
+						### FLEET SECONDARY STATS ROW
+						flowcontainer = {
+							direction = vertical
+							parentanchor = hcenter
+							spacing = 5
+							margin = { 5 5 }
+
+							background = {
+								using = entry_bg_simple
+							}
+
+							flowcontainer = {
+								parentanchor = hcenter
+								spacing = 5
+								wrap_count = 6	
+
+								### ARMOR (fleet)
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_ARMOR_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetShipList.GetArmorAverage|0]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/armor_navy.dds"
+									}
+								}
+
+								### AVERAGE DAMAGE (fleet)
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_DAMAGE_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetShipList.GetHullDamageAverage|0]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/hull_damage_navy.dds"
+									}
+								}							
+
+								### AVERAGE DETECTION
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_AVERAGE_DETECTION_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetAverageDetection|0]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/detection_navy.dds"
+									}
+								}
+
+								### TOTAL VISIBILITY
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_VISIBILITY_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetTotalVisibility|0]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/visibility.dds"
+									}
+								}
+
+								### CARRYING CAPACITY
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_CARRYING_CAPACITY_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetCarryingCapacity|D]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/carry_capacity_navy.dds"
+									}
+
+									blockoverride "icon_size" {
+										size = { 95% 95% }
+									}
+								}
+
+								### MARINE CAPACITY
+								small_header_grid_item = {
+									tooltip = "MILITARY_FORMATION_MARINE_CAPACITY_TOOLTIP"
+
+									blockoverride "small_header_size" {
+										size = { 85 30 }
+									}
+
+									blockoverride "text" {
+										raw_text = "#v [MilitaryFormation.GetMarineCapacity|D]#!"
+									}
+
+									blockoverride "icon" {
+										texture = "gfx/interface/icons/military_icons/navy_icons/marine_capacity.dds"
+									}
+
+									blockoverride "icon_size" {
+										size = { 95% 95% }
+									}
+								}	
+							}
+						}
+
+						widget = {
+							size = { 538 74 }
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								layoutpolicy_vertical = expanding
+								spacing = 5
+								datacontext = "[MilitaryFormation.GetCommander]"
+
+								### COMMANDER
+								military_formation_commander = {
+									visible = "[Character.IsValid]"
+									size = { 310 70 }
+
+									blockoverride "button_size" {
+										size = { 270 60 }
+									}
+								}
+
+								widget = {
+									visible = "[And(Not(MilitaryFormation.HasCommander), MilitaryFormation.GetCountry.IsLocalPlayer)]"
+									size = { 10 10 }
+								}
+
+								### Add Commander Button
+								add_character_button_long = {
+									visible = "[And(Not(MilitaryFormation.HasCommander), MilitaryFormation.GetCountry.IsLocalPlayer)]"
+									size = { 295 60 }
+									
+									blockoverride "tooltip" {
+										tooltip = "ASSIGN_OR_RECRUIT_CHARACTER"
+									}
+
+									blockoverride "recruit_character_text" {
+										text = "RECRUIT_ADMIRAL_BUTTON"
+									}
+
+									blockoverride "onclick" {
+										onclick = "[RightClickMenuManager.ShowForAssignCommander(MilitaryFormation.AccessSelf, PdxGuiWidget.AccessSelf)]"
+									}
+
+									blockoverride "character_frame_size" {
+										size = { 80 80 }
+									}
+
+									blockoverride "text_left_margin" {
+										margin_left = 45
+									}
+								}
+
+								expand = {}
+
+								### Supply Ships & Supply Priority
+								military_formation_supply_ships = {}
+							}
+						}
+					}
+				}
+
+				top_illu = {
+					visible = "[MilitaryFormation.IsArmy]"
+					size = { @panel_width_plus_10 200 }
+					datacontext = "[GetPlayer]"
+
+					blockoverride "illu" {
+						texture = "gfx/interface/illustrations/top_illus/top_illu_army.dds"
+					}
+
+					### FORMATION STATS
+					flowcontainer = {
+						parentanchor = center
+						direction = vertical
+						spacing = 3
+						margin_bottom = 10
+
+						military_formation_top_illu_info = {}
+
+						divider_clean = {}
+
+						widget = {
+							size = { 540 74 }
+
+							hbox = {
+								layoutpolicy_horizontal = fixed
+								layoutpolicy_vertical = expanding
+								datacontext = "[MilitaryFormation.GetCommander]"
+
+								### COMMANDER
+								military_formation_commander = {
+									visible = "[Character.IsValid]"
+									size = { 310 70 }
+
+									blockoverride "button_size" {
+										size = { 270 65 }
+									}
+								}
+
+								widget = {
+									visible = "[And(Not(MilitaryFormation.HasCommander), MilitaryFormation.GetCountry.IsLocalPlayer)]"
+									size = { 20 10 }
+								}
+
+								### Add Commander Button
+								add_character_button_long = {
+									visible = "[And(Not(MilitaryFormation.HasCommander), MilitaryFormation.GetCountry.IsLocalPlayer)]"
+									size = { 290 60 }
+									
+									blockoverride "tooltip" {
+										tooltip = "ASSIGN_OR_RECRUIT_CHARACTER"
+									}
+
+									blockoverride "onclick" {
+										onclick = "[RightClickMenuManager.ShowForAssignCommander(MilitaryFormation.AccessSelf, PdxGuiWidget.AccessSelf)]"
+									}
+
+									blockoverride "character_frame_size" {
+										size = { 80 80 }
+									}
+
+									blockoverride "text_left_margin" {
+										margin_left = 45
+									}
+								}
+
+								expand = {}
+
+								### Commander Orders
+								commander_order_button = {
+									visible = "[Character.IsValid]"
+									size = { 60 60 }
+									
+									blockoverride "parentanchor" {}
+								}
+
+								expand = {}
+
+								### Supply Ships & Supply Priority
+								military_formation_supply_ships = {}
+							}
+						}
+					}
+				}
+
+				### Tabs for Armies
+				tab_buttons = {
+					visible = "[MilitaryFormation.IsArmy]"
+					datacontext = "[MilitaryFormation.GetShipList]"
+
+					# Information
+					blockoverride "first_button" {
+						text = "MILITARY_FORMATION_PANEL_INFORMATION_TAB"
+					}
+					blockoverride "first_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_INFORMATION_TAB"
+					}
+					blockoverride "first_button_click" {
+						onclick = "[InformationPanel.SelectTab('default')]"
+					}
+					blockoverride "first_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('default')]"
+					}
+					blockoverride "first_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('default') )]"
+					}
+					blockoverride "first_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_INFORMATION_TAB_SELECTED"
+					}
+
+					# Mobilization
+					blockoverride "second_button" {
+						text = "MILITARY_FORMATION_PANEL_MOBILIZATION_TAB"
+					}
+					blockoverride "second_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_MOBILIZATION_TAB"
+					}
+					blockoverride "second_button_click" {
+						onclick = "[InformationPanel.SelectTab('mobilization')]"
+					}
+					blockoverride "second_button_visibility" {
+						visible = "[And(Not(IsDataModelEmpty(MilitaryFormation.GetMobilizationOptions)), InformationPanel.IsTabSelected('mobilization'))]"
+					}
+					blockoverride "second_button_visibility_checked" {
+						visible = "[And(Not(IsDataModelEmpty(MilitaryFormation.GetMobilizationOptions)), Not(InformationPanel.IsTabSelected('mobilization')))]"
+					}
+					blockoverride "second_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_MOBILIZATION_TAB_SELECTED"
+					}
+
+					# Buildings
+					blockoverride "third_button" {
+						text = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB"
+					}
+					blockoverride "third_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB"
+					}
+					blockoverride "third_button_click" {
+						onclick = "[InformationPanel.SelectTab('buildings')]"
+					}
+					blockoverride "third_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('buildings')]"
+					}
+					blockoverride "third_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('buildings') )]"
+					}
+					blockoverride "third_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB_SELECTED"
+					}
+
+					# Modifiers
+					blockoverride "fourth_button" {
+						text = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB"
+					}
+					blockoverride "fourth_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB"
+					}
+					blockoverride "fourth_button_click" {
+						onclick = "[InformationPanel.SelectTab('modifiers')]"
+					}
+					blockoverride "fourth_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('modifiers')]"
+					}
+					blockoverride "fourth_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('modifiers') )]"
+					}
+					blockoverride "fourth_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB_SELECTED"
+					}
+				}
+
+				### Tabs for Fleets
+				tab_buttons = {
+					visible = "[MilitaryFormation.IsFleet]"
+					datacontext = "[MilitaryFormation.GetShipList]"
+
+					# Information
+					blockoverride "first_button" {
+						text = "MILITARY_FORMATION_PANEL_INFORMATION_TAB"
+					}
+					blockoverride "first_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_INFORMATION_TAB"
+					}
+					blockoverride "first_button_click" {
+						onclick = "[InformationPanel.SelectTab('default')]"
+					}
+					blockoverride "first_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('default')]"
+					}
+					blockoverride "first_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('default') )]"
+					}
+					blockoverride "first_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_INFORMATION_TAB_SELECTED"
+					}
+
+					# Buildings
+					blockoverride "second_button" {
+						text = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB"
+					}
+					blockoverride "second_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB"
+					}
+					blockoverride "second_button_click" {
+						onclick = "[InformationPanel.SelectTab('buildings')]"
+					}
+					blockoverride "second_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('buildings')]"
+					}
+					blockoverride "second_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('buildings') )]"
+					}
+					blockoverride "second_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_BUILDINGS_TAB_SELECTED"
+					}
+
+					# Modifiers
+					blockoverride "third_button" {
+						text = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB"
+					}
+					blockoverride "third_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB"
+					}
+					blockoverride "third_button_click" {
+						onclick = "[InformationPanel.SelectTab('modifiers')]"
+					}
+					blockoverride "third_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('modifiers')]"
+					}
+					blockoverride "third_button_visibility_checked" {
+						visible = "[Not( InformationPanel.IsTabSelected('modifiers') )]"
+					}
+					blockoverride "third_button_selected" {
+						text = "MILITARY_FORMATION_PANEL_MODIFIERS_TAB_SELECTED"
+					}
+
+					# Ship Construction Queue
+					blockoverride "fourth_button" {
+						raw_text = "MILITARY_FORMATION_CONSTRUCTION_QUEUE_TAB"
+					}
+					blockoverride "fourth_button_tooltip" {
+						tooltip = "MILITARY_FORMATION_CONSTRUCTION_QUEUE_TAB_TOOLTIP"
+					}
+					blockoverride "fourth_button_click" {
+						onclick = "[InformationPanel.SelectTab('ships')]"
+					}
+					blockoverride "fourth_button_visibility" {
+						visible = "[InformationPanel.IsTabSelected('ships')]"
+					}
+					blockoverride "fourth_button_visibility_checked" {
+						visible = "[Not(InformationPanel.IsTabSelected('ships'))]"
+					}
+					blockoverride "fourth_button_selected" {
+						raw_text = "MILITARY_FORMATION_CONSTRUCTION_QUEUE_TAB_SELECTED"
+					}
+				}
+			}
+		}
+
+		blockoverride "scrollarea_content"
+		{
+
+			flowcontainer = {
+				visible = "[Not(FormationPanel.HasSelectionView)]"
+				direction = vertical
+
+				military_formation_panel_overview_content = {
+					visible = "[InformationPanel.IsTabSelected('default')]"
+					using = default_content_fade
+				}
+
+				military_formation_panel_buildings_content_army = {
+					visible = "[And(Not(MilitaryFormation.IsFleet), InformationPanel.IsTabSelected('buildings'))]"
+					using = default_content_fade
+				}
+
+				military_formation_panel_buildings_content_fleet = {
+					visible = "[And(MilitaryFormation.IsFleet, InformationPanel.IsTabSelected('buildings'))]"
+					using = default_content_fade
+				}
+
+				military_formation_panel_mobilization_content = {
+					visible = "[InformationPanel.IsTabSelected('mobilization')]"
+					using = default_content_fade
+				}
+
+				modifier_list = {
+					visible = "[InformationPanel.IsTabSelected('modifiers')]"
+					using = default_content_fade
+				}
+
+				military_formation_panel_ships_content = {
+					visible = "[InformationPanel.IsTabSelected('ships')]"
+					using = default_content_fade
+				}
+			}
+
+			flowcontainer = {
+				visible = "[FormationPanel.HasSelectionView]"
+				parentanchor = hcenter
+				direction = vertical
+
+				flowcontainer = {
+					direction = vertical
+					parentanchor = hcenter
+					spacing = 10
+					margin_top = 10
+					margin_bottom = 5
+
+					flowcontainer = {
+						wrap_count = 2
+						parentanchor = hcenter
+						spacing = 4
+
+						# MERGE ARMIES
+						formation_bulk_action_button = {
+							visible = "[MilitaryFormation.IsArmy]"
+							blockoverride "properties" {
+								enabled = "[IsValid(MergeSelectedFormations)]"
+								onclick = "[Execute(MergeSelectedFormations)]"
+								tooltip = "MERGE_SELECTED_FORMATIONS_TOOLTIP"
+								input_action = "merge"
+							}
+
+							blockoverride "icon" {
+								texture = "gfx/interface/icons/generic_icons/icon_merge_all.dds"
+							}
+
+							blockoverride "text" {
+								text = "SETTING_INPUT_ACTION_MERGE"
+							}
+						}
+
+						# MERGE NAVIES
+						formation_bulk_action_button = {
+							visible = "[MilitaryFormation.IsFleet]"
+							blockoverride "properties" {
+								enabled = "[IsValid(MergeSelectedFormations)]"
+								onclick = "[Execute(MergeSelectedFormations)]"
+								tooltip = "MERGE_SELECTED_FORMATIONS_FLEET_TOOLTIP"
+								input_action = "merge"
+							}
+
+							blockoverride "icon" {
+								texture = "gfx/interface/icons/generic_icons/icon_merge_all.dds"
+							}
+
+							blockoverride "text" {
+								text = "SETTING_INPUT_ACTION_MERGE"
+							}
+						}
+
+						# RAISE CONSCRIPTS
+						formation_bulk_action_button = {
+							blockoverride "properties" {
+								visible = "[GreaterThan_int32(GetNumSelectedArmies, '(int32)0')]" # Hide if we have only selected fleets
+								enabled = "[IsValid(RaiseConscriptsInSelectedArmies)]"
+								onclick = "[Execute(RaiseConscriptsInSelectedArmies)]"
+								tooltip = "RAISE_CONSCRIPTS_IN_SELECTED_ARMIES_TOOLTIP"
+							}
+
+							blockoverride "icon" {
+								texture = "gfx/interface/icons/lens_toolbar_icons/activate_conscription_centers_lens_option.dds"
+							}
+
+							blockoverride "text" {
+								text = "BULK_RAISE_CONSCRIPTS"
+							}
+						}
+
+						# MOBILIZE
+						formation_bulk_action_button = {
+							blockoverride "properties" {
+								visible = "[GreaterThan_int32(GetNumSelectedArmies, '(int32)0')]" # Hide if we have only selected fleets
+								enabled = "[IsValid(MobilizeSelectedArmies)]"
+								onclick = "[Execute(MobilizeSelectedArmies)]"
+								tooltip = "MOBILIZE_SELECTED_ARMIES_TOOLTIP"
+							}
+
+							blockoverride "icon" {
+								texture = "gfx/interface/icons/generic_icons/mobilize_icon.dds"
+								frame = 0
+								framesize = { 120 120 }
+							}
+
+							blockoverride "text" {
+								text = "MOBILIZE_ARMY"
+							}
+						}
+
+						# DE-MOBILIZE
+						formation_bulk_action_button = {
+							blockoverride "properties" {
+								visible = "[GreaterThan_int32(GetNumSelectedArmies, '(int32)0')]" # Hide if we have only selected fleets
+								enabled = "[IsValid(DemobilizeSelectedArmies)]"
+								onclick = "[PopupManager.AskConfirmation(DemobilizeSelectedArmies)]"
+								tooltip = "DEMOBILIZE_SELECTED_ARMIES_TOOLTIP"
+							}
+
+							blockoverride "icon" {
+								texture = "gfx/interface/buttons/button_icons/close.dds"
+							}
+
+							blockoverride "text" {
+								text = "concept_mobilize_army_demobilize"
+							}
+						}
+					}
+
+					flowcontainer = {
+						#direction = vertical
+						minimumsize = { @panel_width -1 }
+						margin_bottom = 10
+						margin_top = 5
+						spacing = 15
+
+						background = {
+							using = dark_area
+							margin_left = 7
+							margin_right = 7
+						}
+
+						textbox = {
+							parentanchor = vcenter
+							visible = "[MilitaryFormation.IsFleet]"
+							text = "concept_naval_mission"
+							autoresize = yes
+							align = nobaseline
+							default_format = "#title"
+						}
+
+						textbox = {
+							parentanchor = vcenter
+							visible = "[MilitaryFormation.IsArmy]"
+							text = "concept_orders"
+							autoresize = yes
+							align = nobaseline
+							default_format = "#title"
+						}
+
+						flowcontainer = {
+							visible = "[MilitaryFormation.IsFleet]"
+
+							### Naval Missions - Bulk selected
+							naval_mission_button = {
+								blockoverride "mission_button_with_round_icon" {
+									size = { 300 60 }
+								}
+								blockoverride "long_mission_button_size" {
+									size = { 280 50 }
+								}
+							}
+						}
+
+						flowcontainer = {
+							visible = "[MilitaryFormation.IsArmy]"
+							datamodel = "[FormationPanel.AccessCommanderOrdersPossibleForSelectedFormations]"
+							spacing = 5
+
+							item = {
+								widget = {
+									size = { 50 50 }
+
+									button_icon_round_action = {
+										enabled = "[IsValid(SetCharacterOrderForSelectedFormations(CommanderOrderType.Self))]"
+										onclick = "[Execute(SetCharacterOrderForSelectedFormations(CommanderOrderType.Self))]"
+										tooltip = "SET_COMMANDER_ORDER_IN_SELECTED_FORMATIONS_TOOLTIP"
+										using = tooltip_above
+
+										blockoverride "icon_size" {
+											size = { 75% 75% }
+										}
+
+										blockoverride "icon" {
+											texture = "[CommanderOrderType.GetTexture]"
+										}
+
+										action_selection_number = {
+											visible = "[Or(
+												NotZero(GetNumCommandersInSelectedFormationsWithOrderActive(CommanderOrderType.Self)),
+												NotZero(GetNumCommandersInSelectedFormationsWithOrderNext(CommanderOrderType.Self))
+											)]"
+
+											blockoverride "text" {
+												text = "NUM_ACTIVE_AND_NEXT_ORDERS_FOR_SELECTED"
+											}
+
+											blockoverride "default_format" {}
+										}
+
+										icon = {
+											visible = "[Not(CommanderOrderType.IsBasicOrderType)]"
+											parentanchor = bottom
+											size = { 18 18 }
+											texture = "gfx/interface/icons/generic_icons/most_senior_front_commander.dds"
+										}
+									}
+								}
+							}
+						}
+					}
+
+					dynamicgridbox = {
+						visible = "[GreaterThan_int32(GetNumSelectedArmies, '(int32)0')]" # Hide if we have only selected fleets
+						datamodel = "[GetMobilizationOptionGroups]"
+						datamodel_wrap = 2 # BOI: was 3; 2 columns fit four-wide groups
+						flipdirection = yes
+
+						item = {
+							flowcontainer = {
+								direction = vertical
+
+								textbox = {
+									text = "[MobilizationOptionGroup.GetNameNoFormatting]"
+									autoresize = yes
+									align = nobaseline
+									default_format = "#title"
+									margin_left = 2
+								}
+
+								flowcontainer = {
+									datamodel = "[MobilizationOptionGroup.GetMobilizationOptions]"
+									margin_right = 5
+									margin_bottom = 5
+
+									item = {
+										widget = {
+											alpha = "[TransparentIfFalse(Or(MobilizationOption.IsActivatedForSelected,IsValid(MobilizationOption.ToggleForSelected)))]"
+											size = { 50 50 }
+
+											widget = {
+												size = { 50 50 }
+
+												# Activate
+												widget = {
+													visible = "[Not(MobilizationOption.IsActivatedForSelected)]"
+													size = { 100% 100% }
+
+													# Activate button - show confirmation popup
+													button = {
+														using = default_button
+														size = { 100% 100% }
+														visible = "[ShouldAskConfirmation(MobilizationOption.ToggleForSelected)]"
+
+														enabled = "[And(Not(MobilizationOption.IsActivatedForSelected), IsValid(MobilizationOption.ToggleForSelected))]"
+														onclick = "[PopupManager.AskConfirmation(MobilizationOption.ToggleForSelected)]"
+														tooltip = "ACTIVATE_MOBILIZATION_OPTION_FOR_SELECTED_BUTTON_TOOLTIP"
+													}
+
+													# Activate button - no confirmation popup
+													button = {
+														using = default_button
+														size = { 100% 100% }
+														visible = "[Not(ShouldAskConfirmation(MobilizationOption.ToggleForSelected))]"
+
+														enabled = "[And(Not(MobilizationOption.IsActivatedForSelected), IsValid(MobilizationOption.ToggleForSelected))]"
+														onclick = "[Execute(MobilizationOption.ToggleForSelected)]"
+														tooltip = "ACTIVATE_MOBILIZATION_OPTION_FOR_SELECTED_BUTTON_TOOLTIP"
+													}
+												}
+
+												# Deactivate
+												widget = {
+													visible = "[MobilizationOption.IsActivatedForSelected]"
+													size = { 100% 100% }
+
+													# Deactivate button - show confirmation popup
+													button = {
+														using = default_button
+														size = { 100% 100% }
+														visible = "[ShouldAskConfirmation(MobilizationOption.ToggleForSelected)]"
+
+														enabled = "[And(MobilizationOption.IsActivatedForSelected, IsValid(MobilizationOption.ToggleForSelected))]"
+														onclick = "[PopupManager.AskConfirmation(MobilizationOption.ToggleForSelected)]"
+														tooltip = "DEACTIVATE_MOBILIZATION_OPTION_FOR_SELECTED_BUTTON_TOOLTIP"
+													}
+
+													# Deactivate button - no confirmation popup
+													button = {
+														using = default_button
+														size = { 100% 100% }
+														visible = "[Not(ShouldAskConfirmation(MobilizationOption.ToggleForSelected))]"
+
+														enabled = "[And(MobilizationOption.IsActivatedForSelected, IsValid(MobilizationOption.ToggleForSelected))]"
+														onclick = "[Execute(MobilizationOption.ToggleForSelected)]"
+														tooltip = "DEACTIVATE_MOBILIZATION_OPTION_FOR_SELECTED_BUTTON_TOOLTIP"
+													}
+												}
+											}
+
+											icon = {
+												size = { 38 38 }
+												texture = "[MobilizationOption.GetTexture]"
+												parentanchor = center
+											}
+
+											textbox = {
+												visible = "[NotZero(MobilizationOption.GetNumActiveForSelected)]"
+												align = right|nobaseline
+												autoresize = yes
+												margin_left = 7
+												margin_right = 7
+												parentanchor = right|top
+												text = "[MobilizationOption.GetNumActiveForSelected|vu]"
+											}
+
+											icon = {
+												visible = "[MobilizationOption.IsActivatedForSelected]"
+												using = highlighted_square_selection
+											}
+
+											icon = {
+												visible = "[MobilizationOption.IsMixedActivationForSelected]"
+												using = highlighted_active_square_selection
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+
+				default_header = {
+					using = default_list_position
+					blockoverride "text" {
+						text = "MILITARY_FORMATION_PANEL_TITLE_MULTIPLE_FORMATIONS"
+					}
+				}
+
+				flowcontainer = {
+					parentanchor = hcenter
+					direction = vertical
+					spacing = 10
+					margin_top = 10
+					datamodel = "[FormationPanel.GetSelectedFormations]"
+
+					item = {
+						container = {
+							military_panel_formation_entry = {
+								blockoverride "formation_onclick" {
+									onclick = "[FormationPanel.SelectFormation(MilitaryFormation.Self)]"
+								}
+
+								blockoverride "extra_action" {
+									military_formation_cancel_invasion_button = {
+										size = { @panel_width_minus_20 38 }
+
+										blockoverride "visible" {
+											visible = "[And(MilitaryFormation.HasInvasion, MilitaryFormation.GetCountry.IsLocalPlayer)]"
+										}
+
+										blockoverride "icon_size" {
+											size = { 24 24 }
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		### BOTTOM PART
+		blockoverride "fixed_bottom"
+        {
+			military_formation_panel_default_footer = {
+				visible = "[And(InformationPanel.IsTabSelected('default'), Not(FormationPanel.HasSelectionView))]"
+			}
+        }
+
+        blockoverride "bottom_spacing" {}
+    }
+}

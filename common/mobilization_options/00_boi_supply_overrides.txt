@@ -64,7 +64,7 @@ mobilization_option_extra_supplies = {
 
 	upkeep_modifier = {
 		goods_input_groceries_add = 1.5
-		goods_input_horses_add = 0.25 # BOI: pack animals for extra supplies
+		goods_input_horses_add = 0.5 # BOI: pack animals for extra supplies
 	}
 	upkeep_modifier_unscaled = {
         goods_input_small_arms_mult = 0.25
