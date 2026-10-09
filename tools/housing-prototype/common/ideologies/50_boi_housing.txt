@@ -1,0 +1,23 @@
+﻿# Prototype political stances, attached additively; no vanilla ideology shadows.
+ideology_boi_housing_reform = {
+ icon = "gfx/interface/icons/ideology_icons/paternalistic.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = disapprove
+  law_boi_protected_company_housing = approve
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = disapprove
+  law_boi_residential_standards = approve
+ }
+}
+ideology_boi_housing_laissez_faire = {
+ icon = "gfx/interface/icons/ideology_icons/paternalistic.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = approve
+  law_boi_protected_company_housing = disapprove
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = approve
+  law_boi_residential_standards = disapprove
+ }
+}

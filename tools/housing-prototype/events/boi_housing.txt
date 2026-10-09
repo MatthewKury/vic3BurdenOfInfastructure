@@ -1,0 +1,58 @@
+﻿namespace = boi_housing
+
+# Explicit debug law fixtures; not connected to automatic on-actions.
+boi_housing.3 = {
+ type = country_event
+ hidden = yes
+ immediate = {
+  activate_law = law_type:law_boi_unregulated_company_housing
+  activate_law = law_type:law_boi_unregulated_residential
+ }
+}
+
+boi_housing.4 = {
+ type = country_event
+ hidden = yes
+ immediate = {
+  activate_law = law_type:law_boi_protected_company_housing
+  activate_law = law_type:law_boi_residential_standards
+ }
+}
+
+boi_housing.1 = {
+ type = country_event
+ hidden = yes
+ immediate = { boi_housing_setup_effect = yes }
+}
+
+# Explicit debug fixture only. Run while playing Portugal; does not seed the world.
+# Repeated invocations never add further levels to an existing fixture building.
+boi_housing.2 = {
+ type = country_event
+ hidden = yes
+ immediate = {
+  every_scope_state = {
+   limit = { state_region = s:STATE_ALENTEJO }
+   if = {
+    limit = { NOT = { has_building = building_boi_slums } }
+    create_building = { building = building_boi_slums level = 1 }
+   }
+   if = {
+    limit = { NOT = { has_building = building_boi_tenements } }
+    create_building = { building = building_boi_tenements level = 1 }
+   }
+   if = {
+    limit = { NOT = { has_building = building_boi_luxury_apartments } }
+    create_building = { building = building_boi_luxury_apartments level = 1 }
+   }
+   if = {
+    limit = { NOT = { has_building = building_boi_suburbs } }
+    create_building = { building = building_boi_suburbs level = 1 }
+   }
+   if = {
+    limit = { NOT = { has_building = building_boi_temporary_shelter } }
+    create_building = { building = building_boi_temporary_shelter level = 1 }
+   }
+  }
+ }
+}

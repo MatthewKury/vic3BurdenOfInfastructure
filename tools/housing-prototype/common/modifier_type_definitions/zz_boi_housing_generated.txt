@@ -1,0 +1,105 @@
+﻿# Generated missing dynamic types; do not duplicate vanilla declarations.
+building_aristocrats_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+building_capitalists_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+building_clergymen_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+building_clerks_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+building_farmers_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+building_shopkeepers_mortality_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+goods_input_boi_housing_add = {
+ decimals = 1
+ color = bad
+ 
+ game_data = { ai_value = 0 }
+}
+
+goods_input_boi_housing_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+goods_input_boi_luxury_housing_add = {
+ decimals = 1
+ color = bad
+ 
+ game_data = { ai_value = 0 }
+}
+
+goods_input_boi_luxury_housing_mult = {
+ decimals = 1
+ color = bad
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+goods_input_furniture_add = {
+ decimals = 1
+ color = bad
+ 
+ game_data = { ai_value = 0 }
+}
+
+goods_output_boi_housing_add = {
+ decimals = 1
+ color = good
+ 
+ game_data = { ai_value = 0 }
+}
+
+goods_output_boi_housing_mult = {
+ decimals = 1
+ color = good
+ percent = yes
+ game_data = { ai_value = 0 }
+}
+
+goods_output_boi_luxury_housing_add = {
+ decimals = 1
+ color = good
+ 
+ game_data = { ai_value = 0 }
+}
+
+goods_output_boi_luxury_housing_mult = {
+ decimals = 1
+ color = good
+ percent = yes
+ game_data = { ai_value = 0 }
+}

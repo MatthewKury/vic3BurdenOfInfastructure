@@ -1,0 +1,19 @@
+﻿popneed_boi_housing = {
+ default = boi_housing
+ entry = {
+  goods = boi_housing
+  weight = 1
+  min_supply_share = 1
+  max_supply_share = 1
+ }
+}
+
+popneed_boi_luxury_housing = {
+ default = boi_luxury_housing
+ entry = {
+  goods = boi_luxury_housing
+  weight = 1
+  min_supply_share = 1
+  max_supply_share = 1
+ }
+}

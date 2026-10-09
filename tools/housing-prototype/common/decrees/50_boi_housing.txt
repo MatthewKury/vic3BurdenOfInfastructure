@@ -1,0 +1,12 @@
+﻿# Prototype: emergency crowding affects all basic housing providers, including
+# subsistence, company accommodation and operating shelters. This is one
+# additive output modifier, not a recursive shelter-capacity calculation.
+decree_boi_emergency_accommodation = {
+ texture = "gfx/interface/icons/decree/decree_road_maintenance.dds"
+ cost = 100
+ modifier = {
+  goods_output_boi_housing_mult = 0.15
+  state_standard_of_living_add = -1
+ }
+ ai_weight = { value = 0 }
+}

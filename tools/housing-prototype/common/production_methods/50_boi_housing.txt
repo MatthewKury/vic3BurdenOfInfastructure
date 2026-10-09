@@ -1,0 +1,219 @@
+﻿# Prototype balance values; see README. Fixed residential structures have one PM each.
+pm_boi_slums = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ state_modifiers = {
+ workforce_scaled = {
+  state_mortality_mult = 0.001
+  state_migration_pull_mult = -0.002
+ }
+ unscaled = { state_standard_of_living_add = -1 }
+ }
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 3
+   goods_input_tools_add = 1
+   goods_input_fabric_add = 2
+   goods_output_boi_housing_add = 60
+  }
+  level_scaled = {
+   building_employment_laborers_add = 900
+   building_employment_clerks_add = 100
+  }
+ }
+}
+
+pm_boi_tenements = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ 
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 6
+   goods_input_tools_add = 3
+   goods_input_fabric_add = 2
+   goods_output_boi_housing_add = 70
+  }
+  level_scaled = {
+   building_employment_laborers_add = 800
+   building_employment_clerks_add = 200
+  }
+ }
+}
+
+pm_boi_apartments = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ 
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 6
+   goods_input_tools_add = 5
+   goods_input_glass_add = 4
+   goods_output_boi_housing_add = 100
+   goods_output_boi_luxury_housing_add = 10
+  }
+  level_scaled = {
+   building_employment_laborers_add = 750
+   building_employment_clerks_add = 250
+  }
+ }
+}
+
+pm_boi_luxury_apartments = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ state_modifiers = {
+ workforce_scaled = {
+  state_migration_pull_mult = 0.002
+ }
+ }
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 8
+   goods_input_tools_add = 5
+   goods_input_glass_add = 8
+   goods_input_furniture_add = 8
+   goods_output_boi_housing_add = 25
+   goods_output_boi_luxury_housing_add = 60
+  }
+  level_scaled = {
+   building_employment_laborers_add = 700
+   building_employment_clerks_add = 300
+  }
+ }
+}
+
+pm_boi_suburbs = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ state_modifiers = {
+ workforce_scaled = {
+  state_migration_pull_mult = 0.003
+ }
+ }
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 6
+   goods_input_tools_add = 2
+   goods_input_glass_add = 2
+   goods_input_furniture_add = 3
+   goods_output_boi_housing_add = 25
+   goods_output_boi_luxury_housing_add = 60
+  }
+  level_scaled = {
+   building_employment_laborers_add = 800
+   building_employment_clerks_add = 200
+  }
+ }
+}
+
+pm_boi_temporary_shelter = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ 
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 10
+   goods_input_tools_add = 2
+   goods_input_fabric_add = 10
+   goods_output_boi_housing_add = 40
+  }
+  level_scaled = {
+   building_employment_laborers_add = 900
+   building_employment_clerks_add = 100
+  }
+ }
+}
+
+pm_boi_horse_commuting = {
+ texture = "gfx/interface/icons/production_method_icons/passenger_carriages.dds"
+ 
+ building_modifiers = {
+  workforce_scaled = { goods_input_horses_add = 6 }
+ }
+}
+
+pm_boi_rail_commuting = {
+ texture = "gfx/interface/icons/production_method_icons/passenger_trains.dds"
+ unlocking_technologies = { railways }
+ building_modifiers = {
+  workforce_scaled = { goods_input_transportation_add = 5 }
+ }
+}
+
+pm_boi_motor_commuting = {
+ texture = "gfx/interface/icons/production_method_icons/public_motor_carriages.dds"
+ unlocking_technologies = { combustion_engine }
+ building_modifiers = {
+  workforce_scaled = { goods_input_automobiles_add = 2 }
+ }
+}
+
+pm_boi_no_company_housing = {
+ texture = "gfx/interface/icons/production_method_icons/no_passenger_trains.dds"
+ is_default = yes
+}
+# A small marketable output. Peasant commercial consumption is only 5% of
+# ordinary buy packages; calibrate this baseline with live households.
+pm_boi_subsistence_housing = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ building_modifiers = {
+  workforce_scaled = { goods_output_boi_housing_add = 0.25 }
+ }
+}
+
+pm_boi_hostile_company_housing = {
+ texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ unlocking_laws = { law_boi_unregulated_company_housing }
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 1
+   goods_input_fabric_add = 1
+   goods_output_boi_housing_add = 8
+  }
+  # Percentage/SoL effects apply to employed professions, never per level.
+  unscaled = {
+   building_laborers_standard_of_living_add = -1
+   building_laborers_mortality_mult = 0.05
+   building_farmers_standard_of_living_add = -1
+   building_farmers_mortality_mult = 0.05
+   building_machinists_standard_of_living_add = -1
+   building_machinists_mortality_mult = 0.05
+   building_engineers_standard_of_living_add = -1
+   building_engineers_mortality_mult = 0.05
+   building_clerks_standard_of_living_add = -1
+   building_clerks_mortality_mult = 0.05
+   building_shopkeepers_standard_of_living_add = -1
+   building_shopkeepers_mortality_mult = 0.05
+   building_clergymen_standard_of_living_add = -1
+   building_clergymen_mortality_mult = 0.05
+   building_aristocrats_standard_of_living_add = -1
+   building_aristocrats_mortality_mult = 0.05
+   building_capitalists_standard_of_living_add = -1
+   building_capitalists_mortality_mult = 0.05
+   building_slaves_standard_of_living_add = -1
+   building_slaves_mortality_mult = 0.05
+  }
+ }
+}
+
+pm_boi_worker_settlements = {
+ texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
+ 
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 3
+   goods_input_fabric_add = 2
+   goods_input_tools_add = 1
+   goods_output_boi_housing_add = 6
+  }
+ }
+}
+
+pm_boi_serviced_settlements = {
+ texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
+ unlocking_technologies = { modern_sewerage }
+ building_modifiers = {
+  workforce_scaled = {
+   goods_input_wood_add = 4
+   goods_input_fabric_add = 3
+   goods_input_tools_add = 2
+   goods_output_boi_housing_add = 12
+  }
+ }
+}

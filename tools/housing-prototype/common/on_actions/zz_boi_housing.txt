@@ -1,0 +1,3 @@
+﻿# Additive event lists; never replace vanilla on-action effects.
+on_monthly_pulse_country = { events = { boi_housing.1 } }
+on_country_formed = { events = { boi_housing.1 } }

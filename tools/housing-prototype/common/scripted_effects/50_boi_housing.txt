@@ -1,0 +1,49 @@
+﻿# Country scope. Preserve existing housing laws on maintenance and load.
+boi_housing_setup_effect = {
+ ig:ig_trade_unions ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_reform } }
+   add_ideology = ideology_boi_housing_reform
+  }
+ }
+ ig:ig_intelligentsia ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_reform } }
+   add_ideology = ideology_boi_housing_reform
+  }
+ }
+ ig:ig_landowners ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_laissez_faire } }
+   add_ideology = ideology_boi_housing_laissez_faire
+  }
+ }
+ ig:ig_industrialists ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_laissez_faire } }
+   add_ideology = ideology_boi_housing_laissez_faire
+  }
+ }
+ if = {
+  limit = {
+   NOR = {
+    has_law = law_type:law_boi_unregulated_company_housing
+    has_law = law_type:law_boi_protected_company_housing
+   }
+  }
+  activate_law = law_type:law_boi_unregulated_company_housing
+ }
+ if = {
+  limit = {
+   NOR = {
+    has_law = law_type:law_boi_unregulated_residential
+    has_law = law_type:law_boi_residential_standards
+   }
+  }
+  activate_law = law_type:law_boi_unregulated_residential
+ }
+ if = {
+  limit = { has_law = law_type:law_boi_protected_company_housing }
+  boi_housing_remove_hostile_effect = yes
+ }
+}

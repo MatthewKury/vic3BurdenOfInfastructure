@@ -1,0 +1,88 @@
+﻿# Planned land units per level: 1. Not yet enforced.
+building_boi_slums = {
+ building_group = bg_boi_dense_housing
+ icon = "gfx/interface/icons/building_icons/urban_center.dds"
+ production_method_groups = {
+  pmg_boi_slums
+ }
+ required_construction = construction_cost_low
+ ownership_type = self
+ 
+ 
+ possible = {
+  owner = { NOT = { has_law = law_type:law_boi_residential_standards } }
+ }
+
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}
+
+# Planned land units per level: 1. Not yet enforced.
+building_boi_tenements = {
+ building_group = bg_boi_dense_housing
+ icon = "gfx/interface/icons/building_icons/urban_center.dds"
+ production_method_groups = {
+  pmg_boi_tenements
+ }
+ required_construction = construction_cost_medium
+ ownership_type = self
+ 
+ 
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}
+
+# Planned land units per level: 1. Not yet enforced.
+building_boi_apartments = {
+ building_group = bg_boi_dense_housing
+ icon = "gfx/interface/icons/building_icons/urban_center.dds"
+ production_method_groups = {
+  pmg_boi_apartments
+ }
+ required_construction = construction_cost_high
+ ownership_type = self
+ unlocking_technologies = { steel_frame_buildings }
+ 
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}
+
+# Planned land units per level: 1. Not yet enforced.
+building_boi_luxury_apartments = {
+ building_group = bg_boi_dense_housing
+ icon = "gfx/interface/icons/building_icons/building_manor_houses.dds"
+ production_method_groups = {
+  pmg_boi_luxury_apartments
+ }
+ required_construction = construction_cost_high
+ ownership_type = self
+ 
+ 
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}
+
+# Planned land units per level: 3. Not yet enforced.
+building_boi_suburbs = {
+ building_group = bg_boi_suburban_housing
+ icon = "gfx/interface/icons/building_icons/building_manor_houses.dds"
+ production_method_groups = {
+  pmg_boi_suburbs
+  pmg_boi_suburban_transport
+ }
+ required_construction = construction_cost_medium
+ ownership_type = self
+ 
+ 
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}
+
+# Planned land units per level: 0. Not yet enforced.
+building_boi_temporary_shelter = {
+ building_group = bg_boi_temporary_housing
+ icon = "gfx/interface/icons/building_icons/building_government_administration.dds"
+ production_method_groups = {
+  pmg_boi_temporary_shelter
+ }
+ required_construction = construction_cost_low
+ ownership_type = no_ownership
+ 
+ 
+ background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}

@@ -1,0 +1,15 @@
+﻿# Accommodation services, not consumable physical homes. Placeholder icons.
+boi_housing = {
+ texture = "gfx/interface/icons/goods_icons/services.dds"
+ cost = 30
+ category = staple
+ local = yes
+ consumption_tax_cost = 200
+}
+boi_luxury_housing = {
+ texture = "gfx/interface/icons/goods_icons/luxury_furniture.dds"
+ cost = 60
+ category = luxury
+ local = yes
+ consumption_tax_cost = 200
+}

@@ -1,0 +1,29 @@
+﻿# Separate residential group; temporarily shown under the existing Development lens.
+# No land_usage: do not silently charge arable land or urbanization.
+# Shared residential land enforcement is a separate, unfinished milestone.
+bg_boi_residential = {
+ category = development
+ lens = development
+ always_possible = yes
+ economy_of_scale = no
+ is_government_funded = no
+ cash_reserves_max = 10000
+ urbanization = 0
+}
+bg_boi_dense_housing = {
+ parent_group = bg_boi_residential
+ infrastructure_usage_per_level = 2
+}
+bg_boi_suburban_housing = {
+ parent_group = bg_boi_residential
+ infrastructure_usage_per_level = 0.5
+}
+bg_boi_temporary_housing = {
+ category = development
+ lens = development
+ always_possible = yes
+ is_government_funded = yes
+ cash_reserves_max = 10000
+ urbanization = 0
+ infrastructure_usage_per_level = 0.5
+}
