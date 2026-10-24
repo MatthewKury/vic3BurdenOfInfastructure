@@ -1,7 +1,7 @@
 texticon = {
  icon = boi_housing
  iconsize = {
-  texture = "gfx/interface/icons/goods_icons/services.dds"
+  texture = "gfx/interface/icons/goods_icons/boi_housing.dds"
   size = { 25 25 }
   offset = { 0 7 }
   fontsize = 18
@@ -10,7 +10,7 @@ texticon = {
 texticon = {
  icon = boi_luxury_housing
  iconsize = {
-  texture = "gfx/interface/icons/goods_icons/luxury_furniture.dds"
+  texture = "gfx/interface/icons/goods_icons/boi_luxury_housing.dds"
   size = { 25 25 }
   offset = { 0 7 }
   fontsize = 18

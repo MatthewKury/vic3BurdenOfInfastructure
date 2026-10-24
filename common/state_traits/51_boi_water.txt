@@ -1,0 +1,88 @@
+﻿# ================================================================
+#  Burden of Infrastructure - Water state traits
+#
+#  Production methods cannot test geography, so geography enters
+#  here. Each trait scales EVERY water producer in the state with
+#  goods_output_water_mult - the same mechanism the horse-breeding
+#  trait uses with goods_output_horses_mult, so it needs no script.
+#  Imports are not affected: they convert Bulk Water that came from
+#  somewhere else.
+#
+#  Assigned to states by tools/Add-WaterTraits.ps1, which also adds
+#  them automatically to states that carry a vanilla river/lake
+#  trait (abundant) or a vanilla desert trait (arid interior).
+#  Untagged states are the baseline: no modifier at all.
+#
+#  Magnitudes are placeholders. Existing vanilla icons are reused
+#  (dry_climate, river, swamp, waterfall, natural_harbors); they sit
+#  in the state panel, not next to a competing building icon, so the
+#  "same icon in the same lens" trap does not apply.
+# ================================================================
+
+# Reliable rain and large rivers: Britain and Ireland, the Atlantic
+# fringe, the Pacific Northwest, and every state with a vanilla river
+# or lake trait.
+state_trait_boi_water_abundant = {
+	icon = "gfx/interface/icons/state_trait_icons/river.dds"
+
+	modifier = {
+		goods_output_water_mult = 0.25
+	}
+}
+
+# Mediterranean climate: the rain comes in winter and the springs
+# fail in summer. Iberia, southern Italy, Greece, California, the Cape.
+state_trait_boi_summer_dry = {
+	icon = "gfx/interface/icons/state_trait_icons/dry_climate.dds"
+
+	modifier = {
+		goods_output_water_mult = -0.25
+		state_harvest_condition_drought_impact_mult = 0.15
+	}
+}
+
+# Little surface water at all: the deserts, the Iranian plateau,
+# Central Asia, the Great Basin. Horses suffer too, since they must
+# be watered, which weakens the early infrastructure as well.
+state_trait_boi_arid_interior = {
+	icon = "gfx/interface/icons/state_trait_icons/dry_climate.dds"
+
+	modifier = {
+		goods_output_water_mult = -0.5
+		goods_output_horses_mult = -0.1
+		state_harvest_condition_drought_impact_mult = 0.3
+	}
+}
+
+# Supply swings with the monsoon: dependable in the wet season,
+# scarce or flooded outside it. India, Burma, Indochina, south China.
+state_trait_boi_monsoon_dependent = {
+	icon = "gfx/interface/icons/state_trait_icons/swamp.dds"
+
+	modifier = {
+		state_harvest_condition_drought_impact_mult = 0.15
+		state_harvest_condition_flood_impact_mult = 0.15
+	}
+}
+
+# An established canal and barrage system: the Nile (barrages begun
+# 1843), the Ganges Canal (1842-54), Mesopotamia and the Central
+# Asian oases. Water is easier to move and to farm.
+state_trait_boi_irrigation_heritage = {
+	icon = "gfx/interface/icons/state_trait_icons/waterfall.dds"
+
+	modifier = {
+		goods_output_water_mult = 0.15
+		building_group_bg_agriculture_throughput_add = 0.05
+	}
+}
+
+# Coastal wells draw salt as they are pumped: delta mouths, low coasts
+# and islands. A modest malus that Harbour Works can later offset.
+state_trait_boi_brackish_aquifer = {
+	icon = "gfx/interface/icons/state_trait_icons/natural_harbors.dds"
+
+	modifier = {
+		goods_output_water_mult = -0.15
+	}
+}

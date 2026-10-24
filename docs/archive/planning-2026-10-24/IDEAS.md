@@ -121,3 +121,30 @@ responses, rather than arbitrary recurring penalties.
 Waterworks, sewers, and telegraphs could extend the public-investment theme
 beyond transport. These would substantially expand the mod's scope and are
 longer-term possibilities rather than priorities for the current transport loop.
+
+### Housing goods and residential development - implementation begun, 2026-10-04
+
+See the [agreed housing design](PROPOSAL_HOUSING.md), [implementation plan](IMPLEMENTATION_PLAN_HOUSING.md),
+and optional [housing prototype](tools/housing-prototype/README.md).
+
+Housing and Luxury Housing are local goods with wealth-based demand. Subsistence
+buildings provide a modest basic supply; rural industries default to No Company
+Housing and can adopt law/technology-gated settlement PMs. Separate employer
+housing laws prohibit hostile options, reverting them to None.
+
+Dedicated residential types have fixed quality and density. Slums impose
+staffing-scaled state mortality/migration penalties plus one flat SoL penalty
+while any exist. Suburbs and luxury apartments supply both goods and offer
+staffing-scaled migration bonuses. Suburbs trade lower material costs for
+transport inputs and higher infrastructure demand than luxury apartments.
+
+Minimum residential standards block new slums but preserve existing buildings.
+Private housing must be acquired before demolition. High infrastructure demand
+favors replacing old housing with denser buildings where capacity is costly;
+workplace/peasant housing remains part of its existing workplace. Both
+Emergency Accommodation and Temporary Shelter remain in scope.
+
+The previous capacity, employment-entitlement, and delayed-eviction design is
+superseded and archived. The new module has static checks but no recorded live
+validation. World supply, infrastructure balance, private acquisition, detailed
+ownership laws, and the dedicated housing interface remain unfinished.

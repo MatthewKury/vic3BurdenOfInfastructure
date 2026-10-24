@@ -1,6 +1,5 @@
 ﻿# Separate residential group; temporarily shown under the existing Development lens.
-# No land_usage: do not silently charge arable land or urbanization.
-# Shared residential land enforcement is a separate, unfinished milestone.
+# No land_usage: permanent housing is limited by substantial infrastructure demand.
 bg_boi_residential = {
  category = development
  lens = development
@@ -12,11 +11,26 @@ bg_boi_residential = {
 }
 bg_boi_dense_housing = {
  parent_group = bg_boi_residential
- infrastructure_usage_per_level = 2
+}
+bg_boi_slum_housing = {
+ parent_group = bg_boi_dense_housing
+ infrastructure_usage_per_level = 8
+}
+bg_boi_tenement_housing = {
+ parent_group = bg_boi_dense_housing
+ infrastructure_usage_per_level = 6
+}
+bg_boi_apartment_housing = {
+ parent_group = bg_boi_dense_housing
+ infrastructure_usage_per_level = 4
+}
+bg_boi_luxury_apartment_housing = {
+ parent_group = bg_boi_dense_housing
+ infrastructure_usage_per_level = 5
 }
 bg_boi_suburban_housing = {
  parent_group = bg_boi_residential
- infrastructure_usage_per_level = 0.5
+ infrastructure_usage_per_level = 8
 }
 bg_boi_temporary_housing = {
  category = development
@@ -25,5 +39,5 @@ bg_boi_temporary_housing = {
  is_government_funded = yes
  cash_reserves_max = 10000
  urbanization = 0
- infrastructure_usage_per_level = 0.5
+ infrastructure_usage_per_level = 5
 }

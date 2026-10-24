@@ -1,0 +1,71 @@
+﻿# ================================================================
+#  Burden of Infrastructure - Waterworks
+#
+#  ONE private building that produces, imports and exports water.
+#  Three production method groups; exactly one PM is active in each:
+#
+#    pmg_boi_waterworks_source  - HOW the state gets water. Either
+#                                 produce Local Water here (wells ...
+#                                 treatment works) or IMPORT it by
+#                                 converting Bulk Water to Local
+#                                 Water. Staffed; follows technology.
+#    pmg_boi_waterworks_export  - whether to SELL surplus. Converts
+#                                 Local Water to Bulk Water. Carries
+#                                 NO employment keys at all, so the
+#                                 export setting never changes hiring.
+#    pmg_boi_waterworks_admin   - follows the BUREAUCRACY LAW, exactly
+#                                 like Public Works and Harbour Works
+#                                 (same law gates, same fallback).
+#
+#  Private on purpose (ownership_type = self): water has a real
+#  price, so the owner has a profit signal and the AI picks PMs
+#  and builds without any of the workarounds the government-funded
+#  works need. Because it is private it earns or loses money; the
+#  treasury is not paying its wages.
+#
+#  No city_type / levels_per_mesh, same as every other BOI building:
+#  a city_type would need a mesh mapping in 34 city_types files or
+#  the "backing building" cannot be created (lessons file, s.13).
+#
+#  Design record: docs/plans/03_WATER.md.
+# ================================================================
+
+building_boi_waterworks = {
+	building_group = bg_boi_waterworks
+
+	icon = "gfx/interface/icons/building_icons/boi_waterworks.dds"
+
+	production_method_groups = {
+		pmg_boi_waterworks_source
+		pmg_boi_waterworks_export
+		pmg_boi_waterworks_admin
+	}
+
+	required_construction = construction_cost_medium
+
+	ownership_type = self
+
+	# Water is local and households need it from day one, like
+	# electricity. The first level in a populated state is worth far
+	# more than expanding an existing one; after that it is an
+	# ordinary utility. Mirrors vanilla building_power_plant.
+	ai_value = {
+		value = 800
+
+		if = {
+			limit = {
+				state_population > 10000
+				NOR = {
+					has_building = building_boi_waterworks
+					any_scope_building = {
+						is_building_type = building_boi_waterworks
+						is_under_construction = yes
+					}
+				}
+			}
+			add = 3000
+		}
+	}
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+}

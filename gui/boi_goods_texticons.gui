@@ -7,3 +7,23 @@ texticon = {
 		fontsize = 18
 	}
 }
+
+texticon = {
+	icon = water
+	iconsize = {
+		texture = "gfx/interface/icons/goods_icons/boi_water.dds"
+		size = { 25 25 }
+		offset = { 0 7 }
+		fontsize = 18
+	}
+}
+
+texticon = {
+	icon = bulk_water
+	iconsize = {
+		texture = "gfx/interface/icons/goods_icons/boi_bulk_water.dds"
+		size = { 25 25 }
+		offset = { 0 7 }
+		fontsize = 18
+	}
+}

@@ -2,7 +2,7 @@
 #  Burden of Infrastructure — Law Groups
 #
 #  Road Financing: WHO pays for Public Works. See
-#  PROPOSAL_ROAD_FINANCING.md for the design.
+#  docs/plans/02_ROAD_FINANCING.md for the design.
 #
 #  Vanilla keeps every law group in common/law_groups/00_laws.txt,
 #  so a new key in its own file does not collide with anything.

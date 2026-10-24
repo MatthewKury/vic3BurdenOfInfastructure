@@ -1,7 +1,6 @@
-﻿# Planned land units per level: 1. Not yet enforced.
-building_boi_slums = {
- building_group = bg_boi_dense_housing
- icon = "gfx/interface/icons/building_icons/urban_center.dds"
+﻿building_boi_slums = {
+ building_group = bg_boi_slum_housing
+ icon = "gfx/interface/icons/building_icons/boi_slums.dds"
  production_method_groups = {
   pmg_boi_slums
  }
@@ -16,10 +15,9 @@ building_boi_slums = {
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 
-# Planned land units per level: 1. Not yet enforced.
 building_boi_tenements = {
- building_group = bg_boi_dense_housing
- icon = "gfx/interface/icons/building_icons/urban_center.dds"
+ building_group = bg_boi_tenement_housing
+ icon = "gfx/interface/icons/building_icons/boi_tenements.dds"
  production_method_groups = {
   pmg_boi_tenements
  }
@@ -30,10 +28,9 @@ building_boi_tenements = {
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 
-# Planned land units per level: 1. Not yet enforced.
 building_boi_apartments = {
- building_group = bg_boi_dense_housing
- icon = "gfx/interface/icons/building_icons/urban_center.dds"
+ building_group = bg_boi_apartment_housing
+ icon = "gfx/interface/icons/building_icons/boi_apartments.dds"
  production_method_groups = {
   pmg_boi_apartments
  }
@@ -44,10 +41,9 @@ building_boi_apartments = {
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 
-# Planned land units per level: 1. Not yet enforced.
 building_boi_luxury_apartments = {
- building_group = bg_boi_dense_housing
- icon = "gfx/interface/icons/building_icons/building_manor_houses.dds"
+ building_group = bg_boi_luxury_apartment_housing
+ icon = "gfx/interface/icons/building_icons/boi_luxury_apartments.dds"
  production_method_groups = {
   pmg_boi_luxury_apartments
  }
@@ -58,10 +54,9 @@ building_boi_luxury_apartments = {
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 
-# Planned land units per level: 3. Not yet enforced.
 building_boi_suburbs = {
  building_group = bg_boi_suburban_housing
- icon = "gfx/interface/icons/building_icons/building_manor_houses.dds"
+ icon = "gfx/interface/icons/building_icons/boi_suburbs.dds"
  production_method_groups = {
   pmg_boi_suburbs
   pmg_boi_suburban_transport
@@ -73,10 +68,9 @@ building_boi_suburbs = {
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 
-# Planned land units per level: 0. Not yet enforced.
 building_boi_temporary_shelter = {
  building_group = bg_boi_temporary_housing
- icon = "gfx/interface/icons/building_icons/building_government_administration.dds"
+ icon = "gfx/interface/icons/building_icons/boi_temporary_shelter.dds"
  production_method_groups = {
   pmg_boi_temporary_shelter
  }

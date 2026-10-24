@@ -15,12 +15,15 @@ This is an experimental release for **Victoria 3 1.13.x**. The mod descriptor de
 | **Horse-Breeding Traditions** | A regional state trait that improves horse output. |
 | **Horse mobilization options** | Horseback Reconnaissance and Horse-Drawn Transport consume horses while mobilized. |
 | **Road Financing laws** | Statute Labour, Turnpike Trusts, or Public Highways decide who pays for Public Works: peasants, road users, or the treasury. |
+| **Water and Waterworks** | A local Water good and a privately built Waterworks that produces it (wells to treatment works), imports it by converting Bulk Water, or exports surplus. Six water state traits make supply regional. Household demand is an optional module; see below. |
 
 Existing railway and port production methods no longer provide infrastructure directly. Several existing farm, mine, plantation, subsistence, urban transport, and cavalry definitions are adjusted to account for horses. Horseback Reconnaissance is a weaker early alternative to Motorized Reconnaissance. Horse-Drawn Transport gives the movement bonus of Forced March with a smaller mobilization speed bonus, no morale penalty, and a horse cost; it is mutually exclusive with the other transport choices. The 1836 setup includes starting Public Works, Harbour Works, and Horse Ranches so the new supply chain can function from the beginning of a campaign.
 
 Extra Supplies also requires potential horse supply and consumes 0.5 horses while mobilized, alongside its existing grocery cost.
 
 A new economy law group, **Road Financing**, decides who pays for Public Works. Public Highways keeps the full cost on the treasury. Statute Labour and Turnpike Trusts make Public Works cheaper but have side effects: Statute Labour lowers infrastructure output and peasant living standards, and Turnpike Trusts improve infrastructure by 15% but reduce market access. Each benefits a particular group: Landowners under Statute Labour, and the Petty Bourgeoisie and Industrialists (with Landowners) under Turnpike Trusts. Interest groups take sides through new road-financing ideologies added at game start. Britain and the United States start with Turnpike Trusts, France and Prussia with Public Highways, and all other countries with Statute Labour.
+
+**Water (experimental, untested in-game).** Water is a *local* good that cannot leave its state. The **Waterworks** is a private building with three production-method groups: a *source* (produce Local Water, from wells and water carriers up to treatment works, or import it by converting Bulk Water at about 75%), an *export* (convert surplus Local Water to Bulk Water at 75%, with no change to staffing) and an *administration* group that follows the Bureaucracy law. Wells carry a small mortality cost, steam pumping adds pollution, piped tiers consume infrastructure, and every Waterworks level takes up infrastructure like a mine does. Six state traits (Abundant Water, Dry Summers, Arid Interior, Monsoon-Dependent, Irrigation Heritage, Brackish Aquifer) scale water output regionally. Nothing consumes water until you add the optional [water demand prototype](tools/water-prototype/README.md); there is no 1836 water seed, and it cannot be loaded with the housing prototype. The plan is in [docs/plans/03_WATER.md](docs/plans/03_WATER.md).
 
 The mod includes distinct icons for horses, the three new buildings, and Horse-Breeding Traditions. A separate texticon definition displays the horse good in compact UI text, such as budget details.
 
@@ -34,9 +37,15 @@ Only English localization is included at present.
 
 ## Compatibility and development status
 
+An optional [Housing prototype](tools/housing-prototype/README.md) is under
+development. It models local basic/luxury accommodation, fixed residential
+buildings, and optional company housing. It is not enabled by this mod's normal
+playset and is not campaign-ready: world supply, infrastructure balance, and
+ownership enforcement still need implementation and live testing.
+
 The mod copies all 16 base-game state-region files to make Horse Ranches buildable, and it overrides selected game definitions. Other mods that change those same files or definitions may conflict. These copies and overrides should be reviewed after each Victoria 3 patch. See [regeneration instructions](tools/REGENERATE.md) and [validation instructions](tools/VALIDATION.md).
 
-A short Portugal debug-mode game ran without an obvious gameplay failure, but that is only a smoke test. AI construction, market balance, long campaigns, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [development plan](DEVELOPMENT_PLAN.md) for the design and remaining work.
+A short Portugal debug-mode game ran without an obvious gameplay failure, but that is only a smoke test. AI construction, market balance, long campaigns, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [planning overview](docs/OVERVIEW.md) for the design and remaining work.
 
 ## AI assistance and artwork disclaimer
 
@@ -47,6 +56,7 @@ AI-assisted work can contain mistakes. The scripts and artwork should be judged 
 ## Project files
 
 - [Balance and design notes](BALANCE.md)
-- [Development plan](DEVELOPMENT_PLAN.md)
+- [Planning overview and execution plans](docs/OVERVIEW.md)
 - [Regenerating game-version-dependent files](tools/REGENERATE.md)
 - [Static validation](tools/VALIDATION.md)
+- [Water plan](docs/plans/03_WATER.md)

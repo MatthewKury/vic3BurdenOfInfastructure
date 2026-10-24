@@ -1,0 +1,52 @@
+﻿# ================================================================
+#  Burden of Infrastructure - Waterworks building group
+#
+#  bg_boi_waterworks is a PRIVATE, standalone group in the rural
+#  (extraction) category. It deliberately does NOT use
+#  parent_group = bg_extraction: that group sets
+#  capped_by_resources = yes, which makes every building in it
+#  depend on a per-state resource entry in map_data/state_regions.
+#  A new building appears in none of those lists, so it could never
+#  be built anywhere - the same silent trap as the arable_resources
+#  whitelist for rural buildings (lessons file, section 13).
+#  always_possible = yes takes the place of a resource cap.
+#
+#  Everything else is modelled on bg_power (the other private,
+#  local-good utility): economy_of_scale, cash reserves, and
+#  default_auto_expand_rule so private capital grows it once
+#  demand exists.
+#
+#  infrastructure_usage_per_level = 2 is the standing burden the
+#  design calls "the stress of infrastructure": every level of
+#  Waterworks occupies road and pipe network, as mining does. It
+#  matches bg_mining and bg_power. The piped production methods
+#  add a further negative state_infrastructure_add of their own.
+#
+#  UNVERIFIED: that a root group in category = rural shows sensibly
+#  in the construction menu with lens = infrastructure.
+# ================================================================
+
+bg_boi_waterworks = {
+	category = rural
+
+	lens = infrastructure
+
+	always_possible = yes
+
+	economy_of_scale = yes
+
+	cash_reserves_max = 25000
+
+	should_auto_expand = {
+		default_auto_expand_rule = yes
+	}
+
+	economy_of_scale_ai_factor = 1.5
+	foreign_investment_ai_factor = 0.5
+
+	infrastructure_usage_per_level = 2
+
+	urbanization = 5
+
+	self_investment_chance_modifier = yes
+}

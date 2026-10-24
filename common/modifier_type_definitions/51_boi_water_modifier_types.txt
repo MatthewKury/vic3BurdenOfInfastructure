@@ -1,0 +1,76 @@
+﻿# ================================================================
+#  Burden of Infrastructure - Water modifier types
+#
+#  Declared by hand for the same reason as the horse types in
+#  50_boi_modifier_types.txt: a new good does NOT generate its
+#  goods_input_/goods_output_ modifier types, and an undeclared
+#  type is a hard load error for every production method or state
+#  trait that uses it. Format matches vanilla exactly.
+#
+#  _mult is used by the water state traits (goods_output_water_mult);
+#  _add is used by the Waterworks production methods.
+# ================================================================
+
+goods_input_water_add={
+	decimals=1
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_input_water_mult={
+	decimals=0
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_water_add={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_water_mult={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_input_bulk_water_add={
+	decimals=1
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_input_bulk_water_mult={
+	decimals=0
+	color=bad
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_bulk_water_add={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}
+
+goods_output_bulk_water_mult={
+	decimals=1
+	color=good
+	game_data={
+		ai_value=0
+	}
+}
