@@ -1,1 +1,4 @@
 tools/headless-runs/
+.claude/settings.local.json
+tools/ensembles/*.sqlite
+tools/ensembles/*.sqlite-journal

@@ -97,7 +97,9 @@ still unseeded.
 - Emergency Accommodation decree: 100 Authority, +15% basic output for all basic
   suppliers, −1 state SoL.
 - Debug events `boi_housing.1` to `.4` (init laws, Alentejo fixture, permissive
-  laws, protective laws).
+  laws, protective laws). Since 2026-10-31 the headless harness runs `.2` to
+  `.4` automatically as Portugal and checks the results (the `fixtures`
+  telemetry module; see `docs/HOUSING_TESTING.md`, "Automated version").
 - Generator `tools/Build-Housing.ps1` (owns four generated files in the mod
   root and never reads them back; shadows 31 vanilla building keys and all 99
   buy packages; no vanilla PM shadowed). BOI's own Horse Ranch lists company
@@ -123,6 +125,8 @@ which the harness now counts separately.
 ### Step 1: Live engine test (item 1 partly covered by headless runs; 2 to 14 not run)
 
 Run the checklist in `docs/HOUSING_TESTING.md`. Fix script errors before any tuning.
+The headless fixture checks cover the Alentejo fixture and the law-fallback
+items automatically; the rest still need a hands-on game.
 Highest-risk items:
 
 - [ ] Loads without housing errors, unknown modifiers, bad scopes, missing icons
@@ -216,3 +220,12 @@ screenshots before marking anything verified.
   with supply 3–5 times demand, mostly from subsistence output. Luxury Housing
   was short in some (Brazil and Spain sold none). The AI built a few suburbs and
   luxury apartments; no country built apartment blocks. National aggregates only.
+- **2026-10-31, headless, 1.13.11, 1836–1846, BOI with the fixtures module,
+  observer AI** (`tools/headless-runs/20261031-104008_mod`). PASS, 0 BOI error
+  lines. All 10 automated fixture checks passed: the Alentejo fixture built all
+  five buildings and raised usage by exactly 32.0; a re-run added no levels;
+  `boi_housing.3` and `.4` set their laws; hostile company housing on the
+  livestock ranch reverted to None the day after `.4` (law `on_activate`) and
+  stayed reverted after the next monthly pass; worker settlements on the
+  logging camp survived; existing slums survived. Not covered: staffing,
+  demolition, SoL and mortality effects, save/load.

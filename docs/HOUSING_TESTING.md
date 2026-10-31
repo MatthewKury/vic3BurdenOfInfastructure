@@ -82,7 +82,41 @@ event boi_housing.4
 
 This enacts protected employer housing and minimum residential standards. The first workplace must revert to None; the safe workplace must remain unchanged. Existing slums must continue operating while new construction is blocked. These debug events deliberately bypass the enactment process and are not automatic gameplay events.
 
-Because nothing references events 2 to 4, the engine logs `Event boi_housing.N is orphaned` for each at every launch. That is expected. `tools/Test-Headless.ps1` counts those three lines separately and does not treat them as BOI errors.
+### Automated version
+
+`tools/Test-Headless.ps1` runs this whole sequence by itself in every BOI run
+(skip it with `-NoFixtures`), through the `fixtures` telemetry module. Starting
+at the first monthly pulse on or after 1836-02-01, as Portugal, it:
+
+1. records Alentejo's infrastructure usage, fires `boi_housing.2`, and 30 days
+   later checks that all five buildings exist and that usage rose by 32;
+2. fires `boi_housing.2` again and 30 days later checks that no levels were
+   added;
+3. fires `boi_housing.3`, checks the permissive laws took, puts hostile company
+   housing on Alentejo's livestock ranch and worker settlements on its logging
+   camp, and checks both took;
+4. fires `boi_housing.4` and, a day later, checks the protective laws took, the
+   hostile housing reverted, the safe housing stayed and the slums survived;
+5. 35 days later, after a full monthly maintenance pass, checks again that the
+   hostile housing is gone.
+
+Results go in the run's `summary.md` under "Housing fixture checks". A `fail`
+fails the run. A `warn` marks checks that other activity can disturb: other
+construction in Alentejo moves the 32-point infrastructure figure; the AI owner
+can switch the safe PM; and the revert on enactment may wait for the monthly
+pass.
+
+First run, 2026-10-31 (`tools/headless-runs/20261031-104008_mod`, 1.13.11): all
+10 checks passed, with Alentejo usage rising by exactly 32.0. The hostile
+housing reverted on the day after `boi_housing.4`, so the law's `on_activate`
+does the work and the monthly pass is a backstop.
+
+Nothing in the shipped mod references events 2 to 4, so in a normal game the
+engine logs `Event boi_housing.N is orphaned` for each at every launch. That is
+expected and harmless. In harness runs with the fixtures module the lines
+disappear, because a reference from another loaded mod counts.
+`tools/Test-Headless.ps1` still counts them separately, for `-NoFixtures` runs,
+and does not treat them as BOI errors.
 
 ## Required runtime checklist
 

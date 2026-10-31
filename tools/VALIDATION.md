@@ -14,7 +14,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\Validate-All.ps1 -Ga
 ```
 
 `Test-ModStructure.ps1` checks UTF-8 BOMs and brace balance. It warns, rather
-than fails, for the current descriptor/metadata version mismatch.
+than fails, if the descriptor and metadata versions differ.
 
 `Test-Seed.ps1` checks the committed 1.13 seed's BOM and expected counts. Pass
 different expected counts after a reviewed game update.

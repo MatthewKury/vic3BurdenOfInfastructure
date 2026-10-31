@@ -1,0 +1,9 @@
+﻿# Headless telemetry (fixtures module). events = { } only; see the core module.
+
+# Root = country. boitm_fixture.1 starts the housing fixture chain once, for
+# Portugal; every later step is queued by trigger_event.
+on_monthly_pulse_country = {
+	events = {
+		boitm_fixture.1
+	}
+}

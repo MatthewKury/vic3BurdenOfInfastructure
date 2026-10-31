@@ -6,7 +6,7 @@ housing files are in section 3. Set `GAME` first:
 
 ```bash
 GAME="/c/Program Files (x86)/Steam/steamapps/common/Victoria 3/game"
-MOD="/c/Users/mkury/Documents/Paradox Interactive/Victoria 3/mod/BurdenOfInfastructure"
+MOD="/c/Users/mkury/Documents/Paradox Interactive/Victoria 3/mod/BurdenOfInfrastructure"
 ```
 
 ## 1. State regions — the arable whitelist

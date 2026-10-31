@@ -1,0 +1,338 @@
+﻿# Headless telemetry (ensemble module): vanilla-safe quarterly snapshot of every
+# country, state and market, for building baseline ensembles (see
+# tools/ensembles/README.md). Loaded by tools/Test-Headless.ps1 -Ensemble, on
+# top of the core module, whose boitm_* values it reuses. Never part of a release.
+# Country scope unless noted.
+
+# --- Society ----------------------------------------------------------------
+boitm_ens_literacy = { value = literacy_rate }
+boitm_ens_urbanization = { value = country_total_urbanization }
+boitm_ens_incorporated_states = { value = num_incorporated_states }
+boitm_ens_turmoil = { value = country_turmoil }
+
+# --- Standing ---------------------------------------------------------------
+boitm_ens_rank = { value = country_rank }
+boitm_ens_prestige = { value = prestige }
+boitm_ens_infamy = { value = infamy }
+boitm_ens_legitimacy = { value = legitimacy }
+boitm_ens_techs = { value = techs_researched }
+boitm_ens_army = { value = army_size }
+boitm_ens_navy = { value = navy_size }
+boitm_ens_subjects = { value = num_subjects }
+
+boitm_ens_at_war = {
+	value = 0
+	if = {
+		limit = { is_at_war = yes }
+		value = 1
+	}
+}
+
+boitm_ens_is_subject = {
+	value = 0
+	if = {
+		limit = { is_subject = yes }
+		value = 1
+	}
+}
+
+# --- Budget (weekly figures, as the budget panel shows) ---------------------
+boitm_ens_gold = { value = gold_reserves }
+boitm_ens_debt = { value = scaled_debt }
+boitm_ens_credit = { value = credit }
+boitm_ens_income = { value = total_income }
+boitm_ens_expenses = { value = total_expenses }
+boitm_ens_fixed_income = { value = fixed_income }
+boitm_ens_fixed_expenses = { value = fixed_expenses }
+boitm_ens_investment_income = { value = investment_pool_net_income }
+boitm_ens_tax_level = { value = tax_level_value }
+boitm_ens_gov_wage_level = { value = government_wage_level_value }
+boitm_ens_mil_wage_level = { value = military_wage_level_value }
+
+# --- Administration ---------------------------------------------------------
+boitm_ens_bureaucracy = { value = produced_bureaucracy }
+boitm_ens_bureaucracy_usage = { value = bureaucracy_usage }
+boitm_ens_authority = { value = produced_authority }
+boitm_ens_authority_usage = { value = authority_usage }
+boitm_ens_influence = { value = produced_influence }
+boitm_ens_influence_usage = { value = influence_usage }
+
+# --- Building levels by type ------------------------------------------------
+boitm_ens_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}
+
+boitm_ens_port_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_port }
+		add = level
+	}
+}
+
+boitm_ens_construction_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_construction_sector }
+		add = level
+	}
+}
+
+boitm_ens_urban_center_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_urban_center }
+		add = level
+	}
+}
+
+boitm_ens_trade_center_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_trade_center }
+		add = level
+	}
+}
+
+boitm_ens_admin_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_government_administration }
+		add = level
+	}
+}
+
+boitm_ens_university_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_university }
+		add = level
+	}
+}
+
+boitm_ens_livestock_ranch_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_livestock_ranch }
+		add = level
+	}
+}
+
+boitm_ens_logging_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_logging_camp }
+		add = level
+	}
+}
+
+boitm_ens_shipyard_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_shipyard }
+		add = level
+	}
+}
+
+boitm_ens_tooling_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_tooling_workshop }
+		add = level
+	}
+}
+
+boitm_ens_steel_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_steel_mill }
+		add = level
+	}
+}
+
+boitm_ens_coal_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_coal_mine }
+		add = level
+	}
+}
+
+boitm_ens_iron_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_iron_mine }
+		add = level
+	}
+}
+
+# --- Building levels by group (parent groups include their children) --------
+boitm_ens_bg_agriculture = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_agriculture }
+		add = level
+	}
+}
+
+boitm_ens_bg_subsistence = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_group = bg_subsistence_agriculture
+				is_building_group = bg_subsistence_ranching
+			}
+		}
+		add = level
+	}
+}
+
+boitm_ens_bg_plantations = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_plantations }
+		add = level
+	}
+}
+
+boitm_ens_bg_ranching = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_ranching }
+		add = level
+	}
+}
+
+boitm_ens_bg_extraction = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_extraction }
+		add = level
+	}
+}
+
+boitm_ens_bg_light_industry = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_light_industry }
+		add = level
+	}
+}
+
+boitm_ens_bg_heavy_industry = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_heavy_industry }
+		add = level
+	}
+}
+
+boitm_ens_bg_military_industry = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_military_industry }
+		add = level
+	}
+}
+
+boitm_ens_bg_government = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_government }
+		add = level
+	}
+}
+
+boitm_ens_bg_military = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_military }
+		add = level
+	}
+}
+
+boitm_ens_bg_infrastructure = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_group = bg_infrastructure }
+		add = level
+	}
+}
+
+boitm_ens_building_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			NOR = {
+				is_building_group = bg_subsistence_agriculture
+				is_building_group = bg_subsistence_ranching
+			}
+		}
+		add = level
+	}
+}
+
+# --- State scope --------------------------------------------------------------
+boitm_ens_state_population = { value = state_population }
+boitm_ens_state_urbanization = { value = total_urbanization }
+boitm_ens_state_infrastructure = { value = infrastructure }
+boitm_ens_state_infrastructure_usage = { value = infrastructure_usage }
+boitm_ens_state_unemployment_rate = { value = state_unemployment_rate }
+
+boitm_ens_state_incorporated = {
+	value = 0
+	if = {
+		limit = { is_incorporated = yes }
+		value = 1
+	}
+}
+
+boitm_ens_state_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}
+
+boitm_ens_state_port_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_port }
+		add = level
+	}
+}
+
+boitm_ens_state_urban_center_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_urban_center }
+		add = level
+	}
+}
+
+boitm_ens_state_construction_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_construction_sector }
+		add = level
+	}
+}
+
+boitm_ens_state_building_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			NOR = {
+				is_building_group = bg_subsistence_agriculture
+				is_building_group = bg_subsistence_ranching
+			}
+		}
+		add = level
+	}
+}

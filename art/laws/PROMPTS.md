@@ -1,6 +1,6 @@
 # Road financing law icons
 
-Generated with the built-in image generation tool, using the existing vanilla law icons as style references.
+Generated with the built-in image generation tool, using the existing vanilla law icons (interventionism, manorialism, per-capita taxation) as style references. The reference copies and previews are not kept here; the finished icons are in `gfx/interface/icons/law_icons/`.
 
 ## boi_statute_labour
 

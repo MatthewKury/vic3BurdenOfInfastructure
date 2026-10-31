@@ -1,0 +1,8 @@
+﻿# Headless telemetry (ensemble module). events = { } only; see the core module.
+
+# Root = country
+on_monthly_pulse_country = {
+	events = {
+		boitm_ens.1
+	}
+}

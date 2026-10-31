@@ -1,6 +1,6 @@
 # Plan 1: Core infrastructure and horses
 
-Updated: 2026-10-24. Back to the [overview](../OVERVIEW.md).
+Updated: 2026-10-31. Back to the [overview](../OVERVIEW.md).
 
 Condensed from the development plan (2026-08-23, updated to 2026-09-23), the
 review of 2026-09-21, the deferred-ideas list, and the tools audits. Full
@@ -58,7 +58,12 @@ buildings start empty and caused a self-curing shortage every game).
   +497, MEX +486, HUN +439. See `tools/HORSE_BALANCE_1836.md`.
 - Colonised states are deliberately not seeded. Conquest needs no handling.
 
-### AI (2026-09-23)
+### AI (2026-09-23, partly superseded 2026-10-30)
+
+The `ai_value` priorities in the first bullet turned out to have no visible
+effect on Public Works and Harbour Works; the scripted fallback under
+"Validation done" below is what makes the AI build them. They are kept pending
+a reinvestigation (step 3).
 
 - Public Works (base 3000) and Harbour Works (base 1500) multiply `ai_value` by
   spare infrastructure: ×6 below −20, ×4 below 0, ×2 under 5, ×1.5 under 15,
@@ -68,9 +73,12 @@ buildings start empty and caused a self-curing shortage every game).
   `common/script_values/50_boi_ai_values.txt`.
 - Railway priority now follows transportation price; its auto-expansion no
   longer reacts to infrastructure deficits (full-key `building_railway` shadow).
+- Horse Ranch priority (base 1200) follows the local horse price the same way
+  (×0.8 to ×1.2, `boi_ai_horse_output_price`; added 2026-10-31).
 - Public Works and Harbour Works auto-expand when spare infra is under 5, the
   owner is not in default, the building is at least 90% staffed, and none is
-  already under construction. Opt-in toggle.
+  already under construction. This is the player's opt-in auto-expand toggle
+  (`should_auto_expand`), separate from the AI fallback.
 
 ### Architecture decision (2026-09-23)
 
@@ -153,6 +161,14 @@ country with split states:
 - [ ] PM upgrades without local transportation or electricity (a more productive
       PM is useless if its inputs are missing). Newly colonised states.
 - [ ] Horse Ranch PM choice under cheap horses and expensive grain and tools.
+- [ ] **Reinvestigate `ai_value` on Public Works and Harbour Works** (deferred at
+      the author's request, 2026-10-31). Find out whether the engine reads it at
+      all for government buildings, for example by comparing runs with the
+      values set very high and very low while the fallback event is off. Then
+      either drop the values and their helpers in `50_boi_ai_values.txt`, or
+      document what they do.
+- [ ] Check that the new Horse Ranch price factor shifts ranch construction
+      toward expensive-horse markets (GBR is the clearest test).
 - [ ] Decide whether auto-expansion needs a wider budget-health guard than
       "not in default", and a buffer to stop oscillation.
 

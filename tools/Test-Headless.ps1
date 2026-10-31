@@ -9,7 +9,12 @@
 # run folder from tools/headless-telemetry/: the core module always, and the
 # boi / housing modules when a loaded mod defines horses / boi_housing (BOI
 # defines both). Its BOITM| lines in debug.log are read by
-# tools/Get-HeadlessReport.ps1.
+# tools/Get-HeadlessReport.ps1. With housing, the fixtures module also runs the
+# housing debug events as Portugal (skip with -NoFixtures); its BOIFIX| checks
+# are summarised here, and any "fail" fails the run. -Ensemble adds the
+# quarterly all-country snapshot module (BOIENS| lines) that
+# tools/Invoke-HeadlessEnsemble.ps1 collects into an ensemble database.
+# Every run also writes run.json, the machine-readable form of summary.md.
 #
 # Player state it touches -- content_load.json, pdx_settings.json,
 # continue_game.json and the autosave*.v3 slots -- is backed up into the run
@@ -21,6 +26,7 @@ param(
     [string]$GamePath = 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3',
     [string]$UntilDate = '1837.1.1',
     [int]$TimeoutMinutes = 30,
+    [int]$StallMinutes = 5,
     [ValidateSet('never', 'monthly', 'quarteryear', 'halfyear', 'yearly', 'five_year')]
     [string]$Autosave = 'yearly',
     [switch]$Control,
@@ -28,6 +34,8 @@ param(
     [switch]$NoSaves,
     [string[]]$ExtraMods,
     [switch]$NoTelemetry,
+    [switch]$NoFixtures,
+    [switch]$Ensemble,
     [string[]]$ExtraGameArgs,
     [string]$RestoreFrom
 )
@@ -53,6 +61,8 @@ function Restore-PlayerState([string]$RunDir) {
     Get-ChildItem -LiteralPath $backup -Filter 'autosave*.v3' -File |
         Copy-Item -Destination $saveDir -Force
     Remove-Item -LiteralPath (Join-Path $backup 'PENDING') -Force
+    # The autosave copies (about 340 MB a run) are only needed until restored.
+    Get-ChildItem -LiteralPath $backup -Filter 'autosave*.v3' -File | Remove-Item -Force
     Write-Host "Restored player state from $backup"
 }
 
@@ -62,6 +72,7 @@ if ($RestoreFrom) {
 }
 
 if ($UntilDate -notmatch '^\d{4}\.\d{1,2}\.\d{1,2}$') { throw "UntilDate must look like 1837.1.1, got '$UntilDate'" }
+if ($Ensemble -and $NoTelemetry) { throw '-Ensemble is a telemetry module; it cannot be combined with -NoTelemetry.' }
 $exe = Join-Path $GamePath 'binaries\victoria3.exe'
 if (-not (Test-Path -LiteralPath $exe)) { throw "victoria3.exe not found at $exe" }
 if (-not (Test-Path -LiteralPath (Join-Path $userDir 'content_load.json'))) { throw "content_load.json not found in $userDir" }
@@ -97,7 +108,11 @@ if (-not $NoTelemetry) {
     }
     $telemetryModules = @('core')
     if ($armMods | Where-Object { Test-DefinesGoods $_ 'horses' }) { $telemetryModules += 'boi' }
-    if ($armMods | Where-Object { Test-DefinesGoods $_ 'boi_housing' }) { $telemetryModules += 'housing' }
+    if ($armMods | Where-Object { Test-DefinesGoods $_ 'boi_housing' }) {
+        $telemetryModules += 'housing'
+        if (-not $NoFixtures) { $telemetryModules += 'fixtures' }
+    }
+    if ($Ensemble) { $telemetryModules += 'ensemble' }
     foreach ($module in $telemetryModules) {
         $source = Join-Path $PSScriptRoot "headless-telemetry\$module"
         Get-ChildItem -LiteralPath $source -Recurse -File | ForEach-Object {
@@ -169,57 +184,148 @@ try {
     $process = Start-Process -FilePath $exe -ArgumentList $gameArgs -WorkingDirectory (Split-Path $exe) -PassThru
 
     # The game keeps <name>.log plus five rotated copies capped at 512 KB, and
-    # rotates again at launch, so copy new bytes as they appear. Offset tracks
-    # how far into the live file the mirror has read.
+    # rotates again at launch, so copy new bytes as they appear. An ensemble
+    # snapshot writes about 2 MB within a second, so several rotations can land
+    # between two polls. Each file is identified by its first $headSize bytes:
+    # Head is the file being read (adopted only once it has a full head, since
+    # a short prefix like "[11:38:3" also matches the next file), Offset how far
+    # into it, and Done the newest file read to the end, so files that rotated
+    # past before being adopted are still found among .1 ... .5.
     $mirrors = @{}
-    foreach ($name in 'error', 'debug', 'game') { $mirrors[$name] = @{ Offset = 0L; Live = $false } }
+    foreach ($name in 'error', 'debug', 'game') {
+        $mirrors[$name] = @{ Offset = 0L; Live = $false; Initial = $true; Head = [byte[]]@(); Done = [byte[]]@() }
+    }
     $copiedSaves = @{}
     $saveIndex = 0
+    $rotationOverruns = 0
+    $headSize = 256
 
-    function Read-Tail([string]$Path, [long]$From) {
-        $stream = [IO.File]::Open($Path, 'Open', 'Read', 'ReadWrite, Delete')
-        try {
-            if ($From -ge $stream.Length) { return ,([byte[]]@()) }
-            $stream.Seek($From, 'Begin') | Out-Null
-            $buffer = New-Object byte[] ($stream.Length - $From)
-            $read = $stream.Read($buffer, 0, $buffer.Length)
-            if ($read -lt $buffer.Length) { [Array]::Resize([ref]$buffer, $read) }
-            return ,$buffer
-        } finally { $stream.Dispose() }
+    function Read-StreamTail([IO.Stream]$Stream, [long]$From) {
+        $length = $Stream.Length
+        if ($From -ge $length) { return ,([byte[]]@()) }
+        $Stream.Seek($From, 'Begin') | Out-Null
+        $buffer = New-Object byte[] ($length - $From)
+        $read = $Stream.Read($buffer, 0, $buffer.Length)
+        if ($read -lt $buffer.Length) { [Array]::Resize([ref]$buffer, $read) }
+        return ,$buffer
+    }
+
+    function Read-StreamHead([IO.Stream]$Stream) {
+        $Stream.Seek(0, 'Begin') | Out-Null
+        $buffer = New-Object byte[] ([Math]::Min([long]$headSize, $Stream.Length))
+        $read = $Stream.Read($buffer, 0, $buffer.Length)
+        if ($read -lt $buffer.Length) { [Array]::Resize([ref]$buffer, $read) }
+        return ,$buffer
+    }
+
+    # True when Candidate starts with Known, i.e. it is the same file grown.
+    function Test-SameHead([byte[]]$Known, [byte[]]$Candidate) {
+        if ($Candidate.Length -lt $Known.Length) { return $false }
+        for ($i = 0; $i -lt $Known.Length; $i++) { if ($Known[$i] -ne $Candidate[$i]) { return $false } }
+        $true
     }
 
     function Add-Bytes([string]$Path, [byte[]]$Bytes) {
+        if (-not $Bytes.Length) { return }
         $stream = [IO.File]::Open($Path, 'Append', 'Write', 'Read')
         try { $stream.Write($Bytes, 0, $Bytes.Length) } finally { $stream.Dispose() }
     }
 
-    function Update-Mirrors {
+    # One poll of one log. Handles[0] is <name>.log, Handles[k] is <name>.k.log;
+    # all were opened together, and an open handle follows its file through
+    # renames, so indices can't shift while this runs.
+    function Sync-Log($State, [hashtable]$Handles, [hashtable]$Heads, [hashtable]$Fresh, [string]$Out, [bool]$Final) {
+        function Find-Rotated([byte[]]$Known) {
+            foreach ($k in 1..5) { if ($Heads.ContainsKey($k) -and (Test-SameHead $Known $Heads[$k])) { return $k } }
+            0
+        }
+        if ($State.Initial) {
+            # First sight of this run's log: files that already rotated away
+            # since launch (written after it) come first, oldest first.
+            for ($k = 5; $k -ge 1; $k--) {
+                if ($Handles.ContainsKey($k) -and $Fresh[$k]) {
+                    Add-Bytes $Out (Read-StreamTail $Handles[$k] 0)
+                    $State.Done = $Heads[$k]
+                }
+            }
+            $State.Initial = $false
+        }
+        if ($State.Head.Length) {
+            if ($Handles.ContainsKey(0) -and (Test-SameHead $State.Head $Heads[0])) {
+                $bytes = Read-StreamTail $Handles[0] $State.Offset
+                Add-Bytes $Out $bytes
+                $State.Offset += $bytes.Length
+                return
+            }
+            # Rotated away: finish it wherever it now sits.
+            $k = Find-Rotated $State.Head
+            if ($k) {
+                Add-Bytes $Out (Read-StreamTail $Handles[$k] $State.Offset)
+                $State.Done = $State.Head
+            } else {
+                $script:rotationOverruns++
+                $State.Done = [byte[]]@()
+            }
+            $State.Head = [byte[]]@()
+            $State.Offset = 0L
+        }
+        if ($State.Done.Length) {
+            # Whole files newer than the last finished one.
+            $j = Find-Rotated $State.Done
+            if ($j) {
+                for ($k = $j - 1; $k -ge 1; $k--) {
+                    Add-Bytes $Out (Read-StreamTail $Handles[$k] 0)
+                    $State.Done = $Heads[$k]
+                }
+            } else {
+                $script:rotationOverruns++
+                $State.Done = [byte[]]@()
+            }
+        }
+        if ($Handles.ContainsKey(0) -and ($Heads[0].Length -ge $headSize -or $Final)) {
+            $State.Head = $Heads[0]
+            $bytes = Read-StreamTail $Handles[0] 0
+            Add-Bytes $Out $bytes
+            $State.Offset = $bytes.Length
+            $State.Done = [byte[]]@()
+        }
+    }
+
+    function Update-Mirrors([switch]$Final) {
         foreach ($name in @($mirrors.Keys)) {
             $state = $mirrors[$name]
             $live = Join-Path $logDir "$name.log"
             if (-not (Test-Path -LiteralPath $live)) { continue }
-            $item = Get-Item -LiteralPath $live
             if (-not $state.Live) {
-                if ($item.LastWriteTime -lt $launchTime.AddSeconds(-2)) { continue }
+                if ((Get-Item -LiteralPath $live).LastWriteTime -lt $launchTime.AddSeconds(-2)) { continue }
                 $state.Live = $true
             }
             $out = Join-Path $mirrorDir "$name.log"
-            try {
-                if ($item.Length -lt $state.Offset) {
-                    # Rotated since the last poll: finish the old file from .1.log.
-                    $rotated = Join-Path $logDir "$name.1.log"
-                    if (Test-Path -LiteralPath $rotated) {
-                        $bytes = Read-Tail $rotated $state.Offset
-                        if ($bytes.Length) { Add-Bytes $out $bytes }
+            for ($attempt = 0; $attempt -lt 3; $attempt++) {
+                $handles = @{}
+                $heads = @{}
+                try {
+                    foreach ($k in 0..5) {
+                        $path = if ($k) { Join-Path $logDir "$name.$k.log" } else { $live }
+                        try { $handles[$k] = [IO.File]::Open($path, 'Open', 'Read', 'ReadWrite, Delete') } catch [IO.IOException] { }
                     }
-                    $state.Offset = 0L
+                    foreach ($k in @($handles.Keys)) { $heads[$k] = Read-StreamHead $handles[$k] }
+                    # A rotation while the handles were opening shows up as one
+                    # file under two names; try again.
+                    $distinct = @($heads.Values | Where-Object { $_.Length } |
+                        ForEach-Object { [Convert]::ToBase64String($_) } | Sort-Object -Unique).Count
+                    if ($distinct -lt @($heads.Values | Where-Object { $_.Length }).Count) { continue }
+                    $fresh = @{}
+                    foreach ($k in 1..5) {
+                        $fresh[$k] = [IO.File]::GetLastWriteTime((Join-Path $logDir "$name.$k.log")) -ge $launchTime.AddSeconds(-2)
+                    }
+                    Sync-Log $state $handles $heads $fresh $out $Final.IsPresent
+                    break
+                } catch [IO.IOException] {
+                } finally {
+                    foreach ($stream in $handles.Values) { $stream.Dispose() }
                 }
-                $bytes = Read-Tail $live $state.Offset
-                if ($bytes.Length) {
-                    Add-Bytes $out $bytes
-                    $state.Offset += $bytes.Length
-                }
-            } catch [IO.IOException] { }
+            }
         }
         if ($NoSaves) { return }
         foreach ($save in Get-ChildItem -LiteralPath $saveDir -Filter 'autosave*.v3' -File) {
@@ -241,13 +347,30 @@ try {
 
     $deadline = $launchTime.AddMinutes($TimeoutMinutes)
     $lastReport = Get-Date
+    # The game sometimes hangs after reaching -run_until instead of quitting
+    # (seen once for 18 min, 1.13.11), so silence in debug.log ends the run.
+    $lastGrowth = Get-Date
+    $lastSize = -1L
+    $debugMirrorPath = Join-Path $mirrorDir 'debug.log'
     while (-not $process.HasExited) {
-        Start-Sleep -Seconds 5
+        # An ensemble snapshot rotates debug.log four times in about a second,
+        # and the ring holds five, so poll often.
+        Start-Sleep -Milliseconds 500
         Update-Mirrors
         if ((Get-Date) -gt $deadline) {
             Stop-Process -Id $process.Id -Force
             $process.WaitForExit()
             $exitReason = "timeout after $TimeoutMinutes min"
+            break
+        }
+        $size = if (Test-Path -LiteralPath $debugMirrorPath) { (Get-Item -LiteralPath $debugMirrorPath).Length } else { 0L }
+        if ($size -ne $lastSize) {
+            $lastSize = $size
+            $lastGrowth = Get-Date
+        } elseif (((Get-Date) - $lastGrowth).TotalMinutes -ge $StallMinutes) {
+            Stop-Process -Id $process.Id -Force
+            $process.WaitForExit()
+            $exitReason = "stalled: no log output for $StallMinutes min"
             break
         }
         if (((Get-Date) - $lastReport).TotalMinutes -ge 2) {
@@ -257,7 +380,7 @@ try {
     }
     Start-Sleep -Seconds 3
     Update-Mirrors
-    Update-Mirrors
+    Update-Mirrors -Final
 
     if (Test-Path -LiteralPath $crashDir) {
         $crashDumps = @(Get-ChildItem -LiteralPath $crashDir | Where-Object { $_.Name -notin $crashesBefore } | ForEach-Object Name)
@@ -296,35 +419,69 @@ $modFiles = @($armMods | ForEach-Object {
 $messages = $errorLines | ForEach-Object { $_ -replace '^\[\d\d:\d\d:\d\d\]', '' }
 $shadowLines = @($messages | Where-Object { $_ -match 'Duplicated key .* will not be created' })
 # Console-only debug events (housing fixtures boi_housing.2-.4, see
-# docs/HOUSING_TESTING.md) are referenced by nothing, so the engine logs them
-# as orphaned at every launch. Expected; counted separately, not as errors.
+# docs/HOUSING_TESTING.md) are referenced by nothing in the shipped mod, so the
+# engine logs them as orphaned at launch. The fixtures module references them,
+# so the lines only appear in -NoFixtures runs. Expected; counted separately,
+# not as errors.
 $expectedPatterns = @('Event boi_housing\.[234] is orphaned$')
 $expectedLines = @($messages | Where-Object { $line = $_; $expectedPatterns | Where-Object { $line -match $_ } } | Sort-Object -Unique)
 $boiLines = @($messages | Where-Object {
         $line = $_
         if ($line -match 'Duplicated key .* will not be created') { return $false }
         if ($expectedPatterns | Where-Object { $line -match $_ }) { return $false }
-        if ($line -match '(?i)boitm') { return $false }
-        if ($line -match '(?i)boi_|BurdenOfInfastructure') { return $true }
+        if ($line -match '(?i)boitm|BOIENS') { return $false }
+        if ($line -match '(?i)boi_|BurdenOfInfrastructure') { return $true }
         foreach ($file in $modFiles) { if ($line.Contains($file)) { return $true } }
         $false
     } | Sort-Object -Unique)
-$telemetryErrors = @($messages | Where-Object { $_ -match '(?i)boitm' } | Sort-Object -Unique)
+$telemetryErrors = @($messages | Where-Object { $_ -match '(?i)boitm|BOIENS' } | Sort-Object -Unique)
 # A data function that fails to resolve leaves its key with no value.
 $telemetryLines = @([regex]::Matches($debugText, 'BOITM\|[^\r\n]*') | ForEach-Object Value)
 $blankTelemetry = @($telemetryLines | Where-Object { $_ -match '=(;|$)' } |
     ForEach-Object { ($_ -split '\|')[1] } | Sort-Object -Unique)
+# Ensemble snapshot lines (BOIENS|<group>|<date>|...): same blank-value check,
+# plus a count of snapshot dates for the summary.
+$ensembleLines = @([regex]::Matches($debugText, 'BOIENS\|[^\r\n]*') | ForEach-Object Value)
+$blankEnsemble = @($ensembleLines | Where-Object { $_ -match '=(;|$)' } |
+    ForEach-Object { ($_ -split '\|')[1] } | Sort-Object -Unique)
+$ensembleSnapshots = @($ensembleLines | Where-Object { $_ -like 'BOIENS|snapshot|*' } | ForEach-Object { ($_ -split '\|')[2] })
+# Housing fixture checks: BOIFIX|<date>|<check>|<pass/fail/warn/info>|<detail>
+$fixtureLines = @([regex]::Matches($debugText, 'BOIFIX\|[^\r\n]*') | ForEach-Object Value)
+$fixtures = @($fixtureLines | ForEach-Object {
+        $parts = $_ -split '\|', 5
+        [pscustomobject]@{ Date = $parts[1]; Check = $parts[2]; Result = $parts[3]; Detail = $parts[4] }
+    })
+$fixtureFailures = @($fixtures | Where-Object Result -eq 'fail' | ForEach-Object Check)
+$blankFixtures = @($fixtures | Where-Object { $_.Detail -match '=(;|$)' } | ForEach-Object Check)
+$fixtureStatus = if (-not ($telemetryModules -contains 'fixtures')) { 'off' }
+    elseif (-not $fixtures) { 'did not run (Portugal missing, or the run ended before 1836.2.1)' }
+    elseif (-not ($fixtures | Where-Object Check -eq 'complete')) { "incomplete ($($fixtures.Count) lines; the chain takes about 100 days)" }
+    else { "$(@($fixtures | Where-Object Result -eq 'pass').Count) pass, $(@($fixtures | Where-Object Result -eq 'warn').Count) warn, $($fixtureFailures.Count) fail" }
 $topSources =$messages | ForEach-Object { if ($_ -match '^\[([^\]]+)\]') { $Matches[1] } } |
     Group-Object | Sort-Object Count -Descending | Select-Object -First 15
 
 $failures = @()
-if ($exitReason -ne 'exited on its own') { $failures += $exitReason }
+# A stall after the ensemble's last snapshot (the quarter of -UntilDate) is the
+# exit hang: the data is complete, so it does not fail the run.
+$stallAfterEnd = $false
+if ($exitReason -like 'stalled*' -and $ensembleSnapshots) {
+    $culture = [Globalization.CultureInfo]::InvariantCulture
+    $last = [datetime]::ParseExact($ensembleSnapshots[-1], 'MMMM d, yyyy', $culture)
+    $until = [datetime]::ParseExact($UntilDate, 'yyyy.M.d', $culture)
+    $stallAfterEnd = $last.Year -eq $until.Year -and [math]::Floor(($last.Month - 1) / 3) -eq [math]::Floor(($until.Month - 1) / 3)
+    if ($stallAfterEnd) { $exitReason += ' after the last snapshot; killed' }
+}
+if ($exitReason -ne 'exited on its own' -and -not $stallAfterEnd) { $failures += $exitReason }
 if ($crashDumps) { $failures += "crash dump(s): $($crashDumps -join ', ')" }
 if ($missingMods) { $failures += "not mounted: $($missingMods -join ', ')" }
 if ($unexpectedMounts) { $failures += "unexpected mount(s): $($unexpectedMounts -join ' | ')" }
 if ($boiLines) { $failures += "$($boiLines.Count) unique BOI error line(s)" }
 if ($telemetryErrors) { $failures += "$($telemetryErrors.Count) unique telemetry error line(s)" }
 if ($blankTelemetry) { $failures += "telemetry group(s) with blank values: $($blankTelemetry -join ', ')" }
+if ($blankEnsemble) { $failures += "ensemble group(s) with blank values: $($blankEnsemble -join ', ')" }
+if ($rotationOverruns) { $failures += "log mirror lost $rotationOverruns rotation(s): over 5 rotations between polls" }
+if ($fixtureFailures) { $failures += "housing fixture check(s) failed: $($fixtureFailures -join ', ')" }
+if ($blankFixtures) { $failures += "housing fixture check(s) with blank values: $($blankFixtures -join ', ')" }
 
 Set-Content -LiteralPath (Join-Path $runDir 'boi_errors.log') -Value (@($boiLines) + @($telemetryErrors)) -Encoding UTF8
 $summary = @(
@@ -337,16 +494,57 @@ $summary = @(
     "- error.log: $($errorLines.Count) lines, $(@($messages | Sort-Object -Unique).Count) unique; shadow 'Duplicated key' lines: $($shadowLines.Count)",
     "- BOI-attributed unique lines: $($boiLines.Count) (see boi_errors.log); expected debug-event lines: $($expectedLines.Count)",
     "- Telemetry: $(if ($telemetryModules) { "modules $($telemetryModules -join ', '); $($telemetryLines.Count) BOITM lines; $($telemetryErrors.Count) error lines" } else { 'off' })",
+    "- Housing fixtures: $fixtureStatus",
+    "- Ensemble: $(if ($telemetryModules -contains 'ensemble') { "$($ensembleSnapshots.Count) snapshot(s), $($ensembleLines.Count) BOIENS lines; first $($ensembleSnapshots | Select-Object -First 1), last $($ensembleSnapshots | Select-Object -Last 1)" } else { 'off' })",
     '',
     '## Top error sources',
     ''
 ) + @($topSources | ForEach-Object { "- $($_.Count) x $($_.Name)" })
+if ($fixtures) {
+    $summary += @('', '## Housing fixture checks', '', '| date | check | result | detail |', '|---|---|---|---|') +
+        @($fixtures | ForEach-Object { "| $($_.Date) | $($_.Check) | $($_.Result) | $($_.Detail) |" })
+}
 if ($boiLines -or $telemetryErrors) {
     $summary += @('', '## BOI and telemetry lines (first 40)', '') +
         @(@($boiLines) + @($telemetryErrors) | Select-Object -First 40 | ForEach-Object { "    $_" })
 }
 $summary | Set-Content -LiteralPath (Join-Path $runDir 'summary.md') -Encoding UTF8
 $summary | Write-Host
+
+# run.json: what summary.md says, for tools (Build-EnsembleDb.py stores it so
+# an ensemble database outlives the run folders).
+$gameVersion = ($mountLines | ForEach-Object { if ($_ -match 'matched game version (\S+?)\.?$') { $Matches[1] } } | Select-Object -First 1)
+$dlcRoot = Join-Path $GamePath 'game\dlc'
+$installedDlc = @(if (Test-Path -LiteralPath $dlcRoot) { Get-ChildItem -LiteralPath $dlcRoot -Directory | ForEach-Object Name })
+$modInfo = @($armMods | ForEach-Object {
+        $commit = $null; $dirty = $null
+        if (Get-Command git -ErrorAction SilentlyContinue) {
+            $commit = (& git -C $_ rev-parse HEAD 2>$null)
+            if ($commit) { $dirty = [bool](& git -C $_ status --porcelain 2>$null) }
+        }
+        [ordered]@{ path = $_; commit = $commit; dirty = $dirty }
+    })
+$runInfo = [ordered]@{
+    run = Split-Path $runDir -Leaf
+    arm = $arm
+    result = if ($failures) { 'FAIL' } else { 'PASS' }
+    failures = @($failures)
+    until = $UntilDate
+    autosave = $Autosave
+    args = $gameArgs
+    exit_reason = $exitReason
+    minutes = [math]::Round($elapsed.TotalMinutes, 1)
+    launched = $launchTime.ToUniversalTime().ToString('o')
+    game_version = $gameVersion
+    mods = $modInfo
+    telemetry_modules = @($telemetryModules)
+    installed_dlc = $installedDlc
+    disabled_dlc = @($disabledDlc | ForEach-Object { $_.paradoxAppId })
+    ensemble_snapshots = $ensembleSnapshots.Count
+    ensemble_lines = $ensembleLines.Count
+    rotation_overruns = $rotationOverruns
+}
+[IO.File]::WriteAllText((Join-Path $runDir 'run.json'), ($runInfo | ConvertTo-Json -Depth 5), $utf8NoBom)
 
 if ($failures) { exit 1 }
 Write-Host "PASS: headless $arm run reached $UntilDate cleanly. Output: $runDir"

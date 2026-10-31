@@ -1,4 +1,8 @@
 ﻿# All values are evaluated in STATE scope, as required by building ai_value.
+# The Public Works and Harbour Works factors (urgency and input prices) had
+# no visible effect in 2026-10-30 headless runs; they are kept pending a
+# reinvestigation. The railway and Horse Ranch output factors act on privately
+# built buildings and are assumed live.
 # Absolute spare infrastructure; unlike vanilla state_infrastructure_balance,
 # this still detects a deficit when total infrastructure is zero.
 boi_ai_spare_infrastructure = {
@@ -111,6 +115,27 @@ boi_ai_merchant_marine_input_price = {
 	else_if = {
 		limit = { sg:merchant_marine = { state_goods_cheaper >= 0.25 } }
 		value = 1.1
+	}
+}
+
+# Horse Ranches PRODUCE horses: expensive output raises their priority.
+boi_ai_horse_output_price = {
+	value = 1
+	if = {
+		limit = { sg:horses = { state_goods_pricier >= 0.5 } }
+		value = 1.2
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_pricier >= 0.25 } }
+		value = 1.1
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_cheaper >= 0.5 } }
+		value = 0.8
+	}
+	else_if = {
+		limit = { sg:horses = { state_goods_cheaper >= 0.25 } }
+		value = 0.9
 	}
 }
 

@@ -86,9 +86,43 @@ does not instantly collapse the world.
 
 State traits (rivers, natural harbours) add a further flat 15–20 in many states.
 
+### Measured vanilla dynamics, 1836–1846 (10-run ensemble)
+
+The figures above are static definitions. These come from 10 unattended vanilla
+games (1.13.11, all DLC, no mods). They are stored in
+`tools/ensembles/ensembles.sqlite` as ensemble `vanilla_1836_1846`, and written
+up in [`docs/reports/vanilla_1836_1846/REPORT.md`](docs/reports/vanilla_1836_1846/REPORT.md).
+Means across runs; the spread is sd as % of the mean, at 1846.
+
+| Measure | 1836 | 1846 | Spread | Why it matters for BOI |
+|---|---|---|---|---|
+| World infrastructure utilization (usage / supply) | 36% | 42% | 1.1% | Infrastructure is slack in aggregate; BOI's scarcity has room before it bites globally |
+| States with usage > supply | 9 | 27 | 9.6% | Shortage is local and spreading; the first metric BOI should move |
+| Pop-weighted market access | 100% | 99.8% | 0.1% | Vanilla barely penalises shortage; BOI moving it would be obvious |
+| World railway levels | 18 | 91 | 11% | The vanilla infrastructure engine BOI removes; noisiest infrastructure metric |
+| Transport supply / demand | 14% | 22% | – | Transport is massively short in vanilla |
+| Transport demand in markets at the price ceiling | 99% | 89% | 2.4% | The transport *price* can't show more shortage; use orders and this share |
+| Construction sector levels | 83 | 588 | 5.5% | What competes with Public Works and housing for construction |
+| Urban center levels | 601 | 811 | 1.1% | Housing proxy |
+| Livestock ranch levels | 502 | 702 | 1.3% | AI's appetite for ranching; context for Horse Ranch build rates |
+| World GDP | 367 M | 529 M | 1.7% | |
+| Pop-weighted SoL | 9.05 | 8.41 | 2.2% | Tracks China (36% of world population); compare per country |
+
+**Testing a change against this baseline:** with 10 BOI runs against these 10,
+a difference is only real if it exceeds the minimum detectable effect. That is
+about 1–3% for world GDP, SoL, infrastructure usage, urban centers and ranches;
+7–8% for unemployment, construction and gold; 13–15% for short states and
+railways. Wars can't be tested. Three of the ten vanilla runs had a European
+revolution wave, which shifts country counts, radicals and gold by 4–8%. Run
+`tools/Invoke-HeadlessEnsemble.ps1 -Name boi_1836_1846 -Runs 10` (about 2 h),
+then `python tools/ensembles/Make-EnsembleReport.py --ensemble vanilla_1836_1846 --compare boi_1836_1846`.
+
 ---
 
 ## 2. Proposed costing
+
+Production method names in this section are shortened: the implemented keys
+carry a `pm_boi_` prefix (`pm_coastal_lighters` is `pm_boi_coastal_lighters`).
 
 ### The `horses` good
 
@@ -236,7 +270,7 @@ Split **375 technical / 125 administrative**.
 |---|---|---|---|
 | pm_coastal_lighters | **375** | — | — |
 | pm_steam_lighters | 275 | 100 | — |
-| pm_container_wharves | **175** | **150** | **50** |
+| pm_electrified_quays | **175** | **150** | **50** |
 
 Lightermen and stevedores give way to crane and winch operators — the same
 transition vanilla's own port ladder makes, compressed into three tiers.
@@ -256,8 +290,8 @@ Infrastructure building throughout.
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
 | pm_coastal_lighters | start | merchant_marine 4 | 200 | 10 | 20 |
-| pm_steam_lighters | 3 | merchant_marine 5, coal 3 | 340 | 18 | 19 |
-| pm_container_wharves | 5 | merchant_marine 6, electricity 4 | 420 | 25 | 17 |
+| pm_steam_lighters | 3 (`gantry_cranes`) | merchant_marine 5, coal 3 | 340 | 18 | 19 |
+| pm_electrified_quays | 4 (`concrete_dockyards`) | merchant_marine 6, electricity 4 | 420 | 25 | 17 |
 
 Priced at the **same £/infra as the main building on purpose**. Coastal states
 do not get *cheaper* infrastructure, they get *more total capacity* — and they
@@ -337,14 +371,8 @@ iron requirements remain unchanged.
 
 These are base goods costs only, excluding wages, training methods,
 mobilization options, and consumption modifiers. Actual costs vary with prices.
----|---|---|---|
-| hussars | grain 1 | **1** | 20 → 50 |
-| dragoons | grain 1, small_arms 2 | **1** | 20 + arms → +30 |
-| cuirassiers | grain 1, small_arms 2 | **1** | +30 |
-| lancers | grain 2, small_arms 2, iron 2 | **2** | +60 |
-
-Mirrors vanilla's own grain pattern (1/1/1/2). Meaningful but not crippling —
-cavalry is a minority of most armies.
+Horse counts mirror vanilla's grain pattern (1/1/1/2). Meaningful but not
+crippling — cavalry is a minority of most armies.
 
 ---
 
@@ -474,9 +502,11 @@ true profit is larger than the percentages below.
 
 ### What is and is not affected
 
-**Unaffected: railways and ports.** They lost `state_infrastructure_add`, which
-is a state modifier and not a salable good. Their goods inputs and outputs are
-byte-identical to vanilla, so their profitability does not move at all.
+**Recipes unchanged: railways and ports.** They lost `state_infrastructure_add`,
+which is a state modifier and not a salable good. Their goods inputs and outputs
+are identical to vanilla. Their profitability can still move indirectly, through
+transportation and merchant marine prices and through the infrastructure that
+now has to come from elsewhere.
 
 **Affected: 18 buildings** that use the haulage PMs — 5 mines (coal, iron, lead,
 sulfur, gold), 11 plantations plus the vineyard, the logging camp, and the oil
@@ -519,15 +549,19 @@ add demand. Ranch supply is **210/week below** this known demand before pasture
 output and state modifiers. Actual opening prices and shortages must be measured by market;
 the cost examples below scale with horse price:
 
-| Building | Margin | @30 (par) | @45 (1.5×) | @60 (2×) |
+| Building | Margin | @30 (par) | @45 (1.5×) | @52.5 (1.75×, price ceiling) |
 |---|---|---|---|---|
-| Coal mine | 550 | −16.4% | −24.5% | −32.7% |
-| Iron mine / logging | 600 | −15.0% | −22.5% | −30.0% |
-| Cotton plantation | 900 | −10.0% | −15.0% | −20.0% |
-| Oil rig | 1800 | −5.0% | −7.5% | −10.0% |
+| Coal mine | 550 | −16.4% | −24.5% | −28.6% |
+| Iron mine / logging | 600 | −15.0% | −22.5% | −26.3% |
+| Cotton plantation | 900 | −10.0% | −15.0% | −17.5% |
+| Oil rig | 1800 | −5.0% | −7.5% | −8.8% |
 
-A coal mine losing a third of its goods margin in 1836 is a real risk of
-unprofitable extraction and a stalled early economy.
+The engine caps a good's market price at 1.75× base, so £52.50 is the worst a
+£30 horse can cost. Beyond that, a shortage shows up as unfilled inputs and
+lower output, not a higher price; model that separately. A coal mine losing over
+a quarter of its goods margin in 1836 is a real risk of unprofitable extraction
+and a stalled early economy. "Margin" here is goods revenue minus goods inputs,
+not profit after wages.
 
 **Levers, cheapest first:** drop `pm_road_carts` from 3 horses to 2 or 1; raise
 the subsistence pasture output above 0.25; loosen `curate.awk` to seed more

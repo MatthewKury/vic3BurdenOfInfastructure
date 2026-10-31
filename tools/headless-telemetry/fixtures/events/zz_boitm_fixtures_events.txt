@@ -1,0 +1,241 @@
+﻿namespace = boitm_fixture
+
+# Headless telemetry (fixtures module): runs BOI's console-only housing debug
+# events (boi_housing.2 to .4) as Portugal and logs one result line per check:
+#   BOIFIX|<date>|<check>|<pass/fail/warn/info>|<detail>
+# Kept off the BOITM| prefix so the yearly report ignores it; Test-Headless.ps1
+# reads these lines and fails the run on any "fail". The checks follow
+# docs/HOUSING_TESTING.md. Timeline from the first monthly pulse on or after
+# 1836.2.1: Alentejo fixture (day 0), re-run (day 30), permissive laws (day 60),
+# PM setup (day 61), protective laws (day 62), final check (day 97).
+
+# Day 0: record Alentejo, then build the fixture.
+boitm_fixture.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:POR ?= this
+		game_date >= 1836.2.1
+		NOT = { has_global_variable = boitm_fx_started }
+		any_scope_state = { state_region = s:STATE_ALENTEJO }
+	}
+
+	immediate = {
+		set_global_variable = boitm_fx_started
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			set_variable = { name = boitm_fx_usage_before value = boitm_fx_usage }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|start|info|alentejo_usage=[THIS.ScriptValue('boitm_fx_usage')|1]"
+		}
+		trigger_event = { id = boi_housing.2 days = 0 }
+		trigger_event = { id = boitm_fixture.2 days = 30 }
+	}
+}
+
+# Day 30: the five buildings exist and use 32 infrastructure; run it again.
+boitm_fixture.2 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = {
+					has_building = building_boi_slums
+					has_building = building_boi_tenements
+					has_building = building_boi_luxury_apartments
+					has_building = building_boi_suburbs
+					has_building = building_boi_temporary_shelter
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_buildings|pass|levels=[THIS.ScriptValue('boitm_fx_housing_levels')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_buildings|fail|levels=[THIS.ScriptValue('boitm_fx_housing_levels')|0]"
+			}
+			# Warn, not fail: other construction in Alentejo also moves usage.
+			if = {
+				limit = {
+					boitm_fx_usage_delta >= 31.9
+					boitm_fx_usage_delta <= 32.1
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_32|pass|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_32|warn|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+			}
+			set_variable = { name = boitm_fx_levels_after_first value = boitm_fx_housing_levels }
+		}
+		trigger_event = { id = boi_housing.2 days = 0 }
+		trigger_event = { id = boitm_fixture.3 days = 30 }
+	}
+}
+
+# Day 60: the re-run added nothing; switch on the permissive laws.
+boitm_fixture.3 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = { boitm_fx_housing_levels_delta <= 0 }
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_rerun_no_duplicates|pass|added_levels=[THIS.ScriptValue('boitm_fx_housing_levels_delta')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_rerun_no_duplicates|fail|added_levels=[THIS.ScriptValue('boitm_fx_housing_levels_delta')|0]"
+			}
+		}
+		trigger_event = { id = boi_housing.3 days = 0 }
+		trigger_event = { id = boitm_fixture.4 days = 1 }
+	}
+}
+
+# Day 61: laws took; put hostile housing on one workplace, safe on another.
+boitm_fixture.4 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_law = law_type:law_boi_unregulated_company_housing
+				has_law = law_type:law_boi_unregulated_residential
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|permissive_laws|pass|event=boi_housing.3"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|permissive_laws|fail|event=boi_housing.3"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			activate_production_method = {
+				building_type = building_livestock_ranch
+				production_method = pm_boi_hostile_company_housing
+			}
+			activate_production_method = {
+				building_type = building_logging_camp
+				production_method = pm_boi_worker_settlements
+			}
+		}
+		trigger_event = { id = boitm_fixture.5 days = 1 }
+	}
+}
+
+# Day 62: the PM setup took; switch on the protective laws.
+boitm_fixture.5 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_hostile_company_housing
+					}
+					any_scope_building = {
+						is_building_type = building_logging_camp
+						has_active_production_method = pm_boi_worker_settlements
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|pass|hostile=livestock_ranch;safe=logging_camp"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|fail|hostile=livestock_ranch;safe=logging_camp"
+			}
+		}
+		trigger_event = { id = boi_housing.4 days = 0 }
+		trigger_event = { id = boitm_fixture.6 days = 1 }
+	}
+}
+
+# Day 63: laws took, hostile housing reverted, safe housing and slums kept.
+boitm_fixture.6 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_law = law_type:law_boi_protected_company_housing
+				has_law = law_type:law_boi_residential_standards
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|protective_laws|pass|event=boi_housing.4"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|protective_laws|fail|event=boi_housing.4"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			# Warn, not fail: the monthly maintenance pass may catch it instead,
+			# which boitm_fixture.7 checks.
+			if = {
+				limit = {
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_livestock_ranch
+							has_active_production_method = pm_boi_hostile_company_housing
+						}
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted_on_enactment|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted_on_enactment|warn|building=livestock_ranch"
+			}
+			# Warn, not fail: the AI owner may legitimately switch it.
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_logging_camp
+						has_active_production_method = pm_boi_worker_settlements
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|safe_housing_kept|pass|building=logging_camp"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|safe_housing_kept|warn|building=logging_camp"
+			}
+			if = {
+				limit = { has_building = building_boi_slums }
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|existing_slums_kept|pass|building=slums"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|existing_slums_kept|fail|building=slums"
+			}
+		}
+		trigger_event = { id = boitm_fixture.7 days = 35 }
+	}
+}
+
+# Day 98: after a full monthly maintenance pass, hostile housing must be gone.
+boitm_fixture.7 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = {
+					NOT = {
+						any_scope_building = {
+							is_building_type = building_livestock_ranch
+							has_active_production_method = pm_boi_hostile_company_housing
+						}
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted|fail|building=livestock_ranch"
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|complete|info|usage_delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+		}
+	}
+}

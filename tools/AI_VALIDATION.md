@@ -1,5 +1,17 @@
 # Infrastructure AI priorities
 
+> **Read this first (2026-10-31).** The Public Works and Harbour Works
+> priorities described in the next sections had no visible effect in the
+> 2026-10-30 headless runs: the engine neither built these buildings from them
+> nor spared them from budget cuts. What actually makes the AI build them is
+> the [scripted construction fallback](#scripted-construction-fallback-2026-10-30)
+> at the end of this file. The priority values are kept on purpose, pending a
+> reinvestigation (plan 1, step 3). The railway and Horse Ranch values act on
+> privately built buildings and are assumed to work. Since 2026-10-31 the Horse
+> Ranch's base 1200 is scaled by the local horse price
+> (`boi_ai_horse_output_price`), mirroring the railway: ×1.2 at ≥50% above base,
+> ×1.1 at ≥25% above, ×0.9 at ≥25% below, ×0.8 at ≥50% below.
+
 Implemented 2026-09-23. All custom priority values are in
 `common/script_values/50_boi_ai_values.txt`, evaluated in state scope.
 

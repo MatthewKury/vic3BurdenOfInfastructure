@@ -1,6 +1,6 @@
 # Plan 2: Road Financing politics
 
-Updated: 2026-10-24. Back to the [overview](../OVERVIEW.md).
+Updated: 2026-10-31. Back to the [overview](../OVERVIEW.md).
 
 Condensed from the Road Financing proposal (2026-09-26) and the politics item in
 the ideas list. Full design, history and per-modifier reasoning are in the
@@ -52,7 +52,7 @@ event) and removed.
 - **Starting laws:** Turnpike Trusts for GBR and USA, Public Highways for FRA
   and PRU, Statute Labour for everyone else. Only assigned when a country has
   none of the three.
-- Law icons generated; prompts in `output/law-art/PROMPTS.md`.
+- Law icons generated; prompts in `art/laws/PROMPTS.md`.
 
 Files: `common/law_groups/50_boi_law_groups.txt`,
 `common/laws/50_boi_road_financing.txt`,

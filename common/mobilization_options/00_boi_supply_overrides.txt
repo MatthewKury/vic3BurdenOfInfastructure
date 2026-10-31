@@ -1,6 +1,6 @@
 ﻿# Vanilla 1.13.11 supply shadows. Re-diff after game updates.
 # Basic Supplies is copied unchanged to preserve the vanilla display order.
-# Extra Supplies adds horse supply and 0.25 horse upkeep.
+# Extra Supplies adds a horse-supply requirement and 0.5 horse upkeep.
 
 mobilization_option_basic_supplies = {
 	texture = "gfx/interface/icons/mobilization_options/basic_supplies.dds"

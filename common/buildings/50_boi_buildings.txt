@@ -67,9 +67,13 @@ building_boi_horse_ranch = {
 
 	# Horses gate the entire infrastructure system, so the AI needs
 	# to treat ranches as more than an ordinary farm. Below railway
-	# (2000) but well above a default rural building.
+	# (2000) but well above a default rural building. Scaled by the
+	# local horse price the same way the railway shadow scales by
+	# transportation: expensive horses raise priority (x1.1 / x1.2),
+	# cheap horses lower it (x0.9 / x0.8).
 	ai_value = {
 		value = 1200
+		multiply = boi_ai_horse_output_price
 	}
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_farming.dds"
@@ -132,6 +136,11 @@ building_boi_infrastructure = {
 	ownership_type = no_ownership
 
 	# State-scoped priority: infrastructure urgency dominates input prices.
+	# INERT as far as tested: 2026-10-30 headless runs saw scores of
+	# 14,400+ in deficit states with no construction. The AI construction
+	# event (events/boi_ai_infrastructure_events.txt) does the real work.
+	# Kept deliberately; reinvestigate whether the engine reads it at all
+	# (docs/plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md, step 3).
 	ai_value = {
 		value = 3000
 		multiply = boi_ai_infrastructure_urgency
@@ -203,6 +212,7 @@ building_boi_harbour_works = {
 	# above - required for every is_government_funded building group.
 	ownership_type = no_ownership
 
+	# Inert as far as tested; see the note on Public Works' ai_value.
 	ai_value = {
 		value = 1500
 		multiply = boi_ai_infrastructure_urgency

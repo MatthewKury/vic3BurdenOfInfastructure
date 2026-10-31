@@ -27,13 +27,13 @@ A new economy law group, **Road Financing**, decides who pays for Public Works. 
 
 Households also need **Housing**, a local good that cannot be traded between states. Basic Housing demand grows with wealth, and wealthier households also buy Luxury Housing. Subsistence buildings supply a little; rural workplaces can run company housing; and residential buildings supply the rest. Residential buildings use a lot of infrastructure, and denser buildings provide more housing per point, so replacing sprawling old housing pays off where infrastructure is scarce. Slums raise mortality and lower living standards and migration; luxury apartments and suburbs attract migrants. Suburbs need horses, transportation, or automobiles for commuting.
 
-The mod includes distinct icons for horses, the three infrastructure buildings, Horse-Breeding Traditions, both housing goods, and the six residential buildings. Separate texticon definitions display the horse and housing goods in compact UI text, such as budget details.
+The mod includes distinct icons for horses, the three infrastructure buildings, Horse-Breeding Traditions, the three Road Financing laws, both housing goods, and the six residential buildings. Separate texticon definitions display the horse and housing goods in compact UI text, such as budget details.
 
 ## Installation and use
 
 1. Place this mod in your Victoria 3 local mod directory and enable **Burden of Infrastructure** in a launcher playset.
 2. Start a **new 1836 campaign**. The starting buildings are created during world initialization; an existing save will not receive that initial setup.
-3. Check Horse Ranches for horse supply and Public Works or Harbour Works for infrastructure capacity. These public buildings consume goods and wages, so their cost appears in the government budget.
+3. Check Horse Ranches for horse supply and Public Works or Harbour Works for infrastructure capacity. These public buildings consume goods and wages, so their cost appears in the government budget. They cannot be downsized once built, by the player or the AI: the AI's budget cuts otherwise demolished them even in states short of infrastructure. AI countries also queue new levels automatically in their worst-short states, through a hidden monthly event.
 
 Only English localization is included at present.
 
@@ -41,19 +41,22 @@ Only English localization is included at present.
 
 Housing was developed as a separate prototype and merged into this mod on 2026-10-30; if an older playset lists **BOI Housing Prototype**, remove that entry. Housing is not yet balanced: no residential buildings exist at game start, prices and supply are uncalibrated, and buying out private housing before demolition is not enforced. See [housing tests](docs/HOUSING_TESTING.md) and the [housing plan](docs/plans/04_HOUSING.md).
 
-The mod copies all 16 base-game state-region files to make Horse Ranches buildable, and it overrides selected game definitions. Housing replaces the base game's household buy-package file and adds a housing production method group to 31 rural and subsistence buildings. Other mods that change those same files or definitions may conflict. These copies and overrides should be reviewed after each Victoria 3 patch. See [regeneration instructions](tools/REGENERATE.md) and [validation instructions](tools/VALIDATION.md).
+The mod copies all 16 base-game state-region files to make Horse Ranches buildable, and it overrides selected game definitions. Housing replaces the base game's household buy-package file and adds a housing production method group to 31 rural and subsistence buildings. Other mods that change those same files or definitions may conflict. These copies and overrides should be reviewed after each Victoria 3 patch. See the [patching notes](PATCHING.md) for the full list, plus the [regeneration instructions](tools/REGENERATE.md) and [validation instructions](tools/VALIDATION.md).
 
-A short Portugal debug-mode game ran without an obvious gameplay failure, but that is only a smoke test. AI construction, market balance, long campaigns, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [planning overview](docs/OVERVIEW.md) for the design and remaining work.
+Testing so far: a short Portugal debug-mode game, and automated 10-year observer runs (1836–1846) that load without mod errors and in which AI countries keep up with infrastructure demand. Nobody has played a full campaign yet. Long-term AI behaviour, market balance, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [planning overview](docs/OVERVIEW.md) for the design and remaining work.
 
 ## AI assistance and artwork disclaimer
 
-**AI assistance was used to write and revise parts of the mod's scripting and to generate the custom icons.** The horse good, Horse Ranch, Public Works, Harbour Works, and Horse-Breeding Traditions icons are provisional AI-assisted artwork. They were made using base-game icons as visual references. **The hope is to replace these icons with original artwork in a later update.** Other production method icons and some interface art still reference base-game assets.
+**AI assistance was used to write and revise parts of the mod's scripting and to generate the custom icons.** The horse good, Horse Ranch, Public Works, Harbour Works, Horse-Breeding Traditions, Road Financing law, housing good, and residential building icons are provisional AI-assisted artwork. They were made using base-game icons as visual references. **The hope is to replace these icons with original artwork in a later update.** Other production method icons and some interface art still reference base-game assets.
 
 AI-assisted work can contain mistakes. The scripts and artwork should be judged by how they behave and appear in game, and issues are welcome.
 
 ## Project files
 
 - [Balance and design notes](BALANCE.md)
+- [Patching notes: what the mod overrides](PATCHING.md)
 - [Planning overview and execution plans](docs/OVERVIEW.md)
 - [Regenerating game-version-dependent files](tools/REGENERATE.md)
 - [Static validation](tools/VALIDATION.md)
+- [Headless ensembles: baseline database and reports](tools/ensembles/README.md)
+- [Vanilla baseline report, 1836–1846](docs/reports/vanilla_1836_1846/REPORT.md)

@@ -1,0 +1,34 @@
+﻿# Headless telemetry (fixtures module). State scope (Alentejo).
+
+boitm_fx_usage = {
+	value = infrastructure_usage
+}
+
+# Change since the fixture chain started; the Alentejo fixture should add 32.
+boitm_fx_usage_delta = {
+	value = infrastructure_usage
+	subtract = var:boitm_fx_usage_before
+}
+
+# Levels of the five housing buildings boi_housing.2 creates.
+boitm_fx_housing_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_temporary_shelter
+			}
+		}
+		add = level
+	}
+}
+
+# Levels added since the first fixture run; a second run must add none.
+boitm_fx_housing_levels_delta = {
+	value = boitm_fx_housing_levels
+	subtract = var:boitm_fx_levels_after_first
+}

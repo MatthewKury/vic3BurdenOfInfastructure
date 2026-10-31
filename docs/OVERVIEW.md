@@ -1,6 +1,6 @@
 # Burden of Infrastructure: overview and big ideas
 
-Updated: 2026-10-30. Target game version: Victoria 3 **1.13** (checked against
+Updated: 2026-10-31. Target game version: Victoria 3 **1.13** (checked against
 installed 1.13.11).
 
 This is the top-level planning document. It says what the mod is for, what
@@ -9,10 +9,10 @@ part lives in its own execution plan:
 
 | # | Plan | Status in one line |
 |---|---|---|
-| 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Built and smoke-tested; needs a campaign balance and AI pass |
+| 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Built; AI keeps up over 10-year headless runs; needs 50-year runs, a campaign balance pass, and a fix for over-seeded GBR |
 | 2 | [Road Financing politics](plans/02_ROAD_FINANCING.md) | Phase 1 (roads) built; untested in-game; phase 2 (events, harbours) not started |
-| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); loads cleanly in headless runs; not calibrated |
-| 5 | [Release, tooling and hygiene](plans/05_RELEASE_AND_TOOLING.md) | Validation suite built; release files still missing |
+| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); loads cleanly; fixture checks automated in the headless harness; not calibrated |
+| 5 | [Release, tooling and hygiene](plans/05_RELEASE_AND_TOOLING.md) | Validation suite, headless harness and PATCHING.md done; changelog and licence still missing |
 
 The original documents these were condensed from are kept in
 [docs/archive/planning-2026-10-24/](archive/planning-2026-10-24/README.md).
@@ -80,7 +80,7 @@ These come from the original agreed design (2026-08-16) and have held since.
 - **Every new piece of engine knowledge goes into the shared lessons file** in
   the same session.
 
-## 4. Status board (as of 2026-10-30)
+## 4. Status board (as of 2026-10-31)
 
 | Area | Built | Static validation | In-game |
 |---|---|---|---|
@@ -89,10 +89,13 @@ These come from the original agreed design (2026-08-16) and have held since.
 | Rail and port infrastructure removed; haulage, farm, urban, cavalry horse inputs | Yes | Passes | Smoke test only |
 | Horse mobilization options (Recon, Horse-Drawn Transport, Extra Supplies) | Yes | Passes | Not recorded |
 | 1836 seed (20 Public Works, 139 Harbour Works, 225 Horse Ranches) | Yes | Passes | Not recorded |
-| Infrastructure-aware AI weights and opt-in auto-expansion | Yes | Passes | Not observed |
+| AI construction fallback event and `downsizeable = no` | Yes | Passes | 10-year headless runs: deficit states 26 → 1 across 12 major powers |
+| Infrastructure-aware `ai_value` weights (Public Works, Harbour Works) | Yes | Passes | No visible effect; kept pending reinvestigation (plan 1, step 3) |
+| Price-scaled `ai_value` for railways and Horse Ranches; opt-in auto-expansion | Yes | Passes | Not observed |
 | Road Financing laws, ideologies, PMs, starting laws | Yes (roads) | Passes | Not observed |
-| Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless run, no housing errors; not calibrated |
-| Release files (licence, changelog, patching notes, .gitignore) | No | — | — |
+| Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless run, no housing errors; automated fixture checks; not calibrated |
+| Release files | `PATCHING.md` and `.gitignore` yes; licence and changelog no | — | — |
+| Vanilla baseline ensemble and report tooling (2026-10-31) | Yes: `Invoke-HeadlessEnsemble.ps1`, `ensembles.sqlite`, `Make-EnsembleReport.py` | Comparison mode tested on a 5-vs-5 split | 10 vanilla runs, 1836–1846, all passed; [report](reports/vanilla_1836_1846/REPORT.md). No BOI ensemble yet |
 
 ## 5. How the modules depend on each other
 
@@ -159,34 +162,26 @@ financing, housing ownership laws).
 11. **Broader public works.** Sewers and telegraphs could extend the theme
     beyond transport. Long-term only.
 
-## 7. Where the old documents disagreed, and what is true now
+## 7. Where the archived documents are out of date
 
-Found while condensing; each was checked against the current files on
-2026-10-24.
+The current plans, `BALANCE.md`, `PATCHING.md` and the metadata were
+reconciled on 2026-10-31. The archived originals in
+`docs/archive/planning-2026-10-24/` were left as written and are stale on these
+points:
 
-- **Hussar override:** the 2026-08-23 plan and the 2026-09-21 review list the
-  missing 1.13.11 `formation_modifier` as an open regression. It is **fixed**:
-  `common/combat_unit_types/00_boi_cavalry_overrides.txt` has the 0.25 / 0.25
-  block on hussars.
-- **Seed counts:** the review and plan cite 675 Public Works, 372 Harbour Works
-  and 236 Horse Ranches. The current seed is **20 Public Works (40 levels), 139
-  Harbour Works (141 levels) and 225 Horse Ranches (857 levels)**, replacing
-  only the infrastructure removed from rail and ports.
-- **Public seeding by owner:** the review's point that split state regions gave
-  secondary owners no public seed is **resolved**; the plan now covers 1,147
-  state-owner records.
-- **Horse icon:** the review says horses use the meat icon. A custom (provisional,
-  AI-assisted) horse icon now exists.
-- **Git and README:** both now exist; the plan listed them as missing.
-- **Opening horse balance:** older figures of 8,496 supply against 13,500
-  demand are superseded by 10,284 against 10,494 (98% covered, before pasture
-  output and Urban Center demand).
-- **BALANCE.md** still contains a stray fragment of an old cavalry upkeep table
-  and calls the top Harbour Works tier `pm_container_wharves`; the implemented
-  name is `pm_boi_electrified_quays`. Its £60 horse scenario is also above the
-  engine's normal price ceiling (£52.50 for a £30 good). See plan 5.
-- **Road Financing file list** says "four ideologies"; five were designed and
-  built.
-- **Housing apartment ratio:** the housing implementation plan gives 27.5 basic
-  housing per apartment infrastructure point; 100 output over 4 infra is 25.
-  Plan 4 uses 25.
+- **Seed counts:** they cite 675 Public Works, 372 Harbour Works and 236 Horse
+  Ranches. The seed is **20 Public Works (40 levels), 139 Harbour Works (141
+  levels) and 225 Horse Ranches (857 levels)**, replacing only the
+  infrastructure removed from rail and ports.
+- **Hussar override:** listed as an open regression; fixed (0.25 / 0.25
+  `formation_modifier` block in `00_boi_cavalry_overrides.txt`).
+- **Public seeding by owner:** resolved; the plan covers 1,147 state-owner
+  records.
+- **Opening horse balance:** 8,496 supply against 13,500 demand is superseded by
+  10,284 against 10,494 (98% covered, before pasture output and Urban Center
+  demand).
+- **Road Financing** has five ideologies, not four.
+- **Housing apartment ratio:** 100 output over 4 infrastructure is 25 per point,
+  not 27.5.
+- **AI:** the archive treats `ai_value` weighting as the AI mechanism; the
+  scripted fallback event replaced it in practice (plan 1).
