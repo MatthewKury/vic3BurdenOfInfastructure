@@ -1,0 +1,24 @@
+﻿namespace = boitm
+
+# Headless telemetry (core module). One debug_log line per metric group, so a
+# bad data function blanks only its own line. Line format, parsed by
+# tools/Get-HeadlessReport.ps1:
+#   BOITM|<group>|<date>|<tag>|key=value;key=value
+# Goods lines read the country's market: subjects in a customs union repeat
+# their overlord's figures.
+
+boitm.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { country_rank >= rank_value:major_power }
+
+	immediate = {
+		debug_log = "BOITM|country|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|gdp=[THIS.ScriptValue('boitm_gdp')|2];sol=[THIS.ScriptValue('boitm_sol')|2];population=[THIS.ScriptValue('boitm_population')|0];states=[THIS.ScriptValue('boitm_states')|0]"
+		debug_log = "BOITM|infrastructure|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|infrastructure=[THIS.ScriptValue('boitm_infrastructure')|2];usage=[THIS.ScriptValue('boitm_infrastructure_usage')|2];deficit_states=[THIS.ScriptValue('boitm_infrastructure_deficit_states')|0]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=transportation;price=[GetGoods('transportation').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('transportation').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('transportation').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=merchant_marine;price=[GetGoods('merchant_marine').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('merchant_marine').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('merchant_marine').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=grain;price=[GetGoods('grain').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('grain').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('grain').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=tools;price=[GetGoods('tools').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('tools').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('tools').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+	}
+}

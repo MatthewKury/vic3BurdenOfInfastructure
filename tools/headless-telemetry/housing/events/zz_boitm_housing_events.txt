@@ -1,0 +1,18 @@
+﻿namespace = boitm_housing
+
+# Headless telemetry (housing module). Format as in the core module's events
+# file. Market figures for a local good are the sum over the market's states.
+
+boitm_housing.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { country_rank >= rank_value:major_power }
+
+	immediate = {
+		debug_log = "BOITM|housing|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|slum_levels=[THIS.ScriptValue('boitm_slum_levels')|0];tenement_levels=[THIS.ScriptValue('boitm_tenement_levels')|0];apartment_levels=[THIS.ScriptValue('boitm_apartment_levels')|0];luxury_apartment_levels=[THIS.ScriptValue('boitm_luxury_apartment_levels')|0];suburb_levels=[THIS.ScriptValue('boitm_suburb_levels')|0];shelter_levels=[THIS.ScriptValue('boitm_shelter_levels')|0]"
+		debug_log = "BOITM|housing_prices|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|housing_expensive_states=[THIS.ScriptValue('boitm_housing_expensive_states')|0];housing_cheap_states=[THIS.ScriptValue('boitm_housing_cheap_states')|0];luxury_housing_expensive_states=[THIS.ScriptValue('boitm_luxury_housing_expensive_states')|0]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=boi_housing;price=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=boi_luxury_housing;price=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+	}
+}

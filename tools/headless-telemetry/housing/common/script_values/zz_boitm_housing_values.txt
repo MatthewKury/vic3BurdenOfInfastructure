@@ -1,0 +1,75 @@
+﻿# Headless telemetry (housing module): needs the boi_housing goods and the
+# housing buildings. Housing goods are local, so price is per state; these
+# count states in BOI's usual price bands. Country scope.
+
+boitm_slum_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_slums }
+		add = level
+	}
+}
+
+boitm_tenement_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_tenements }
+		add = level
+	}
+}
+
+boitm_apartment_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_apartments }
+		add = level
+	}
+}
+
+boitm_luxury_apartment_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_luxury_apartments }
+		add = level
+	}
+}
+
+boitm_suburb_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_suburbs }
+		add = level
+	}
+}
+
+boitm_shelter_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_temporary_shelter }
+		add = level
+	}
+}
+
+boitm_housing_expensive_states = {
+	value = 0
+	every_scope_state = {
+		limit = { sg:boi_housing = { state_goods_pricier >= 0.5 } }
+		add = 1
+	}
+}
+
+boitm_housing_cheap_states = {
+	value = 0
+	every_scope_state = {
+		limit = { sg:boi_housing = { state_goods_cheaper >= 0.25 } }
+		add = 1
+	}
+}
+
+boitm_luxury_housing_expensive_states = {
+	value = 0
+	every_scope_state = {
+		limit = { sg:boi_luxury_housing = { state_goods_pricier >= 0.5 } }
+		add = 1
+	}
+}

@@ -11,9 +11,12 @@ part lives in its own execution plan:
 |---|---|---|
 | 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Built and smoke-tested; needs a campaign balance and AI pass |
 | 2 | [Road Financing politics](plans/02_ROAD_FINANCING.md) | Phase 1 (roads) built; untested in-game; phase 2 (events, harbours) not started |
-| 3 | [Water and Waterworks](plans/03_WATER.md) | Supply side built in main mod; demand is an optional module; untested in-game |
+| 3 | Water and Waterworks | **Moved out of scope (2026-10-24)** to the companion mod `../BurdenOfInfrastructureWater`; its plan is `docs/WATER_PLAN.md` there |
 | 4 | [Housing](plans/04_HOUSING.md) | Optional prototype built; not in main mod; no live run yet |
 | 5 | [Release, tooling and hygiene](plans/05_RELEASE_AND_TOOLING.md) | Validation suite built; release files still missing |
+
+Water and Waterworks were split into a separate companion mod on 2026-10-24
+(`../BurdenOfInfrastructureWater`); see its `docs/WATER_PLAN.md`.
 
 The original documents these were condensed from are kept in
 [docs/archive/planning-2026-10-24/](archive/planning-2026-10-24/README.md).
@@ -92,30 +95,28 @@ These come from the original agreed design (2026-08-16) and have held since.
 | 1836 seed (20 Public Works, 139 Harbour Works, 225 Horse Ranches) | Yes | Passes | Not recorded |
 | Infrastructure-aware AI weights and opt-in auto-expansion | Yes | Passes | Not observed |
 | Road Financing laws, ideologies, PMs, starting laws | Yes (roads) | Passes | Not observed |
-| Water goods, Waterworks, six water traits | Yes | Passes (`Test-WaterModule.ps1`) | Not run |
-| Household water demand | Optional module | Generator checks | Not run |
 | Housing | Optional prototype | Regression suite passes | Not run |
 | Release files (licence, changelog, patching notes, .gitignore) | No | — | — |
 
 ## 5. How the modules depend on each other
 
 - **Infrastructure is the shared resource.** Public Works and Harbour Works
-  produce it. Waterworks (2 per level, plus piped tiers) and housing (4 to 8
-  per level) consume it. Balancing water or housing means re-checking that the
+  produce it. Housing (4 to 8 per level) consumes it, and so would the
+  companion water mod (Waterworks, 2 per level plus piped tiers). Balancing
+  housing means re-checking that the
   core buildings can keep up, and that the AI builds them when consumption
   rises.
-- **Horses feed water and housing too.** Water wagons and the default wells PM
+- **Horses feed housing, and (in the companion water mod) water.** Water wagons and the default wells PM
   use horses; suburbs can commute by horse.
-- **`00_buy_packages.txt` is one shared file.** Both the water demand module and
-  the housing prototype replace it, and first-read-wins silently drops one.
-  Until merged, run them together only via
-  `tools/Build-WaterPrototype.ps1 -MergeIntoHousing`. Any future pop-need
-  (luxury horse demand, for instance) must go through the same generator.
-- **Road Financing applies to the whole Public Works building.** If water or
-  other services ever move onto Public Works, they inherit the financing law.
-  Waterworks deliberately did not.
+- **`00_buy_packages.txt` is one shared file.** The housing prototype replaces
+  it, and so does the companion water mod's optional demand module;
+  first-read-wins silently drops one. They are merged with
+  `Build-WaterPrototype.ps1 -MergeIntoHousing` (in the water mod). Any future
+  pop-need (luxury horse demand, for instance) must go through the same generator.
+- **Road Financing applies to the whole Public Works building.** If other
+  services ever move onto Public Works, they inherit the financing law.
 - **The Bureaucracy-law admin pattern** (hereditary / appointed / elected PMs)
-  is reused on Public Works, Harbour Works and Waterworks. Keep it consistent.
+  is reused on Public Works, Harbour Works (and Waterworks in the water mod). Keep it consistent.
 
 ## 6. Big ideas not yet started
 
@@ -141,7 +142,7 @@ financing, water outbreaks, housing ownership laws).
 4. **Geography for infrastructure.** A Public Works level gives the same output
    in the Alps, the Amazon and Belgium. Terrain-based difficulty through state
    traits (mountain, jungle, desert states produce less or cost more) would make
-   colonial Africa expensive to connect. Water already proved the trait pattern.
+   colonial Africa expensive to connect. The water mod has the trait pattern.
 5. **Physical upkeep materials.** Small wood, tools, iron or steel inputs on
    Public Works tiers for bridges, timbers and track. Rebalance existing inputs
    so this adds theme without simply raising the total cost.
@@ -161,7 +162,7 @@ financing, water outbreaks, housing ownership laws).
     pop need. On the original deferred list; pairs well with Road Financing.
     Must go through the shared buy-package generator.
 11. **Broader public works.** Sewers and telegraphs could extend the theme
-    beyond transport, following Waterworks. Long-term only.
+    beyond transport, following the water mod's Waterworks. Long-term only.
 
 ## 7. Where the old documents disagreed, and what is true now
 

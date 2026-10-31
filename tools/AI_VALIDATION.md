@@ -64,3 +64,56 @@ In-game checks still required:
 5. Watch newly colonized states and PM upgrades for shortages. These priorities
    do not supply missing inputs; public auto-expansion requires 90% staffing and
    pauses only in default, not at a broader budget-health threshold.
+
+## Scripted construction fallback (2026-10-30)
+
+Headless observer runs (1836 to 1846, BOI plus the housing prototype, per-state
+`BOIDIAG` telemetry, read with `tools/Get-BoiDiagnostics.ps1`) showed that the
+priorities above do not move the engine:
+
+- **No construction.** Home Counties and the Midlands sat at −31 spare with
+  Public Works scored 14,400–16,200. In ten years the AI queued nothing there.
+  The engine builds government buildings through its money-spending projects,
+  and none of them claims these buildings.
+- **Budget downsizing that ignores need.** GBR demolished 17 of its 20 seeded
+  Public Works levels in the first six months, and Yorkshire went from 2 to 0
+  at −32. Spain dropped all 7 Harbour Works in one year, and France cut 9
+  levels in 1841–42.
+
+The fix has two parts:
+
+1. `downsizeable = no` on Public Works and Harbour Works. This also stops the
+   player from downsizing them.
+2. `events/boi_ai_infrastructure_events.txt`, a hidden monthly event for AI
+   countries (`is_player = no`) that are not in default and have scaled debt
+   under 0.75. It runs `start_building_construction` in the incorporated state
+   with the largest shortfall (usage minus infrastructure, > 0), using the
+   normal construction queue. It chooses Harbour Works where the state is
+   coastal, horses are ≥25% above base price and merchant marine is not.
+   Otherwise it chooses Public Works. Each state then gets a 365-day cooldown
+   variable, because `is_under_construction` misses a level added to an
+   existing building. The first version re-queued Lancashire monthly: 4 levels
+   for a 20-point gap. At most 1 + (incorporated states / 10) states, capped at
+   4, can be queued per 180 days. Trigger:
+   `common/scripted_triggers/51_boi_ai_construction_triggers.txt`. Values:
+   `common/script_values/51_boi_ai_construction_values.txt`.
+
+Deficit states across 12 major powers at the end of 1845:
+
+| Run | Deficit states |
+| --- | ---: |
+| Baseline | 26 |
+| Fallback, no cooldown | 3 |
+| Fallback with cooldown | 1 |
+
+Debt stayed low (worst scaled debt 0.47, BRZ, during a secession). Single runs
+diverge historically, so treat these as directions.
+
+Open:
+- With downsizing disabled, seeded levels stay where they were placed. GBR's
+  home states end 1836 at +36 to +81 spare, and later tech raises that further.
+  Consider re-seeding against measured 1836 need. The other option is a
+  scripted AI downsize when spare is very high, but no effect is known that
+  removes a single level.
+- The 50- and 100-year behaviour, and PM upgrades under the fallback, are still
+  untested.

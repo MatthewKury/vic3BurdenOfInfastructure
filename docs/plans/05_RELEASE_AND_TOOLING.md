@@ -10,8 +10,8 @@ Condensed from the development plan's tooling and hygiene sections, the
 - **Git repository** and **README** exist.
 - **Validation entry point:** `tools/Validate-All.ps1` (2026-09-23) runs
   structure, BOM and brace checks, committed-seed counts, the 675-state horse
-  safety audit, installed-vanilla shadow drift, the housing regression suite and
-  the water module checks. See `tools/VALIDATION.md`.
+  safety audit, installed-vanilla shadow drift, the housing regression suite.
+  See `tools/VALIDATION.md`. (The water module checks moved with the water mod.)
 - **Seed reproducibility:** `tools/gen_seed.awk` keeps the sorted input order, so
   identical inputs give byte-identical output. `tools/Test-SeedReproducibility.ps1`
   proves it on demand. Keep the `sort > /tmp/regions.txt` step.
@@ -37,7 +37,7 @@ Condensed from the development plan's tooling and hygiene sections, the
       skipped).
 - [ ] Add a licence before publishing source or Workshop assets.
 - [ ] Replace provisional AI-assisted icons with original art (horse good, three
-      buildings, Horse-Breeding Traditions, water and housing icons).
+      buildings, Horse-Breeding Traditions and housing icons).
 - [ ] Decide whether to fix the folder spelling `BurdenOfInfastructure`,
       allowing for launcher paths that depend on it.
 - [ ] Consider compatibility patches for major map mods (the 16 state-region

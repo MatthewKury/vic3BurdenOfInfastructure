@@ -12,7 +12,7 @@ their old location in the mod root, so some will not resolve.
 | `REVIEW.md` | 2026-09-21 | Plans 1 and 5; overview section 7 |
 | `IDEAS.md` | 2026-09-26, housing note 2026-10-04 | Overview section 6; plans 2 and 4 |
 | `PROPOSAL_ROAD_FINANCING.md` | 2026-09-26 | Plan 2 |
-| `PROPOSAL_WATER.md` | 2026-10-09 (period research and sources live only here) | Plan 3 |
+| `PROPOSAL_WATER.md` | MOVED to the water mod (`BurdenOfInfrastructureWater/docs/archive/`) on 2026-10-24 | Water plan |
 | `PROPOSAL_HOUSING.md` | 2026-10-09 | Plan 4 |
 | `IMPLEMENTATION_PLAN_HOUSING.md` | 2026-10-09 | Plan 4 |
 | `HOUSING_FEASIBILITY.md` | 2026-10-09 (engine evidence table) | Plan 4 |

@@ -113,6 +113,12 @@ building_boi_infrastructure = {
 
 	required_construction = construction_cost_medium
 
+	# The AI's budget cuts downsize government buildings regardless of
+	# ai_value: headless runs saw Yorkshire cut from 2 levels to 0 at
+	# -30 spare infrastructure, and whole countries drop every level in
+	# one budget squeeze. Levels can only grow; see AI_VALIDATION.md.
+	downsizeable = no
+
 	# MUST be no_ownership: the engine rejects any building whose
 	# group is is_government_funded = yes with a different
 	# ownership_type ("Building type X is goverment funded but
@@ -184,6 +190,9 @@ building_boi_harbour_works = {
 	}
 
 	required_construction = construction_cost_medium
+
+	# Same reason as Public Works: AI budget cuts ignore ai_value.
+	downsizeable = no
 
 	# no_ownership, for the same reason as building_boi_infrastructure
 	# above - required for every is_government_funded building group.

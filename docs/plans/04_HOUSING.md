@@ -183,8 +183,8 @@ Highest-risk items:
 
 Merge into the main mod only after live tests, infrastructure and redevelopment
 balance, acquisition rules, starting supply and AI behaviour all pass. Merge
-definitions and generator together, and merge with water demand into one
-buy-package generator (see plan 3). Never enable universal demand in an unseeded
+definitions and generator together, and merge with water demand (companion water mod) into one
+buy-package generator. Never enable universal demand in an unseeded
 main campaign. Existing saves need their own migration plan.
 
 ## Provisional values

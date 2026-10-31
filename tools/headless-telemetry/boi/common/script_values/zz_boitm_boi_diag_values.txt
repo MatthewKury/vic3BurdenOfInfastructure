@@ -1,0 +1,71 @@
+﻿# Headless telemetry (boi module): AI diagnostics for Public Works and
+# Harbour Works. Read by tools/Get-BoiDiagnostics.ps1, not the main report.
+
+# Country scope. Each is printed on its own line, so one that the engine
+# rejects as a value blanks only that line.
+boitm_gold_reserves = { value = gold_reserves }
+boitm_scaled_debt = { value = scaled_debt }
+
+boitm_states_with_public_works = {
+	value = 0
+	every_scope_state = {
+		limit = { boitm_state_public_works_levels > 0 }
+		add = 1
+	}
+}
+
+# State scope.
+boitm_state_public_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_infrastructure }
+		add = level
+	}
+}
+
+boitm_state_harbour_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_harbour_works }
+		add = level
+	}
+}
+
+# 1 when a Public Works / Harbour Works in the state is under construction.
+boitm_state_works_queued = {
+	value = 0
+	if = {
+		limit = {
+			any_scope_building = {
+				OR = {
+					is_building_type = building_boi_infrastructure
+					is_building_type = building_boi_harbour_works
+				}
+				is_under_construction = yes
+			}
+		}
+		value = 1
+	}
+}
+
+# Occupancy band of the state's Public Works: -1 none, else the lowest band
+# reached (0, 0.25, 0.5, 0.75, 0.9).
+boitm_state_public_works_occupancy = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boi_infrastructure }
+		value = 0
+		if = { limit = { occupancy >= 0.9 } value = 0.9 }
+		else_if = { limit = { occupancy >= 0.75 } value = 0.75 }
+		else_if = { limit = { occupancy >= 0.5 } value = 0.5 }
+		else_if = { limit = { occupancy >= 0.25 } value = 0.25 }
+	}
+}
+
+boitm_state_ai_value_public_works = {
+	value = 3000
+	multiply = boi_ai_infrastructure_urgency
+	multiply = boi_ai_public_works_input_price
+}
+
+boitm_state_infrastructure = { value = infrastructure }

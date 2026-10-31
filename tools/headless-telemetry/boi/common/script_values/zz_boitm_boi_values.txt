@@ -1,0 +1,43 @@
+﻿# Headless telemetry (boi module): needs the horses good and BOI buildings.
+# Country scope.
+
+boitm_horse_ranch_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_horse_ranch }
+		add = level
+	}
+}
+
+boitm_public_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_infrastructure }
+		add = level
+	}
+}
+
+boitm_harbour_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_harbour_works }
+		add = level
+	}
+}
+
+# Same price bands BOI's own AI values use (50_boi_ai_values.txt).
+boitm_horse_expensive_states = {
+	value = 0
+	every_scope_state = {
+		limit = { sg:horses = { state_goods_pricier >= 0.5 } }
+		add = 1
+	}
+}
+
+boitm_horse_cheap_states = {
+	value = 0
+	every_scope_state = {
+		limit = { sg:horses = { state_goods_cheaper >= 0.25 } }
+		add = 1
+	}
+}

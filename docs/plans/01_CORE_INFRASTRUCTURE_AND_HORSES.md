@@ -87,6 +87,35 @@ counts, 675-state horse safety audit, shadow drift). A short Portugal
 debug-mode game ran without obvious failure. That is a smoke test, not a
 balance test.
 
+**Headless 20-year pair, 2026-10-30** (`tools/Test-Headless.ps1`, 1836 to 1856,
+BOI + housing prototype against vanilla, one run each, observer AI). These are
+single runs and history diverged (revolts, wars), so read these as directions,
+not effect sizes. Major powers in both runs, unless noted:
+- Stable: no crash. The only BOI-attributed errors are the housing prototype's
+  orphaned events `boi_housing.2` to `.4`.
+- Infrastructure supply is 23% below vanilla by 1855 and usage 20% above it.
+  States in deficit: 23 against vanilla's 0. Vanilla's deficits clear as rail
+  spreads; BOI's don't. GBR, NET and PRU are 36 to 47% below vanilla.
+- **Step 3 answer: underbuilding.** Public Works barely exist and shrink
+  (FRA 4→0, GBR 3→1; RUS 1→5 is the only growth). Seeded Harbour Works
+  disappear (FRA 7→0, SPA 7→0, USA 8→0). Horse Ranches are flat apart from
+  RUS +8 and NET +4.
+- Horses: GBR runs a structural deficit (buy 4216 against sell 2667 in 1855)
+  at +44% of base, with 1–11 expensive states. Elsewhere supply roughly matches
+  demand at or below base price.
+- SoL averages about 0.8 below vanilla through the 1840s and converges by 1855
+  (9.91 against 9.98).
+
+**AI fix, 2026-10-30** (three 10-year headless runs with per-state
+diagnostics; details in `tools/AI_VALIDATION.md`). The engine ignores
+`ai_value` for these buildings. It never built them in states 31 short. Its
+budget cuts demolished them even in deficit states, including 17 of GBR's 20
+seeded levels in the first six months. Fix: `downsizeable = no` plus a hidden
+monthly event that queues a level for AI countries in the worst-deficit state.
+It has a one-year per-state cooldown and a concurrency cap. Deficit states
+across 12 major powers at the end of 1845: 26 → 1, with no debt spiral.
+Trade-off: players can no longer downsize either.
+
 ## What is left
 
 ### Step 1: Clean 1.13.11 start
@@ -111,8 +140,11 @@ country with split states:
 
 ### Step 3: AI over time
 
-- [ ] Public Works, Harbour Works and Horse Ranch levels after 5, 20 and 50
-      years. Look for both overbuilding and underbuilding.
+- [x] Underbuilding: fixed with the scripted fallback and `downsizeable = no`
+      (2026-10-30, 10-year runs).
+- [ ] Public Works, Harbour Works and Horse Ranch levels after 20 and 50 years
+      with the fallback. Watch for overbuilding, now that levels can't be
+      shed. GBR's seed already leaves +36 to +81 spare in its home states.
 - [ ] States with ample spare capacity, near zero and in deficit: construction,
       occupancy, budgets.
 - [ ] Early Public Works uses horses, later tiers transportation; first

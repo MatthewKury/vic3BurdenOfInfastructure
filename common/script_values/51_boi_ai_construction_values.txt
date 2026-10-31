@@ -1,0 +1,38 @@
+﻿# ================================================================
+#  Burden of Infrastructure — AI construction fallback values
+#
+#  Used by events/boi_ai_infrastructure_events.txt. The engine's own
+#  government-building AI does not treat Public Works or Harbour Works
+#  as infrastructure spending (see tools/AI_VALIDATION.md), so AI
+#  countries queue them through script when a state runs short.
+# ================================================================
+
+# State scope. Positive when usage exceeds supply; the AI fallback
+# serves the largest shortfall first.
+boi_ai_infrastructure_shortfall = {
+	value = infrastructure_usage
+	subtract = infrastructure
+}
+
+# Country scope. States given a scripted level in the last 180 days, as
+# a proxy for constructions in progress: is_under_construction does not
+# see a new level being added to an existing building.
+boi_ai_works_under_construction = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_ai_works_recent }
+		add = 1
+	}
+}
+
+# Country scope. How many may be in progress at once: 1, plus 1 per 10
+# incorporated states, at most 4.
+boi_ai_works_construction_cap = {
+	value = 1
+	every_scope_state = {
+		limit = { is_incorporated = yes }
+		add = 0.1
+	}
+	floor = yes
+	max = 4
+}

@@ -26,14 +26,10 @@ done
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File \
   "$MOD/tools/Add-HorseBreedingTrait.ps1"
 
-# Reapply the water traits (automatic river/desert tagging plus the curated lists).
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File \
-  "$MOD/tools/Add-WaterTraits.ps1"
 ```
 
 Expect **16 files**, **675** Horse Ranch whitelist insertions, and **12**
-Horse-Breeding Traditions assignments (and, after the water step, run
-`tools/Test-WaterModule.ps1`, which reports how many states carry each water trait):
+Horse-Breeding Traditions assignments:
 
 ```bash
 grep -h "building_boi_horse_ranch" "$MOD"/map_data/state_regions/*.txt | wc -l

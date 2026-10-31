@@ -1,0 +1,30 @@
+﻿namespace = boitm_boi
+
+# Headless telemetry (boi module). Format as in the core module's events file.
+
+boitm_boi.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { country_rank >= rank_value:major_power }
+
+	immediate = {
+		debug_log = "BOITM|boi|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|horse_ranch_levels=[THIS.ScriptValue('boitm_horse_ranch_levels')|0];public_works_levels=[THIS.ScriptValue('boitm_public_works_levels')|0];harbour_works_levels=[THIS.ScriptValue('boitm_harbour_works_levels')|0];horse_expensive_states=[THIS.ScriptValue('boitm_horse_expensive_states')|0];horse_cheap_states=[THIS.ScriptValue('boitm_horse_cheap_states')|0]"
+		debug_log = "BOITM|budget|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|gold_reserves=[THIS.ScriptValue('boitm_gold_reserves')|0]"
+		debug_log = "BOITM|debt|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|scaled_debt=[THIS.ScriptValue('boitm_scaled_debt')|2];public_works_states=[THIS.ScriptValue('boitm_states_with_public_works')|0]"
+		# AI diagnostics: one BOIDIAG| line per state that has Public Works or
+		# Harbour Works, or is in deficit. Kept off the BOITM| prefix so the
+		# main report ignores it; see tools/Get-BoiDiagnostics.ps1.
+		every_scope_state = {
+			limit = {
+				OR = {
+					boitm_state_public_works_levels > 0
+					boitm_state_harbour_works_levels > 0
+					boitm_state_spare_infrastructure < 5
+				}
+			}
+			debug_log = "BOIDIAG|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|pw=[THIS.ScriptValue('boitm_state_public_works_levels')|0];hw=[THIS.ScriptValue('boitm_state_harbour_works_levels')|0];queued=[THIS.ScriptValue('boitm_state_works_queued')|0];pw_occ=[THIS.ScriptValue('boitm_state_public_works_occupancy')|2];spare=[THIS.ScriptValue('boitm_state_spare_infrastructure')|1];infra=[THIS.ScriptValue('boitm_state_infrastructure')|1];ai_pw=[THIS.ScriptValue('boitm_state_ai_value_public_works')|0]"
+		}
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=horses;price=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+	}
+}

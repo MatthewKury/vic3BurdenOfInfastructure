@@ -1,0 +1,36 @@
+﻿# Headless telemetry (core module): vanilla-safe, loaded in every arm.
+# Copied into the run's telemetry mod by tools/Test-Headless.ps1; never part
+# of a release. Country scope unless noted.
+
+boitm_gdp = { value = gdp }
+boitm_sol = { value = average_sol }
+boitm_population = { value = total_population }
+
+boitm_states = {
+	value = 0
+	every_scope_state = { add = 1 }
+}
+
+boitm_infrastructure = {
+	value = 0
+	every_scope_state = { add = infrastructure }
+}
+
+boitm_infrastructure_usage = {
+	value = 0
+	every_scope_state = { add = infrastructure_usage }
+}
+
+# State scope.
+boitm_state_spare_infrastructure = {
+	value = infrastructure
+	subtract = infrastructure_usage
+}
+
+boitm_infrastructure_deficit_states = {
+	value = 0
+	every_scope_state = {
+		limit = { boitm_state_spare_infrastructure < 0 }
+		add = 1
+	}
+}

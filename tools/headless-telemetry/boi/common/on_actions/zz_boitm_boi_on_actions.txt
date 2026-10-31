@@ -1,0 +1,8 @@
+﻿# Headless telemetry (boi module). events = { } only; see the core module.
+
+# Root = country
+on_yearly_pulse_country = {
+	events = {
+		boitm_boi.1
+	}
+}

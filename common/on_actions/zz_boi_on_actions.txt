@@ -18,6 +18,13 @@ on_yearly_pulse_country = {
 }
 
 # Root = country
+on_monthly_pulse_country = {
+	events = {
+		boi_ai_infrastructure.1
+	}
+}
+
+# Root = country
 on_country_formed = {
 	events = {
 		boi_road_financing.1

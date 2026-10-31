@@ -1,0 +1,62 @@
+﻿namespace = boi_ai_infrastructure
+
+# ================================================================
+#  Burden of Infrastructure — AI infrastructure construction
+#
+#  The engine's government-building AI does not count Public Works
+#  or Harbour Works as infrastructure spending. Headless runs showed
+#  states 30 short of infrastructure for years, with ai_value 16000+
+#  and nothing ever queued (tools/AI_VALIDATION.md). This hidden
+#  monthly event fills that gap for AI countries only: it queues one
+#  level in the incorporated state with the largest shortfall, through
+#  the normal construction queue, so it costs construction like any
+#  other build. Engine downsizing is left alone; it removes levels
+#  where infrastructure is in surplus, which is sensible.
+#
+#  Hooked from common/on_actions/zz_boi_on_actions.txt.
+#  Values: common/script_values/51_boi_ai_construction_values.txt.
+# ================================================================
+
+boi_ai_infrastructure.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_player = no
+		in_default = no
+		scaled_debt < 0.75
+		boi_ai_works_under_construction < boi_ai_works_construction_cap
+		any_scope_state = { boi_ai_state_wants_works = yes }
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = { boi_ai_state_wants_works = yes }
+			order_by = boi_ai_infrastructure_shortfall
+			position = 0
+			check_range_bounds = no
+
+			# is_under_construction misses a new level on an existing
+			# building, so without these the event re-queued the same
+			# state every month until the first level finished (4 levels
+			# for a 20-point shortfall). One level per state per year;
+			# _recent feeds the country cap while the level is built.
+			set_variable = { name = boi_ai_works_cooldown value = yes days = 365 }
+			set_variable = { name = boi_ai_works_recent value = yes days = 180 }
+
+			# Harbour Works only where it is the cheaper input: horses
+			# dear and merchant marine not. Otherwise Public Works.
+			if = {
+				limit = {
+					is_coastal = yes
+					sg:horses = { state_goods_pricier >= 0.25 }
+					NOT = { sg:merchant_marine = { state_goods_pricier >= 0.25 } }
+				}
+				start_building_construction = building_boi_harbour_works
+			}
+			else = {
+				start_building_construction = building_boi_infrastructure
+			}
+		}
+	}
+}

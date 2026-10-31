@@ -1,0 +1,23 @@
+﻿# ================================================================
+#  Burden of Infrastructure — AI construction fallback triggers
+#
+#  Used by events/boi_ai_infrastructure_events.txt.
+# ================================================================
+
+# State scope. An incorporated state short of infrastructure that has
+# not had a scripted level in the last year and has no Public Works or
+# Harbour Works newly under construction.
+boi_ai_state_wants_works = {
+	is_incorporated = yes
+	boi_ai_infrastructure_shortfall > 0
+	NOT = { has_variable = boi_ai_works_cooldown }
+	NOT = {
+		any_scope_building = {
+			OR = {
+				is_building_type = building_boi_infrastructure
+				is_building_type = building_boi_harbour_works
+			}
+			is_under_construction = yes
+		}
+	}
+}

@@ -1,0 +1,9 @@
+﻿# Headless telemetry (core module). events = { } lists merge across mods;
+# never use effect = { } here (VIC3_MODDING_LESSONS.md, section 1).
+
+# Root = country
+on_yearly_pulse_country = {
+	events = {
+		boitm.1
+	}
+}

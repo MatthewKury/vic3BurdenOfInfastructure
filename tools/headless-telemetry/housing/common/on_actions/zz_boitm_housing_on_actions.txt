@@ -1,0 +1,8 @@
+﻿# Headless telemetry (housing module). events = { } only; see the core module.
+
+# Root = country
+on_yearly_pulse_country = {
+	events = {
+		boitm_housing.1
+	}
+}
