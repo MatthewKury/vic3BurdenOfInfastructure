@@ -5,7 +5,6 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
-$prototype = Join-Path $ModPath 'tools/housing-prototype'
 . (Join-Path $PSScriptRoot 'Housing-ScriptTools.ps1')
 function Assert-Housing {
     param([bool]$Condition, [string]$Message)
@@ -52,11 +51,17 @@ beta = { value = 2 }
 $readerBlocks = @(Get-HousingScriptBlocks $readerFixture)
 Assert-Housing ($readerBlocks.Count -eq 2 -and $readerBlocks[1].Key -eq 'beta') 'Source parser failed quoted/comment brace fixture.'
 
-$pm = Read-HousingDomain $prototype 'production_methods'
-$pmg = Read-HousingDomain $prototype 'production_method_groups'
-$buildings = Read-HousingDomain $prototype 'buildings'
-$goods = Read-HousingDomain $prototype 'goods'
-$packages = Read-HousingDomain $prototype 'buy_packages'
+# Housing is part of the main mod. Its script files are the ones named for
+# housing, plus the generated buy-package file it owns.
+$housingFiles = @(Get-ChildItem -LiteralPath (Join-Path $ModPath 'common'), (Join-Path $ModPath 'events'), (Join-Path $ModPath 'gui') -Recurse -File |
+    Where-Object { $_.Extension -in '.txt', '.gui' -and ($_.Name -like '*housing*' -or $_.Directory.Name -eq 'buy_packages') })
+Assert-Housing ($housingFiles.Count -eq 19) "Expected 19 housing script files, found $($housingFiles.Count); review the merged file set."
+
+$pm = Read-HousingDomain $ModPath 'production_methods'
+$pmg = Read-HousingDomain $ModPath 'production_method_groups'
+$buildings = Read-HousingDomain $ModPath 'buildings'
+$goods = Read-HousingDomain $ModPath 'goods'
+$packages = Read-HousingDomain $ModPath 'buy_packages'
 $vanillaPackages = Read-HousingDomain $GamePath 'buy_packages'
 Assert-Housing ($packages.Count -eq 99) 'Every wealth level needs a demand package.'
 $previousBasic = 0
@@ -68,7 +73,7 @@ foreach ($wealth in 1..99) {
     Assert-Housing ($basic -gt $previousBasic) "Basic housing demand must increase at wealth $wealth."
     $previousBasic = $basic
     if ($wealth -lt 15) {
-        Assert-Housing ($source -notmatch 'popneed_boi_luxury_housing') 'Luxury housing appears below prototype wealthy threshold.'
+        Assert-Housing ($source -notmatch 'popneed_boi_luxury_housing') 'Luxury housing appears below the wealth-15 threshold.'
     }
     else {
         $luxury = Housing-Number $source 'popneed_boi_luxury_housing'
@@ -78,7 +83,9 @@ foreach ($wealth in 1..99) {
     $withoutHousing = [regex]::Replace($source, '(?m)^\s*popneed_boi_(?:luxury_)?housing\s*=\s*\d+[^\S\r\n]*\r?\n', '')
     Assert-Housing ((Normalize-HousingScript $withoutHousing) -eq (Normalize-HousingScript $vanillaPackages[$key])) "Non-housing buy package changed: $key"
 }
-foreach ($good in $goods.Values) { Assert-Housing ($good -match 'local\s*=\s*yes') 'Housing must remain local.' }
+foreach ($key in @('boi_housing', 'boi_luxury_housing')) {
+    Assert-Housing ($goods.ContainsKey($key) -and $goods[$key] -match 'local\s*=\s*yes') "Housing must remain local: $key"
+}
 
 # Evaluate the actual PM's nested modifier blocks, including staffing and the
 # crucial discontinuity between zero constructed slums and any slums present.
@@ -124,37 +131,42 @@ foreach ($key in @('worker_settlements','serviced_settlements')) {
 Assert-Housing ($pm['pm_boi_slums'] -notmatch 'unlocking_laws') 'Residential law must not disable existing slum operation.'
 Assert-Housing ($buildings['building_boi_slums'] -match 'possible\s*=\s*\{\s*owner\s*=\s*\{\s*NOT\s*=\s*\{\s*has_law\s*=\s*law_type:law_boi_residential_standards') 'New slums must be blocked by residential standards.'
 
-# Check keyed shadow preservation against merged vanilla + BOI definitions.
+# Each generated shadow must be its vanilla block plus the housing PM group.
+# BOI's own Horse Ranch lists company housing by hand instead: a generated
+# copy would sort first and replace BOI's definition.
 $originalBuildings = Read-HousingDomain $GamePath 'buildings'
-$boiBuildings = Read-HousingDomain $ModPath 'buildings'
-foreach ($key in $boiBuildings.Keys) { $originalBuildings[$key] = $boiBuildings[$key] }
+$generatedSource = [IO.File]::ReadAllText((Join-Path $ModPath 'common/buildings/00_boi_housing_rural_generated.txt'))
 $ruralCount = 0
 $subsistenceCount = 0
-foreach ($key in $buildings.Keys) {
-    if ($key -like 'building_boi_*' -and $key -ne 'building_boi_horse_ranch') { continue }
-    $source = $buildings[$key]
+foreach ($block in (Get-HousingScriptBlocks $generatedSource)) {
+    $key = $block.Key
+    Assert-Housing ($originalBuildings.ContainsKey($key)) "Generated shadow of a non-vanilla building: $key"
+    $source = $block.Text
     $ruralCount += [int]($source -match '\bpmg_boi_company_housing\b')
     $subsistenceCount += [int]($source -match '\bpmg_boi_subsistence_housing\b')
     $restored = [regex]::Replace($source, '(?m)^\s*pmg_boi_(?:company|subsistence)_housing\s*\r?\n', '')
     Assert-Housing ((Normalize-HousingScript $restored) -eq (Normalize-HousingScript $originalBuildings[$key])) "Unexpected rural override change: $key"
 }
+$ranch = [regex]::Replace($buildings['building_boi_horse_ranch'], '(?m)#[^\r\n]*', '')
+Assert-Housing ($ranch -match 'production_method_groups\s*=\s*\{[^}]*\bpmg_boi_company_housing\b') 'The Horse Ranch must list pmg_boi_company_housing.'
+$ruralCount++
 Assert-Housing ($ruralCount -eq 27 -and $subsistenceCount -eq 5) 'Rural coverage changed; review expected supported buildings.'
 
-# Verify references resolve against game + BOI + prototype, including borrowed art.
+# Verify housing references resolve against game + BOI, including borrowed art.
 $domains = @('goods','buildings','building_groups','production_methods','production_method_groups','laws','law_groups','technology/technologies','modifier_type_definitions')
 $known = @{}
 foreach ($domain in $domains) {
     $known[$domain] = @{}
-    foreach ($root in @($GamePath,$ModPath,$prototype)) {
+    foreach ($root in @($GamePath,$ModPath)) {
         $definitions = Read-HousingDomain $root $domain
         foreach ($key in $definitions.Keys) { $known[$domain][$key] = $true }
     }
 }
-foreach ($file in (Get-ChildItem $prototype -Recurse -File | Where-Object Extension -in '.txt','.gui')) {
+foreach ($file in $housingFiles) {
     $source = [IO.File]::ReadAllText($file.FullName)
     foreach ($match in [regex]::Matches($source, '(?:texture|icon|background)\s*=\s*"(gfx/[^"\r\n]+)"')) {
         $relative = $match.Groups[1].Value
-        Assert-Housing ((Test-Path (Join-Path $GamePath $relative)) -or (Test-Path (Join-Path $ModPath $relative)) -or (Test-Path (Join-Path $prototype $relative))) "Missing art: $relative"
+        Assert-Housing ((Test-Path (Join-Path $GamePath $relative)) -or (Test-Path (Join-Path $ModPath $relative))) "Missing art: $relative"
     }
     foreach ($match in [regex]::Matches($source, '\bgoods_(?:input|output)_(\w+)_(?:add|mult)\s*=')) {
         Assert-Housing ($known['goods'].ContainsKey($match.Groups[1].Value)) "Unknown housing good reference: $($match.Value)"
@@ -188,17 +200,19 @@ foreach ($file in (Get-ChildItem $prototype -Recurse -File | Where-Object Extens
 }
 
 # Regeneration must be deterministic and must match committed generated files.
+# The generator reads the mod root, which already holds its own output, so a
+# match here also proves it does not feed its output back in.
 $temporaryRoot = [IO.Path]::GetFullPath((Join-Path ([IO.Path]::GetTempPath()) ('boi-housing-test-' + [guid]::NewGuid().ToString('N'))))
 try {
-    & (Join-Path $PSScriptRoot 'Build-HousingPrototype.ps1') -GamePath $GamePath -ModPath $ModPath -OutputPath $temporaryRoot
+    & (Join-Path $PSScriptRoot 'Build-Housing.ps1') -GamePath $GamePath -ModPath $ModPath -OutputPath $temporaryRoot
     foreach ($file in Get-ChildItem $temporaryRoot -Recurse -File) {
         $relative = $file.FullName.Substring($temporaryRoot.Length + 1)
-        $expected = Join-Path $prototype $relative
+        $expected = Join-Path $ModPath $relative
         Assert-Housing ((Get-FileHash $file.FullName).Hash -eq (Get-FileHash $expected).Hash) "Stale generated housing file: $relative"
     }
     $firstHashes = @{}
     foreach ($file in Get-ChildItem $temporaryRoot -Recurse -File) { $firstHashes[$file.FullName] = (Get-FileHash $file.FullName).Hash }
-    & (Join-Path $PSScriptRoot 'Build-HousingPrototype.ps1') -GamePath $GamePath -ModPath $ModPath -OutputPath $temporaryRoot
+    & (Join-Path $PSScriptRoot 'Build-Housing.ps1') -GamePath $GamePath -ModPath $ModPath -OutputPath $temporaryRoot
     foreach ($file in Get-ChildItem $temporaryRoot -Recurse -File) {
         Assert-Housing ($firstHashes[$file.FullName] -eq (Get-FileHash $file.FullName).Hash) 'Housing generation is not deterministic.'
     }

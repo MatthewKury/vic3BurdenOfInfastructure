@@ -1,4 +1,4 @@
-﻿# Prototype political stances, attached additively; no vanilla ideology shadows.
+﻿# Provisional political stances, attached additively; no vanilla ideology shadows.
 ideology_boi_housing_reform = {
  icon = "gfx/interface/icons/ideology_icons/paternalistic.dds"
  lawgroup_boi_employer_housing = {

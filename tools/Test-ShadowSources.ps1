@@ -17,13 +17,15 @@ $shadowFiles = @(
     Get-ChildItem -LiteralPath (Join-Path $ModPath 'common/combat_unit_types') -Filter '00_boi_*overrides.txt'
     Get-ChildItem -LiteralPath (Join-Path $ModPath 'common/mobilization_options') -Filter '00_boi_*overrides.txt'
 )
+$vanillaFiles = @(Get-ChildItem -LiteralPath $gameMethods, $gameCombat, $gameMobilization -Filter '*.txt' -File)
 $count = 0
 foreach ($file in $shadowFiles) {
     $source = Get-Content -LiteralPath $file.FullName -Raw
     $keys = [regex]::Matches($source, '(?m)^([a-z][a-z0-9_]*)\s*=\s*\{') | ForEach-Object { $_.Groups[1].Value }
     foreach ($key in $keys) {
-        $matches = @(rg -l --glob '*.txt' "(?m)^$key\s*=\s*\{" $gameMethods $gameCombat $gameMobilization)
-        if ($matches.Count -ne 1) { throw "Shadow key $key from $($file.Name) matched $($matches.Count) vanilla definitions." }
+        # Files with a line starting with the key; \W? skips the BOM vanilla files open with.
+        $hits = @($vanillaFiles | Select-String -Pattern "^\W?$key\s*=\s*\{" -List | Select-Object -ExpandProperty Path -Unique)
+        if ($hits.Count -ne 1) { throw "Shadow key $key from $($file.Name) matched $($hits.Count) vanilla definitions." }
         $count++
     }
 }

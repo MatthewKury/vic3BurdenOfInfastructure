@@ -44,6 +44,18 @@ Get-ChildItem -LiteralPath $modCommon -Directory | ForEach-Object {
     $cmfKeys = @(Get-DefinitionKeys (Join-Path $CmfPath "common/$domain") | Sort-Object -Unique)
     $shared = Compare-Object $modKeys $cmfKeys -IncludeEqual -ExcludeDifferent |
         ForEach-Object InputObject
+    if ($domain -eq 'on_actions') {
+        # events = { } lists merge across mods; only two effect = { } blocks
+        # for one on_action conflict (VIC3_MODDING_LESSONS.md section 1). BOI
+        # hooks with events lists, so a shared key matters only if BOI's own
+        # block carries an effect.
+        $modSource = (Get-ChildItem -LiteralPath $_.FullName -Filter '*.txt' -File |
+            ForEach-Object { [regex]::Replace((Get-Content -LiteralPath $_.FullName -Raw), '(?m)#.*$', '') }) -join "`n"
+        $shared = @($shared | Where-Object {
+                [regex]::Matches($modSource, "(?ms)^$_\s*=\s*\{.*?^\}") |
+                    Where-Object { $_.Value -match '\beffect\s*=' }
+            })
+    }
     foreach ($key in $shared) { $keyConflicts += "common/$domain/$key" }
 }
 if ($keyConflicts) {

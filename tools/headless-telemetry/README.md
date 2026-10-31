@@ -22,7 +22,7 @@ To add a metric:
 3. Add the key to `-Metrics` in `tools/Get-HeadlessReport.ps1` if it should show
    in the report.
 
-When the housing prototype merges into BOI, nothing here needs to change. The
-module is selected by the `boi_housing` good wherever it is defined.
+Housing is part of BOI (merged 2026-10-30), so the housing module loads in every
+BOI run. It is selected by the `boi_housing` good wherever it is defined.
 
 Report: `tools\Get-HeadlessReport.ps1 -Run <mod run> -Compare <control run>`.

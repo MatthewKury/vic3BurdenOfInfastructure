@@ -1,13 +1,13 @@
 # Plan 4: Housing
 
-Updated: 2026-10-24 (housing design last changed 2026-10-09). Back to the
-[overview](../OVERVIEW.md).
+Updated: 2026-10-30 (merged into the main mod; housing design last changed
+2026-10-09). Back to the [overview](../OVERVIEW.md).
 
 Condensed from the agreed housing proposal, the housing implementation plan and
 the housing feasibility record. Those originals are in
-[the archive](../archive/planning-2026-10-24/README.md). Run instructions, debug
-events and the full 14-item runtime checklist are in
-[tools/housing-prototype/README.md](../../tools/housing-prototype/README.md).
+[the archive](../archive/planning-2026-10-24/README.md). Debug events, test
+values and the full 14-item runtime checklist are in
+[docs/HOUSING_TESTING.md](../HOUSING_TESTING.md).
 
 ## Goal
 
@@ -63,11 +63,12 @@ worthwhile where infrastructure is scarce.
 - Do not implement a housing-only policy with country-wide privatisation rules.
   Do not equate worker ownership of a housing business with resident ownership.
 
-## What is done (optional prototype, delivered 2026-10-04, revised 2026-10-09)
+## What is done (delivered 2026-10-04, revised 2026-10-09, merged 2026-10-30)
 
-The prototype lives in `tools/housing-prototype/`, requires BOI and loads after
-it (register it with a directory junction; see its README). **The main BOI mod
-does not load housing.** It is an unseeded test economy.
+Housing was built as the separate BOI Housing Prototype and **merged into the
+main mod on 2026-10-30** at the author's request, ahead of the original release
+gate (see below). It loads in every BOI campaign. Starting residential supply is
+still unseeded.
 
 - Local Housing and Luxury Housing goods with dedicated icons. Demand generated
   into all 99 wealth packages, preserving vanilla needs: basic `10 + 2W`, luxury
@@ -97,22 +98,31 @@ does not load housing.** It is an unseeded test economy.
   suppliers, −1 state SoL.
 - Debug events `boi_housing.1` to `.4` (init laws, Alentejo fixture, permissive
   laws, protective laws).
-- Generator `tools/Build-HousingPrototype.ps1` (owns four generated files;
-  shadows 32 building keys and all 99 buy packages; no vanilla PM shadowed).
-  Regression checks in `tools/Test-HousingPrototype.ps1`, run by
-  `Validate-All.ps1`.
+- Generator `tools/Build-Housing.ps1` (owns four generated files in the mod
+  root and never reads them back; shadows 31 vanilla building keys and all 99
+  buy packages; no vanilla PM shadowed). BOI's own Horse Ranch lists company
+  housing by hand in `50_boi_buildings.txt`. Regression checks in
+  `tools/Test-Housing.ps1`, run by `Validate-All.ps1`.
 
-**Validation:** `Validate-All.ps1` passed on 2026-10-04 and again on 2026-10-09
-after the infrastructure redesign (65 files BOM and brace valid, references
-resolved). The launcher found the prototype but warned about missing
-`.metadata`; a valid file was added and parses. **No live game run has been
-recorded.**
+**The merge (2026-10-30):** the prototype's files moved from
+`tools/housing-prototype/` into the mod root, its launcher descriptor was
+deleted, and the `mod/BOIHousingPrototype` link was removed. One real engine
+conflict was fixed: the prototype's generated `00_` building file carried a
+copy of BOI's Horse Ranch, which replaced BOI's own `50_` definition (logged as
+`Duplicated key building_boi_horse_ranch will not be created from file:
+common/buildings/50_boi_buildings.txt`). The generator now copies vanilla
+buildings only.
+
+**Validation:** `Validate-All.ps1` passes on the merged mod (2026-10-30). Headless
+observer runs of BOI with housing, 1836–1846 on 1.13.11, loaded with no housing
+errors. The only housing lines are the three expected "orphaned" debug events,
+which the harness now counts separately.
 
 ## What is left
 
-### Step 1: Live engine test (all 14 checklist items not run)
+### Step 1: Live engine test (item 1 partly covered by headless runs; 2 to 14 not run)
 
-Run the checklist in the prototype README. Fix script errors before any tuning.
+Run the checklist in `docs/HOUSING_TESTING.md`. Fix script errors before any tuning.
 Highest-risk items:
 
 - [ ] Loads without housing errors, unknown modifiers, bad scopes, missing icons
@@ -181,19 +191,28 @@ Highest-risk items:
 
 ## Release gate
 
-Merge into the main mod only after live tests, infrastructure and redevelopment
-balance, acquisition rules, starting supply and AI behaviour all pass. Merge
-definitions and generator together, and merge with water demand (companion water mod) into one
-buy-package generator. Never enable universal demand in an unseeded
-main campaign. Existing saves need their own migration plan.
+The original gate was to merge only after live tests, infrastructure and
+redevelopment balance, acquisition rules, starting supply and AI behaviour all
+passed. The author chose to merge first (2026-10-30), so those items are now the
+gate for a public BOI **release**, not for the merge. Definitions and generator
+were merged together, and `tools/Build-Housing.ps1` is the only buy-package
+generator. Existing saves need their own migration plan; start a new campaign.
 
 ## Provisional values
 
-Every number, tech gate, building name and political stance in the prototype is
-a test value. The wealth-15 luxury threshold is a starting point, not a settled
-class boundary.
+Every number, tech gate, building name and political stance in the housing
+module is a test value. The wealth-15 luxury threshold is a starting point, not
+a settled class boundary.
 
 ## Test log
 
-No runs recorded yet. For each run, note game version, state, staffing,
-prices, modifiers, errors and screenshots before marking anything verified.
+For each run, note game version, state, staffing, prices, modifiers, errors and
+screenshots before marking anything verified.
+
+- **2026-10-30, headless, 1.13.11, 1836–1846, BOI + housing (then still the
+  prototype), observer AI** (`tools/headless-runs/20261030-104714_mod`). No
+  crash; no housing errors besides the three orphaned debug events. National
+  basic Housing sat at its price floor (7.5 of 30) in all 14 tracked countries,
+  with supply 3–5 times demand, mostly from subsistence output. Luxury Housing
+  was short in some (Brazil and Spain sold none). The AI built a few suburbs and
+  luxury apartments; no country built apartment blocks. National aggregates only.

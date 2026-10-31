@@ -51,7 +51,12 @@ building_boi_horse_ranch = {
 	# no model on the map. levels_per_mesh is dropped with it, since
 	# it only governs mesh placement.
 
+	# pmg_boi_company_housing is the housing module's employer-housing
+	# group, written here by hand. tools/Build-Housing.ps1 adds it to
+	# vanilla rural buildings only; a generated copy of this block
+	# would sort first (00_) and silently replace this definition.
 	production_method_groups = {
+		pmg_boi_company_housing
 		pmg_boi_horse_ranch_method
 	}
 

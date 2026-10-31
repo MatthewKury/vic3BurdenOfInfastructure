@@ -118,7 +118,7 @@ responses, rather than arbitrary recurring penalties.
 
 ### Broader public works scope — optional later expansion
 
-Waterworks, sewers, and telegraphs could extend the public-investment theme
+Sewers and telegraphs could extend the public-investment theme
 beyond transport. These would substantially expand the mod's scope and are
 longer-term possibilities rather than priorities for the current transport loop.
 

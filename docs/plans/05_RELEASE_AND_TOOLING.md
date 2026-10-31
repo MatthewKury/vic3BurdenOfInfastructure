@@ -11,7 +11,7 @@ Condensed from the development plan's tooling and hygiene sections, the
 - **Validation entry point:** `tools/Validate-All.ps1` (2026-09-23) runs
   structure, BOM and brace checks, committed-seed counts, the 675-state horse
   safety audit, installed-vanilla shadow drift, the housing regression suite.
-  See `tools/VALIDATION.md`. (The water module checks moved with the water mod.)
+  See `tools/VALIDATION.md`.
 - **Seed reproducibility:** `tools/gen_seed.awk` keeps the sorted input order, so
   identical inputs give byte-identical output. `tools/Test-SeedReproducibility.ps1`
   proves it on demand. Keep the `sort > /tmp/regions.txt` step.

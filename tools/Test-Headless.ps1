@@ -2,12 +2,14 @@
 # -ExtraMods) or vanilla (-Control), mirrors the logs and autosaves into
 # tools/headless-runs/<stamp>_<arm>/, then checks error.log for BOI-attributable
 # errors. Exits non-zero on BOI or telemetry errors, a missing (or unexpected)
-# mod mount, a crash, or a timeout.
+# mod mount, a crash, or a timeout. Housing is part of BOI, so the mod arm
+# needs no -ExtraMods; that switch is for testing other mods alongside BOI.
 #
 # Unless -NoTelemetry, both arms also load a telemetry mod assembled into the
 # run folder from tools/headless-telemetry/: the core module always, and the
-# boi / housing modules when a loaded mod defines horses / boi_housing. Its
-# BOITM| lines in debug.log are read by tools/Get-HeadlessReport.ps1.
+# boi / housing modules when a loaded mod defines horses / boi_housing (BOI
+# defines both). Its BOITM| lines in debug.log are read by
+# tools/Get-HeadlessReport.ps1.
 #
 # Player state it touches -- content_load.json, pdx_settings.json,
 # continue_game.json and the autosave*.v3 slots -- is backed up into the run
@@ -293,9 +295,15 @@ $modFiles = @($armMods | ForEach-Object {
     } | Sort-Object -Unique)
 $messages = $errorLines | ForEach-Object { $_ -replace '^\[\d\d:\d\d:\d\d\]', '' }
 $shadowLines = @($messages | Where-Object { $_ -match 'Duplicated key .* will not be created' })
+# Console-only debug events (housing fixtures boi_housing.2-.4, see
+# docs/HOUSING_TESTING.md) are referenced by nothing, so the engine logs them
+# as orphaned at every launch. Expected; counted separately, not as errors.
+$expectedPatterns = @('Event boi_housing\.[234] is orphaned$')
+$expectedLines = @($messages | Where-Object { $line = $_; $expectedPatterns | Where-Object { $line -match $_ } } | Sort-Object -Unique)
 $boiLines = @($messages | Where-Object {
         $line = $_
         if ($line -match 'Duplicated key .* will not be created') { return $false }
+        if ($expectedPatterns | Where-Object { $line -match $_ }) { return $false }
         if ($line -match '(?i)boitm') { return $false }
         if ($line -match '(?i)boi_|BurdenOfInfastructure') { return $true }
         foreach ($file in $modFiles) { if ($line.Contains($file)) { return $true } }
@@ -327,7 +335,7 @@ $summary = @(
     "- Exit: $exitReason after $([int]$elapsed.TotalMinutes) min; autosaves copied: $saveIndex",
     "- Mounted: $(if ($mountLines) { $mountLines -join ' | ' } else { 'none' })",
     "- error.log: $($errorLines.Count) lines, $(@($messages | Sort-Object -Unique).Count) unique; shadow 'Duplicated key' lines: $($shadowLines.Count)",
-    "- BOI-attributed unique lines: $($boiLines.Count) (see boi_errors.log)",
+    "- BOI-attributed unique lines: $($boiLines.Count) (see boi_errors.log); expected debug-event lines: $($expectedLines.Count)",
     "- Telemetry: $(if ($telemetryModules) { "modules $($telemetryModules -join ', '); $($telemetryLines.Count) BOITM lines; $($telemetryErrors.Count) error lines" } else { 'off' })",
     '',
     '## Top error sources',

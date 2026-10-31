@@ -1,7 +1,8 @@
-# Regenerating the two generated file sets
+# Regenerating the three generated file sets
 
-Both must be re-run after every Victoria 3 patch, or they silently drift from
-vanilla. Set `GAME` first:
+All three must be re-run after every Victoria 3 patch, or they silently drift
+from vanilla. Sections 1 and 2 cover the state regions and the 1836 seed; the
+housing files are in section 3. Set `GAME` first:
 
 ```bash
 GAME="/c/Program Files (x86)/Steam/steamapps/common/Victoria 3/game"
@@ -155,3 +156,25 @@ head -c 3 "$f" | od -An -tx1                     # ef bb bf
 
 If the counts move after a patch, that is real information — Paradox added,
 removed, or re-owned states. Diff the numbers before assuming the script broke.
+
+## 3. Housing — building shadows and buy packages
+
+`tools/Build-Housing.ps1` writes four files into the mod root:
+`common/buildings/00_boi_housing_rural_generated.txt` (31 vanilla rural and
+subsistence buildings with a housing PM group added),
+`common/buy_packages/00_buy_packages.txt` (all 99 vanilla wealth packages with
+housing demand added), `common/scripted_effects/zz_boi_housing_fallback_generated.txt`
+and `common/modifier_type_definitions/zz_boi_housing_generated.txt`. It never
+reads those four back in, so re-running it is safe.
+
+```powershell
+.\tools\Build-Housing.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game'
+.\tools\Test-Housing.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game'
+```
+
+It copies vanilla buildings only. If BOI defines or shadows a rural building
+itself (today only `building_boi_horse_ranch`), that block must list
+`pmg_boi_company_housing` by hand; the script stops with an error otherwise. If
+a patch changes the number of rural or subsistence buildings, the script and
+`Test-Housing.ps1` fail on purpose: review the new buildings before updating
+the expected counts.

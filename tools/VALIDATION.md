@@ -49,10 +49,15 @@ startup smoke test after every CMF update.
 These scripts are static checks. Launch the game and inspect its logs to verify
 engine acceptance and campaign behavior.
 
-`Test-HousingPrototype.ps1` is included in the combined checks. It verifies
-the goods-based housing module's demand and staffing rules, fixed structures,
-law gates, source-preserving overrides, graphics/references, explicit modifier
-declarations, and deterministic regeneration. See the [prototype instructions](housing-prototype/README.md)
-and [housing plan](../docs/plans/04_HOUSING.md) for the required live tests.
-The optional module is not loaded by the main BOI mod. The earlier capacity
-probe was retired; its old arithmetic checks do not apply to this design.
+`Test-Housing.ps1` is included in the combined checks. It verifies the
+goods-based housing module's demand and staffing rules, fixed structures, law
+gates, source-preserving overrides (and that the Horse Ranch lists company
+housing by hand), graphics/references, explicit modifier declarations, and that
+regenerating from the mod root reproduces the committed files. See the
+[housing test guide](../docs/HOUSING_TESTING.md) and
+[housing plan](../docs/plans/04_HOUSING.md) for the required live tests.
+Housing is part of the main mod. The earlier capacity probe was retired; its
+old arithmetic checks do not apply to this design.
+
+`Test-ShadowSources.ps1` uses PowerShell's `Select-String`, so no extra tools
+(such as ripgrep) need to be installed.

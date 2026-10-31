@@ -14,7 +14,7 @@ if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
 & (Join-Path $PSScriptRoot 'Test-Seed.ps1') -ModPath $ModPath
 & (Join-Path $PSScriptRoot 'Test-HorseSeedSafety.ps1') -GamePath $GamePath -ModPath $ModPath
 & (Join-Path $PSScriptRoot 'Test-ShadowSources.ps1') -ModPath $ModPath -GamePath $GamePath
-& (Join-Path $PSScriptRoot 'Test-HousingPrototype.ps1') -ModPath $ModPath -GamePath $GamePath
+& (Join-Path $PSScriptRoot 'Test-Housing.ps1') -ModPath $ModPath -GamePath $GamePath
 if ($CmfPath) {
     & (Join-Path $PSScriptRoot 'Test-CMFCompatibility.ps1') -ModPath $ModPath -CmfPath $CmfPath
 }

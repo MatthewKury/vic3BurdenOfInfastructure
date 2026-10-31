@@ -1,4 +1,4 @@
-﻿# Prototype: emergency crowding affects all basic housing providers, including
+﻿# Provisional: emergency crowding affects all basic housing providers, including
 # subsistence, company accommodation and operating shelters. This is one
 # additive output modifier, not a recursive shelter-capacity calculation.
 decree_boi_emergency_accommodation = {

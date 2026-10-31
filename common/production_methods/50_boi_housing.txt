@@ -1,4 +1,4 @@
-﻿# Prototype balance values; see README. Fixed residential structures have one PM each.
+﻿# Provisional balance values; see docs/HOUSING_TESTING.md. Fixed residential structures have one PM each.
 pm_boi_slums = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  state_modifiers = {

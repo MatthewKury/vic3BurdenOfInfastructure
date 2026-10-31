@@ -15,6 +15,9 @@ This is an experimental release for **Victoria 3 1.13.x**. The mod descriptor de
 | **Horse-Breeding Traditions** | A regional state trait that improves horse output. |
 | **Horse mobilization options** | Horseback Reconnaissance and Horse-Drawn Transport consume horses while mobilized. |
 | **Road Financing laws** | Statute Labour, Turnpike Trusts, or Public Highways decide who pays for Public Works: peasants, road users, or the treasury. |
+| **Housing and Luxury Housing** | Local goods every household buys, supplied by subsistence buildings, company housing, and new residential buildings. |
+| **Residential buildings** | Slum Districts, Tenement Districts, Apartment Blocks, Luxury Apartments, Suburban Estates, and a government-funded Temporary Shelter Programme. Each uses infrastructure. |
+| **Housing laws and decree** | Employer Housing and Residential Standards law groups, and an Emergency Accommodation decree. |
 
 Existing railway and port production methods no longer provide infrastructure directly. Several existing farm, mine, plantation, subsistence, urban transport, and cavalry definitions are adjusted to account for horses. Horseback Reconnaissance is a weaker early alternative to Motorized Reconnaissance. Horse-Drawn Transport gives the movement bonus of Forced March with a smaller mobilization speed bonus, no morale penalty, and a horse cost; it is mutually exclusive with the other transport choices. The 1836 setup includes starting Public Works, Harbour Works, and Horse Ranches so the new supply chain can function from the beginning of a campaign.
 
@@ -22,7 +25,9 @@ Extra Supplies also requires potential horse supply and consumes 0.5 horses whil
 
 A new economy law group, **Road Financing**, decides who pays for Public Works. Public Highways keeps the full cost on the treasury. Statute Labour and Turnpike Trusts make Public Works cheaper but have side effects: Statute Labour lowers infrastructure output and peasant living standards, and Turnpike Trusts improve infrastructure by 15% but reduce market access. Each benefits a particular group: Landowners under Statute Labour, and the Petty Bourgeoisie and Industrialists (with Landowners) under Turnpike Trusts. Interest groups take sides through new road-financing ideologies added at game start. Britain and the United States start with Turnpike Trusts, France and Prussia with Public Highways, and all other countries with Statute Labour.
 
-The mod includes distinct icons for horses, the three new buildings, and Horse-Breeding Traditions. A separate texticon definition displays the horse good in compact UI text, such as budget details.
+Households also need **Housing**, a local good that cannot be traded between states. Basic Housing demand grows with wealth, and wealthier households also buy Luxury Housing. Subsistence buildings supply a little; rural workplaces can run company housing; and residential buildings supply the rest. Residential buildings use a lot of infrastructure, and denser buildings provide more housing per point, so replacing sprawling old housing pays off where infrastructure is scarce. Slums raise mortality and lower living standards and migration; luxury apartments and suburbs attract migrants. Suburbs need horses, transportation, or automobiles for commuting.
+
+The mod includes distinct icons for horses, the three infrastructure buildings, Horse-Breeding Traditions, both housing goods, and the six residential buildings. Separate texticon definitions display the horse and housing goods in compact UI text, such as budget details.
 
 ## Installation and use
 
@@ -34,15 +39,9 @@ Only English localization is included at present.
 
 ## Compatibility and development status
 
-Water and Waterworks used to live in this mod and now live in the separate companion mod **Burden of Infrastructure: Water** (`../BurdenOfInfrastructureWater`); see [docs/OVERVIEW.md](docs/OVERVIEW.md). It is not needed here.
+Housing was developed as a separate prototype and merged into this mod on 2026-10-30; if an older playset lists **BOI Housing Prototype**, remove that entry. Housing is not yet balanced: no residential buildings exist at game start, prices and supply are uncalibrated, and buying out private housing before demolition is not enforced. See [housing tests](docs/HOUSING_TESTING.md) and the [housing plan](docs/plans/04_HOUSING.md).
 
-An optional [Housing prototype](tools/housing-prototype/README.md) is under
-development. It models local basic/luxury accommodation, fixed residential
-buildings, and optional company housing. It is not enabled by this mod's normal
-playset and is not campaign-ready: world supply, infrastructure balance, and
-ownership enforcement still need implementation and live testing.
-
-The mod copies all 16 base-game state-region files to make Horse Ranches buildable, and it overrides selected game definitions. Other mods that change those same files or definitions may conflict. These copies and overrides should be reviewed after each Victoria 3 patch. See [regeneration instructions](tools/REGENERATE.md) and [validation instructions](tools/VALIDATION.md).
+The mod copies all 16 base-game state-region files to make Horse Ranches buildable, and it overrides selected game definitions. Housing replaces the base game's household buy-package file and adds a housing production method group to 31 rural and subsistence buildings. Other mods that change those same files or definitions may conflict. These copies and overrides should be reviewed after each Victoria 3 patch. See [regeneration instructions](tools/REGENERATE.md) and [validation instructions](tools/VALIDATION.md).
 
 A short Portugal debug-mode game ran without an obvious gameplay failure, but that is only a smoke test. AI construction, market balance, long campaigns, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [planning overview](docs/OVERVIEW.md) for the design and remaining work.
 

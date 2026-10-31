@@ -4,27 +4,27 @@ param()
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
 
-$prototype = Join-Path $PSScriptRoot 'housing-prototype'
-$templatePath = Join-Path (Split-Path $PSScriptRoot -Parent) 'gfx/interface/icons/goods_icons/boi_horses.dds'
+$modRoot = Split-Path $PSScriptRoot -Parent
+$templatePath = Join-Path $modRoot 'gfx/interface/icons/goods_icons/boi_horses.dds'
 $template = [IO.File]::ReadAllBytes($templatePath)
 if ($template.Length -ne 349652) { throw 'Expected the 256x256 RGBA DDS horse icon with nine mip levels.' }
 [byte[]]$header = $template[0..127]
 
 $assets = @(
-    @{ Name = 'boi_housing'; Source = 'art/source'; Folder = 'goods_icons' },
-    @{ Name = 'boi_luxury_housing'; Source = 'art/source'; Folder = 'goods_icons' },
-    @{ Name = 'boi_slums'; Source = 'art/source/buildings'; Folder = 'building_icons' },
-    @{ Name = 'boi_tenements'; Source = 'art/source/buildings'; Folder = 'building_icons' },
-    @{ Name = 'boi_apartments'; Source = 'art/source/buildings'; Folder = 'building_icons' },
-    @{ Name = 'boi_luxury_apartments'; Source = 'art/source/buildings'; Folder = 'building_icons' },
-    @{ Name = 'boi_suburbs'; Source = 'art/source/buildings'; Folder = 'building_icons' },
-    @{ Name = 'boi_temporary_shelter'; Source = 'art/source/buildings'; Folder = 'building_icons' }
+    @{ Name = 'boi_housing'; Source = 'art/housing'; Folder = 'goods_icons' },
+    @{ Name = 'boi_luxury_housing'; Source = 'art/housing'; Folder = 'goods_icons' },
+    @{ Name = 'boi_slums'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
+    @{ Name = 'boi_tenements'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
+    @{ Name = 'boi_apartments'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
+    @{ Name = 'boi_luxury_apartments'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
+    @{ Name = 'boi_suburbs'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
+    @{ Name = 'boi_temporary_shelter'; Source = 'art/housing/buildings'; Folder = 'building_icons' }
 )
 
 foreach ($asset in $assets) {
     $name = $asset.Name
-    $sourceDirectory = Join-Path $prototype $asset.Source
-    $outputDirectory = Join-Path $prototype (Join-Path 'gfx/interface/icons' $asset.Folder)
+    $sourceDirectory = Join-Path $modRoot $asset.Source
+    $outputDirectory = Join-Path $modRoot (Join-Path 'gfx/interface/icons' $asset.Folder)
     [IO.Directory]::CreateDirectory($outputDirectory) | Out-Null
     $sourcePath = Join-Path $sourceDirectory "$name.png"
     $pngPath = Join-Path $outputDirectory "$name.png"
