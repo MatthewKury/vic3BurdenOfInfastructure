@@ -14,23 +14,23 @@ bg_boi_dense_housing = {
 }
 bg_boi_slum_housing = {
  parent_group = bg_boi_dense_housing
- infrastructure_usage_per_level = 8
+ infrastructure_usage_per_level = 2
 }
 bg_boi_tenement_housing = {
  parent_group = bg_boi_dense_housing
- infrastructure_usage_per_level = 6
+ infrastructure_usage_per_level = 1.5
 }
 bg_boi_apartment_housing = {
  parent_group = bg_boi_dense_housing
- infrastructure_usage_per_level = 4
+ infrastructure_usage_per_level = 1
 }
 bg_boi_luxury_apartment_housing = {
  parent_group = bg_boi_dense_housing
- infrastructure_usage_per_level = 5
+ infrastructure_usage_per_level = 1.5
 }
 bg_boi_suburban_housing = {
  parent_group = bg_boi_residential
- infrastructure_usage_per_level = 8
+ infrastructure_usage_per_level = 2.5
 }
 bg_boi_temporary_housing = {
  category = development
@@ -39,5 +39,5 @@ bg_boi_temporary_housing = {
  is_government_funded = yes
  cash_reserves_max = 10000
  urbanization = 0
- infrastructure_usage_per_level = 5
+ infrastructure_usage_per_level = 1.5
 }

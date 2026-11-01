@@ -55,7 +55,7 @@ Assert-Housing ($readerBlocks.Count -eq 2 -and $readerBlocks[1].Key -eq 'beta') 
 # housing, plus the generated buy-package file it owns.
 $housingFiles = @(Get-ChildItem -LiteralPath (Join-Path $ModPath 'common'), (Join-Path $ModPath 'events'), (Join-Path $ModPath 'gui') -Recurse -File |
     Where-Object { $_.Extension -in '.txt', '.gui' -and ($_.Name -like '*housing*' -or $_.Directory.Name -eq 'buy_packages') })
-Assert-Housing ($housingFiles.Count -eq 19) "Expected 19 housing script files, found $($housingFiles.Count); review the merged file set."
+Assert-Housing ($housingFiles.Count -eq 20) "Expected 20 housing script files, found $($housingFiles.Count); review the merged file set."
 
 $pm = Read-HousingDomain $ModPath 'production_methods'
 $pmg = Read-HousingDomain $ModPath 'production_method_groups'
@@ -66,20 +66,26 @@ $vanillaPackages = Read-HousingDomain $GamePath 'buy_packages'
 Assert-Housing ($packages.Count -eq 99) 'Every wealth level needs a demand package.'
 $previousBasic = 0
 $previousLuxury = 0
+$previousTotal = 0
 foreach ($wealth in 1..99) {
     $key = "wealth_$wealth"
     $source = $packages[$key]
-    $basic = Housing-Number $source 'popneed_boi_housing'
-    Assert-Housing ($basic -gt $previousBasic) "Basic housing demand must increase at wealth $wealth."
+    $basic = if ($source -match 'popneed_boi_housing') { Housing-Number $source 'popneed_boi_housing' } else { 0 }
+    $luxury = if ($source -match 'popneed_boi_luxury_housing') { Housing-Number $source 'popneed_boi_luxury_housing' } else { 0 }
+    $total = $basic + $luxury
+    Assert-Housing ($basic -ge $previousBasic -and $luxury -ge $previousLuxury -and $total -ge $previousTotal) "Housing demand must not fall at wealth $wealth."
     $previousBasic = $basic
-    if ($wealth -lt 15) {
-        Assert-Housing ($source -notmatch 'popneed_boi_luxury_housing') 'Luxury housing appears below the wealth-15 threshold.'
+    $previousLuxury = $luxury
+    $previousTotal = $total
+    $core = 0.0
+    foreach ($need in [regex]::Matches($vanillaPackages[$key], '(?m)^\s*popneed_\w+\s*=\s*([0-9.]+)')) {
+        $core += [double]::Parse($need.Groups[1].Value, [Globalization.CultureInfo]::InvariantCulture)
     }
-    else {
-        $luxury = Housing-Number $source 'popneed_boi_luxury_housing'
-        Assert-Housing ($luxury -gt $previousLuxury) "Luxury demand must increase at wealth $wealth."
-        $previousLuxury = $luxury
-    }
+    $share = $total / $core
+    if ($wealth -le 4) { Assert-Housing ($total -eq 0) "Destitute wealth $wealth must have no housing demand." }
+    if ($wealth -ge 5 -and $wealth -le 9) { Assert-Housing (($share * 1.75) -le 0.05) "Struggling wealth $wealth must stay within 5% at the price ceiling." }
+    if ($wealth -ge 50) { Assert-Housing ([Math]::Abs($share - 0.15) -lt 0.001) "Wealth $wealth must sit on the 15% plateau." }
+    if ($luxury -gt 0) { Assert-Housing ($basic -eq (10 + (2 * $wealth))) "Luxury housing must be additional to full basic demand at wealth $wealth." }
     $withoutHousing = [regex]::Replace($source, '(?m)^\s*popneed_boi_(?:luxury_)?housing\s*=\s*\d+[^\S\r\n]*\r?\n', '')
     Assert-Housing ((Normalize-HousingScript $withoutHousing) -eq (Normalize-HousingScript $vanillaPackages[$key])) "Non-housing buy package changed: $key"
 }
@@ -121,13 +127,61 @@ foreach ($key in @('slums','tenements','apartments','luxury_apartments','suburbs
     $methods = [regex]::Matches($structure, '\bpm_boi_\w+\b')
     Assert-Housing ($methods.Count -eq 1) "Structural upgrade PMs are forbidden: $key"
 }
-Assert-Housing ($pm['pm_boi_no_company_housing'] -match 'is_default\s*=\s*yes') 'No Company Housing must be the default.'
-Assert-Housing ($pm['pm_boi_no_company_housing'] -notmatch 'unlocking_|goods_|state_modifiers') 'No Company Housing must be unconditional and supply no housing.'
-Assert-Housing ($pm['pm_boi_hostile_company_housing'] -notmatch 'state_modifiers') 'Hostile employer penalties must not affect an entire state.'
-Assert-Housing ($pm['pm_boi_hostile_company_housing'] -match 'unlocking_laws\s*=\s*\{\s*law_boi_unregulated_company_housing') 'Hostile PM needs its separate law gate.'
-foreach ($key in @('worker_settlements','serviced_settlements')) {
-    Assert-Housing ($pm["pm_boi_$key"] -notmatch 'unlocking_laws') 'Protected employer law must leave safe housing available.'
+Assert-Housing ($pm['pm_boi_no_company_housing'] -match 'is_default\s*=\s*yes') 'No Housing must be the default.'
+Assert-Housing ($pm['pm_boi_no_company_housing'] -notmatch 'unlocking_|goods_|state_modifiers') 'No Housing must be unconditional and supply no housing.'
+Assert-Housing ($pm['pm_boi_work_camp'] -notmatch 'state_modifiers') 'Work Camp penalties must not affect an entire state.'
+Assert-Housing ($pm['pm_boi_work_camp'] -match 'unlocking_laws\s*=\s*\{\s*law_boi_unregulated_company_housing') 'Work Camp needs its separate law gate.'
+# Each employer housing law permits No Housing plus exactly one tier.
+$tierLaws = @{ work_camp = 'law_boi_unregulated_company_housing'; work_town = 'law_boi_protected_company_housing'; serviced_town = 'law_boi_mandated_serviced_housing' }
+$tierEffects = @{ work_camp = 'boi_housing_enforce_work_camps_effect'; work_town = 'boi_housing_enforce_work_towns_effect'; serviced_town = 'boi_housing_enforce_serviced_towns_effect' }
+$laws = Read-HousingDomain $ModPath 'laws'
+$setup = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_effects/50_boi_housing.txt'))
+foreach ($tier in $tierLaws.Keys) {
+    $gate = [regex]::Match($pm["pm_boi_$tier"], 'unlocking_laws\s*=\s*\{([^{}]*)\}')
+    Assert-Housing ($gate.Success -and ($gate.Groups[1].Value.Trim() -eq $tierLaws[$tier])) "$tier must be unlocked by exactly $($tierLaws[$tier])."
+    Assert-Housing ($pm["pm_boi_$tier"] -notmatch 'disallowing_laws') "$tier must rely on its one unlocking law."
+    Assert-Housing ($laws[$tierLaws[$tier]] -match ('on_activate\s*=\s*\{\s*' + $tierEffects[$tier])) "$($tierLaws[$tier]) must move paying tiers to $tier."
+    Assert-Housing ($setup -match ('has_law\s*=\s*law_type:' + $tierLaws[$tier] + '\s*\}\s*' + $tierEffects[$tier])) "Monthly setup must enforce $tier under its law."
+    Assert-Housing ($setup -match ('NOR\s*=\s*\{[^{}]*' + $tierLaws[$tier])) "Monthly setup must recognise $($tierLaws[$tier]) or it resets the law every month."
 }
+Assert-Housing ($pm['pm_boi_serviced_town'] -match 'unlocking_technologies\s*=\s*\{\s*modern_sewerage') 'Serviced Town must keep its technology gate.'
+$mandate = $laws['law_boi_mandated_serviced_housing']
+Assert-Housing ($mandate -match 'unlocking_technologies\s*=\s*\{\s*socialism') 'Mandatory Serviced Housing must unlock with Socialism.'
+Assert-Housing ($mandate -notmatch 'can_enact') 'Mandatory Serviced Housing must stay enactable without Modern Sewerage.'
+$enforcement = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_effects/zz_boi_housing_fallback_generated.txt'))
+Assert-Housing ($enforcement -match 'has_technology_researched\s*=\s*modern_sewerage') 'The mandate must check for Modern Sewerage.'
+foreach ($destination in @('pm_boi_work_camp', 'pm_boi_work_town', 'pm_boi_serviced_town', 'pm_boi_no_company_housing')) {
+    Assert-Housing ($enforcement -match ('production_method\s*=\s*' + $destination)) "Generated enforcement must cover $destination."
+}
+# Higher tiers must use at least as much of every input, so the profit order
+# Work Camp > Work Town > Serviced Town holds at any prices.
+$tierOrder = @('work_camp', 'work_town', 'serviced_town')
+foreach ($step in 0..1) {
+    $lower = Child-HousingBlock (Child-HousingBlock $pm["pm_boi_$($tierOrder[$step])"] 'building_modifiers') 'workforce_scaled'
+    $upper = Child-HousingBlock (Child-HousingBlock $pm["pm_boi_$($tierOrder[$step + 1])"] 'building_modifiers') 'workforce_scaled'
+    foreach ($good in @('wood', 'fabric', 'tools')) {
+        $inputKey = "goods_input_${good}_add"
+        $lowerAmount = if ($lower -match $inputKey) { Housing-Number $lower $inputKey } else { 0 }
+        $upperAmount = if ($upper -match $inputKey) { Housing-Number $upper $inputKey } else { 0 }
+        Assert-Housing ($upperAmount -ge $lowerAmount) "$($tierOrder[$step + 1]) must use at least as much $good as $($tierOrder[$step])."
+    }
+}
+# A Work Town houses as many workers as a Work Camp at half its penalties, for
+# every profession. Serviced Towns carry no penalty.
+$campBuilding = Child-HousingBlock $pm['pm_boi_work_camp'] 'building_modifiers'
+$townBuilding = Child-HousingBlock $pm['pm_boi_work_town'] 'building_modifiers'
+Assert-Housing ((Housing-Number (Child-HousingBlock $townBuilding 'workforce_scaled') 'goods_output_boi_housing_add') -eq (Housing-Number (Child-HousingBlock $campBuilding 'workforce_scaled') 'goods_output_boi_housing_add')) 'Work Town must supply the same housing as a Work Camp.'
+$campPenalties = Child-HousingBlock $campBuilding 'unscaled'
+$townPenalties = Child-HousingBlock $townBuilding 'unscaled'
+$campPenaltyKeys = @([regex]::Matches($campPenalties, 'building_\w+_(?:standard_of_living_add|mortality_mult)') | ForEach-Object Value)
+$townPenaltyKeys = @([regex]::Matches($townPenalties, 'building_\w+_(?:standard_of_living_add|mortality_mult)') | ForEach-Object Value)
+Assert-Housing ($campPenaltyKeys.Count -eq 20 -and $townPenaltyKeys.Count -eq 20) 'Work Camp and Work Town must penalise all ten professions.'
+foreach ($key in $campPenaltyKeys) {
+    Assert-Housing ([Math]::Abs((Housing-Number $townPenalties $key) * 2 - (Housing-Number $campPenalties $key)) -lt 0.000001) "Work Town penalty must be half of Work Camp: $key"
+}
+Assert-Housing ($pm['pm_boi_serviced_town'] -notmatch 'standard_of_living|mortality') 'Serviced Town must carry no penalty.'
+$servicedOutput = Housing-Number (Child-HousingBlock (Child-HousingBlock $pm['pm_boi_serviced_town'] 'building_modifiers') 'workforce_scaled') 'goods_output_boi_housing_add'
+Assert-Housing ($servicedOutput -eq (Housing-Number (Child-HousingBlock $campBuilding 'workforce_scaled') 'goods_output_boi_housing_add')) 'Every housing tier must supply the same housing.'
 Assert-Housing ($pm['pm_boi_slums'] -notmatch 'unlocking_laws') 'Residential law must not disable existing slum operation.'
 Assert-Housing ($buildings['building_boi_slums'] -match 'possible\s*=\s*\{\s*owner\s*=\s*\{\s*NOT\s*=\s*\{\s*has_law\s*=\s*law_type:law_boi_residential_standards') 'New slums must be blocked by residential standards.'
 
@@ -151,6 +205,11 @@ $ranch = [regex]::Replace($buildings['building_boi_horse_ranch'], '(?m)#[^\r\n]*
 Assert-Housing ($ranch -match 'production_method_groups\s*=\s*\{[^}]*\bpmg_boi_company_housing\b') 'The Horse Ranch must list pmg_boi_company_housing.'
 $ruralCount++
 Assert-Housing ($ruralCount -eq 27 -and $subsistenceCount -eq 5) 'Rural coverage changed; review expected supported buildings.'
+
+# The 1836 seed places only buildings available at the start, for real starting owners.
+$seed = [IO.File]::ReadAllText((Join-Path $ModPath 'common/history/buildings/zz_boi_housing_seed_generated.txt'))
+Assert-Housing ($seed -notmatch 'building_boi_apartments|building_boi_temporary_shelter') 'The 1836 seed must not place Apartment Blocks or shelters.'
+Assert-Housing ($seed -notmatch 'STATE_ALENTEJO') 'Alentejo stays unseeded: the housing fixtures build there.'
 
 # Verify housing references resolve against game + BOI, including borrowed art.
 $domains = @('goods','buildings','building_groups','production_methods','production_method_groups','laws','law_groups','technology/technologies','modifier_type_definitions')

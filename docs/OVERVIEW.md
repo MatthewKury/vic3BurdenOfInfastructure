@@ -1,6 +1,6 @@
 # Burden of Infrastructure: overview and big ideas
 
-Updated: 2026-10-31. Target game version: Victoria 3 **1.13** (checked against
+Updated: 2026-11-01. Target game version: Victoria 3 **1.13** (checked against
 installed 1.13.11).
 
 This is the top-level planning document. It says what the mod is for, what
@@ -11,7 +11,7 @@ part lives in its own execution plan:
 |---|---|---|
 | 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Built; AI keeps up over 10-year headless runs; needs 50-year runs, a campaign balance pass, and a fix for over-seeded GBR |
 | 2 | [Road Financing politics](plans/02_ROAD_FINANCING.md) | Phase 1 (roads) built; untested in-game; phase 2 (events, harbours) not started |
-| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); loads cleanly; fixture checks automated in the headless harness; not calibrated |
+| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); fixture checks automated; tiers, laws, demand curve and 1836 seed set 2026-11-01; first single-run calibration done, open decisions in the plan |
 | 5 | [Release, tooling and hygiene](plans/05_RELEASE_AND_TOOLING.md) | Validation suite, headless harness and PATCHING.md done; changelog and licence still missing |
 
 The original documents these were condensed from are kept in
@@ -93,14 +93,14 @@ These come from the original agreed design (2026-08-16) and have held since.
 | Infrastructure-aware `ai_value` weights (Public Works, Harbour Works) | Yes | Passes | No visible effect; kept pending reinvestigation (plan 1, step 3) |
 | Price-scaled `ai_value` for railways and Horse Ranches; opt-in auto-expansion | Yes | Passes | Not observed |
 | Road Financing laws, ideologies, PMs, starting laws | Yes (roads) | Passes | Not observed |
-| Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless run, no housing errors; automated fixture checks; not calibrated |
+| Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless runs, no housing errors; automated fixture checks; 1836 supply seeded from measured demand (2026-11-01); one-run calibration only |
 | Release files | `PATCHING.md` and `.gitignore` yes; licence and changelog no | — | — |
 | Vanilla baseline ensemble and report tooling (2026-10-31) | Yes: `Invoke-HeadlessEnsemble.ps1`, `ensembles.sqlite`, `Make-EnsembleReport.py` | Comparison mode tested on a 5-vs-5 split | 10 vanilla runs, 1836–1846, all passed; [report](reports/vanilla_1836_1846/REPORT.md). No BOI ensemble yet |
 
 ## 5. How the modules depend on each other
 
 - **Infrastructure is the shared resource.** Public Works and Harbour Works
-  produce it. Housing (4 to 8 per level) consumes it. Balancing housing means
+  produce it. Housing (1 to 2.5 per level) consumes it. Balancing housing means
   re-checking that the core buildings can keep up, and that the AI builds them
   when consumption rises. The AI construction fallback measures usage minus
   supply, so it already responds to housing demand.

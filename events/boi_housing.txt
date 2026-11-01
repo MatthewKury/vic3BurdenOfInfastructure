@@ -19,6 +19,12 @@ boi_housing.4 = {
  }
 }
 
+boi_housing.5 = {
+ type = country_event
+ hidden = yes
+ immediate = { activate_law = law_type:law_boi_mandated_serviced_housing }
+}
+
 boi_housing.1 = {
  type = country_event
  hidden = yes

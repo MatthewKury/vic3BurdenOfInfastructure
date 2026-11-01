@@ -29,6 +29,7 @@ boi_housing_setup_effect = {
    NOR = {
     has_law = law_type:law_boi_unregulated_company_housing
     has_law = law_type:law_boi_protected_company_housing
+    has_law = law_type:law_boi_mandated_serviced_housing
    }
   }
   activate_law = law_type:law_boi_unregulated_company_housing
@@ -43,7 +44,15 @@ boi_housing_setup_effect = {
   activate_law = law_type:law_boi_unregulated_residential
  }
  if = {
+  limit = { has_law = law_type:law_boi_unregulated_company_housing }
+  boi_housing_enforce_work_camps_effect = yes
+ }
+ if = {
   limit = { has_law = law_type:law_boi_protected_company_housing }
-  boi_housing_remove_hostile_effect = yes
+  boi_housing_enforce_work_towns_effect = yes
+ }
+ if = {
+  limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+  boi_housing_enforce_serviced_towns_effect = yes
  }
 }

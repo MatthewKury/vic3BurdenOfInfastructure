@@ -73,3 +73,84 @@ boitm_luxury_housing_expensive_states = {
 		add = 1
 	}
 }
+
+# Levels on each company housing tier.
+boitm_no_housing_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_no_company_housing }
+		add = level
+	}
+}
+
+boitm_work_camp_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_work_camp }
+		add = level
+	}
+}
+
+boitm_work_town_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_work_town }
+		add = level
+	}
+}
+
+boitm_serviced_town_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_serviced_town }
+		add = level
+	}
+}
+
+# State scope: per-state housing log (boitm_housing.2).
+boitm_hs_population = { value = state_population }
+boitm_hs_infrastructure = { value = infrastructure }
+boitm_hs_usage = { value = infrastructure_usage }
+boitm_hs_urbanization = { value = total_urbanization }
+boitm_hs_incorporated = {
+	value = 0
+	if = {
+		limit = { is_incorporated = yes }
+		value = 1
+	}
+}
+boitm_hs_urban_center_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_urban_center }
+		add = level
+	}
+}
+boitm_hs_industry_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_group = bg_light_industry
+				is_building_group = bg_heavy_industry
+			}
+		}
+		add = level
+	}
+}
+boitm_hs_residential_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_temporary_shelter
+			}
+		}
+		add = level
+	}
+}

@@ -1,11 +1,1278 @@
 ﻿# Generated. Country scope; runtime fallback ordering requires verification.
-boi_housing_remove_hostile_effect = {
+boi_housing_enforce_work_camps_effect = {
     every_scope_state = {
+        limit = {
+            any_scope_building = {
+                OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                }
+            }
+        }
         if = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_banana_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_banana_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_boi_horse_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_boi_horse_ranch
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coal_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coal_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coffee_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coffee_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_cotton_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_cotton_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_dye_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_dye_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_fishing_wharf
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_fishing_wharf
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_gold_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_gold_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_iron_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_iron_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_lead_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_lead_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_livestock_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_livestock_ranch
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_logging_camp
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_logging_camp
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_maize_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_maize_farm
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_millet_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_millet_farm
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_oil_rig
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_oil_rig
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_opium_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_opium_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rice_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rice_farm
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rubber_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rubber_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rye_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rye_farm
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_silk_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_silk_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sugar_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sugar_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sulfur_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sulfur_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tea_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tea_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tobacco_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tobacco_plantation
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_vineyard
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_vineyard
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_whaling_station
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_whaling_station
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_wheat_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_wheat_farm
+                production_method = pm_boi_work_camp
+            }
+        }
+    }
+}
+
+boi_housing_enforce_work_towns_effect = {
+    every_scope_state = {
+        limit = {
+            any_scope_building = {
+                OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                }
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_banana_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_banana_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_boi_horse_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_boi_horse_ranch
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coal_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coal_mine
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coffee_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coffee_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_cotton_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_cotton_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_dye_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_dye_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_fishing_wharf
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_fishing_wharf
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_gold_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_gold_mine
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_iron_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_iron_mine
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_lead_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_lead_mine
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_livestock_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_livestock_ranch
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_logging_camp
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_logging_camp
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_maize_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_maize_farm
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_millet_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_millet_farm
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_oil_rig
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_oil_rig
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_opium_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_opium_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rice_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rice_farm
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rubber_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rubber_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rye_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rye_farm
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_silk_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_silk_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sugar_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sugar_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sulfur_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sulfur_mine
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tea_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tea_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tobacco_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tobacco_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_vineyard
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_vineyard
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_whaling_station
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_whaling_station
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_wheat_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_wheat_farm
+                production_method = pm_boi_work_town
+            }
+        }
+    }
+}
+
+# Serviced Town needs modern_sewerage; without it paying tiers go to No Housing.
+boi_housing_enforce_serviced_towns_effect = {
+    if = {
+        limit = { has_technology_researched = modern_sewerage }
+    every_scope_state = {
+        limit = {
+            any_scope_building = {
+                OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                }
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_banana_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_banana_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_boi_horse_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_boi_horse_ranch
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coal_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coal_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_coffee_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_coffee_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_cotton_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_cotton_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_dye_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_dye_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_fishing_wharf
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_fishing_wharf
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_gold_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_gold_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_iron_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_iron_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_lead_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_lead_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_livestock_ranch
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_livestock_ranch
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_logging_camp
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_logging_camp
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_maize_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_maize_farm
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_millet_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_millet_farm
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_oil_rig
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_oil_rig
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_opium_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_opium_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rice_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rice_farm
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rubber_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rubber_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_rye_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_rye_farm
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_silk_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_silk_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sugar_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sugar_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_sulfur_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_sulfur_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tea_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tea_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_tobacco_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_tobacco_plantation
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_vineyard
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_vineyard
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_whaling_station
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_whaling_station
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_wheat_farm
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_wheat_farm
+                production_method = pm_boi_serviced_town
+            }
+        }
+    }
+    }
+    else = {
+    every_scope_state = {
+        limit = {
+            any_scope_building = {
+                OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                }
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_banana_plantation
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -17,7 +1284,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_boi_horse_ranch
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -29,7 +1299,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_coal_mine
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -41,7 +1314,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_coffee_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -53,7 +1329,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_cotton_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -65,7 +1344,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_dye_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -77,7 +1359,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_fishing_wharf
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -89,7 +1374,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_gold_mine
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -101,7 +1389,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_iron_mine
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -113,7 +1404,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_lead_mine
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -125,7 +1419,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_livestock_ranch
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -137,7 +1434,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_logging_camp
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -149,7 +1449,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_maize_farm
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -161,7 +1464,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_millet_farm
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -173,7 +1479,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_oil_rig
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -185,7 +1494,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_opium_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -197,7 +1509,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_rice_farm
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -209,7 +1524,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_rubber_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -221,7 +1539,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_rye_farm
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -233,7 +1554,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_silk_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -245,7 +1569,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_sugar_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -257,7 +1584,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_sulfur_mine
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -269,7 +1599,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_tea_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -281,7 +1614,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_tobacco_plantation
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -293,7 +1629,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_vineyard
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -305,7 +1644,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_whaling_station
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -317,7 +1659,10 @@ boi_housing_remove_hostile_effect = {
             limit = {
                 any_scope_building = {
                     is_building_type = building_wheat_farm
-                    has_active_production_method = pm_boi_hostile_company_housing
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
                 }
             }
             activate_production_method = {
@@ -325,5 +1670,6 @@ boi_housing_remove_hostile_effect = {
                 production_method = pm_boi_no_company_housing
             }
         }
+    }
     }
 }

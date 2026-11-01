@@ -36,7 +36,7 @@ pmg_boi_suburban_transport = {
 pmg_boi_company_housing = {
  texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
  ai_selection = most_profitable
- production_methods = { pm_boi_no_company_housing pm_boi_hostile_company_housing pm_boi_worker_settlements pm_boi_serviced_settlements }
+ production_methods = { pm_boi_no_company_housing pm_boi_work_camp pm_boi_work_town pm_boi_serviced_town }
 }
 pmg_boi_subsistence_housing = {
  texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"

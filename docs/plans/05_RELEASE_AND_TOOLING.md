@@ -1,6 +1,6 @@
 # Plan 5: Release, tooling and hygiene
 
-Updated: 2026-10-31. Back to the [overview](../OVERVIEW.md).
+Updated: 2026-11-01. Back to the [overview](../OVERVIEW.md).
 
 Condensed from the development plan's tooling and hygiene sections, the
 2026-09-21 review's documentation notes, and the tools READMEs.
@@ -19,7 +19,9 @@ Condensed from the development plan's tooling and hygiene sections, the
   backup once it has restored the player's files. Kept runs: the baseline
   `20261030-104714_mod`, the control `20261030-092210_control`, the latest
   pre-cleanup run `20261030-174303_mod`, and the first run with housing fixtures
-  `20261031-104008_mod`.
+  `20261031-104008_mod`. Housing tuning, 2026-11-01: `20261101-094623_mod` (one-year
+  demand measurement behind the seed), `20261101-081325_mod`, `20261101-085820_mod`,
+  `20261101-095246_mod` and `20261101-100407_mod` (the kept seed).
 - **Headless ensembles** (2026-10-31): `tools/Invoke-HeadlessEnsemble.ps1` runs
   the same observer game repeatedly with the quarterly all-country `ensemble`
   telemetry module. `tools/ensembles/Build-EnsembleDb.py` collects the runs into

@@ -4,6 +4,7 @@ ideology_boi_housing_reform = {
  lawgroup_boi_employer_housing = {
   law_boi_unregulated_company_housing = disapprove
   law_boi_protected_company_housing = approve
+  law_boi_mandated_serviced_housing = strongly_approve
  }
  lawgroup_boi_residential_standards = {
   law_boi_unregulated_residential = disapprove
@@ -15,6 +16,7 @@ ideology_boi_housing_laissez_faire = {
  lawgroup_boi_employer_housing = {
   law_boi_unregulated_company_housing = approve
   law_boi_protected_company_housing = disapprove
+  law_boi_mandated_serviced_housing = strongly_disapprove
  }
  lawgroup_boi_residential_standards = {
   law_boi_unregulated_residential = approve

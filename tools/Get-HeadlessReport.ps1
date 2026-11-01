@@ -13,7 +13,8 @@ param(
     [string[]]$Tags,
     [string[]]$Metrics = @('gdp', 'sol', 'population', 'infrastructure', 'usage', 'deficit_states',
         'horses_price', 'horses_sell', 'horse_ranch_levels', 'public_works_levels', 'horse_expensive_states',
-        'transportation_price', 'grain_price', 'boi_housing_price', 'housing_expensive_states', 'slum_levels')
+        'transportation_price', 'grain_price', 'boi_housing_price', 'boi_housing_buy', 'boi_housing_sell', 'housing_expensive_states', 'slum_levels',
+        'no_housing_levels', 'work_camp_levels', 'work_town_levels', 'serviced_town_levels')
 )
 
 $ErrorActionPreference = 'Stop'

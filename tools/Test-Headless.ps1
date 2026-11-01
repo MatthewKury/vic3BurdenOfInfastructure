@@ -418,12 +418,12 @@ $modFiles = @($armMods | ForEach-Object {
     } | Sort-Object -Unique)
 $messages = $errorLines | ForEach-Object { $_ -replace '^\[\d\d:\d\d:\d\d\]', '' }
 $shadowLines = @($messages | Where-Object { $_ -match 'Duplicated key .* will not be created' })
-# Console-only debug events (housing fixtures boi_housing.2-.4, see
+# Console-only debug events (housing fixtures boi_housing.2-.5, see
 # docs/HOUSING_TESTING.md) are referenced by nothing in the shipped mod, so the
 # engine logs them as orphaned at launch. The fixtures module references them,
 # so the lines only appear in -NoFixtures runs. Expected; counted separately,
 # not as errors.
-$expectedPatterns = @('Event boi_housing\.[234] is orphaned$')
+$expectedPatterns = @('Event boi_housing\.[2345] is orphaned$')
 $expectedLines = @($messages | Where-Object { $line = $_; $expectedPatterns | Where-Object { $line -match $_ } } | Sort-Object -Unique)
 $boiLines = @($messages | Where-Object {
         $line = $_

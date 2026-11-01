@@ -4,5 +4,6 @@
 on_yearly_pulse_country = {
 	events = {
 		boitm_housing.1
+		boitm_housing.2
 	}
 }

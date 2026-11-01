@@ -57,13 +57,13 @@ boitm_fixture.2 = {
 			# Warn, not fail: other construction in Alentejo also moves usage.
 			if = {
 				limit = {
-					boitm_fx_usage_delta >= 31.9
-					boitm_fx_usage_delta <= 32.1
+					boitm_fx_usage_delta >= 8.9
+					boitm_fx_usage_delta <= 9.1
 				}
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_32|pass|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_usage|pass|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
 			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_32|warn|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_usage|warn|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
 			}
 			set_variable = { name = boitm_fx_levels_after_first value = boitm_fx_housing_levels }
 		}
@@ -93,7 +93,7 @@ boitm_fixture.3 = {
 	}
 }
 
-# Day 61: laws took; put hostile housing on one workplace, safe on another.
+# Day 61: laws took; put a Work Camp on one workplace and leave No Housing on another.
 boitm_fixture.4 = {
 	type = country_event
 	hidden = yes
@@ -113,11 +113,7 @@ boitm_fixture.4 = {
 			limit = { state_region = s:STATE_ALENTEJO }
 			activate_production_method = {
 				building_type = building_livestock_ranch
-				production_method = pm_boi_hostile_company_housing
-			}
-			activate_production_method = {
-				building_type = building_logging_camp
-				production_method = pm_boi_worker_settlements
+				production_method = pm_boi_work_camp
 			}
 		}
 		trigger_event = { id = boitm_fixture.5 days = 1 }
@@ -136,17 +132,13 @@ boitm_fixture.5 = {
 				limit = {
 					any_scope_building = {
 						is_building_type = building_livestock_ranch
-						has_active_production_method = pm_boi_hostile_company_housing
-					}
-					any_scope_building = {
-						is_building_type = building_logging_camp
-						has_active_production_method = pm_boi_worker_settlements
+						has_active_production_method = pm_boi_work_camp
 					}
 				}
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|pass|hostile=livestock_ranch;safe=logging_camp"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|pass|work_camp=livestock_ranch"
 			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|fail|hostile=livestock_ranch;safe=logging_camp"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pm_setup|fail|work_camp=livestock_ranch"
 			}
 		}
 		trigger_event = { id = boi_housing.4 days = 0 }
@@ -154,7 +146,7 @@ boitm_fixture.5 = {
 	}
 }
 
-# Day 63: laws took, hostile housing reverted, safe housing and slums kept.
+# Day 63: laws took, Work Camp upgraded to Work Town, No Housing and slums kept.
 boitm_fixture.6 = {
 	type = country_event
 	hidden = yes
@@ -172,34 +164,32 @@ boitm_fixture.6 = {
 		}
 		random_scope_state = {
 			limit = { state_region = s:STATE_ALENTEJO }
-			# Warn, not fail: the monthly maintenance pass may catch it instead,
-			# which boitm_fixture.7 checks.
+			# Warn, not fail: if the engine invalidates the PM before on_activate
+			# runs, the effect cannot see the Work Camp and it lands on No Housing.
 			if = {
 				limit = {
-					NOT = {
-						any_scope_building = {
-							is_building_type = building_livestock_ranch
-							has_active_production_method = pm_boi_hostile_company_housing
-						}
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_work_town
 					}
 				}
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted_on_enactment|pass|building=livestock_ranch"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|work_camp_upgraded_on_enactment|pass|building=livestock_ranch"
 			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted_on_enactment|warn|building=livestock_ranch"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|work_camp_upgraded_on_enactment|warn|building=livestock_ranch"
 			}
 			# Warn, not fail: the AI owner may legitimately switch it.
 			if = {
 				limit = {
 					any_scope_building = {
 						is_building_type = building_logging_camp
-						has_active_production_method = pm_boi_worker_settlements
+						has_active_production_method = pm_boi_no_company_housing
 					}
 				}
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|safe_housing_kept|pass|building=logging_camp"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|no_housing_kept|pass|building=logging_camp"
 			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|safe_housing_kept|warn|building=logging_camp"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|no_housing_kept|warn|building=logging_camp"
 			}
 			if = {
 				limit = { has_building = building_boi_slums }
@@ -213,7 +203,7 @@ boitm_fixture.6 = {
 	}
 }
 
-# Day 98: after a full monthly maintenance pass, hostile housing must be gone.
+# Day 98: after a full monthly maintenance pass, the Work Camp must be gone.
 boitm_fixture.7 = {
 	type = country_event
 	hidden = yes
@@ -226,14 +216,200 @@ boitm_fixture.7 = {
 					NOT = {
 						any_scope_building = {
 							is_building_type = building_livestock_ranch
-							has_active_production_method = pm_boi_hostile_company_housing
+							has_active_production_method = pm_boi_work_camp
 						}
 					}
 				}
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted|pass|building=livestock_ranch"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|work_camp_reverted|pass|building=livestock_ranch"
 			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hostile_reverted|fail|building=livestock_ranch"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|work_camp_reverted|fail|building=livestock_ranch"
+			}
+			# Portugal has no modern_sewerage yet, so paying tiers go to No Housing.
+			activate_production_method = {
+				building_type = building_livestock_ranch
+				production_method = pm_boi_work_town
+			}
+		}
+		trigger_event = { id = boi_housing.5 days = 0 }
+		trigger_event = { id = boitm_fixture.8 days = 1 }
+	}
+}
+
+# Day 99: the mandate without the tech left No Housing on the workplace.
+boitm_fixture.8 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_law|pass|event=boi_housing.5"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_law|fail|event=boi_housing.5"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_no_company_housing
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_no_tech_no_housing|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_no_tech_no_housing|fail|building=livestock_ranch"
+			}
+		}
+		# Back to the protected law, with the tech, to test the upgrade path.
+		trigger_event = { id = boi_housing.4 days = 0 }
+		trigger_event = { id = boitm_fixture.9 days = 1 }
+	}
+}
+
+# Day 100: put a Work Town back and research the tech, then enact the mandate.
+boitm_fixture.9 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		add_technology_researched = modern_sewerage
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			activate_production_method = {
+				building_type = building_livestock_ranch
+				production_method = pm_boi_work_town
+			}
+		}
+		trigger_event = { id = boi_housing.5 days = 1 }
+		trigger_event = { id = boitm_fixture.10 days = 2 }
+	}
+}
+
+# Day 102: the Work Town became a Serviced Town.
+boitm_fixture.10 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			# Warn, not fail: see the note in boitm_fixture.6.
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_serviced_town
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_upgraded_to_serviced|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_upgraded_to_serviced|warn|building=livestock_ranch"
+			}
+		}
+		trigger_event = { id = boitm_fixture.11 days = 35 }
+	}
+}
+
+# Day 137: after a full monthly maintenance pass, the mandate still holds and
+# nothing runs a banned tier.
+boitm_fixture.11 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_survives_maintenance|pass|law=mandated"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_survives_maintenance|fail|law=mandated"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = {
+					NOT = {
+						any_scope_building = {
+							OR = {
+								has_active_production_method = pm_boi_work_camp
+								has_active_production_method = pm_boi_work_town
+							}
+						}
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_no_banned_tiers|pass|state=alentejo"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_no_banned_tiers|fail|state=alentejo"
+			}
+			# Repeals move paying tiers too. Set the tier first: the AI owner may
+			# have dropped the unprofitable PM since the last step.
+			activate_production_method = {
+				building_type = building_livestock_ranch
+				production_method = pm_boi_serviced_town
+			}
+		}
+		trigger_event = { id = boi_housing.4 days = 0 }
+		trigger_event = { id = boitm_fixture.12 days = 1 }
+	}
+}
+
+# Day 138: repealing the mandate moved the Serviced Town to a Work Town.
+boitm_fixture.12 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			# Warn, not fail: see the note in boitm_fixture.6.
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_work_town
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|repeal_serviced_to_town|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|repeal_serviced_to_town|warn|building=livestock_ranch"
+			}
+			activate_production_method = {
+				building_type = building_livestock_ranch
+				production_method = pm_boi_work_town
+			}
+		}
+		trigger_event = { id = boi_housing.3 days = 0 }
+		trigger_event = { id = boitm_fixture.13 days = 1 }
+	}
+}
+
+# Day 139: going back to the unregulated law moved the Work Town to a Work Camp.
+boitm_fixture.13 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			# Warn, not fail: see the note in boitm_fixture.6.
+			if = {
+				limit = {
+					any_scope_building = {
+						is_building_type = building_livestock_ranch
+						has_active_production_method = pm_boi_work_camp
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|repeal_town_to_camp|pass|building=livestock_ranch"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|repeal_town_to_camp|warn|building=livestock_ranch"
 			}
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|complete|info|usage_delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
 		}

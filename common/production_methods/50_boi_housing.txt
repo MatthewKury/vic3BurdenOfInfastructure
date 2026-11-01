@@ -1,4 +1,6 @@
 ﻿# Provisional balance values; see docs/HOUSING_TESTING.md. Fixed residential structures have one PM each.
+# A level is sized so most states hold a few: staff stay at 1,000, so wages set a
+# break-even of about 25 for basic housing and supply settles below base price.
 pm_boi_slums = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  state_modifiers = {
@@ -10,10 +12,10 @@ pm_boi_slums = {
  }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 3
-   goods_input_tools_add = 1
-   goods_input_fabric_add = 2
-   goods_output_boi_housing_add = 60
+   goods_input_wood_add = 0.3
+   goods_input_tools_add = 0.1
+   goods_input_fabric_add = 0.2
+   goods_output_boi_housing_add = 6
   }
   level_scaled = {
    building_employment_laborers_add = 900
@@ -27,10 +29,10 @@ pm_boi_tenements = {
  
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 6
-   goods_input_tools_add = 3
-   goods_input_fabric_add = 2
-   goods_output_boi_housing_add = 70
+   goods_input_wood_add = 0.6
+   goods_input_tools_add = 0.3
+   goods_input_fabric_add = 0.2
+   goods_output_boi_housing_add = 7
   }
   level_scaled = {
    building_employment_laborers_add = 800
@@ -44,11 +46,11 @@ pm_boi_apartments = {
  
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 6
-   goods_input_tools_add = 5
-   goods_input_glass_add = 4
-   goods_output_boi_housing_add = 100
-   goods_output_boi_luxury_housing_add = 10
+   goods_input_wood_add = 0.6
+   goods_input_tools_add = 0.5
+   goods_input_glass_add = 0.4
+   goods_output_boi_housing_add = 10
+   goods_output_boi_luxury_housing_add = 1
   }
   level_scaled = {
    building_employment_laborers_add = 750
@@ -66,12 +68,12 @@ pm_boi_luxury_apartments = {
  }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 8
-   goods_input_tools_add = 5
-   goods_input_glass_add = 8
-   goods_input_furniture_add = 8
-   goods_output_boi_housing_add = 25
-   goods_output_boi_luxury_housing_add = 60
+   goods_input_wood_add = 0.8
+   goods_input_tools_add = 0.5
+   goods_input_glass_add = 0.8
+   goods_input_furniture_add = 0.8
+   goods_output_boi_housing_add = 2.5
+   goods_output_boi_luxury_housing_add = 6
   }
   level_scaled = {
    building_employment_laborers_add = 700
@@ -89,12 +91,12 @@ pm_boi_suburbs = {
  }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 6
-   goods_input_tools_add = 2
-   goods_input_glass_add = 2
-   goods_input_furniture_add = 3
-   goods_output_boi_housing_add = 25
-   goods_output_boi_luxury_housing_add = 60
+   goods_input_wood_add = 0.6
+   goods_input_tools_add = 0.2
+   goods_input_glass_add = 0.2
+   goods_input_furniture_add = 0.3
+   goods_output_boi_housing_add = 2.5
+   goods_output_boi_luxury_housing_add = 6
   }
   level_scaled = {
    building_employment_laborers_add = 800
@@ -108,10 +110,10 @@ pm_boi_temporary_shelter = {
  
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 10
-   goods_input_tools_add = 2
-   goods_input_fabric_add = 10
-   goods_output_boi_housing_add = 40
+   goods_input_wood_add = 1
+   goods_input_tools_add = 0.2
+   goods_input_fabric_add = 1
+   goods_output_boi_housing_add = 4
   }
   level_scaled = {
    building_employment_laborers_add = 900
@@ -124,7 +126,7 @@ pm_boi_horse_commuting = {
  texture = "gfx/interface/icons/production_method_icons/passenger_carriages.dds"
  
  building_modifiers = {
-  workforce_scaled = { goods_input_horses_add = 6 }
+  workforce_scaled = { goods_input_horses_add = 0.6 }
  }
 }
 
@@ -132,7 +134,7 @@ pm_boi_rail_commuting = {
  texture = "gfx/interface/icons/production_method_icons/passenger_trains.dds"
  unlocking_technologies = { railways }
  building_modifiers = {
-  workforce_scaled = { goods_input_transportation_add = 5 }
+  workforce_scaled = { goods_input_transportation_add = 0.5 }
  }
 }
 
@@ -140,7 +142,7 @@ pm_boi_motor_commuting = {
  texture = "gfx/interface/icons/production_method_icons/public_motor_carriages.dds"
  unlocking_technologies = { combustion_engine }
  building_modifiers = {
-  workforce_scaled = { goods_input_automobiles_add = 2 }
+  workforce_scaled = { goods_input_automobiles_add = 0.2 }
  }
 }
 
@@ -153,18 +155,21 @@ pm_boi_no_company_housing = {
 pm_boi_subsistence_housing = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  building_modifiers = {
-  workforce_scaled = { goods_output_boi_housing_add = 0.25 }
+  workforce_scaled = { goods_output_boi_housing_add = 0.02 }
  }
 }
 
-pm_boi_hostile_company_housing = {
+# Company housing and subsistence supply are scaled to run a little under household
+# demand. Each tier's inputs and output scale together, which keeps its break-even
+# housing price (and so the profit order between tiers) unchanged.
+pm_boi_work_camp = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  unlocking_laws = { law_boi_unregulated_company_housing }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 1
-   goods_input_fabric_add = 1
-   goods_output_boi_housing_add = 8
+   goods_input_wood_add = 0.075
+   goods_input_fabric_add = 0.075
+   goods_output_boi_housing_add = 0.45
   }
   # Percentage/SoL effects apply to employed professions, never per level.
   unscaled = {
@@ -192,28 +197,52 @@ pm_boi_hostile_company_housing = {
  }
 }
 
-pm_boi_worker_settlements = {
+pm_boi_work_town = {
  texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
- 
+ unlocking_laws = { law_boi_protected_company_housing }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 3
-   goods_input_fabric_add = 2
-   goods_input_tools_add = 1
-   goods_output_boi_housing_add = 6
+   goods_input_wood_add = 0.15
+   goods_input_fabric_add = 0.075
+   goods_output_boi_housing_add = 0.45
+  }
+  # Same housing as a Work Camp at half its penalties. Each employer housing
+  # law permits No Housing plus exactly one tier; this one is Protected's.
+  unscaled = {
+   building_laborers_standard_of_living_add = -0.5
+   building_laborers_mortality_mult = 0.025
+   building_farmers_standard_of_living_add = -0.5
+   building_farmers_mortality_mult = 0.025
+   building_machinists_standard_of_living_add = -0.5
+   building_machinists_mortality_mult = 0.025
+   building_engineers_standard_of_living_add = -0.5
+   building_engineers_mortality_mult = 0.025
+   building_clerks_standard_of_living_add = -0.5
+   building_clerks_mortality_mult = 0.025
+   building_shopkeepers_standard_of_living_add = -0.5
+   building_shopkeepers_mortality_mult = 0.025
+   building_clergymen_standard_of_living_add = -0.5
+   building_clergymen_mortality_mult = 0.025
+   building_aristocrats_standard_of_living_add = -0.5
+   building_aristocrats_mortality_mult = 0.025
+   building_capitalists_standard_of_living_add = -0.5
+   building_capitalists_mortality_mult = 0.025
+   building_slaves_standard_of_living_add = -0.5
+   building_slaves_mortality_mult = 0.025
   }
  }
 }
 
-pm_boi_serviced_settlements = {
+pm_boi_serviced_town = {
  texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
  unlocking_technologies = { modern_sewerage }
+ unlocking_laws = { law_boi_mandated_serviced_housing }
  building_modifiers = {
   workforce_scaled = {
-   goods_input_wood_add = 4
-   goods_input_fabric_add = 3
-   goods_input_tools_add = 2
-   goods_output_boi_housing_add = 12
+   goods_input_wood_add = 0.15
+   goods_input_fabric_add = 0.15
+   goods_input_tools_add = 0.075
+   goods_output_boi_housing_add = 0.45
   }
  }
 }

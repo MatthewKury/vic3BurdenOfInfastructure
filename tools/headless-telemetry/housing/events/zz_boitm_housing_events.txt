@@ -11,8 +11,27 @@ boitm_housing.1 = {
 
 	immediate = {
 		debug_log = "BOITM|housing|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|slum_levels=[THIS.ScriptValue('boitm_slum_levels')|0];tenement_levels=[THIS.ScriptValue('boitm_tenement_levels')|0];apartment_levels=[THIS.ScriptValue('boitm_apartment_levels')|0];luxury_apartment_levels=[THIS.ScriptValue('boitm_luxury_apartment_levels')|0];suburb_levels=[THIS.ScriptValue('boitm_suburb_levels')|0];shelter_levels=[THIS.ScriptValue('boitm_shelter_levels')|0]"
+		debug_log = "BOITM|company_housing|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|no_housing_levels=[THIS.ScriptValue('boitm_no_housing_levels')|0];work_camp_levels=[THIS.ScriptValue('boitm_work_camp_levels')|0];work_town_levels=[THIS.ScriptValue('boitm_work_town_levels')|0];serviced_town_levels=[THIS.ScriptValue('boitm_serviced_town_levels')|0]"
 		debug_log = "BOITM|housing_prices|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|housing_expensive_states=[THIS.ScriptValue('boitm_housing_expensive_states')|0];housing_cheap_states=[THIS.ScriptValue('boitm_housing_cheap_states')|0];luxury_housing_expensive_states=[THIS.ScriptValue('boitm_luxury_housing_expensive_states')|0]"
 		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=boi_housing;price=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('boi_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
 		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=boi_luxury_housing;price=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('boi_luxury_housing').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+	}
+}
+
+# Every country's states, once a year, for seeding and for state-level price and
+# supply checks. BOIHS| lines are read directly from debug.log, not by the BOITM report.
+boitm_housing.2 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { NOT = { is_country_type = decentralized } }
+
+	immediate = {
+		every_scope_state = {
+			debug_log = "BOIHS|state|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|pop=[THIS.ScriptValue('boitm_hs_population')|0];urb=[THIS.ScriptValue('boitm_hs_urbanization')|1];uc=[THIS.ScriptValue('boitm_hs_urban_center_levels')|0];ind=[THIS.ScriptValue('boitm_hs_industry_levels')|0];res=[THIS.ScriptValue('boitm_hs_residential_levels')|0];infra=[THIS.ScriptValue('boitm_hs_infrastructure')|1];usage=[THIS.ScriptValue('boitm_hs_usage')|1];inc=[THIS.ScriptValue('boitm_hs_incorporated')|0]"
+			debug_log = "BOIHS|sol|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|all=[THIS.GetState.GetAverageStandardOfLivingAll|2];poor=[THIS.GetState.GetAverageStandardOfLivingPoor|2];middle=[THIS.GetState.GetAverageStandardOfLivingMiddle|2];rich=[THIS.GetState.GetAverageStandardOfLivingRich|2]"
+			debug_log = "BOIHS|housing|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|buy=[GetGoods('boi_housing').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('boi_housing').WithStateContext(THIS.GetState.Self).GetStateProduction|2];price=[GetGoods('boi_housing').WithStateContext(THIS.GetState.Self).GetStatePrice|2]"
+			debug_log = "BOIHS|luxury|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|buy=[GetGoods('boi_luxury_housing').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('boi_luxury_housing').WithStateContext(THIS.GetState.Self).GetStateProduction|2];price=[GetGoods('boi_luxury_housing').WithStateContext(THIS.GetState.Self).GetStatePrice|2]"
+		}
 	}
 }

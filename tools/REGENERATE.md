@@ -159,13 +159,18 @@ removed, or re-owned states. Diff the numbers before assuming the script broke.
 
 ## 3. Housing — building shadows and buy packages
 
-`tools/Build-Housing.ps1` writes four files into the mod root:
+`tools/Build-Housing.ps1` writes five files into the mod root:
 `common/buildings/00_boi_housing_rural_generated.txt` (31 vanilla rural and
 subsistence buildings with a housing PM group added),
 `common/buy_packages/00_buy_packages.txt` (all 99 vanilla wealth packages with
 housing demand added), `common/scripted_effects/zz_boi_housing_fallback_generated.txt`
-and `common/modifier_type_definitions/zz_boi_housing_generated.txt`. It never
-reads those four back in, so re-running it is safe.
+`common/modifier_type_definitions/zz_boi_housing_generated.txt`, and the 1836 seed
+`common/history/buildings/zz_boi_housing_seed_generated.txt`. It never reads those
+five back in, so re-running it is safe.
+
+The seed comes from `tools/housing_seed_demand_1836.tsv`, demand measured per
+state-owner. After a patch that changes populations, wealth or buy packages, measure
+again as `tools/Get-HousingSeedDemand.py` describes, then re-run the generator.
 
 ```powershell
 .\tools\Build-Housing.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game'

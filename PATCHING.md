@@ -49,8 +49,10 @@ GUI types are first-read-wins per type, without a log line:
 | `common/buy_packages/00_buy_packages.txt` | all 99 `wealth_N` packages, vanilla needs plus housing demand | `tools/Build-Housing.ps1` |
 
 `tools/Build-Housing.ps1` also writes the 31-building shadow above,
-`common/modifier_type_definitions/zz_boi_housing_generated.txt` and
-`common/scripted_effects/zz_boi_housing_fallback_generated.txt`.
+`common/modifier_type_definitions/zz_boi_housing_generated.txt`,
+`common/scripted_effects/zz_boi_housing_fallback_generated.txt` and the 1836
+residential seed `common/history/buildings/zz_boi_housing_seed_generated.txt`, whose
+demand input may need measuring again (`tools/REGENERATE.md` §3).
 
 Any future pop need (luxury horse demand, for instance) must go through
 `Build-Housing.ps1`; a second copy of `00_buy_packages.txt` silently replaces
