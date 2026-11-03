@@ -119,7 +119,7 @@ building_boi_luxury_apartments = {
   pmg_boi_luxury_apartments
   pmg_boi_light_heat_luxury_apartments
  }
- required_construction = construction_cost_medium
+ required_construction = construction_cost_low
  ownership_type = self
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }

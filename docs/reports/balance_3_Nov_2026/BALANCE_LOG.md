@@ -66,3 +66,29 @@ Result: PASS.
 7. **Infrastructure still barely constrains major powers:** 5 short states against vanilla's 8.9, at about 4% of expenses, and usage at 55% of supply.
 
 **Correction for pass 3:** test the population floor at 125,000, as agreed. Nothing else changes.
+
+## Pass 3 (`20261103-075209_mod`, 1836–1846): floor at 125,000
+
+Result: PASS. The define works: Aquitaine's infrastructure in December 1836 is 56.8 against 71.4, and Languedoc's 63.4 against 73.0.
+
+| | 1836 | 1840 | 1845 | Pass 2, 1845 |
+| --- | ---: | ---: | ---: | ---: |
+| GDP against vanilla, shared powers | -6.3% | -1.3% | -0.9% | -4.1% |
+| SoL against vanilla | -0.57 | -0.52 | -0.40 | -0.71 |
+| Radicals, mod / vanilla | 3.2 / 2.8 | 8.9 / 6.5 | 11.4 / 9.6 | 10.1 / 9.6 |
+| Short states, major powers | 46 | 11 | 5 | 5 |
+| Short states, world | 75 | 33 | 35 | 28 |
+| People in short states | 24% | 19% | 12% | 12% |
+| Road / Rail / Harbour levels, world | 45 / 3 / 146 | 103 / 12 / 191 | 155 / 14 / 227 | 139 / 10 / 204 |
+| Usage as share of supply, major powers | 68% | 62% | 61% | 55% |
+| Works goods at base price, share of expenses | 2.6% | 3.7% | 3.8% | 3.9% |
+
+**Takeaways:**
+
+1. **It bites, then the AI answers.** Short states among major powers jump in 1836 and are back to 5 by 1845. The world builds about 10% more works, and usage is closer to supply. That is the behaviour the mod wants.
+2. **No visible collapse,** though 1836 GDP is a little outside the 5% aim, at -6.3%.
+3. **Brazil has a big loss:** 14 of 17 states, population -34%, debt 0.40, radicals 21.5%. A civil war, and Brazil was among the most-short powers in 1836 with 11 short states. Also higher radicals in Turkey (17.5% against 9.6%). One game can't separate this from the normal revolt rate, so it's a concern for the long runs.
+4. **Decision: keep 125,000 as a trial.** This changes your 2026-08-16 rule, and it's one line in `common/defines/zz_boi_defines.txt` to undo.
+5. **Luxury housing keeps falling short:** 0.80, 0.85 and 0.78 by 1845 in three games, with the price about £75 against a base of £60. New luxury levels are mostly villas, at 4 infrastructure each. No new Town Houses at all in this game, though they use only 2.5.
+
+**Correction for pass 4:** Town Houses from 400 to 200 construction points, the same as villas, so the AI's cheap option is also the denser one.

@@ -67,7 +67,7 @@ $HousingBuildings = @(
     # ---- Luxury ladder ----
     @{ Key = 'luxury_apartments'; Name = 'Town Houses'; Group = 'bg_boi_luxury_apartment_housing'; GroupName = 'Town Houses'; Parent = 'dense'
         Desc = 'Terraces and squares for the comfortable classes, with servants below stairs. Staffing raises migration attraction.'
-        Cost = 'construction_cost_medium'; Basic = 2.5; Luxury = 6; Infra = 2.5; Labor = 700; Clerks = 300; Icon = 'boi_luxury_apartments.dds'
+        Cost = 'construction_cost_low'; Basic = 2.5; Luxury = 6; Infra = 2.5; Labor = 700; Clerks = 300; Icon = 'boi_luxury_apartments.dds'
         Inputs = [ordered]@{ wood = 0.8; tools = 0.5; glass = 0.8; furniture = 0.8 }
         Scaled = [ordered]@{ state_migration_pull_mult = 0.002 } }
     @{ Key = 'boulevard_apartments'; Name = 'Boulevard Apartments'; Group = 'bg_boi_boulevard_apartment_housing'; GroupName = 'Boulevard Apartments'; Parent = 'dense'
