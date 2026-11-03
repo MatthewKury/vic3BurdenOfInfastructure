@@ -38,3 +38,31 @@ Result: PASS, 0 BOI errors, all fixtures passed.
 8. **Rail Works is a niche so far:** 19 levels against 60 railway levels worldwide, as expected before 1850.
 
 **Corrections for pass 2:** slums back to 200 construction points, the same as Workers' Rows. Basic housing seed coverage from 1.0 to 0.92. Britain's debt and China's shortage are left for now, to see whether they repeat.
+
+## Pass 2 (`20261103-074049_mod`, 1836–1846)
+
+Result: PASS.
+
+| | 1836 | 1840 | 1845 |
+| --- | ---: | ---: | ---: |
+| GDP against vanilla, shared powers | -4.6% | -2.8% | -4.1% |
+| SoL against vanilla | -0.52 | -0.55 | -0.71 |
+| Radicals, mod / vanilla | 3.1 / 2.9 | 7.3 / 6.6 | 10.1 / 9.6 |
+| Short states, major powers (vanilla 8.9 in 1845) | 27 | 8 | 5 |
+| Short states, world | 51 | 26 | 28 |
+| People in short states | 24% | 15% | 12% |
+| Basic housing supply/demand | 0.87 | 0.90 | 0.93 |
+| Basic housing price | 34.3 | 32.8 | 31.6 |
+| Works goods at base price, share of expenses | 2.3% | 3.3% | 3.9% |
+
+**Takeaways:**
+
+1. **Housing is on target:** supply just under demand, price a little over base.
+2. **Second game with no major civil war.** Radicals stay within a point of vanilla overall. Brazil (18% against 12%) and Britain (15% against 12%) are the high ones.
+3. **Pass 1's -0.07 SoL gap was luck.** This game's -0.71 is in line with earlier runs, and the USA alone is -1.96 after taking 8 states. GDP moved from -0.8% to -4.1% with a change that shouldn't cost that much, which shows the size of single-game noise.
+4. **Britain's debt repeats, but less:** 0.26 against 0.46, and vanilla's 0.01. It's a real cost of the works, not a fluke.
+5. **China's shortage was partly luck too.** People in short states fall to 12%. China has 4 short states here, with 6 points missing.
+6. **Slums still spread** (18 to 35), even at equal construction cost. They cost less to staff and supply. Only 8% of levels, and the rule so far is that the AI picking cheap housing is fine. Watch it in the long runs.
+7. **Infrastructure still barely constrains major powers:** 5 short states against vanilla's 8.9, at about 4% of expenses, and usage at 55% of supply.
+
+**Correction for pass 3:** test the population floor at 125,000, as agreed. Nothing else changes.
