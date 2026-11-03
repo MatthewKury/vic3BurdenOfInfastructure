@@ -1,6 +1,6 @@
 # Burden of Infrastructure: Housing Tiers Proposal
 
-Written 2026-11-01. A proposal only: nothing here is implemented. Back to [plan 4](04_HOUSING.md).
+Written 2026-11-01. **Implemented 2026-11-03, with changes:** 1836 bite at the recommended setting; Light and Heat added as the one changeable PM; slums and Town Houses cost 200 points, not 100 and 400; no scripted AI replacement, because no effect can remove one level; Municipal Estates get a small AI event; no cap on works. Back to [plan 4](04_HOUSING.md).
 
 Replace the five permanent housing buildings with 15 in three ladders, each step unlocked by an existing vanilla technology, raise housing's infrastructure cost by about 1.8 times, and cut construction costs for most dense housing. Every step needs less infrastructure per unit of housing, and no building can change type, so the only way to recover infrastructure without building more is to demolish old stock and rebuild.
 

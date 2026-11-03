@@ -1,6 +1,6 @@
 # Burden of Infrastructure: Road Works and Rail Works Proposal
 
-Written 2026-11-01, revised the same day with your answers. A proposal only: nothing here is implemented, and all new numbers are test values. Back to [plan 1](01_CORE_INFRASTRUCTURE_AND_HORSES.md).
+Written 2026-11-01, revised the same day with your answers. **Implemented 2026-11-03, with changes:** no `required_input_goods` on automobiles (it only works on local goods), and the floor is at 125,000 as a trial. All new numbers are test values. Back to [plan 1](01_CORE_INFRASTRUCTURE_AND_HORSES.md).
 
 Split Public Works into two buildings that can sit side by side in a state. **Road Works** is available everywhere and runs on horses, then automobiles. **Rail Works** needs a railway in the state and runs on transportation alone. Harbour Works stays. All three pay about 50% more per point of infrastructure than they do today, and the financing laws apply to all three.
 

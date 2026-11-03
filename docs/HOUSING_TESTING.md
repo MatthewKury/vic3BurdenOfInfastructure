@@ -1,5 +1,7 @@
 # Housing: implementation and test guide
 
+**2026-11-03:** residential buildings are now 15 types plus shelters, generated from `tools/Housing-Tiers.ps1`, and display names changed (Tenement Districts are Workers' Rows, Luxury Apartments are Town Houses, Suburban Estates are Carriage Villas). Commuting is no longer a PM: each suburb type consumes its own input. The building's only selectable PM is Light and Heat. The building tables and checklist items below describe the older roster, though keys are unchanged. The Alentejo fixture now adds 14.5 infrastructure (3.5 + 3 + 2.5 + 4 + 1.5). One level can't be removed by script (`add_building_level` is not a working effect).
+
 Housing is part of **Burden of Infrastructure**. It was developed as the separate BOI Housing Prototype and merged into the main mod on 2026-10-30. It implements the [agreed goods-based housing design](plans/04_HOUSING.md) and loads in every BOI campaign: there is no separate launcher entry and no switch to turn it off. Household demand lives in buy packages, which no game rule can change.
 
 Start a new campaign to use it. Starting residential supply is seeded from measured 1836 demand (see "Starting supply" below). Acquisition enforcement, ownership laws, private investment eligibility, a dedicated Housing category, and calibrated balance are still unfinished; see the [housing plan](plans/04_HOUSING.md).

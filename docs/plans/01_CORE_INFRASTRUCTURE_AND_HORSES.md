@@ -1,6 +1,8 @@
 # Plan 1: Core infrastructure and horses
 
-Updated: 2026-10-31. Back to the [overview](../OVERVIEW.md).
+Updated: 2026-11-03. Back to the [overview](../OVERVIEW.md).
+
+**2026-11-03: Public Works is now Road Works and Rail Works,** with Harbour Works, all 50% dearer per point. See [the proposal](01_ROAD_RAIL_SPLIT_PROPOSAL.md), the [balance log](../reports/balance_3_Nov_2026/BALANCE_LOG.md) and the [century report](../reports/century_3_Nov_2026/REPORT.md). "Public Works" below means Road Works unless it says otherwise, and tier tables from before that date are out of date. `pm_boi_rail_network` is gone.
 
 Condensed from the development plan (2026-08-23, updated to 2026-09-23), the
 review of 2026-09-21, the deferred-ideas list, and the tools audits. Full

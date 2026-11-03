@@ -89,3 +89,7 @@ over-allocated 10 states and crashed world initialisation.
 Any mod that edits the 16 state-region files, buy packages, the 31 housing
 buildings, or any key in the shadow table conflicts with BOI. Community Mod
 Framework is compatible (`tools/Test-CMFCompatibility.ps1`, CMF 1.65.0).
+
+## Defines
+
+`common/defines/zz_boi_defines.txt` overrides `NPops.INDIVIDUALS_PER_POP_INFRASTRUCTURE` (125,000 against vanilla's 100,000, a trial since 2026-11-03). Check that the key still exists after each patch.

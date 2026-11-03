@@ -66,7 +66,7 @@ Employment 5000/level (4000 laborers, 1000 farmers). Construction `low` (200).
 | light_industry | 1.5 | | arts, trade | 0.5 |
 | military | 0.2 | | owner_buildings, logistics | 0.1 |
 
-### The population floor (our safety net — left untouched)
+### The population floor (our safety net — divisor 125,000, a trial since 2026-11-03)
 
 `state_infrastructure_from_population_add` comes from **technology**, not by
 default:
@@ -147,7 +147,7 @@ technology on the base PM** — it must work in 1836.
 
 ### How these buildings work economically — pure cost centres
 
-**The Infrastructure and Harbour Works buildings run at a permanent net loss by
+**Road, Rail and Harbour Works run at a permanent net loss by
 design.** They are structurally identical to Government Administration, not to a
 railway.
 
@@ -185,7 +185,7 @@ One contrast worth noting: Government Administration's *base* PMs
 paper arriving only at later PMs. Our design front-loads horses from the first
 PM instead, because paying for infrastructure in goods is the mod's whole point.
 
-### Infrastructure Building — `construction_cost_medium` (400), employment 500/level
+### Road Works (`building_boi_infrastructure`) — `construction_cost_medium` (400), employment 500/level
 
 Government-funded, so employment is a permanent budget line. **500 per level**,
 matching Government Administration's own scale (500 clerks/level).
@@ -204,7 +204,7 @@ The 500 splits into **400 technical** (set by the method PM group) and
 |---|---|---|---|
 | pm_cart_roads | **400** | — | — |
 | pm_macadam_roads | 350 | 50 | — |
-| pm_rail_network | 275 | 100 | 25 |
+| pm_steam_rolled_roads | 275 | 100 | 25 |
 | pm_motor_roads | 200 | 150 | 50 |
 | pm_modern_highways | **125** | **175** | **100** |
 
@@ -243,18 +243,53 @@ Two consequences worth knowing:
 
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_cart_roads | start | horses 10 | 300 | 15 | 20 |
-| pm_macadam_roads | 2 | horses 12, tools 3 | 480 | 22 | 22 |
-| pm_rail_network | 3 | horses 8, transportation 10 | 540 | 30 | 18 |
-| pm_motor_roads | 4 | transportation 12, oil 5 | 560 | 38 | 15 |
-| pm_modern_highways | 5 | transportation 15, automobiles 3 | 750 | 48 | 16 |
+| pm_cart_roads | start | horses 10 | 300 | 10 | 30 |
+| pm_macadam_roads | 2 | horses 12, tools 3 | 480 | 15 | 32 |
+| pm_steam_rolled_roads | 3 | horses 12, tools 3, coal 3 | 570 | 19 | 30 |
+| pm_motor_roads | 4 | horses 3, automobiles 3, oil 3 | 510 | 24 | 21 |
+| pm_modern_highways | 5 | automobiles 5, oil 5 | 700 | 32 | 22 |
 
-Zero salable output — this building only produces a state modifier.
+Zero salable output — this building only produces a state modifier. A shortage of
+inputs cuts the infrastructure too: in a 2026-11-03 probe, +100 fell to +65 with the
+input at 1% of demand, and +48 with it absent.
 
-**The swing:** in 1836 a railway level *earned* £240 and gave 20 infrastructure.
-An Infrastructure level *costs* £300 and gives 15. That is a ~£540 per-level
-turnaround, plus wages. Efficiency improves with era (£20 → £15 per infra), so
-modernisation is rewarded.
+**The swing:** in 1836 a railway level *earned* £240 and gave 20 infrastructure. A
+Road Works level *costs* £300 and gives 10.
+
+### Rail Works — `construction_cost_high` (600), employment 500/level
+
+Needs a railway in the state (`possible`, which blocks new and further levels) and
+the `railways` technology. 400 technical staff plus 100 administrative, with its own
+`pmg_boi_rail_administration`.
+
+| PM | Unlock | Input | £ in | Infra | £/infra |
+|---|---|---|---|---|---|
+| pm_permanent_way | `railways` | transportation 8 | 240 | 13 | 18.5 |
+| pm_steel_track | `steel_railway_cars` | transportation 10 | 300 | 20 | 15 |
+| pm_electric_signalling | `electric_railway` | transportation 12 | 360 | 27 | 13.3 |
+| pm_national_rail_grid | `compression_ignition` | transportation 15 | 450 | 33 | 13.6 |
+
+### Financing, per works building
+
+Each building has its own group on the same three laws:
+
+| | Statute Labour | Tolls and Dues | State Funding |
+|---|---|---|---|
+| Goods input | -30% | -35% | Baseline |
+| Staff | Unchanged | -60 laborers, +50 shopkeepers, +10 capitalists | Baseline |
+| Infra per level | Road -2, Rail -2.5, Harbour -1.5 | Unchanged | Baseline |
+| +15% of state infrastructure | No | Road Works only | No |
+| Peasant mortality per level | Road and Rail +3%, Harbour +1% | No | No |
+| Farm and ranch throughput per level | Road and Rail +1% | No | No |
+
+### Housing roster
+
+`tools/Housing-Tiers.ps1` is the single source of housing numbers; see
+[the proposal](docs/plans/04_HOUSING_TIERS_PROPOSAL.md) for why. Light and Heat gives
++10% (wood), +30% (oil, needs `pumpjacks`) or +60% (electricity, needs
+`electrical_generation` and local supply) of a building's own output, with fuel costing
+half that output's value at base price. Slums and Town Houses both cost 200
+construction points after the 2026-11-03 passes, and basic seed coverage is 0.92.
 
 ### Harbour Works — coastal only, `construction_cost_medium` (400), employment 500/level
 
@@ -289,11 +324,11 @@ Infrastructure building throughout.
 
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_coastal_lighters | start | merchant_marine 4 | 200 | 10 | 20 |
-| pm_steam_lighters | 3 (`gantry_cranes`) | merchant_marine 5, coal 3 | 340 | 18 | 19 |
-| pm_electrified_quays | 4 (`concrete_dockyards`) | merchant_marine 6, electricity 4 | 420 | 25 | 17 |
+| pm_coastal_lighters | start | merchant_marine 4 | 200 | 7 | 28.6 |
+| pm_steam_lighters | 3 (`gantry_cranes`) | merchant_marine 5, coal 3 | 340 | 12 | 28.3 |
+| pm_electrified_quays | 4 (`concrete_dockyards`) | merchant_marine 6, electricity 4 | 420 | 17 | 24.7 |
 
-Priced at the **same £/infra as the main building on purpose**. Coastal states
+Priced at **about the same £/infra as Road Works on purpose**. Coastal states
 do not get *cheaper* infrastructure, they get *more total capacity* — and they
 pay for it in merchant marine, which has its own opportunity cost in prestige
 and trade. That keeps the coastal advantage real without making inland

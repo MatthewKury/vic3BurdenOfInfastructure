@@ -190,3 +190,7 @@ itself (today only `building_boi_horse_ranch`), that block must list
 a patch changes the number of rural or subsistence buildings, the script and
 `Test-Housing.ps1` fail on purpose: review the new buildings before updating
 the expected counts.
+
+## Housing roster
+
+Residential numbers live in `tools/Housing-Tiers.ps1`. After editing it, run `tools/Build-Housing.ps1`, which regenerates the residential buildings, groups, PMs, PM groups, localization and telemetry values, plus the 1836 seed. Then run `tools/Test-Housing.ps1`. Placeholder icons come from `tools/Make-PlaceholderIcons.py`.

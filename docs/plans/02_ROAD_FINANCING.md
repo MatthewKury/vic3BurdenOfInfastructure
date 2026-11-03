@@ -1,6 +1,8 @@
 # Plan 2: Road Financing politics
 
-Updated: 2026-10-31. Back to the [overview](../OVERVIEW.md).
+Updated: 2026-11-03. Back to the [overview](../OVERVIEW.md).
+
+**2026-11-03: the laws now cover Road, Rail and Harbour Works,** each through its own PM group, with discounts of -30% and -35%. Display names are Public Works Financing, Statute Labour, Tolls and Dues, and State Funding; keys are unchanged. Details are in [the proposal](01_ROAD_RAIL_SPLIT_PROPOSAL.md). This closes step 4's Harbour Works financing item. Landowner lock-in matters more now, and still hasn't been checked.
 
 Condensed from the Road Financing proposal (2026-09-26) and the politics item in
 the ideas list. Full design, history and per-modifier reasoning are in the

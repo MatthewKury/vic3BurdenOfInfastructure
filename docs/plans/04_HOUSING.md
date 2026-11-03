@@ -1,7 +1,6 @@
 # Plan 4: Housing
 
-Updated: 2026-11-01 (company housing tiers and laws, demand curve, residential scale
-and 1836 seed). Back to the [overview](../OVERVIEW.md).
+Updated: 2026-11-03 (15 buildings and Light and Heat; numbers live in `tools/Housing-Tiers.ps1`, and the building table below is out of date. See the [tiers proposal](04_HOUSING_TIERS_PROPOSAL.md)). Back to the [overview](../OVERVIEW.md).
 
 ## Current state and open decisions (2026-11-01)
 
@@ -75,7 +74,9 @@ worthwhile where infrastructure is scarce.
   then a curve to 15% at base price at Lavish, flat above that.
   Luxury Housing is an *additional* wealthy need, never a substitute.
 - Residential quality and structure are fixed by building type. No PM switch
-  turns a slum into a tenement. Replacement means acquire, demolish, rebuild.
+  turns a slum into a tenement. Light and Heat (author, 2026-11-03) is the only PM
+  that can change on a housing building: None, Wood, Oil or Electricity for extra
+  housing; slums get None or Wood only. Replacement means acquire, demolish, rebuild.
   No free redevelopment and no automatic confiscation.
 - **Slums (changed by the author 2026-11-01):** no SoL penalty, because the mod's SoL
   penalties were feeding radicals. Part of the mortality penalty and all of the

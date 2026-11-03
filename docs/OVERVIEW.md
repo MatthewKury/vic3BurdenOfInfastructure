@@ -1,6 +1,6 @@
 # Burden of Infrastructure: overview and big ideas
 
-Updated: 2026-11-01. Target game version: Victoria 3 **1.13** (checked against
+Updated: 2026-11-03. Target game version: Victoria 3 **1.13** (checked against
 installed 1.13.11).
 
 This is the top-level planning document. It says what the mod is for, what
@@ -9,9 +9,9 @@ part lives in its own execution plan:
 
 | # | Plan | Status in one line |
 |---|---|---|
-| 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Built; AI keeps up over 10-year headless runs; needs 50-year runs, a campaign balance pass, and a fix for over-seeded GBR |
-| 2 | [Road Financing politics](plans/02_ROAD_FINANCING.md) | Phase 1 (roads) built; untested in-game; phase 2 (events, harbours) not started |
-| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); fixture checks automated; tiers, laws, demand curve and 1836 seed set 2026-11-01; first single-run calibration done, open decisions in the plan |
+| 1 | [Core infrastructure and horses](plans/01_CORE_INFRASTRUCTURE_AND_HORSES.md) | Road, Rail and Harbour Works built (2026-11-03); AI keeps up over 10-year headless runs; see the [century report](reports/century_3_Nov_2026/REPORT.md) |
+| 2 | [Road Financing politics](plans/02_ROAD_FINANCING.md) | Laws cover all three works buildings (2026-11-03); phase 2 events not started |
+| 4 | [Housing](plans/04_HOUSING.md) | Merged into the main mod (2026-10-30); fixture checks automated; 15 replace-not-upgrade buildings and Light and Heat built 2026-11-03; first balance passes done, open decisions in the plan |
 | 5 | [Release, tooling and hygiene](plans/05_RELEASE_AND_TOOLING.md) | Validation suite, headless harness and PATCHING.md done; changelog and licence still missing |
 
 The original documents these were condensed from are kept in
@@ -41,8 +41,8 @@ rather than a free bonus.
 
 ## 2. Pillars
 
-1. **Infrastructure is a standing public expense.** Public Works (land) and
-   Harbour Works (coast) are cost centres shaped like Government
+1. **Infrastructure is a standing public expense.** Road Works (land), Rail
+   Works (railway states) and Harbour Works (coast) are cost centres shaped like Government
    Administration: wages and goods in, a state modifier out, no revenue.
 2. **Horses connect the economy.** A new tradeable good, a new Horse Ranch,
    and horse inputs on haulage, farms, urban transport, cavalry and
@@ -51,7 +51,7 @@ rather than a free bonus.
    transportation, oil and electricity, and labourers for machinists and
    engineers. Cost per infrastructure point falls with era.
 4. **Politics decides who pays.** Bureaucracy law already changes who staffs
-   the works; the Road Financing law group decides whose pocket the roads come
+   the works; the Public Works Financing law group decides whose pocket the roads come
    out of, and interest groups take sides.
 5. **Geography matters through state traits.** PMs cannot test terrain, so
    regional differences (horse breeding) come from state traits
@@ -65,9 +65,9 @@ These come from the original agreed design (2026-08-16) and have held since.
   keyed vanilla blocks only, never whole files, and tag every BOI change in a
   shadow. The one accepted exception is the 16 state-region files (needed for
   the Horse Ranch arable whitelist and the trait assignments).
-- **Leave vanilla's population infrastructure floor alone.** It is the safety
-  net that stops the world collapsing when railways stop giving
-  infrastructure.
+- **The population floor is the safety net** that stops the world collapsing
+  when railways stop giving infrastructure. Left alone until 2026-11-03, when the
+  author agreed to a trial divisor of 125,000 (vanilla 100,000).
 - **Government cost centres use `ai_selection = most_productive`;** buildings
   that sell a good use `most_profitable`.
 - **The AI must be able to run it.** A system the player understands but the AI
@@ -80,40 +80,40 @@ These come from the original agreed design (2026-08-16) and have held since.
 - **Every new piece of engine knowledge goes into the shared lessons file** in
   the same session.
 
-## 4. Status board (as of 2026-10-31)
+## 4. Status board (as of 2026-11-03)
 
 | Area | Built | Static validation | In-game |
 |---|---|---|---|
 | Horses, Horse Ranch, Horse-Breeding Traditions trait | Yes | Passes | Short smoke test only |
-| Public Works and Harbour Works (5 and 3 PM tiers, Bureaucracy admin group) | Yes | Passes | Smoke test only |
+| Road, Rail and Harbour Works (5, 4 and 3 PM tiers, Bureaucracy admin groups) | Yes | Passes | 10-year headless runs; see the century report for later tiers |
 | Rail and port infrastructure removed; haulage, farm, urban, cavalry horse inputs | Yes | Passes | Smoke test only |
 | Horse mobilization options (Recon, Horse-Drawn Transport, Extra Supplies) | Yes | Passes | Not recorded |
 | 1836 seed (20 Public Works, 139 Harbour Works, 216 Horse Ranches, scarce by horse history) | Yes | Passes | 20-year headless run, 2026-11-01: supply 65% of demand in 1836, 88% in 1855 |
 | AI construction fallback event and `downsizeable = no` | Yes | Passes | 10-year headless runs: deficit states 26 → 1 across 12 major powers |
 | Infrastructure-aware `ai_value` weights (Public Works, Harbour Works) | Yes | Passes | No visible effect; kept pending reinvestigation (plan 1, step 3) |
 | Price-scaled `ai_value` for railways and Horse Ranches; opt-in auto-expansion | Yes | Passes | Not observed |
-| Road Financing laws, ideologies, PMs, starting laws | Yes (roads) | Passes | Not observed |
+| Public Works Financing laws, ideologies, PMs, starting laws | Yes (all works) | Passes | Runs in headless games; political balance not assessed |
 | Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless runs, no housing errors; automated fixture checks; 1836 supply seeded from measured demand (2026-11-01); one-run calibration only |
 | Release files | `PATCHING.md` and `.gitignore` yes; licence and changelog no | — | — |
 | Vanilla baseline ensemble and report tooling (2026-10-31) | Yes: `Invoke-HeadlessEnsemble.ps1`, `ensembles.sqlite`, `Make-EnsembleReport.py` | Comparison mode tested on a 5-vs-5 split | 10 vanilla runs, 1836–1846, all passed; [report](reports/vanilla_1836_1846/REPORT.md). No BOI ensemble yet |
 
 ## 5. How the modules depend on each other
 
-- **Infrastructure is the shared resource.** Public Works and Harbour Works
-  produce it. Housing (1 to 2.5 per level) consumes it. Balancing housing means
+- **Infrastructure is the shared resource.** Road, Rail and Harbour Works
+  produce it. Housing (1.25 to 4 per level) consumes it. Balancing housing means
   re-checking that the core buildings can keep up, and that the AI builds them
   when consumption rises. The AI construction fallback measures usage minus
   supply, so it already responds to housing demand.
-- **Horses feed housing.** Suburbs can commute by horse, and the Horse Ranch
+- **Horses feed housing.** Carriage Villas consume horses, and the Horse Ranch
   carries the company-housing PM group like other rural workplaces.
 - **`00_buy_packages.txt` is one shared file.** Housing replaces the whole
   vanilla file, generated by `tools/Build-Housing.ps1`. Any future pop need
   (luxury horse demand, for instance) must go through that generator; a second
   copy of the file would silently replace it.
-- **Road Financing applies to the whole Public Works building.** If other
-  services ever move onto Public Works, they inherit the financing law.
+- **Financing applies to all three works buildings,** each through its own PM
+  group, so a law's per-level effects stay tuned to that building.
 - **The Bureaucracy-law admin pattern** (hereditary / appointed / elected PMs)
-  is reused on Public Works and Harbour Works. Keep it consistent.
+  is reused on all three works buildings. Keep it consistent.
 
 ## 6. Big ideas not yet started
 

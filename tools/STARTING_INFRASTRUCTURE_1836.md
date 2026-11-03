@@ -4,8 +4,10 @@
 vanilla Ports and Railways. It covers 1,147 starting state-owner records across
 675 state regions in the installed game history.
 
-At the base production methods, Public Works provides 15 infrastructure per
-level and Harbour Works provides 10. The planner selects the mix with the least
+**2026-11-03:** output per level was cut by a third after this plan was made: Road Works (then Public Works) gives 10 and Harbour Works 7, so the seed's 40 and 141 levels give 1,387 against the 1,107 removed. The plan below still sizes levels at the old 15 and 10, and the seed wasn't changed.
+
+At the base production methods when planned, Public Works provided 15 infrastructure per
+level and Harbour Works provided 10. The planner selects the mix with the least
 capacity above the removed vanilla output, then the fewest levels. Harbour Works
 is considered only where the mod's map region declares a port hub.
 

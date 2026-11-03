@@ -4,7 +4,7 @@
   "version" : "0.1",
   "game_id": "victoria3",
   "supported_game_version" : "1.13",
-  "short_description" : "Infrastructure is no longer a free by-product of railways and ports. Government-funded Public Works and Harbour Works must supply it, paid for in horses, transportation, merchant marine and wages, and horses come from a new Horse Ranch. Households also buy Housing, a local good supplied by residential buildings that use up infrastructure.",
+  "short_description" : "Infrastructure is no longer a free by-product of railways and ports. Government-funded Road Works, Rail Works and Harbour Works must supply it, paid for in horses, transportation, merchant marine and wages, and horses come from a new Horse Ranch. Households also buy Housing, a local good supplied by residential buildings that use up infrastructure.",
   "patch_sensitivity_note" : "Shadows 63 individual vanilla keys (expect 63 harmless Duplicated key lines per launch on 1.13.11), two GUI types, and replaces 16 state-region files and 00_buy_packages.txt as whole files. Three generated file sets must be regenerated after every game patch. Full list and procedure: PATCHING.md and tools/REGENERATE.md.",
   "tags" : ["gameplay", "economy"],
   "relationships" : [],
