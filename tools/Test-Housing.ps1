@@ -99,20 +99,25 @@ $state = Child-HousingBlock $pm['pm_boi_slums'] 'state_modifiers'
 $scaled = Child-HousingBlock $state 'workforce_scaled'
 $unscaled = Child-HousingBlock $state 'unscaled'
 $mortality = Housing-Number $scaled 'state_mortality_mult'
+$flatMortality = Housing-Number $unscaled 'state_mortality_mult'
 $migration = Housing-Number $scaled 'state_migration_pull_mult'
-$sol = Housing-Number $unscaled 'state_standard_of_living_add'
-Assert-Housing ($mortality -gt 0 -and $migration -lt 0 -and $sol -lt 0) 'Slum effect signs are incorrect.'
+Assert-Housing ($mortality -gt 0 -and $flatMortality -gt 0 -and $migration -lt 0) 'Slum effect signs are incorrect.'
 foreach ($case in @(
-    @{ levels=0; staffing=1.0; mortality=0.0; migration=0.0; sol=0.0 },
-    @{ levels=1; staffing=1.0; mortality=0.001; migration=-0.002; sol=-1.0 },
-    @{ levels=10; staffing=0.5; mortality=0.005; migration=-0.01; sol=-1.0 },
-    @{ levels=20; staffing=0.0; mortality=0.0; migration=0.0; sol=-1.0 }
+    @{ levels=0; staffing=1.0; mortality=0.0; migration=0.0 },
+    @{ levels=1; staffing=1.0; mortality=0.12; migration=-0.002 },
+    @{ levels=10; staffing=0.5; mortality=0.2; migration=-0.01 },
+    @{ levels=20; staffing=0.0; mortality=0.1; migration=0.0 }
 )) {
     $effectiveLevels = $case.levels * $case.staffing
-    $actualSol = if ($case.levels -gt 0) { $sol } else { 0 }
-    Assert-Housing ([Math]::Abs($effectiveLevels * $mortality - $case.mortality) -lt 0.000001) 'Slum mortality fixture failed.'
+    $flat = if ($case.levels -gt 0) { $flatMortality } else { 0 }
+    Assert-Housing ([Math]::Abs($effectiveLevels * $mortality + $flat - $case.mortality) -lt 0.000001) 'Slum mortality fixture failed.'
     Assert-Housing ([Math]::Abs($effectiveLevels * $migration - $case.migration) -lt 0.000001) 'Slum migration fixture failed.'
-    Assert-Housing ($actualSol -eq $case.sol) 'Slum SoL must be flat and independent of staffing.'
+}
+# The mod applies no direct SoL penalty. Harm is mortality; see
+# docs/plans/04_SOL_TO_MORTALITY_PROPOSAL.md. Named SoL gains on the road laws stay.
+foreach ($file in @('common/production_methods/50_boi_housing.txt', 'common/production_methods/50_boi_infrastructure.txt', 'common/decrees/50_boi_housing.txt', 'common/laws/50_boi_road_financing.txt')) {
+    $text = [IO.File]::ReadAllText((Join-Path $ModPath $file))
+    Assert-Housing ($text -notmatch 'standard_of_living_add\s*=\s*-') "Direct SoL penalty found in $file."
 }
 foreach ($key in @('suburbs','luxury_apartments')) {
     $source = $pm["pm_boi_$key"]
@@ -173,9 +178,9 @@ $townBuilding = Child-HousingBlock $pm['pm_boi_work_town'] 'building_modifiers'
 Assert-Housing ((Housing-Number (Child-HousingBlock $townBuilding 'workforce_scaled') 'goods_output_boi_housing_add') -eq (Housing-Number (Child-HousingBlock $campBuilding 'workforce_scaled') 'goods_output_boi_housing_add')) 'Work Town must supply the same housing as a Work Camp.'
 $campPenalties = Child-HousingBlock $campBuilding 'unscaled'
 $townPenalties = Child-HousingBlock $townBuilding 'unscaled'
-$campPenaltyKeys = @([regex]::Matches($campPenalties, 'building_\w+_(?:standard_of_living_add|mortality_mult)') | ForEach-Object Value)
-$townPenaltyKeys = @([regex]::Matches($townPenalties, 'building_\w+_(?:standard_of_living_add|mortality_mult)') | ForEach-Object Value)
-Assert-Housing ($campPenaltyKeys.Count -eq 20 -and $townPenaltyKeys.Count -eq 20) 'Work Camp and Work Town must penalise all ten professions.'
+$campPenaltyKeys = @([regex]::Matches($campPenalties, 'building_\w+_mortality_mult') | ForEach-Object Value)
+$townPenaltyKeys = @([regex]::Matches($townPenalties, 'building_\w+_mortality_mult') | ForEach-Object Value)
+Assert-Housing ($campPenaltyKeys.Count -eq 10 -and $townPenaltyKeys.Count -eq 10) 'Work Camp and Work Town must penalise all ten professions.'
 foreach ($key in $campPenaltyKeys) {
     Assert-Housing ([Math]::Abs((Housing-Number $townPenalties $key) * 2 - (Housing-Number $campPenalties $key)) -lt 0.000001) "Work Town penalty must be half of Work Camp: $key"
 }

@@ -69,3 +69,33 @@ boitm_state_ai_value_public_works = {
 }
 
 boitm_state_infrastructure = { value = infrastructure }
+
+# Every-country and per-state market connection telemetry (boitm_boi.2 and .3).
+# Country scope.
+boitm_ct_at_war = {
+	value = 0
+	if = {
+		limit = { is_at_war = yes }
+		value = 1
+	}
+}
+boitm_ct_turmoil = { value = country_turmoil }
+boitm_ct_income = { value = total_income }
+boitm_ct_expenses = { value = total_expenses }
+
+# State scope.
+boitm_st_population = { value = state_population }
+boitm_st_port_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_port }
+		add = level
+	}
+}
+boitm_st_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}

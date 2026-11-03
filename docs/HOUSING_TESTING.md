@@ -8,7 +8,7 @@ Start a new campaign to use it. Starting residential supply is seeded from measu
 
 - Local Housing and Luxury Housing with separate wealth-based needs. Luxury demand is additional, never a substitute for basic Housing.
 - Fixed slum districts, tenements, apartments, luxury apartments, suburbs, and public temporary shelters. Residential quality cannot be changed by switching PMs.
-- Staffing-scaled slum mortality and migration penalties; one unscaled SoL penalty on the single slum building type. Luxury buildings provide staffed migration bonuses.
+- Staffing-scaled slum mortality and migration penalties, plus one unscaled mortality penalty on the single slum building type. Luxury buildings provide staffed migration bonuses.
 - Selectable horse, rail, and motor commuting for suburbs.
 - Optional company housing on 27 rural building types, including Horse Ranches. No Housing is the default and is never law- or technology-gated.
 - Small staffed basic output from all five subsistence building types.
@@ -36,22 +36,22 @@ Outputs and inputs below are per fully staffed building level. Each residential/
 
 | Building | Basic / luxury output | Construction tier | Infrastructure | State effects per staffed level |
 | --- | --- | --- | --- | --- |
-| Slum Districts | 6 / 0 | Low | 2 | +0.1% mortality, -0.2% migration; separately -1 flat SoL while any levels exist |
+| Slum Districts | 6 / 0 | Low | 2 | +2% mortality, -0.2% migration; separately +10% flat mortality while any levels exist |
 | Tenement Districts | 7 / 0 | Medium | 1.5 | None |
 | Apartment Blocks | 10 / 1 | High; steel-frame technology | 1 | None |
 | Luxury Apartments | 2.5 / 6 | High | 1.5 | +0.2% migration |
 | Suburban Estates | 2.5 / 6 | Medium | 2.5 | +0.3% migration; additional commuting inputs |
 | Temporary Shelter Programme | 4 / 0 | Low | 1.5 | Government-funded wages and inputs |
 
-Slum mortality and migration percentages are additive modifiers, not percentage points of residents dying. At ten levels and 50% staffing: +0.5% relative mortality, -1% migration attraction, and -1 flat SoL. At zero staffing, mortality/migration effects vanish but the constructed slum's flat SoL loss remains.
+Slum mortality and migration percentages are additive modifiers, not percentage points of residents dying. At ten levels and 50% staffing: +20% relative mortality (+10% from staffing, +10% flat) and -1% migration attraction. At zero staffing, the staffing part and migration effect vanish, but the constructed slum's flat +10% mortality remains.
 
 Luxury apartments consume 0.8 wood, 0.5 tools, 0.8 glass, and 0.8 furniture per staffed level. Suburbs consume 0.6 wood, 0.2 tools, 0.2 glass, and 0.3 furniture, plus 0.6 horses / 0.5 transportation / 0.2 automobiles depending on commuting. Staff stay at 1,000 per level, so wages set a break-even near 25 for basic housing. This makes suburban luxury output cheaper in materials at base prices, while their infrastructure and transport demands are higher; actual profitability depends on local prices and wages. No separate residential land limit is used.
 
 Housing demand at each wealth level is a share of that level's core game basket, with housing at base price: none when Destitute (1-4), up to 5% at the price ceiling by the top of Struggling (9), an S-curve to 15% at Lavish (50), and flat above that. Basic need is 10 + 2W expenditure units, capped at that total, and luxury demand takes the rest. Existing vanilla needs are preserved.
 
-Work Camps sell 0.45 basic Housing for 0.075 wood and 0.075 fabric, with -1 employee SoL and +5% employee mortality. Work Towns sell 0.45 for 0.15 wood and 0.075 fabric, with -0.5 employee SoL and +2.5% employee mortality. Serviced Towns require Modern Sewerage and sell 0.45 for 0.15 wood, 0.15 fabric, and 0.075 tools, with no penalty. Subsistence buildings supply 0.02 per staffed level. Effects apply through profession-specific building modifiers, not state modifiers.
+Work Camps sell 0.45 basic Housing for 0.075 wood and 0.075 fabric, with +15% employee mortality. Work Towns sell 0.45 for 0.15 wood and 0.075 fabric, with +7.5% employee mortality. Serviced Towns require Modern Sewerage and sell 0.45 for 0.15 wood, 0.15 fabric, and 0.075 tools, with no penalty. Subsistence buildings supply 0.02 per staffed level. Effects apply through profession-specific building modifiers, not state modifiers.
 
-Emergency Accommodation costs 100 base Authority, adds 15% basic Housing output, and costs 1 state SoL. It affects all basic suppliers, including company/subsistence housing and operating shelters. It does not boost luxury output. The shelter programme consumes 10 wood, 10 fabric, 2 tools, and treasury wages per staffed level. Programme suspension UI and more detailed operation are still planned.
+Emergency Accommodation costs 100 base Authority, adds 15% basic Housing output, and adds 10% state mortality. It affects all basic suppliers, including company/subsistence housing and operating shelters. It does not boost luxury output. The shelter programme consumes 10 wood, 10 fabric, 2 tools, and treasury wages per staffed level. Programme suspension UI and more detailed operation are still planned.
 
 ## Debug events
 
@@ -134,11 +134,11 @@ Record observed results in the test log of [the housing plan](plans/04_HOUSING.m
 2. Confirm all company housing starts at None before unpausing; rural building outputs, employment, other PMs, and BOI horse inputs remain unchanged.
 3. Observe basic and luxury buy/sell orders in Alentejo. Confirm local trade isolation, additional wealthy luxury demand, positive low-wealth basic demand, and actual residential revenue.
 4. Compare low- and higher-wealth peasants against subsistence housing output. Establish the intended transition to insufficient provision from actual household budgets.
-5. Compare slum modifiers at one/multiple levels, zero/partial/full staffing, and after the last level is demolished. A queued-only slum must not impose SoL loss. Native unscaled effects must not stack per level.
+5. Compare slum modifiers at one/multiple levels, zero/partial/full staffing, and after the last level is demolished. A queued-only slum must not impose its flat mortality. Native unscaled effects must not stack per level.
 6. Compare suburbs and luxury apartments at zero/partial/full staffing. Migration bonuses must disappear without staffing. Check all commuting inputs and shortages, and both output goods.
 7. Confirm Work Camp and Work Town penalties affect only the employing building's relevant pops. Check dependent treatment explicitly. Hiring more employees must not amplify the percentage penalty for each existing employee.
 8. Run the law fixtures; confirm each law offers only No Housing and its one tier, conversion on enactment and repeal, No Housing retention, existing slum operation, and blocked new/expanded slums. Check already queued slums and record engine behavior.
-9. Enable and remove Emergency Accommodation; check only basic output changes, flat SoL applies once, and removal restores the previous values. Run it alongside shelters to verify the single additive boost.
+9. Enable and remove Emergency Accommodation; check only basic output changes, flat mortality applies once, and removal restores the previous values. Run it alongside shelters to verify the single additive boost.
 10. Confirm shelter goods and wages are charged to the treasury, basic housing is sold, and unstaffed shelters supply nothing. The current building has no dedicated programme shutdown control.
 11. Save/load, form/release a country, and transfer a state. Initialization must not reset existing housing laws, duplicate ideologies, or create new debug-fixture levels. Protected employer rules must remain enforceable.
 12. Test native ownership, acquisition, and downsizing without assuming the agreed acquisition rule is enforced. No free confiscation workaround is permitted. This is an open implementation gate.

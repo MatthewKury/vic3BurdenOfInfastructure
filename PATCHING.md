@@ -61,9 +61,10 @@ the first.
 ## The 1836 seed (generated)
 
 `common/history/buildings/zz_boi_buildings.txt` places **20 Public Works (40
-levels), 139 Harbour Works (141 levels) and 225 Horse Ranches (857 levels)**,
-replacing only the infrastructure taken off railways and ports. It is built by
-`tools/gen_seed.awk` and `tools/curate.awk`; see `tools/REGENERATE.md` §2.
+levels), 139 Harbour Works (141 levels) and 216 Horse Ranches (492 levels)**.
+Works replace only the infrastructure taken off railways and ports, and ranches
+are deliberately scarce by horse history. It is built by `tools/gen_seed.awk`,
+`tools/curate.awk` and `tools/Set-HorseSeedTiers.py`; see `tools/REGENERATE.md` §2.
 History seeding is used, not an `on_game_started` effect, because only
 buildings created during world initialisation start staffed.
 

@@ -7,7 +7,7 @@
 #   4 horse_seed_additions.tsv STATE \t levels (reviewed new ranches)
 #   5 horse_seed_holds.tsv STATE \t levels (keep proven-safe unincorporated seed)
 #   6 infrastructure_seed_plan.tsv STATE \t TAG \t Public Works \t Harbour Works
-#   7 horse_seed_reductions.tsv STATE \t final Horse Ranch levels (0 removes)
+#   7 horse_seed_reductions.tsv STATE \t final Horse Ranch levels (0 removes), from Set-HorseSeedTiers.py
 
 BEGIN { FS = "\t" }
 
@@ -94,7 +94,7 @@ END {
     }
     for (s in reduction) {
         if (!(s in states) || !((s in ranch) || (s in extra)) ||
-            reduction[s] >= base_ranch_level(s)) {
+            reduction[s] > base_ranch_level(s)) {
             printf "invalid Horse Ranch reduction: %s\n", s > "/dev/stderr"
             exit 1
         }
@@ -147,8 +147,9 @@ END {
     print "#  their previously safe 3 levels are a cap (horse_seed_holds.tsv)."
     print "#  Fourteen new core, sole-owner, incorporated states with safe"
     print "#  land headroom are listed in horse_seed_additions.tsv."
-    print "#  Lower 1836 levels follow horse_seed_reductions.tsv. Zero removes"
-    print "#  a ranch; reductions favor less suitable breeding regions."
+    print "#  Final 1836 levels follow horse_seed_reductions.tsv, which applies"
+    print "#  each state's historical tier in horse_seed_tiers.tsv. Zero removes"
+    print "#  a ranch; great horse country loses the least."
     print "#"
     print "#  Public Works and Harbour Works are NOT rural and cost no"
     print "#  arable land. Starting levels replace vanilla port and rail"

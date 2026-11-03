@@ -77,19 +77,21 @@ worthwhile where infrastructure is scarce.
 - Residential quality and structure are fixed by building type. No PM switch
   turns a slum into a tenement. Replacement means acquire, demolish, rebuild.
   No free redevelopment and no automatic confiscation.
-- **Slums:** mortality and migration penalties scale with staffed levels
-  (levels × staffing). One flat SoL penalty applies while *any* slum level
-  exists, regardless of count or staffing, and goes when the last is
-  demolished. Do not use pollution, spill into neighbouring states, or attach
+- **Slums (changed by the author 2026-11-01):** no SoL penalty, because the mod's SoL
+  penalties were feeding radicals. Part of the mortality penalty and all of the
+  migration penalty scale with staffed levels (levels × staffing). A flat mortality
+  penalty applies while *any* slum level exists, regardless of count or staffing, and
+  goes when the last is demolished. The author chose +50 pollution per staffed level as
+  a later step, which reverses the old no-pollution rule; it isn't in yet. Don't attach
   the harm only to slum employees. If more slum types are added, keep a single
-  state-wide SoL penalty.
+  state-wide flat penalty. See [the proposal](04_SOL_TO_MORTALITY_PROPOSAL.md).
 - Suburbs and luxury housing give staffed migration bonuses. They can offset
-  slum migration loss but not slum mortality or SoL.
+  slum migration loss but not slum mortality.
 - Minimum residential standards stop new and expanded slums; existing slums keep
   running until acquired and demolished.
 - **Company housing has four tiers (changed by the author 2026-11-01): No Housing,
   Work Camp, Work Town, Serviced Town.** A Work Camp is cheapest to run and hurts
-  only that building's employees (SoL and mortality). A Work Town supplies the same
+  only that building's employees (mortality). A Work Town supplies the same
   housing at half those penalties. Penalties must not grow per level for each
   employee. Each employer housing law permits **No Housing plus one tier** (changed
   by the author 2026-11-01): Unregulated allows Work Camps, Protected allows Work
@@ -121,7 +123,7 @@ seeded from measured 1836 demand (2026-11-01; see step 5).
 
   | Building | Basic / luxury | Infra | Effects |
   |---|---|---|---|
-  | Slum Districts | 6 / 0 | 2 | +0.1% mortality, −0.2% migration; −1 flat SoL |
+  | Slum Districts | 6 / 0 | 2 | +2% mortality, −0.2% migration; +10% flat mortality |
   | Tenement Districts | 7 / 0 | 1.5 | none |
   | Apartment Blocks (steel-frame tech) | 10 / 1 | 1 | none |
   | Luxury Apartments | 2.5 / 6 | 1.5 | +0.2% migration |
@@ -131,8 +133,8 @@ seeded from measured 1836 demand (2026-11-01; see step 5).
 - Suburb commuting: 0.6 horses, 0.5 transportation or 0.2 automobiles, tech-gated.
 - Company housing PM group on 27 rural building types including Horse Ranches;
   No Housing is default and never gated. Work Camp (0.45 housing, 0.075 wood, 0.075
-  fabric, −1 SoL, +5% mortality; Unregulated), Work Town (0.45 housing, 0.15 wood,
-  0.075 fabric, −0.5 SoL, +2.5% mortality; Protected), Serviced Town (0.45 housing,
+  fabric, +15% mortality; Unregulated), Work Town (0.45 housing, 0.15 wood,
+  0.075 fabric, +7.5% mortality; Protected), Serviced Town (0.45 housing,
   0.15 wood, 0.15 fabric, 0.075 tools, no penalty; Mandatory Serviced Housing and
   Modern Sewerage).
 - 0.02 basic housing per staffed level on all five subsistence building types.
@@ -140,7 +142,7 @@ seeded from measured 1836 demand (2026-11-01; see step 5).
   and opponents attached additively to IGs. Enactment fallback to None plus
   monthly maintenance.
 - Emergency Accommodation decree: 100 Authority, +15% basic output for all basic
-  suppliers, −1 state SoL.
+  suppliers, +10% state mortality.
 - Debug events `boi_housing.1` to `.5` (init laws, Alentejo fixture, permissive
   laws, protective laws, mandatory serviced housing). Since 2026-10-31 the headless harness runs `.2` to
   `.4` automatically as Portugal and checks the results (the `fixtures`
@@ -176,7 +178,7 @@ Highest-risk items:
 
 - [ ] Loads without housing errors, unknown modifiers, bad scopes, missing icons
       or localisation.
-- [ ] Unscaled slum SoL: gone at zero built levels, present at zero staffing, not
+- [ ] Unscaled slum mortality: gone at zero built levels, present at zero staffing, not
       applied for a queued building, does not stack per level.
 - [ ] Work Camp and Work Town penalties hit only the employing building's pops (check
       dependants); law fallback runs on enactment and selects None before or
@@ -310,6 +312,10 @@ screenshots before marking anything verified.
   and merchant marine +32% against vanilla remain to be tested. A European revolution
   wave hit in 1844–45: Britain lost 9 of 26 states and Austria 5 of 15. Excluding those
   two, GDP was £130.8M against vanilla's £128.5M. One run.
+- **2026-11-01, headless, 1.13.11, SoL penalties replaced with mortality, no pollution**
+  (`20261101-185641_mod`, `20261101-191216_mod`). Both crashed before 1856 at a
+  telemetry-linked address. No British civil war by 1847 and 1849, against 4 of 5 games
+  by 1846 before. Results are in [the proposal](04_SOL_TO_MORTALITY_PROPOSAL.md).
 - **2026-11-01, headless, 1.13.11, 1836–1846, seed tuning, observer AI.** Residential
   buildings at a tenth of their old output, infrastructure scaled to match, and an
   1836 seed from measured per-state demand. Both runs PASS, 0 BOI error lines, all

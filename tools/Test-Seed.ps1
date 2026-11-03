@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$ModPath,
-    [int]$ExpectedHorseRanches = 225,
-    [int]$ExpectedHorseRanchLevels = 857
+    [int]$ExpectedHorseRanches = 216,
+    [int]$ExpectedHorseRanchLevels = 492
 )
 
 $ErrorActionPreference = 'Stop'

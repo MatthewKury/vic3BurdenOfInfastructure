@@ -4,5 +4,7 @@
 on_yearly_pulse_country = {
 	events = {
 		boitm_boi.1
+		boitm_boi.2
 	}
 }
+

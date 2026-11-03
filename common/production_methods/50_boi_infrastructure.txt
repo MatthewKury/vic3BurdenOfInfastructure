@@ -383,7 +383,7 @@ pm_boi_statute_labour = {
 	state_modifiers = {
 		workforce_scaled = {
 			state_infrastructure_add = -4
-			building_group_bg_subsistence_agriculture_peasants_standard_of_living_add = -0.25
+			state_peasants_mortality_mult = 0.03
 			building_group_bg_agriculture_throughput_add = 0.01
 			building_group_bg_ranching_throughput_add = 0.01
 		}

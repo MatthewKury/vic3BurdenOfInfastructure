@@ -154,3 +154,11 @@ boitm_hs_residential_levels = {
 		add = level
 	}
 }
+
+boitm_hs_horse_ranch_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_horse_ranch }
+		add = level
+	}
+}

@@ -14,9 +14,9 @@ try {
     foreach ($row in $rows) { $byState[$row.State] = $row }
 
     $seeded = @($rows | Where-Object { [int]$_.Ranch -gt 0 })
-    if ($seeded.Count -ne 225) { throw "Expected 225 seeded Horse Ranch states; found $($seeded.Count)." }
+    if ($seeded.Count -ne 216) { throw "Expected 216 seeded Horse Ranch states; found $($seeded.Count)." }
     $levels = ($seeded | Measure-Object -Property Ranch -Sum).Sum
-    if ($levels -ne 857) { throw "Expected 857 Horse Ranch levels; found $levels." }
+    if ($levels -ne 492) { throw "Expected 492 Horse Ranch levels; found $levels." }
     foreach ($row in $seeded) {
         if ([int]$row.DeclaredHeadroom -lt 10) {
             throw "$($row.State) has only $($row.DeclaredHeadroom) declared arable levels left."
@@ -29,7 +29,7 @@ try {
     foreach ($line in $additions) {
         $parts = $line -split '\s+'
         $row = $byState[$parts[0]]
-        if (-not $row -or [int]$row.Ranch -ne [int]$parts[1] -or
+        if (-not $row -or [int]$row.Ranch -gt [int]$parts[1] -or
             [int]$row.Owners -ne 1 -or $row.Core -ne 'True' -or $row.Unincorporated -ne 'False') {
             throw "Unsafe or mismatched new Horse Ranch state: $($parts[0])."
         }
@@ -45,7 +45,7 @@ try {
             throw "Held Horse Ranch state changed: $($parts[0])."
         }
     }
-    Write-Host 'PASS: ranch levels fit declared land; 14 additions are core, sole-owner, incorporated; 15 unincorporated holds do not exceed their safe levels.'
+    Write-Host 'PASS: ranch levels fit declared land; 14 additions are core, sole-owner, incorporated and within their reviewed levels; 15 unincorporated holds do not exceed their safe levels.'
 }
 finally {
     Remove-Item -LiteralPath $auditPath -Force -ErrorAction SilentlyContinue

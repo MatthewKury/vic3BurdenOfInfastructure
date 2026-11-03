@@ -4,16 +4,16 @@ Static weekly estimate at full staffing and full cavalry strength, using the ins
 
 | Source | Horses per week |
 | --- | ---: |
-| Horse Ranch production (225 ranches, 857 levels) | 10284 |
+| Horse Ranch production (216 ranches, 492 levels) | 5904 |
 | Public Works consumption | 400 |
 | Extraction haulage consumption | 7059 |
 | Crop farm draft consumption | 2257 |
 | Cavalry consumption | 778 |
 | Other known consumption | 0 |
 | **Known consumption** | **10494** |
-| **Ranch output minus known consumption** | **-210** |
+| **Ranch output minus known consumption** | **-4590** |
 
-Ranch output covers 98% of known demand. The world total is not a playable market balance: goods move within markets, and subjects may share markets with other countries.
+Ranch output covers 56.3% of known demand. The world total is not a playable market balance: goods move within markets, and subjects may share markets with other countries.
 
 ## Largest country-level gaps
 
@@ -21,35 +21,35 @@ Country tags aggregate owner states; they do not represent market boundaries.
 
 | Owner | Ranch output | Known demand | Difference |
 | --- | ---: | ---: | ---: |
+| CHI | 540 | 1593 | -1053 |
 | BIC | 0 | 711 | -711 |
-| CHI | 936 | 1593 | -657 |
-| GBR | 228 | 617 | -389 |
+| GBR | 168 | 617 | -449 |
+| FRA | 408 | 792 | -384 |
 | DEI | 0 | 230 | -230 |
+| JAP | 48 | 205 | -157 |
+| AUS | 96 | 238 | -142 |
+| BRZ | 156 | 284 | -128 |
+| EGY | 48 | 173 | -125 |
 | BEL | 0 | 121 | -121 |
-| JAP | 96 | 205 | -109 |
+| TUR | 240 | 341 | -101 |
 | AWA | 0 | 86 | -86 |
-| PAN | 0 | 76 | -76 |
-| TUS | 0 | 66 | -66 |
-| SAR | 0 | 59 | -59 |
-| CLM | 0 | 57 | -57 |
-| BAV | 48 | 97 | -49 |
 
 ## Largest country-level surpluses
 
 | Owner | Ranch output | Known demand | Difference |
 | --- | ---: | ---: | ---: |
-| RUS | 1416 | 919 | +497 |
-| MEX | 588 | 102 | +486 |
-| HUN | 516 | 77 | +439 |
-| USA | 1032 | 622 | +410 |
-| PER | 432 | 106 | +326 |
-| KOR | 252 | 43 | +209 |
-| ARG | 156 | 25 | +131 |
-| VNZ | 132 | 23 | +109 |
-| BRZ | 384 | 284 | +100 |
-| URU | 96 | 6 | +90 |
-| MOR | 96 | 9 | +87 |
-| PRU | 300 | 230 | +70 |
+| HUN | 408 | 77 | +331 |
+| MEX | 348 | 102 | +246 |
+| PER | 264 | 106 | +158 |
+| ARG | 132 | 25 | +107 |
+| URU | 84 | 6 | +78 |
+| MOR | 72 | 9 | +63 |
+| BOR | 60 | 4 | +56 |
+| PNI | 60 | 9 | +51 |
+| KOR | 84 | 43 | +41 |
+| KOK | 48 | 8 | +40 |
+| BUK | 48 | 8 | +40 |
+| VNZ | 60 | 23 | +37 |
 
 ## Scope
 

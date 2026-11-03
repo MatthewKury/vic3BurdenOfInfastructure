@@ -345,17 +345,17 @@ permanent baseline output:
 
 | PM | + horses | Note |
 |---|---|---|
-| pm_home_workshops_no_building_subsistence_pasture | 0.25 | law_collectivized_agriculture |
-| pm_home_workshops_building_subsistence_pasture | 0.25 | everything else |
+| pm_home_workshops_no_building_subsistence_pasture | 0.15 | law_collectivized_agriculture |
+| pm_home_workshops_building_subsistence_pasture | 0.15 | everything else |
 
 These two are the halves of one PM group split on a law, so exactly one is
 always active — covering the trickle under every set of laws. The `pm_serfdom_*`
 variants sit in a separate additive group and are untouched.
 
-This is a small net buff to subsistence output (+£7.5 against the block's ~£20).
+This is a small net buff to subsistence output (+£4.5 against the block's ~£20).
 Deliberate: the alternative was cutting an existing output, which is far more
-invasive. If the floor proves too thin, extending to
-`pm_*_building_subsistence_farm` is the first thing to try.
+invasive. It was +0.25 until the 2026-11-01 horse scarcity pass, which cut it so
+that pastures prop up horse-poor regions less.
 
 ### Cavalry upkeep
 
@@ -388,7 +388,7 @@ self-curing horse shortage.
 |---|---|---|---|
 | Public Works | 1–6 | 20 | replaces starting Port and Railway infrastructure |
 | Harbour Works | 1–2 | 139 | replaces starting Port infrastructure where a port hub exists |
-| Horse Ranch | **1–8** | 225 | curated; 857 total levels — see below |
+| Horse Ranch | **1–7** | 216 | curated and tiered by horse history; 492 total levels — see below |
 
 **Infrastructure follows the actual state owner.** The generated plan covers
 each starting owner separately, including split state regions. It seeds 40
@@ -415,9 +415,15 @@ passing the core-culture proxy; their previously safe three levels are an upper
 bound. Baseline levels of 4/6/8 by declared arable land are reduced according
 to regional horse-breeding suitability; 25 candidate states lose their ranches.
 
+**Horses are deliberately scarce at the start (2026-11-01).** The earlier 857-level
+seed left the world at 102% of demand, with 41% of demand buying below base price.
+Each state now keeps a share of those levels by its horse history, set in
+`tools/horse_seed_tiers.tsv`: 85% in great horse country, 60% in established breeding
+regions, 35% in ordinary farming country, 25% in humid and tropical country. See
+[`tools/HORSE_SEED_1836.md`](tools/HORSE_SEED_1836.md) for the tiers and measured results.
+
 The trade-off is fewer seeded ranch states than the original 636-state plan.
-The subsistence pasture trickle is small relative to the opening horse demand;
-players and the AI still need to expand ranches. Public Works and Harbour Works are not rural,
+Players and the AI need to expand ranches. Public Works and Harbour Works are not rural,
 cost no arable land, and are seeded everywhere they apply.
 
 **Colonised states are deliberately not seeded.** History only covers states
@@ -445,7 +451,7 @@ only exists where the seeding script places ranches. If horses spike, every
 state's infrastructure gets expensive simultaneously. Mitigations, in order of
 preference:
 
-1. Seed generously — more horse ranch levels than look necessary.
+1. Raise the retained shares in `tools/Set-HorseSeedTiers.py`, tier 2 first.
 2. Drop `pm_cart_roads` to horses 8 (£240).
 3. Halve the transport-PM horse additions.
 
@@ -539,15 +545,15 @@ intended shape — horses are an early-game burden that industrialisation escape
 
 ### The caveat that matters: horses will not trade at par
 
-Seeded Horse Ranch supply is **10,284 horses/week before state modifiers**
-(857 levels × 12). Static known demand is **10,494/week**:
+Seeded Horse Ranch supply is **5,904 horses/week before state modifiers**
+(492 levels × 12). Static known demand is **10,494/week**:
 400 Public Works, 7,059 haulage, 2,257 farm draft animals, and 778 cavalry.
-The new ranch locations, level choices, and land audit are documented in
+The ranch locations, level choices, and land audit are documented in
 [`tools/HORSE_SEED_1836.md`](tools/HORSE_SEED_1836.md).
-Subsistence pastures add some supply, while dynamically created Urban Centers
-add demand. Ranch supply is **210/week below** this known demand before pasture
-output and state modifiers. Actual opening prices and shortages must be measured by market;
-the cost examples below scale with horse price:
+Subsistence pastures add supply, while dynamically created Urban Centers add
+demand. Measured across every state in 1836, supply is **8,352 against demand of
+12,801 (65%)**, on purpose. Both figures count traded horses, so the balance
+without trade is a little tighter. The cost examples below scale with horse price:
 
 | Building | Margin | @30 (par) | @45 (1.5×) | @52.5 (1.75×, price ceiling) |
 |---|---|---|---|---|
@@ -563,6 +569,6 @@ a quarter of its goods margin in 1836 is a real risk of unprofitable extraction
 and a stalled early economy. "Margin" here is goods revenue minus goods inputs,
 not profit after wages.
 
-**Levers, cheapest first:** drop `pm_road_carts` from 3 horses to 2 or 1; raise
-the subsistence pasture output above 0.25; loosen `curate.awk` to seed more
-ranches; or lower the `horses` base cost below 30.
+**Levers, cheapest first:** raise the retained shares in
+`tools/Set-HorseSeedTiers.py`; drop `pm_road_carts` from 3 horses to 2 or 1; raise
+the subsistence pasture output above 0.15; or lower the `horses` base cost below 30.

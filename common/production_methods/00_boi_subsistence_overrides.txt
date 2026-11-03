@@ -28,9 +28,10 @@
 #  play, extending to pm_*_building_subsistence_farm is the first
 #  thing to try.
 #
-#  NOTE this is a small net BUFF to subsistence output (+0.25
-#  horses, about +7.5 in goods value against the block's existing
-#  ~20). That is deliberate - the alternative was cutting an
+#  NOTE this is a small net BUFF to subsistence output (+0.15
+#  horses, about +4.5 in goods value against the block's existing
+#  ~20; cut from +0.25 in the 2026-11-01 horse scarcity pass). That
+#  is deliberate - the alternative was cutting an
 #  existing output, which would have been far more invasive.
 #
 #  PATCH SENSITIVITY: full copies of vanilla 1.13. Re-diff against
@@ -47,7 +48,7 @@ pm_home_workshops_no_building_subsistence_pasture = {
 		workforce_scaled = { # 20
 			goods_output_meat_add = 0.33 # 10
 			goods_output_fabric_add = 0.5 # 10
-			goods_output_horses_add = 0.25 # 7.5   # BOI: baseline horse supply
+			goods_output_horses_add = 0.15 # 4.5   # BOI: baseline horse supply
 		}
 	}
 }
@@ -63,7 +64,7 @@ pm_home_workshops_building_subsistence_pasture = {
 			goods_output_clothes_add = 0.25 # 0.75
 			goods_output_furniture_add = 0.25 # 0.75
 			goods_output_liquor_add = 0.25 # 0.75
-			goods_output_horses_add = 0.25 # 7.5   # BOI: baseline horse supply
+			goods_output_horses_add = 0.15 # 4.5   # BOI: baseline horse supply
 		}
 	}
 }

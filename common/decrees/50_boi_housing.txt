@@ -6,7 +6,7 @@ decree_boi_emergency_accommodation = {
  cost = 100
  modifier = {
   goods_output_boi_housing_mult = 0.15
-  state_standard_of_living_add = -1
+  state_mortality_mult = 0.1
  }
  ai_weight = { value = 0 }
 }

@@ -28,7 +28,7 @@ law**; the other two are discounts with side effects.
 | Public Works goods input | −40% | −50% (raised from −35% on 2026-09-26) | baseline |
 | Staffing | unchanged | −60 labourers, +50 shopkeepers, +10 capitalists per level | baseline |
 | Infrastructure | −4 per level (flat, so it matters most early) | +15% of all state infra, once per state | baseline |
-| Side effect | Peasant SoL −0.25 per Public Works level | Market access −5% everywhere (on the law, so it cannot stack) | none |
+| Side effect | Peasant mortality +3% per Public Works level (was SoL −0.25 until 2026-11-01) | Market access −5% everywhere (on the law, so it cannot stack) | none |
 | Benefits | Farm and ranch throughput +1% per level; manor-house aristocrat SoL +2; aristocrat pol. strength +10% | Shopkeeper SoL +2 in Public Works; investment-pool efficiency +10% for shopkeepers, aristocrats, capitalists; pol. strength +10/+5/+5% | none (support is political) |
 
 Wages are not discounted under any law, so the real saving is smaller than the
@@ -72,9 +72,8 @@ Files: `common/law_groups/50_boi_law_groups.txt`,
 - [ ] Released and formed countries get the law and ideologies within a year.
 - [ ] Flavoured IG variants still match the `ig_` keys the setup loop uses.
 - [ ] `building_goods_input_mult` works inside a PM `unscaled` block, and the
-      building-group SoL modifier works in PM `state_modifiers`. Fallbacks:
-      `goods_input_horses_mult` plus per-good mults, and
-      `state_lower_strata_standard_of_living_add`.
+      `state_peasants_mortality_mult` works in PM `state_modifiers`. Fallback for the
+      input discount: `goods_input_horses_mult` plus per-good mults.
 - [ ] Turnpike wage swap: the estimate is about +£17 per level per week in wages
       against a £150 goods saving at Cart Roads. Check real wage figures.
 
@@ -98,7 +97,7 @@ Files: `common/law_groups/50_boi_law_groups.txt`,
 - [ ] **Rebecca Riots** under Turnpike Trusts in a state with strong or angry
       Rural Folk: abolish tolls locally for a while, suppress, or appoint a
       commission.
-- [ ] **Road-duty defaulters** under Statute Labour when peasant SoL is low.
+- [ ] **Road-duty defaulters** under Statute Labour when peasant mortality is high.
 - [ ] **"A Highway Act"** flavour event on leaving Statute Labour.
 - [ ] **Harbour Works financing:** `pmg_boi_harbour_financing` using the same
       three laws (harbour dues as tolls, press-ganged dock labour as statute

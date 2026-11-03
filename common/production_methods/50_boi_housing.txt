@@ -3,12 +3,15 @@
 # break-even of about 25 for basic housing and supply settles below base price.
 pm_boi_slums = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
+ # Slums cost lives, not SoL: -1 SoL is about +12% mortality near SoL 10, and SoL
+ # penalties make radicals. Flat while any level exists, plus a part that follows
+ # staffing. See docs/plans/04_SOL_TO_MORTALITY_PROPOSAL.md.
  state_modifiers = {
  workforce_scaled = {
-  state_mortality_mult = 0.001
+  state_mortality_mult = 0.02
   state_migration_pull_mult = -0.002
  }
- unscaled = { state_standard_of_living_add = -1 }
+ unscaled = { state_mortality_mult = 0.1 }
  }
  building_modifiers = {
   workforce_scaled = {
@@ -171,28 +174,18 @@ pm_boi_work_camp = {
    goods_input_fabric_add = 0.075
    goods_output_boi_housing_add = 0.45
   }
-  # Percentage/SoL effects apply to employed professions, never per level.
+  # Mortality applies to employed professions, never per level. It replaces -1 SoL.
   unscaled = {
-   building_laborers_standard_of_living_add = -1
-   building_laborers_mortality_mult = 0.05
-   building_farmers_standard_of_living_add = -1
-   building_farmers_mortality_mult = 0.05
-   building_machinists_standard_of_living_add = -1
-   building_machinists_mortality_mult = 0.05
-   building_engineers_standard_of_living_add = -1
-   building_engineers_mortality_mult = 0.05
-   building_clerks_standard_of_living_add = -1
-   building_clerks_mortality_mult = 0.05
-   building_shopkeepers_standard_of_living_add = -1
-   building_shopkeepers_mortality_mult = 0.05
-   building_clergymen_standard_of_living_add = -1
-   building_clergymen_mortality_mult = 0.05
-   building_aristocrats_standard_of_living_add = -1
-   building_aristocrats_mortality_mult = 0.05
-   building_capitalists_standard_of_living_add = -1
-   building_capitalists_mortality_mult = 0.05
-   building_slaves_standard_of_living_add = -1
-   building_slaves_mortality_mult = 0.05
+   building_laborers_mortality_mult = 0.15
+   building_farmers_mortality_mult = 0.15
+   building_machinists_mortality_mult = 0.15
+   building_engineers_mortality_mult = 0.15
+   building_clerks_mortality_mult = 0.15
+   building_shopkeepers_mortality_mult = 0.15
+   building_clergymen_mortality_mult = 0.15
+   building_aristocrats_mortality_mult = 0.15
+   building_capitalists_mortality_mult = 0.15
+   building_slaves_mortality_mult = 0.15
   }
  }
 }
@@ -209,26 +202,16 @@ pm_boi_work_town = {
   # Same housing as a Work Camp at half its penalties. Each employer housing
   # law permits No Housing plus exactly one tier; this one is Protected's.
   unscaled = {
-   building_laborers_standard_of_living_add = -0.5
-   building_laborers_mortality_mult = 0.025
-   building_farmers_standard_of_living_add = -0.5
-   building_farmers_mortality_mult = 0.025
-   building_machinists_standard_of_living_add = -0.5
-   building_machinists_mortality_mult = 0.025
-   building_engineers_standard_of_living_add = -0.5
-   building_engineers_mortality_mult = 0.025
-   building_clerks_standard_of_living_add = -0.5
-   building_clerks_mortality_mult = 0.025
-   building_shopkeepers_standard_of_living_add = -0.5
-   building_shopkeepers_mortality_mult = 0.025
-   building_clergymen_standard_of_living_add = -0.5
-   building_clergymen_mortality_mult = 0.025
-   building_aristocrats_standard_of_living_add = -0.5
-   building_aristocrats_mortality_mult = 0.025
-   building_capitalists_standard_of_living_add = -0.5
-   building_capitalists_mortality_mult = 0.025
-   building_slaves_standard_of_living_add = -0.5
-   building_slaves_mortality_mult = 0.025
+   building_laborers_mortality_mult = 0.075
+   building_farmers_mortality_mult = 0.075
+   building_machinists_mortality_mult = 0.075
+   building_engineers_mortality_mult = 0.075
+   building_clerks_mortality_mult = 0.075
+   building_shopkeepers_mortality_mult = 0.075
+   building_clergymen_mortality_mult = 0.075
+   building_aristocrats_mortality_mult = 0.075
+   building_capitalists_mortality_mult = 0.075
+   building_slaves_mortality_mult = 0.075
   }
  }
 }

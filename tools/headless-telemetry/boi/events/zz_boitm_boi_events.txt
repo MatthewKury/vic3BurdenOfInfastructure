@@ -28,3 +28,26 @@ boitm_boi.1 = {
 		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=horses;price=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
 	}
 }
+
+# Every country once a year: civil-war sides, budgets, and per-state market
+# connection. Keyed by engine id, because revolutionaries take their parent's tag.
+# BOICT| and BOIST| lines are read by tools/Get-StateDiagnostics.py. They stay off
+# the BOIHS| prefix because Get-HousingSeedDemand.py parses those values as numbers.
+boitm_boi.2 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { NOT = { is_country_type = decentralized } }
+
+	immediate = {
+		debug_log = "BOICT|politics|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|[THIS.GetCountry.GetIDString]|states=[THIS.ScriptValue('boitm_states')|0];at_war=[THIS.ScriptValue('boitm_ct_at_war')|0];radicals=[THIS.GetCountry.GetNumRadicals|0];loyalists=[THIS.GetCountry.GetNumLoyalists|0];turmoil=[THIS.ScriptValue('boitm_ct_turmoil')|4]"
+		debug_log = "BOICT|market|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|[THIS.GetCountry.GetIDString]|market=[THIS.GetCountry.GetMarket.GetOwner.GetTagName];market_id=[THIS.GetCountry.GetMarket.GetOwner.GetIDString]"
+		debug_log = "BOICT|budget|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|[THIS.GetCountry.GetIDString]|income=[THIS.ScriptValue('boitm_ct_income')|0];expenses=[THIS.ScriptValue('boitm_ct_expenses')|0];gold=[THIS.ScriptValue('boitm_gold_reserves')|0];debt=[THIS.ScriptValue('boitm_scaled_debt')|2];gdp=[THIS.ScriptValue('boitm_gdp')|0]"
+		every_scope_state = {
+			debug_log = "BOIST|connection|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetOwner.GetIDString]|[THIS.GetState.GetStateRegion.GetName]|access=[THIS.GetState.GetMarketAccess|4];port=[THIS.ScriptValue('boitm_st_port_levels')|0];rail=[THIS.ScriptValue('boitm_st_railway_levels')|0];pw=[THIS.ScriptValue('boitm_state_public_works_levels')|0];hw=[THIS.ScriptValue('boitm_state_harbour_works_levels')|0];pop=[THIS.ScriptValue('boitm_st_population')|0]"
+			debug_log = "BOIST|society|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetOwner.GetIDString]|[THIS.GetState.GetStateRegion.GetName]|radicals=[THIS.GetState.GetNumRadicals|0];loyalists=[THIS.GetState.GetNumLoyalists|0];turmoil=[THIS.GetState.CalcTurmoil|4];unemployed=[THIS.GetState.GetNumUnemployedWorkingAdults|0];wage=[THIS.GetState.GetAverageAnnualWage|1];gdp=[THIS.GetState.GetGDPContribution|0]"
+			debug_log = "BOIST|transport|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetOwner.GetIDString]|[THIS.GetState.GetStateRegion.GetName]|buy=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStateProduction|2];price=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStatePrice|2]"
+		}
+	}
+}
+

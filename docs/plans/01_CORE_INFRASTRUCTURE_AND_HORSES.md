@@ -29,7 +29,7 @@ must work from the 1836 start, and the AI must keep its states supplied.
 | Rail and port changes | `state_infrastructure_add` removed; transport output unchanged | vanilla PM shadows |
 | Haulage horses | `pm_road_carts` +3 (one key reaches 18 PM groups); rail haulage tiers +1; electric and refrigeration tiers untouched. `pm_log_carts` is the most advanced tier, not a horse cart, and is left alone | PM shadows |
 | Other horse consumers | Crop farm draft animals, urban centre transport (1 horse per level on the start PM) | PM shadows |
-| Subsistence pasture trickle | +0.25 horses on both halves of the pasture PM group | PM shadows |
+| Subsistence pasture trickle | +0.15 horses on both halves of the pasture PM group (+0.25 until 2026-11-01) | PM shadows |
 | Cavalry upkeep | Horses replace grain: hussars 1, dragoons 1, cuirassiers 1, lancers 2. Hussar 1.13.11 `formation_modifier` restored (verified 2026-10-24) | `common/combat_unit_types/00_boi_cavalry_overrides.txt` |
 | Mobilization options | Horseback Reconnaissance (weaker than motorised), Horse-Drawn Transport (Forced March movement, smaller speed bonus, no morale penalty, exclusive with other transport), Extra Supplies needs horse supply and uses 0.5 horses | `common/mobilization_options/`, GUI shadow for the panel |
 | Horse-Breeding Traditions | Regional state trait with `goods_output_horses_mult` | `tools/Add-HorseBreedingTrait.ps1` |
@@ -46,16 +46,14 @@ buildings start empty and caused a self-curing shortage every game).
   (139 buildings), 2,010 infra. Audit: `tools/STARTING_INFRASTRUCTURE_1836.md`.
 - **Horse Ranches are curated** after a hard crash from over-allocating arable
   land (a state's real arable land depends on incorporation and province
-  ownership, not the region's declared figure). 225 ranches, 857 levels: the
-  original 236 safe states plus 14 reviewed additions, then cut by regional
-  suitability (25 states drop to zero; 15 unincorporated states held at three
-  levels or fewer). Every ranch state keeps at least 12 arable levels of
-  headroom. Audit: `tools/HORSE_SEED_1836.md`.
-- **Opening balance:** 10,284 horses/week from ranches against 10,494 known
-  demand (400 Public Works, 7,059 haulage, 2,257 farms, 778 cavalry), so 98%
-  covered before pasture output and dynamically created Urban Centre demand.
-  Biggest country gaps: BIC −711, CHI −657, GBR −389. Biggest surpluses: RUS
-  +497, MEX +486, HUN +439. See `tools/HORSE_BALANCE_1836.md`.
+  ownership, not the region's declared figure). 216 ranches, 492 levels: the
+  original 236 safe states plus 14 reviewed additions, cut by regional
+  suitability, then cut again by horse history (2026-11-01). Great horse country
+  keeps 85% of its levels, and humid or tropical country 25%. Audit:
+  `tools/HORSE_SEED_1836.md`.
+- **Opening balance:** horses are deliberately scarce. Measured across every
+  state in 1836: supply 8,352 against demand of 12,801 (65%), and 54% of demand
+  buys at £45 or more. See below and `tools/HORSE_BALANCE_1836.md`.
 - Colonised states are deliberately not seeded. Conquest needs no handling.
 
 ### AI (2026-09-23, partly superseded 2026-10-30)
@@ -124,6 +122,28 @@ It has a one-year per-state cooldown and a concurrency cap. Deficit states
 across 12 major powers at the end of 1845: 26 → 1, with no debt spiral.
 Trade-off: players can no longer downsize either.
 
+**Horse scarcity pass, 2026-11-01** (five-year tests of two designs, then one
+20-year run, `20261101-132605_mod`; single runs, so directions only). No errors
+attributed to the mod. World supply rises from 65% of demand in 1836 to 80% in
+1845 and 88% in 1855, as ranches grow from 511 to 861 levels. Prices keep their
+historical order: in 1836 Mexico and Persia are at about £15–17, the USA £27,
+Hungary £32 and Russia £35, against France £40, Britain £48 and British India at
+the £52.50 ceiling. GDP across 12 major powers is 4% below the earlier run at 1840
+and 1% above at 1845, which is within noise (one run's revolutions and wars move
+single countries far more). Britain stays at 14 ranch levels for 20 years
+despite prices of £40–48, and France ends at 34, so the growth comes mostly
+from China, India, Egypt, Japan and Korea.
+
+**British revolution check, 2026-11-01.** In five 20-year runs on the scarce horse
+seed, Britain split in a large civil war in four (1842–46), with the rebels winning
+each time. None of the 10 vanilla runs split that deep by 1846, and 1 or 2 of 4
+earlier BOI 10-year runs on the old seed did. Before those wars British radicals
+reach 25–31% of the population, against a vanilla mean of 11.5% at 1844. France is at
+25% against 21%, and other powers are close to vanilla. The cause isn't known: horses,
+housing and works costs are all candidates. In the run with no war, British debt
+reaches 61% of the ceiling by 1850. Next step: the same telemetry on the old horse
+seed, to see whether radicals fall.
+
 ## What is left
 
 ### Step 1: Clean 1.13.11 start
@@ -168,7 +188,11 @@ country with split states:
       either drop the values and their helpers in `50_boi_ai_values.txt`, or
       document what they do.
 - [ ] Check that the new Horse Ranch price factor shifts ranch construction
-      toward expensive-horse markets (GBR is the clearest test).
+      toward expensive-horse markets. Early evidence says not everywhere: in the
+      2026-11-01 20-year run GBR stayed at 14 levels at £40–48. Find out whether
+      land, profit or the AI is stopping it.
+- [ ] Confirm the horse scarcity pass with a 10-run ensemble, which single runs
+      can't do.
 - [ ] Decide whether auto-expansion needs a wider budget-health guard than
       "not in default", and a buffer to stop oscillation.
 

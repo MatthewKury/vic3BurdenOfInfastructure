@@ -213,7 +213,7 @@ foreach ($row in (Import-Csv -LiteralPath (Join-Path $PSScriptRoot 'housing_seed
     $existing = if ([int]$row.residential -eq 0) { [double]::Parse($row.housing_supply, $culture) } else { 0.0 }
     $basicTarget = ($seedCoverageBasic * $stateDemand) - $existing - ($outputLuxuryBasic * $luxuryLevels)
     # Slums only in crowded industrial cities and great ports: each state with one
-    # takes the flat SoL penalty, so spreading them widely would be punishing.
+    # takes the flat mortality penalty, so spreading them widely would be punishing.
     $slums = 0
     $tenements = 0
     if ($basicTarget -gt 0) {

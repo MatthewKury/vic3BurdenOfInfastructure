@@ -88,7 +88,7 @@ These come from the original agreed design (2026-08-16) and have held since.
 | Public Works and Harbour Works (5 and 3 PM tiers, Bureaucracy admin group) | Yes | Passes | Smoke test only |
 | Rail and port infrastructure removed; haulage, farm, urban, cavalry horse inputs | Yes | Passes | Smoke test only |
 | Horse mobilization options (Recon, Horse-Drawn Transport, Extra Supplies) | Yes | Passes | Not recorded |
-| 1836 seed (20 Public Works, 139 Harbour Works, 225 Horse Ranches) | Yes | Passes | Not recorded |
+| 1836 seed (20 Public Works, 139 Harbour Works, 216 Horse Ranches, scarce by horse history) | Yes | Passes | 20-year headless run, 2026-11-01: supply 65% of demand in 1836, 88% in 1855 |
 | AI construction fallback event and `downsizeable = no` | Yes | Passes | 10-year headless runs: deficit states 26 → 1 across 12 major powers |
 | Infrastructure-aware `ai_value` weights (Public Works, Harbour Works) | Yes | Passes | No visible effect; kept pending reinvestigation (plan 1, step 3) |
 | Price-scaled `ai_value` for railways and Horse Ranches; opt-in auto-expansion | Yes | Passes | Not observed |
@@ -171,15 +171,15 @@ points:
 
 - **Seed counts:** they cite 675 Public Works, 372 Harbour Works and 236 Horse
   Ranches. The seed is **20 Public Works (40 levels), 139 Harbour Works (141
-  levels) and 225 Horse Ranches (857 levels)**, replacing only the
+  levels) and 216 Horse Ranches (492 levels)**. Works replace only the
   infrastructure removed from rail and ports.
 - **Hussar override:** listed as an open regression; fixed (0.25 / 0.25
   `formation_modifier` block in `00_boi_cavalry_overrides.txt`).
 - **Public seeding by owner:** resolved; the plan covers 1,147 state-owner
   records.
 - **Opening horse balance:** 8,496 supply against 13,500 demand is superseded by
-  10,284 against 10,494 (98% covered, before pasture output and Urban Center
-  demand).
+  a measured 8,352 against 12,801 (65% covered, on purpose), including pasture
+  output and Urban Center demand.
 - **Road Financing** has five ideologies, not four.
 - **Housing apartment ratio:** 100 output over 4 infrastructure is 25 per point,
   not 27.5.
