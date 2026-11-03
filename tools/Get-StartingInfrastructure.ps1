@@ -118,10 +118,10 @@ if ($missingMethods.Count) {
 
 $out = foreach ($row in ($rows.Values | Sort-Object State, Owner)) {
     $vanilla = $row.VanillaPortInfrastructure + $row.VanillaRailInfrastructure
-    $harbour = 10 * $row.CurrentHarbourWorksLevels
-    $works = 15 * $row.CurrentPublicWorksLevels
+    $harbour = 7 * $row.CurrentHarbourWorksLevels
+    $works = 10 * $row.CurrentPublicWorksLevels
     $best = $null
-    $maxHarbour = if ($row.VanillaPortLevels -gt 0 -and $harbourEligible.ContainsKey($row.State)) { [int][math]::Ceiling($vanilla / 10) } else { 0 }
+    $maxHarbour = if ($row.VanillaPortLevels -gt 0 -and $harbourEligible.ContainsKey($row.State)) { [int][math]::Ceiling($vanilla / 7) } else { 0 }
     for ($h = 0; $h -le $maxHarbour; $h++) {
         $p = [int][math]::Ceiling([math]::Max(0, $vanilla - 10 * $h) / 15)
         $output = 15 * $p + 10 * $h
@@ -142,7 +142,7 @@ $out = foreach ($row in ($rows.Values | Sort-Object State, Owner)) {
         CurrentPublicWorksLevels = $row.CurrentPublicWorksLevels
         CurrentHarbourWorksLevels = $row.CurrentHarbourWorksLevels
         CurrentModInfrastructure = $works + $harbour
-        PublicWorksLevelsToMatchVanillaWithCurrentHarbour = [int][math]::Ceiling([math]::Max(0, $vanilla - $harbour) / 15)
+        PublicWorksLevelsToMatchVanillaWithCurrentHarbour = [int][math]::Ceiling([math]::Max(0, $vanilla - $harbour) / 10)
         PublicWorksLevelsToMatchVanillaWithoutHarbour = [int][math]::Ceiling($vanilla / 15)
         CurrentInfrastructureSurplus = $works + $harbour - $vanilla
         PlannedPublicWorksLevels = $best.Public

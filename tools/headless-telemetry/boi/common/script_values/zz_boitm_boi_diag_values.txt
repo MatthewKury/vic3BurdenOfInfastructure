@@ -99,3 +99,10 @@ boitm_st_railway_levels = {
 		add = level
 	}
 }
+boitm_state_rail_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_rail_works }
+		add = level
+	}
+}

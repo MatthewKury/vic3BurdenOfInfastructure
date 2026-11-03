@@ -1,0 +1,6 @@
+﻿# Engine probes. events = { } only.
+on_monthly_pulse_country = {
+	events = {
+		boitm_probe.1
+	}
+}

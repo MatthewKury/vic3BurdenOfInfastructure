@@ -2,7 +2,7 @@
 #  Burden of Infrastructure — AI construction fallback values
 #
 #  Used by events/boi_ai_infrastructure_events.txt. The engine's own
-#  government-building AI does not treat Public Works or Harbour Works
+#  government-building AI does not treat the works buildings
 #  as infrastructure spending (see tools/AI_VALIDATION.md), so AI
 #  countries queue them through script when a state runs short.
 # ================================================================
@@ -35,4 +35,19 @@ boi_ai_works_construction_cap = {
 	}
 	floor = yes
 	max = 4
+}
+
+# State scope. Railway levels with no Rail Works level to match. The AI keeps
+# to one Rail Works level per railway level, so it can't starve a state's
+# transportation.
+boi_ai_rail_works_room = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+	every_scope_building = {
+		limit = { is_building_type = building_boi_rail_works }
+		subtract = level
+	}
 }

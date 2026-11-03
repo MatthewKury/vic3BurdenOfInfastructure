@@ -36,6 +36,8 @@ param(
     [switch]$NoTelemetry,
     [switch]$NoFixtures,
     [switch]$Ensemble,
+    [switch]$Probes,
+    [switch]$LongRun,
     [string[]]$ExtraGameArgs,
     [string]$RestoreFrom
 )
@@ -107,12 +109,17 @@ if (-not $NoTelemetry) {
             Select-String -Pattern ('^\W?\s*' + $Goods + '\s*=\s*\{') -List)
     }
     $telemetryModules = @('core')
-    if ($armMods | Where-Object { Test-DefinesGoods $_ 'horses' }) { $telemetryModules += 'boi' }
+    if ($armMods | Where-Object { Test-DefinesGoods $_ 'horses' }) {
+        $telemetryModules += 'boi'
+        # Long runs with this module's yearly event crash; see the lessons file.
+        if (-not $LongRun) { $telemetryModules += 'boi_states' }
+    }
     if ($armMods | Where-Object { Test-DefinesGoods $_ 'boi_housing' }) {
         $telemetryModules += 'housing'
         if (-not $NoFixtures) { $telemetryModules += 'fixtures' }
     }
     if ($Ensemble) { $telemetryModules += 'ensemble' }
+    if ($Probes) { $telemetryModules += 'probes' }
     foreach ($module in $telemetryModules) {
         $source = Join-Path $PSScriptRoot "headless-telemetry\$module"
         Get-ChildItem -LiteralPath $source -Recurse -File | ForEach-Object {

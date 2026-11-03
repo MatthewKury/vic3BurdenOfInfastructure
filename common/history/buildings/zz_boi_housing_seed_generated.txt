@@ -22,7 +22,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -48,7 +48,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -74,7 +74,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -156,7 +156,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -182,7 +182,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -208,7 +208,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -234,7 +234,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -260,7 +260,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -303,7 +303,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -411,7 +411,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 		region_state:BIC = {
@@ -435,7 +435,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -461,7 +461,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -476,7 +476,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -502,7 +502,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -543,7 +543,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -584,7 +584,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -610,7 +610,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -651,7 +651,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -718,7 +718,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -759,7 +759,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -785,7 +785,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -982,7 +982,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1008,7 +1008,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1034,7 +1034,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1060,7 +1060,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1123,7 +1123,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1164,7 +1164,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1190,7 +1190,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1205,7 +1205,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 		region_state:HYD = {
@@ -1242,7 +1242,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1283,7 +1283,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1380,7 +1380,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1406,7 +1406,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1436,7 +1436,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1451,7 +1451,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1481,7 +1481,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1507,7 +1507,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1723,7 +1723,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1749,7 +1749,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1775,7 +1775,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1801,7 +1801,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1827,7 +1827,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -1913,7 +1913,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2021,7 +2021,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2062,7 +2062,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2129,7 +2129,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2185,7 +2185,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2226,7 +2226,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2310,7 +2310,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2349,7 +2349,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2440,7 +2440,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2511,7 +2511,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2552,7 +2552,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2636,7 +2636,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2651,7 +2651,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2677,7 +2677,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2762,7 +2762,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2788,7 +2788,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2814,7 +2814,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2840,7 +2840,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -2888,7 +2888,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3000,7 +3000,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3082,7 +3082,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3108,7 +3108,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3134,7 +3134,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3164,7 +3164,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3205,7 +3205,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3231,7 +3231,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3302,7 +3302,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3328,7 +3328,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3354,7 +3354,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3380,7 +3380,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3428,7 +3428,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3469,7 +3469,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3510,7 +3510,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3551,7 +3551,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3577,7 +3577,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3603,7 +3603,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3629,7 +3629,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3707,7 +3707,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3759,7 +3759,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3811,7 +3811,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3869,7 +3869,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3962,7 +3962,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -3992,7 +3992,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4018,7 +4018,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4033,7 +4033,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4081,7 +4081,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4182,7 +4182,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4208,7 +4208,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4271,7 +4271,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4286,7 +4286,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 		region_state:MYS = {
@@ -4310,7 +4310,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4325,7 +4325,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4377,7 +4377,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4455,7 +4455,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4481,7 +4481,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4522,7 +4522,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4548,7 +4548,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4574,7 +4574,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4615,7 +4615,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4656,7 +4656,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4787,7 +4787,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4828,7 +4828,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4895,7 +4895,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -4992,7 +4992,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5037,7 +5037,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5089,7 +5089,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5104,7 +5104,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5145,7 +5145,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 		region_state:JOD = {
@@ -5197,7 +5197,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5305,7 +5305,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5361,7 +5361,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5432,7 +5432,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5458,7 +5458,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5514,7 +5514,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5566,7 +5566,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5592,7 +5592,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5618,7 +5618,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5644,7 +5644,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5696,7 +5696,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5711,7 +5711,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5793,7 +5793,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5808,7 +5808,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5834,7 +5834,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5879,7 +5879,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5931,7 +5931,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5972,7 +5972,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -5998,7 +5998,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6039,7 +6039,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6065,7 +6065,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6106,7 +6106,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6132,7 +6132,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6147,7 +6147,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6162,7 +6162,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6188,7 +6188,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6203,7 +6203,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 		region_state:TRA = {
@@ -6216,7 +6216,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6242,7 +6242,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6309,7 +6309,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6365,7 +6365,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6395,7 +6395,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6462,7 +6462,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6477,7 +6477,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6533,7 +6533,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6559,7 +6559,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6611,7 +6611,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6693,7 +6693,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6741,7 +6741,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6808,7 +6808,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6834,7 +6834,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6890,7 +6890,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6916,7 +6916,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6942,7 +6942,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6968,7 +6968,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -6983,7 +6983,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -7031,7 +7031,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}
@@ -7072,7 +7072,7 @@ BUILDINGS = {
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_suburbs" "pm_boi_horse_commuting" }
+				activate_production_methods = { "pm_boi_suburbs" }
 			}
 		}
 	}

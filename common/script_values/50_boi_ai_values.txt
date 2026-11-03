@@ -35,9 +35,9 @@ boi_ai_infrastructure_urgency = {
 	}
 }
 
-# Existing Public Works determines the relevant input. A first building uses
-# horses as the conservative default; research alone does not imply a rail PM.
-# Rail Network also consumes horses, but transportation is its main price signal.
+# Roads run on horses until Modern Highways, so horses are the price signal.
+# Motor Roads still use a few, but automobiles are their main cost, and those
+# have no state price band here, so both motor tiers read as neutral.
 boi_ai_public_works_input_price = {
 	value = boi_ai_horse_input_price
 	if = {
@@ -45,13 +45,12 @@ boi_ai_public_works_input_price = {
 			any_scope_building = {
 				is_building_type = building_boi_infrastructure
 				OR = {
-					has_active_production_method = pm_boi_rail_network
 					has_active_production_method = pm_boi_motor_roads
 					has_active_production_method = pm_boi_modern_highways
 				}
 			}
 		}
-		value = boi_ai_transportation_input_price
+		value = 1
 	}
 }
 

@@ -42,7 +42,7 @@ pm_boi_coastal_lighters = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 10
+			state_infrastructure_add = 7
 		}
 	}
 }
@@ -72,7 +72,7 @@ pm_boi_steam_lighters = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 18
+			state_infrastructure_add = 12
 		}
 	}
 }
@@ -106,7 +106,7 @@ pm_boi_electrified_quays = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 25
+			state_infrastructure_add = 17
 		}
 	}
 }
@@ -182,6 +182,68 @@ pm_boi_elected_harbour_trusts = {
 		level_scaled = {
 			building_employment_bureaucrats_add = 25
 			building_employment_clerks_add = 100
+		}
+	}
+}
+
+
+# ================================================================
+#  PART 3 — Financing (no staff of its own, follows the financing law)
+#
+#  Same shape as Road Works part 3, without the +15%. Statute labour's
+#  cut and side effects are smaller here: the flat cut would gut a
+#  7-point building, and 108 of 141 seeded levels sit under this law.
+# ================================================================
+
+pm_boi_state_harbours = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_boi_statute_labour
+		law_boi_turnpike_trusts
+	}
+}
+
+pm_boi_harbour_tolls = {
+	texture = "gfx/interface/icons/production_method_icons/merchant_guilds.dds"
+
+	unlocking_laws = {
+		law_boi_turnpike_trusts
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.35
+			building_shopkeepers_standard_of_living_add = 2
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -60
+			building_employment_shopkeepers_add = 50
+			building_employment_capitalists_add = 10
+		}
+	}
+}
+
+pm_boi_press_ganged_dock_labour = {
+	texture = "gfx/interface/icons/production_method_icons/corvee_labor.dds"
+
+	unlocking_laws = {
+		law_boi_statute_labour
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.3
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = -1.5
+			state_peasants_mortality_mult = 0.01
 		}
 	}
 }

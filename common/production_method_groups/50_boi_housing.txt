@@ -1,38 +1,4 @@
-﻿pmg_boi_slums = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_slums }
-}
-
-pmg_boi_tenements = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_tenements }
-}
-
-pmg_boi_apartments = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_apartments }
-}
-
-pmg_boi_luxury_apartments = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_luxury_apartments }
-}
-
-pmg_boi_suburbs = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_suburbs }
-}
-
-pmg_boi_temporary_shelter = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- production_methods = { pm_boi_temporary_shelter }
-}
-
-pmg_boi_suburban_transport = {
- texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
- ai_selection = most_profitable
- production_methods = { pm_boi_horse_commuting pm_boi_rail_commuting pm_boi_motor_commuting }
-}
+﻿# Workplace and subsistence housing. Residential groups are generated.
 pmg_boi_company_housing = {
  texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
  ai_selection = most_profitable

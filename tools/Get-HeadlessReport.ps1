@@ -14,7 +14,9 @@ param(
     [string[]]$Metrics = @('gdp', 'sol', 'population', 'infrastructure', 'usage', 'deficit_states',
         'horses_price', 'horses_sell', 'horse_ranch_levels', 'public_works_levels', 'horse_expensive_states',
         'transportation_price', 'grain_price', 'boi_housing_price', 'boi_housing_buy', 'boi_housing_sell', 'housing_expensive_states', 'slum_levels',
-        'no_housing_levels', 'work_camp_levels', 'work_town_levels', 'serviced_town_levels')
+        'no_housing_levels', 'work_camp_levels', 'work_town_levels', 'serviced_town_levels',
+        'rail_works_levels', 'railway_levels', 'harbour_works_levels', 'works_goods_base', 'expenses', 'radicals', 'turmoil',
+        'fuel_none', 'fuel_wood', 'fuel_oil', 'fuel_electricity', 'automobiles_price', 'oil_price', 'electricity_price', 'services_price')
 )
 
 $ErrorActionPreference = 'Stop'

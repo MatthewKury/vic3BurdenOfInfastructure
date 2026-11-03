@@ -57,8 +57,8 @@ boitm_fixture.2 = {
 			# Warn, not fail: other construction in Alentejo also moves usage.
 			if = {
 				limit = {
-					boitm_fx_usage_delta >= 8.9
-					boitm_fx_usage_delta <= 9.1
+					boitm_fx_usage_delta >= 14.4
+					boitm_fx_usage_delta <= 14.6
 				}
 				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fixture_infrastructure_usage|pass|delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
 			}
@@ -412,6 +412,50 @@ boitm_fixture.13 = {
 				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|repeal_town_to_camp|warn|building=livestock_ranch"
 			}
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|complete|info|usage_delta=[THIS.ScriptValue('boitm_fx_usage_delta')|1]"
+		}
+	}
+}
+
+# Light and Heat: switch fixture slums to wood, and check it held and the state's
+# wood is being asked for. Started from the fixtures on_action 40 days after setup.
+boitm_fixture.20 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:POR ?= this
+		game_date >= 1836.4.1
+		NOT = { has_global_variable = boitm_fx_fuel_started }
+		any_scope_state = { state_region = s:STATE_ALENTEJO has_building = building_boi_slums }
+	}
+
+	immediate = {
+		set_global_variable = boitm_fx_fuel_started
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			activate_production_method = {
+				building_type = building_boi_slums
+				production_method = pm_boi_slums_wood
+			}
+		}
+		trigger_event = { id = boitm_fixture.21 days = 2 }
+	}
+}
+
+boitm_fixture.21 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALENTEJO }
+			if = {
+				limit = { any_scope_building = { has_active_production_method = pm_boi_slums_wood } }
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|light_heat_wood|pass|active=1"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|light_heat_wood|fail|active=0"
+			}
 		}
 	}
 }

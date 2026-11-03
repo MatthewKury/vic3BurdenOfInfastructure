@@ -1,5 +1,8 @@
 ﻿# ================================================================
-#  Burden of Infrastructure — Infrastructure building PMs
+#  Burden of Infrastructure — Road Works PMs
+#
+#  building_boi_infrastructure is Road Works (the key predates the
+#  split from Rail Works; the 1836 seed and its audits use it).
 #
 #  THREE groups, deliberately independent:
 #
@@ -12,22 +15,15 @@
 #       changing WHO holds the jobs. Same headcount either way.
 #
 #   pmg_boi_road_financing         (below, part 3)
-#       No staff of its own. Follows the ROAD FINANCING LAW,
-#       changing WHO PAYS: discounts and their side effects.
+#       No staff of its own. Follows the FINANCING LAW, changing
+#       WHO PAYS: discounts and their side effects. Rail Works and
+#       Harbour Works have their own groups on the same laws.
 #
-#  Exactly one PM per group is active, which is what lets the two
-#  axes vary independently. This is vanilla's own Government
-#  Administration structure (base / bureaucrat_professionalism /
-#  religious_administration).
+#  These are COST CENTRES: no goods_output_ line. Infrastructure is a
+#  STATE MODIFIER, and a shortage of inputs cuts it (probe, 2026-11-03).
 #
-#  These are COST CENTRES. Note the total absence of any
-#  goods_output_ line: infrastructure is emitted as a STATE
-#  MODIFIER, not a salable good, exactly as Government
-#  Administration emits country_bureaucracy_add. The state pays the
-#  wages and buys the inputs and receives no revenue whatsoever.
-#
-#  Prices for the "# N" comments: horses 30, tools 40,
-#  transportation 30, oil 40, automobiles 100.
+#  Prices for the "# N" comments: horses 30, tools 40, coal 30,
+#  oil 40, automobiles 100.
 # ================================================================
 
 
@@ -36,14 +32,13 @@
 #
 #  Laborers 400 -> 125, machinists 0 -> 175, engineers 0 -> 100.
 #  Technical headcount stays flat at 400; only the skill mix moves.
-#  Efficiency improves with era: £20 -> £15 per point of infra.
+#  Roads run on horses, then automobiles: no transportation at all.
+#  No required_input_goods on automobiles or oil: it only works on
+#  local goods (probe, 2026-11-03), so a shortage penalty does the job.
 # ================================================================
 
 
 # ── Tier 1: Cart Roads (1836, no tech gate) ─────────────────────
-# Horse-drawn haulage over dirt roads. Pure manual labour.
-# £300 of horses for 15 infrastructure.
-
 pm_boi_cart_roads = {
 	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
 
@@ -59,16 +54,13 @@ pm_boi_cart_roads = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 15
+			state_infrastructure_add = 10
 		}
 	}
 }
 
 
 # ── Tier 2: Macadam Roads (era 2) ───────────────────────────────
-# Engineered crushed-stone surfaces. Still labour-heavy, but tools
-# and the first machinists appear.
-
 pm_boi_macadam_roads = {
 	texture = "gfx/interface/icons/production_method_icons/standard_labor.dds"
 
@@ -90,28 +82,25 @@ pm_boi_macadam_roads = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 22
+			state_infrastructure_add = 15
 		}
 	}
 }
 
 
-# ── Tier 3: Rail Network (era 3) ────────────────────────────────
-# Rail freight takes over trunk haulage; horses retreat to
-# last-mile cartage. NOTE transportation is a local = yes good, so
-# this PM only functions where a railway sits in the same state.
-
-pm_boi_rail_network = {
+# ── Tier 3: Steam-Rolled Roads (era 3) ──────────────────────────
+pm_boi_steam_rolled_roads = {
 	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
 
 	unlocking_technologies = {
-		steel_railway_cars
+		steam_donkey
 	}
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_horses_add = 8           # 240
-			goods_input_transportation_add = 10  # 300
+			goods_input_horses_add = 12 # 360
+			goods_input_tools_add = 3   # 120
+			goods_input_coal_add = 3    # 90
 		}
 
 		level_scaled = {
@@ -123,15 +112,14 @@ pm_boi_rail_network = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 30
+			state_infrastructure_add = 19
 		}
 	}
 }
 
 
 # ── Tier 4: Motor Roads (era 4) ─────────────────────────────────
-# The horse leaves the system entirely. Mechanised road building.
-
+# Motor lorries join the horse teams rather than replacing them.
 pm_boi_motor_roads = {
 	texture = "gfx/interface/icons/production_method_icons/public_motor_carriages.dds"
 
@@ -141,8 +129,9 @@ pm_boi_motor_roads = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_transportation_add = 12 # 360
-			goods_input_oil_add = 5             # 200
+			goods_input_horses_add = 3      # 90
+			goods_input_automobiles_add = 3 # 300
+			goods_input_oil_add = 3         # 120
 		}
 
 		level_scaled = {
@@ -154,16 +143,15 @@ pm_boi_motor_roads = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 38
+			state_infrastructure_add = 24
 		}
 	}
 }
 
 
 # ── Tier 5: Modern Highways (era 5) ─────────────────────────────
-# Gated on paved_roads, which vanilla also uses as the threshold
-# for its own PAVED_ROAD_MIN_INFRASTRUCTURE define.
-
+# The horse leaves the system. Gated on paved_roads, which vanilla
+# also uses as the threshold for PAVED_ROAD_MIN_INFRASTRUCTURE.
 pm_boi_modern_highways = {
 	texture = "gfx/interface/icons/production_method_icons/motorised_logistics.dds"
 
@@ -173,8 +161,8 @@ pm_boi_modern_highways = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_transportation_add = 15 # 450
-			goods_input_automobiles_add = 3     # 300
+			goods_input_automobiles_add = 5 # 500
+			goods_input_oil_add = 5         # 200
 		}
 
 		level_scaled = {
@@ -186,7 +174,7 @@ pm_boi_modern_highways = {
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = 48
+			state_infrastructure_add = 32
 		}
 	}
 }
@@ -277,24 +265,20 @@ pm_boi_elected_road_boards = {
 
 
 # ================================================================
-#  PART 3 — Financing (no staff of its own, follows Road Financing law)
+#  PART 3 — Financing (no staff of its own, follows the financing law)
 #
 #  Who pays. Each PM is unlocked by exactly one law in
-#  lawgroup_boi_road_financing (common/laws/50_boi_road_financing.txt),
-#  and pm_boi_public_highways is the fallback via disallowing_laws -
-#  the same one-always-valid pattern as part 2.
+#  lawgroup_boi_road_financing (display name "Public Works Financing";
+#  the keys predate the rename), and the state-funded PM is the
+#  fallback via disallowing_laws. Road, Rail and Harbour Works each
+#  have their own group, because one shared group would stack the
+#  +15% and apply one flat cut to very different outputs.
 #
-#  Only effects that should GROW with the road network live here
-#  (scaled per level). Flat country-wide effects sit on the laws, so
-#  they cannot stack across hundreds of buildings.
-#
-#  Public Highways is the baseline and changes nothing: BALANCE.md
-#  numbers are all "under Public Highways".
+#  Only effects that should GROW with the network live here. Flat
+#  country-wide effects sit on the laws, so they cannot stack.
+#  State funding changes nothing: it is the BALANCE.md baseline.
 # ================================================================
 
-
-# ── Public Highways (default / fallback) ────────────────────────
-# Paid from general taxation. No discount, no side effect.
 
 pm_boi_public_highways = {
 	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
@@ -308,24 +292,11 @@ pm_boi_public_highways = {
 }
 
 
-# ── Turnpike Trusts ─────────────────────────────────────────────
-# Tolls pay for upkeep, so the state buys 50% fewer goods, and the
-# trust's own road gangs replace 60 state-paid labourers per level.
-# In their place the state employs 50 toll-keepers (shopkeepers,
-# Petty Bourgeoisie), who keep part of the toll take, and 10 trust
-# investors (capitalists, Industrialists). Wage weights are 1 / 3 / 5,
-# so the swap is a small net wage increase (-60 + 150 + 50 = +140
-# laborer-equivalents): about GBP 17 a level at 1836 wages, against
-# a GBP 150 goods saving at Cart Roads. (-100 laborers was tried; it
-# saved only ~GBP 5 more and left 25 laborers at Modern Highways.)
-# Toll income paid for engineered, well-kept roads (McAdam and
-# Telford both worked for turnpike trusts): +15% infrastructure in
-# the state. UNSCALED, so it applies once per state however many
-# levels there are - a percentage, not a per-level stack. It
-# multiplies ALL of the state's infrastructure, including Harbour
-# Works and the population floor.
-# The market-access cost of tolls is on the law, not here.
-
+# Tolls pay for upkeep, so the state buys 35% fewer goods, and the
+# trust's gangs replace 60 state-paid labourers per level with 50
+# toll-keepers and 10 investors. The +15% lives on Road Works only, so
+# it stays once per state. UNSCALED, and it multiplies all of the
+# state's infrastructure. The market-access cost is on the law.
 pm_boi_turnpike_tolls = {
 	texture = "gfx/interface/icons/production_method_icons/merchant_guilds.dds"
 
@@ -335,7 +306,7 @@ pm_boi_turnpike_tolls = {
 
 	building_modifiers = {
 		unscaled = {
-			building_goods_input_mult = -0.5
+			building_goods_input_mult = -0.35
 			# Stands in for toll income: no modifier can route money
 			# to a specific pop, and government buildings have no
 			# revenue. Applies only to shopkeepers in this building.
@@ -343,8 +314,8 @@ pm_boi_turnpike_tolls = {
 		}
 
 		level_scaled = {
-			# Must stay below the smallest haulage-tier laborer count
-			# (125, Modern Highways) or employment goes negative.
+			# Must stay below the smallest laborer count (125,
+			# Modern Highways) or employment goes negative.
 			building_employment_laborers_add = -60
 			building_employment_shopkeepers_add = 50
 			building_employment_capitalists_add = 10
@@ -359,14 +330,10 @@ pm_boi_turnpike_tolls = {
 }
 
 
-# ── Statute Labour ──────────────────────────────────────────────
-# Peasants owe road days and bring their own horses and carts:
-# 40% fewer goods bought. Unwilling, untrained labour builds worse
-# roads: -4 infrastructure per level, a flat cut that hurts most in
-# the early game (27% of Cart Roads, 8% of Modern Highways).
-# The squire decides where the duty goes, so estate farms and
-# ranches (incl. Horse Ranches, bg_ranching) run 1% better per level.
-
+# Peasants owe road days and bring their own teams: 30% fewer goods
+# bought, 2 less infrastructure per level, more peasant deaths (no SoL
+# penalty; see docs/plans/04_SOL_TO_MORTALITY_PROPOSAL.md). The squire
+# decides where the duty goes, so estate farms and ranches run better.
 pm_boi_statute_labour = {
 	texture = "gfx/interface/icons/production_method_icons/corvee_labor.dds"
 
@@ -376,13 +343,13 @@ pm_boi_statute_labour = {
 
 	building_modifiers = {
 		unscaled = {
-			building_goods_input_mult = -0.4
+			building_goods_input_mult = -0.3
 		}
 	}
 
 	state_modifiers = {
 		workforce_scaled = {
-			state_infrastructure_add = -4
+			state_infrastructure_add = -2
 			state_peasants_mortality_mult = 0.03
 			building_group_bg_agriculture_throughput_add = 0.01
 			building_group_bg_ranching_throughput_add = 0.01

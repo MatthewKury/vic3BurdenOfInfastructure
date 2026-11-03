@@ -5,8 +5,8 @@
 # ================================================================
 
 # State scope. An incorporated state short of infrastructure that has
-# not had a scripted level in the last year and has no Public Works or
-# Harbour Works newly under construction.
+# not had a scripted level in the last year and has no works building
+# newly under construction.
 boi_ai_state_wants_works = {
 	is_incorporated = yes
 	boi_ai_infrastructure_shortfall > 0
@@ -15,9 +15,30 @@ boi_ai_state_wants_works = {
 		any_scope_building = {
 			OR = {
 				is_building_type = building_boi_infrastructure
+				is_building_type = building_boi_rail_works
 				is_building_type = building_boi_harbour_works
 			}
 			is_under_construction = yes
 		}
 	}
+}
+
+# State scope. Rail Works suits this state. Checks everything itself:
+# start_building_construction ignores unlocking_technologies and logs an error
+# when possible fails. A pure transportation price test wouldn't work, because
+# the price sits at its ceiling across most of the world, so dear horses count too.
+boi_ai_state_prefers_rail_works = {
+	owner = { has_technology_researched = railways }
+	has_building = building_railway
+	boi_ai_rail_works_room > 0
+	OR = {
+		NOT = { sg:transportation = { state_goods_pricier >= 0.5 } }
+		sg:horses = { state_goods_pricier >= 0.5 }
+	}
+}
+
+# State scope. Incorporated, with housing at least 50% above base price.
+boi_ai_state_wants_municipal_estates = {
+	is_incorporated = yes
+	sg:boi_housing = { state_goods_pricier >= 0.5 }
 }

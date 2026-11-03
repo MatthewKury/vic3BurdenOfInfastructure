@@ -1,19 +1,20 @@
 ﻿# ================================================================
 #  Burden of Infrastructure — Buildings
 #
-#  Three new buildings. The separate railway shadow adjusts vanilla AI.
+#  Four new buildings. The separate railway shadow adjusts vanilla AI.
 #
 #  building_boi_horse_ranch      bg_ranching, private, no tech gate
-#  building_boi_infrastructure   bg_public_infrastructure, govt-funded
-#  building_boi_harbour_works    bg_public_infrastructure, coastal only
+#  building_boi_infrastructure   Road Works, govt-funded, everywhere
+#  building_boi_rail_works       Rail Works, govt-funded, needs a railway
+#  building_boi_harbour_works    Harbour Works, govt-funded, coastal only
 #
-#  The two infrastructure buildings are pure COST CENTRES, built on
+#  The three works buildings are pure COST CENTRES, built on
 #  the same pattern as vanilla's Government Administration: they
 #  emit a state modifier (state_infrastructure_add) instead of a
 #  salable good, so they have no goods_output at all. The state
 #  pays the wages and buys the inputs. See BALANCE.md.
 #
-#  Public Works and Harbour Works have no explicit maximum level, matching
+#  The works buildings have no explicit maximum level, matching
 #  vanilla Railways. Their inherited stateregion_max_level setting only changes
 #  the scope of a cap when has_max_level = yes, which none of these buildings
 #  sets. This is an intentional assumption to revisit after AI/balance testing.
@@ -80,9 +81,10 @@ building_boi_horse_ranch = {
 }
 
 
-# ── Infrastructure ──────────────────────────────────────────────
-# The heart of the mod. Converts horses (early) and transportation
-# (later) into state infrastructure, at a permanent net loss.
+# ── Road Works ──────────────────────────────────────────────────
+# The heart of the mod. Converts horses, later automobiles, into state
+# infrastructure at a permanent net loss. The key predates the split
+# from Rail Works; the 1836 seed and its audits use it.
 #
 # Three production method groups on purpose:
 #   pmg_boi_infrastructure_method  - 400 technical staff, goods in,
@@ -92,7 +94,7 @@ building_boi_horse_ranch = {
 #                                    holds the jobs (aristocrats /
 #                                    bureaucrats / clerks).
 #   pmg_boi_road_financing         - no staff of its own. Follows the
-#                                    ROAD FINANCING LAW: who pays
+#                                    FINANCING LAW: who pays
 #                                    (peasants / tolls / treasury).
 # Exactly one PM per group is active, which is what lets the three
 # axes vary independently - the same structure vanilla uses on
@@ -107,7 +109,7 @@ building_boi_infrastructure = {
 	# Assumption: deliberately unlimited, matching building_railway. Revisit
 	# after campaign testing establishes whether this permits overbuilding.
 
-	# Stone bridge and tools distinguish Public Works from other
+	# Stone bridge and tools distinguish Road Works from other
 	# Development buildings and the coastal Harbour Works icon.
 	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
 
@@ -169,6 +171,67 @@ building_boi_infrastructure = {
 }
 
 
+# ── Rail Works ──────────────────────────────────────────────────
+# Turns a railway's transportation into state infrastructure. Needs a
+# railway in the state: transportation is local, and railway states
+# are the ones not short of it. possible blocks new and further levels,
+# and logs a script error if queued anyway, so the AI event checks it
+# first. start_building_construction ignores unlocking_technologies,
+# so the event checks the tech too. Costs more to lay than a road, less
+# than the railway itself (800).
+
+building_boi_rail_works = {
+	building_group = bg_boi_public_works
+
+	icon = "gfx/interface/icons/building_icons/boi_rail_works.dds"
+
+	unlocking_technologies = {
+		railways
+	}
+
+	possible = {
+		has_building = building_railway
+	}
+
+	production_method_groups = {
+		pmg_boi_rail_works_method
+		pmg_boi_rail_administration
+		pmg_boi_rail_financing
+	}
+
+	required_construction = construction_cost_high
+
+	# Same reason as Road Works: AI budget cuts ignore ai_value.
+	downsizeable = no
+
+	ownership_type = no_ownership
+
+	# Inert as far as tested; see the note on Road Works' ai_value.
+	ai_value = {
+		value = 2000
+		multiply = boi_ai_infrastructure_urgency
+		multiply = boi_ai_transportation_input_price
+	}
+
+	should_auto_expand = {
+		occupancy >= 0.9
+		state = {
+			infrastructure_delta < 5
+			owner = { in_default = no }
+			has_building = building_railway
+			NOT = {
+				any_scope_building = {
+					is_building_type = building_boi_rail_works
+					is_under_construction = yes
+				}
+			}
+		}
+	}
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_railways.dds"
+}
+
+
 # ── Harbour Works ───────────────────────────────────────────────
 # Coastal-only second infrastructure avenue, paid for in merchant
 # marine. This is the ONLY way a production method can be made
@@ -201,25 +264,26 @@ building_boi_harbour_works = {
 	production_method_groups = {
 		pmg_boi_harbour_method
 		pmg_boi_harbour_administration
+		pmg_boi_harbour_financing
 	}
 
 	required_construction = construction_cost_medium
 
-	# Same reason as Public Works: AI budget cuts ignore ai_value.
+	# Same reason as Road Works: AI budget cuts ignore ai_value.
 	downsizeable = no
 
 	# no_ownership, for the same reason as building_boi_infrastructure
 	# above - required for every is_government_funded building group.
 	ownership_type = no_ownership
 
-	# Inert as far as tested; see the note on Public Works' ai_value.
+	# Inert as far as tested; see the note on Road Works' ai_value.
 	ai_value = {
 		value = 1500
 		multiply = boi_ai_infrastructure_urgency
 		multiply = boi_ai_merchant_marine_input_price
 	}
 
-	# Same safeguard as Public Works, evaluated separately so either source can
+	# Same safeguard as Road Works, evaluated separately so either source can
 	# be auto-expanded in a coastal state when its own toggle is enabled.
 	should_auto_expand = {
 		occupancy >= 0.9

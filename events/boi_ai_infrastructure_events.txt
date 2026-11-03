@@ -3,8 +3,8 @@
 # ================================================================
 #  Burden of Infrastructure — AI infrastructure construction
 #
-#  The engine's government-building AI does not count Public Works
-#  or Harbour Works as infrastructure spending. Headless runs showed
+#  The engine's government-building AI does not count the works
+#  buildings as infrastructure spending. Headless runs showed
 #  states 30 short of infrastructure for years, with ai_value 16000+
 #  and nothing ever queued (tools/AI_VALIDATION.md). This hidden
 #  monthly event fills that gap for AI countries only: it queues one
@@ -44,9 +44,14 @@ boi_ai_infrastructure.1 = {
 			set_variable = { name = boi_ai_works_cooldown value = yes days = 365 }
 			set_variable = { name = boi_ai_works_recent value = yes days = 180 }
 
-			# Harbour Works only where it is the cheaper input: horses
-			# dear and merchant marine not. Otherwise Public Works.
+			# Rail Works where it suits; Harbour Works where it is the
+			# cheaper input (horses dear, merchant marine not); otherwise
+			# Road Works.
 			if = {
+				limit = { boi_ai_state_prefers_rail_works = yes }
+				start_building_construction = building_boi_rail_works
+			}
+			else_if = {
 				limit = {
 					is_coastal = yes
 					sg:horses = { state_goods_pricier >= 0.25 }
@@ -57,6 +62,32 @@ boi_ai_infrastructure.1 = {
 			else = {
 				start_building_construction = building_boi_infrastructure
 			}
+		}
+	}
+}
+
+# Municipal Estates are government-funded housing, which the engine's AI ignores
+# like the works buildings. Queues one level at a time in the state where housing
+# is dearest, for solvent countries with the tech. The tech is checked here
+# because start_building_construction ignores unlocking_technologies.
+boi_ai_infrastructure.2 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_player = no
+		has_technology_researched = socialism
+		in_default = no
+		scaled_debt < 0.5
+		NOT = { has_variable = boi_ai_municipal_cooldown }
+		any_scope_state = { boi_ai_state_wants_municipal_estates = yes }
+	}
+
+	immediate = {
+		set_variable = { name = boi_ai_municipal_cooldown value = yes days = 180 }
+		random_scope_state = {
+			limit = { boi_ai_state_wants_municipal_estates = yes }
+			start_building_construction = building_boi_municipal_estates
 		}
 	}
 }

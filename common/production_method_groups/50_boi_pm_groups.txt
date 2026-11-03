@@ -37,7 +37,7 @@ pmg_boi_infrastructure_method = {
 	production_methods = {
 		pm_boi_cart_roads
 		pm_boi_macadam_roads
-		pm_boi_rail_network
+		pm_boi_steam_rolled_roads
 		pm_boi_motor_roads
 		pm_boi_modern_highways
 	}
@@ -102,5 +102,56 @@ pmg_boi_harbour_administration = {
 		pm_boi_appointed_harbourmasters
 		pm_boi_manorial_harbour_dues
 		pm_boi_elected_harbour_trusts
+	}
+}
+
+
+# ── Harbour Works: financing (financing law) ────────────────────
+
+pmg_boi_harbour_financing = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_state_harbours
+		pm_boi_harbour_tolls
+		pm_boi_press_ganged_dock_labour
+	}
+}
+
+
+# ── Rail Works ──────────────────────────────────────────────────
+
+pmg_boi_rail_works_method = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_permanent_way
+		pm_boi_steel_track
+		pm_boi_electric_signalling
+		pm_boi_national_rail_grid
+	}
+}
+
+pmg_boi_rail_administration = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_appointed_rail_inspectors
+		pm_boi_manorial_rail_commissioners
+		pm_boi_elected_rail_boards
+	}
+}
+
+pmg_boi_rail_financing = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
+	ai_selection = most_productive
+
+	production_methods = {
+		pm_boi_state_railways
+		pm_boi_railway_concessions
+		pm_boi_conscripted_navvies
 	}
 }

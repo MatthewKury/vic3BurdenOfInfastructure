@@ -1,0 +1,194 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Works PMs
+#
+#  Needs a railway in the state (possible on the building) and runs
+#  on transportation alone. 400 technical + 100 administrative staff,
+#  more skilled than roads. Tiers follow vanilla's railway technologies.
+#  All numbers are test values; see docs/plans/01_ROAD_RAIL_SPLIT_PROPOSAL.md.
+#  Prices: transportation 30.
+# ================================================================
+
+pm_boi_permanent_way = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	building_modifiers = {
+		workforce_scaled = { goods_input_transportation_add = 8 } # 240
+		level_scaled = {
+			building_employment_laborers_add = 300
+			building_employment_machinists_add = 100
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = { state_infrastructure_add = 13 }
+	}
+}
+
+pm_boi_steel_track = {
+	texture = "gfx/interface/icons/production_method_icons/rail_transport.dds"
+
+	unlocking_technologies = { steel_railway_cars }
+
+	building_modifiers = {
+		workforce_scaled = { goods_input_transportation_add = 10 } # 300
+		level_scaled = {
+			building_employment_laborers_add = 250
+			building_employment_machinists_add = 125
+			building_employment_engineers_add = 25
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = { state_infrastructure_add = 20 }
+	}
+}
+
+pm_boi_electric_signalling = {
+	texture = "gfx/interface/icons/production_method_icons/passenger_trains.dds"
+
+	unlocking_technologies = { electric_railway }
+
+	building_modifiers = {
+		workforce_scaled = { goods_input_transportation_add = 12 } # 360
+		level_scaled = {
+			building_employment_laborers_add = 175
+			building_employment_machinists_add = 150
+			building_employment_engineers_add = 75
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = { state_infrastructure_add = 27 }
+	}
+}
+
+pm_boi_national_rail_grid = {
+	texture = "gfx/interface/icons/production_method_icons/passenger_trains.dds"
+
+	unlocking_technologies = { compression_ignition }
+
+	building_modifiers = {
+		workforce_scaled = { goods_input_transportation_add = 15 } # 450
+		level_scaled = {
+			building_employment_laborers_add = 125
+			building_employment_machinists_add = 175
+			building_employment_engineers_add = 100
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = { state_infrastructure_add = 33 }
+	}
+}
+
+# ── Administration (100 staff, follows the Bureaucracy law) ─────
+
+pm_boi_appointed_rail_inspectors = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 50
+			building_employment_clerks_add = 50
+		}
+	}
+}
+
+pm_boi_manorial_rail_commissioners = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_aristocrats.dds"
+
+	unlocking_laws = {
+		law_hereditary_bureaucrats
+		law_crownland_diets
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_aristocrats_add = 50
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 25
+		}
+	}
+}
+
+pm_boi_elected_rail_boards = {
+	texture = "gfx/interface/icons/production_method_icons/ownership_academics.dds"
+
+	unlocking_laws = {
+		law_elected_bureaucrats
+	}
+
+	building_modifiers = {
+		level_scaled = {
+			building_employment_bureaucrats_add = 25
+			building_employment_clerks_add = 75
+		}
+	}
+}
+
+# ── Financing (no staff of its own, follows the financing law) ──
+# Same shape as Road Works part 3, without the +15%, which stays on
+# Road Works so it applies once per state.
+
+pm_boi_state_railways = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	is_default = yes
+
+	disallowing_laws = {
+		law_boi_statute_labour
+		law_boi_turnpike_trusts
+	}
+}
+
+pm_boi_railway_concessions = {
+	texture = "gfx/interface/icons/production_method_icons/merchant_guilds.dds"
+
+	unlocking_laws = {
+		law_boi_turnpike_trusts
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.35
+			building_shopkeepers_standard_of_living_add = 2
+		}
+
+		level_scaled = {
+			building_employment_laborers_add = -60
+			building_employment_shopkeepers_add = 50
+			building_employment_capitalists_add = 10
+		}
+	}
+}
+
+pm_boi_conscripted_navvies = {
+	texture = "gfx/interface/icons/production_method_icons/corvee_labor.dds"
+
+	unlocking_laws = {
+		law_boi_statute_labour
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.3
+		}
+	}
+
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = -2.5
+			state_peasants_mortality_mult = 0.03
+			building_group_bg_agriculture_throughput_add = 0.01
+			building_group_bg_ranching_throughput_add = 0.01
+		}
+	}
+}

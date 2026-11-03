@@ -41,3 +41,149 @@ boitm_horse_cheap_states = {
 		add = 1
 	}
 }
+
+boitm_rail_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_rail_works }
+		add = level
+	}
+}
+
+boitm_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}
+
+boitm_road_cart = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_cart_roads }
+		add = level
+	}
+}
+
+boitm_road_macadam = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_macadam_roads }
+		add = level
+	}
+}
+
+boitm_road_steam = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_steam_rolled_roads }
+		add = level
+	}
+}
+
+boitm_road_motor = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_motor_roads }
+		add = level
+	}
+}
+
+boitm_road_highway = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_modern_highways }
+		add = level
+	}
+}
+
+# Weekly goods bill of all works at base prices, before law discounts, assuming
+# full staffing. For comparing against total expenses, not an exact figure.
+boitm_works_goods_base = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_cart_roads }
+		add = {
+			value = level
+			multiply = 300
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_macadam_roads }
+		add = {
+			value = level
+			multiply = 480
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_steam_rolled_roads }
+		add = {
+			value = level
+			multiply = 570
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_motor_roads }
+		add = {
+			value = level
+			multiply = 510
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_modern_highways }
+		add = {
+			value = level
+			multiply = 700
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_permanent_way }
+		add = {
+			value = level
+			multiply = 240
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_steel_track }
+		add = {
+			value = level
+			multiply = 300
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_electric_signalling }
+		add = {
+			value = level
+			multiply = 360
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_national_rail_grid }
+		add = {
+			value = level
+			multiply = 450
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_coastal_lighters }
+		add = {
+			value = level
+			multiply = 200
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_steam_lighters }
+		add = {
+			value = level
+			multiply = 340
+		}
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_electrified_quays }
+		add = {
+			value = level
+			multiply = 420
+		}
+	}
+}

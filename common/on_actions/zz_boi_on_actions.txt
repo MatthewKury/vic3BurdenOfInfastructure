@@ -21,6 +21,7 @@ on_yearly_pulse_country = {
 on_monthly_pulse_country = {
 	events = {
 		boi_ai_infrastructure.1
+		boi_ai_infrastructure.2
 	}
 }
 

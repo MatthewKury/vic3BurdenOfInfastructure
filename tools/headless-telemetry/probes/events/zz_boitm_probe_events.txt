@@ -1,0 +1,199 @@
+﻿namespace = boitm_probe
+
+# Engine probes for the 3 Nov 2026 work, run as France from 1836.2.1. Logs
+# BOIPROBE|<date>|<probe>|<values>. Read them with grep in the run's debug.log.
+#
+#  Brittany  free      no input: the control for staffing-scaled infrastructure
+#  Aquitaine absent    input good absent from the world (electricity)
+#  Languedoc short     input good heavily over-demanded (transportation)
+#  Burgundy  gate/tech start_building_construction against possible and tech gates
+#            req       activate_production_method against required_input_goods
+#  Lorraine  levels    add_building_level -1, then remove_building, on a 3-level building
+#  Alsace-L. gate      queue a further level on a building already failing possible
+#  Ile-de-F. tenement  add_building_level -1 on a seeded, country-owned housing building
+
+boitm_probe.1 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:FRA ?= this
+		game_date >= 1836.2.1
+		NOT = { has_global_variable = boitm_probe_started }
+	}
+	immediate = {
+		set_global_variable = boitm_probe_started
+		random_scope_state = { limit = { state_region = s:STATE_BRITTANY } create_building = { building = building_boitm_probe_free level = 1 } }
+		random_scope_state = { limit = { state_region = s:STATE_AQUITAINE } create_building = { building = building_boitm_probe_absent level = 1 } }
+		random_scope_state = { limit = { state_region = s:STATE_LANGUEDOC } create_building = { building = building_boitm_probe_short level = 1 } }
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			start_building_construction = building_boitm_probe_gate
+			start_building_construction = building_boitm_probe_tech
+			create_building = { building = building_boitm_probe_req level = 1 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			create_building = { building = building_boitm_probe_levels level = 3 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALSACE_LORRAINE }
+			create_building = { building = building_boitm_probe_gate level = 1 }
+		}
+		trigger_event = { id = boitm_probe.2 days = 2 }
+		trigger_event = { id = boitm_probe.3 days = 30 }
+		trigger_event = { id = boitm_probe.4 days = 60 }
+		trigger_event = { id = boitm_probe.5 days = 62 }
+		trigger_event = { id = boitm_probe.6 days = 90 }
+		trigger_event = { id = boitm_probe.7 days = 92 }
+		trigger_event = { id = boitm_probe.8 days = 100 }
+		trigger_event = { id = boitm_probe.9 days = 104 }
+	}
+}
+
+# What got queued against the gates.
+boitm_probe.2 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|queue_new|rail=[THIS.ScriptValue('boitm_probe_rail')|0];gate_levels=[THIS.ScriptValue('boitm_probe_gate_levels')|0];gate_queued=[THIS.ScriptValue('boitm_probe_gate_queued')|0];tech_levels=[THIS.ScriptValue('boitm_probe_tech_levels')|0];tech_queued=[THIS.ScriptValue('boitm_probe_tech_queued')|0]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALSACE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|queue_expand_before|rail=[THIS.ScriptValue('boitm_probe_rail')|0];gate_levels=[THIS.ScriptValue('boitm_probe_gate_levels')|0]"
+			start_building_construction = building_boitm_probe_gate
+		}
+	}
+}
+
+# Monthly log of the three staffing probes; chained for a year.
+boitm_probe.3 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_BRITTANY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|free|infra=[THIS.ScriptValue('boitm_probe_infra')|1];occ=[THIS.ScriptValue('boitm_probe_occupancy')|2];rail=[THIS.ScriptValue('boitm_probe_rail')|0]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_AQUITAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|absent|infra=[THIS.ScriptValue('boitm_probe_infra')|1];occ=[THIS.ScriptValue('boitm_probe_occupancy')|2];rail=[THIS.ScriptValue('boitm_probe_rail')|0];price=[GetGoods('electricity').WithStateContext(THIS.GetState.Self).GetStatePrice|2];buy=[GetGoods('electricity').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('electricity').WithStateContext(THIS.GetState.Self).GetStateProduction|2]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_LANGUEDOC }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|short|infra=[THIS.ScriptValue('boitm_probe_infra')|1];occ=[THIS.ScriptValue('boitm_probe_occupancy')|2];rail=[THIS.ScriptValue('boitm_probe_rail')|0];price=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStatePrice|2];buy=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('transportation').WithStateContext(THIS.GetState.Self).GetStateProduction|2]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|queue_new|rail=[THIS.ScriptValue('boitm_probe_rail')|0];gate_levels=[THIS.ScriptValue('boitm_probe_gate_levels')|0];gate_queued=[THIS.ScriptValue('boitm_probe_gate_queued')|0];tech_levels=[THIS.ScriptValue('boitm_probe_tech_levels')|0];tech_queued=[THIS.ScriptValue('boitm_probe_tech_queued')|0];req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ALSACE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|queue_expand|gate_levels=[THIS.ScriptValue('boitm_probe_gate_levels')|0]"
+		}
+		# Data functions for the telemetry stage. One per line: a bad one blanks its line.
+		random_scope_state = {
+			limit = { state_region = s:STATE_ILE_DE_FRANCE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|data_pollution_impact|v=[THIS.GetState.GetStateRegion.GetPollutionImpact|4]"
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|data_pollution_gen|v=[THIS.GetState.GetPollutionGeneration|2]"
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|data_services|price=[GetGoods('services').WithStateContext(THIS.GetState.Self).GetStatePrice|2];buy=[GetGoods('services').WithStateContext(THIS.GetState.Self).GetStateConsumption|2];sell=[GetGoods('services').WithStateContext(THIS.GetState.Self).GetStateProduction|2]"
+		}
+		trigger_event = { id = boitm_probe.3 days = 30 }
+	}
+}
+
+# Day 60: remove one level, by script, from a three-level building and a seeded one.
+boitm_probe.4 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_level_before|levels=[THIS.ScriptValue('boitm_probe_levels')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+			add_building_level = { building = building_boitm_probe_levels level = -1 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ILE_DE_FRANCE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_seeded_before|levels=[THIS.ScriptValue('boitm_probe_tenements')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+			add_building_level = { building = building_boi_tenements level = -1 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			activate_production_method = { building_type = building_boitm_probe_req production_method = pm_boitm_req_oil }
+		}
+	}
+}
+boitm_probe.5 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_level_after|levels=[THIS.ScriptValue('boitm_probe_levels')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_ILE_DE_FRANCE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_seeded_after|levels=[THIS.ScriptValue('boitm_probe_tenements')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|req_oil|req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+			activate_production_method = { building_type = building_boitm_probe_req production_method = pm_boitm_req_electricity }
+		}
+	}
+}
+# Day 90: the same building, down to nothing with remove_building.
+boitm_probe.6 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_building_before|levels=[THIS.ScriptValue('boitm_probe_levels')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+			remove_building = building_boitm_probe_levels
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|req_electricity|req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+			activate_production_method = { building_type = building_boitm_probe_req production_method = pm_boitm_req_automobiles }
+		}
+	}
+}
+boitm_probe.7 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|remove_building_after|levels=[THIS.ScriptValue('boitm_probe_levels')|0];usage=[THIS.ScriptValue('boitm_probe_usage')|1]"
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|req_automobiles|req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+			activate_production_method = { building_type = building_boitm_probe_req production_method = pm_boitm_req_wood }
+		}
+	}
+}
+boitm_probe.8 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|req_wood|req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+			activate_production_method = { building_type = building_boitm_probe_req production_method = pm_boitm_req_oil }
+		}
+	}
+}
+# Does an active fuel PM survive a request for a fuel with no market?
+boitm_probe.9 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_BURGUNDY }
+			debug_log = "BOIPROBE|[TimeKeeper.GetCurrentDate.GetString]|req_wood_then_oil|req_pm=[THIS.ScriptValue('boitm_probe_req_pm')|0]"
+		}
+	}
+}

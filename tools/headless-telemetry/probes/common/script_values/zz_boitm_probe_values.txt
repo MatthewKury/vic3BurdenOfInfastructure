@@ -1,0 +1,63 @@
+﻿# State scope.
+boitm_probe_infra = { value = infrastructure }
+boitm_probe_usage = { value = infrastructure_usage }
+boitm_probe_rail = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_railway } add = level }
+}
+boitm_probe_levels = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_probe_levels } add = level }
+}
+boitm_probe_tenements = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boi_tenements } add = level }
+}
+boitm_probe_gate_levels = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_probe_gate } add = level }
+}
+boitm_probe_tech_levels = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_probe_tech } add = level }
+}
+boitm_probe_gate_queued = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_probe_gate is_under_construction = yes } add = 1 }
+}
+boitm_probe_tech_queued = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_probe_tech is_under_construction = yes } add = 1 }
+}
+# Lowest staffing band reached by any probe building in the state.
+boitm_probe_occupancy = {
+	value = -1
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boitm_probe_free
+				is_building_type = building_boitm_probe_absent
+				is_building_type = building_boitm_probe_short
+			}
+		}
+		value = 0
+		if = { limit = { occupancy >= 0.99 } value = 0.99 }
+		else_if = { limit = { occupancy >= 0.9 } value = 0.9 }
+		else_if = { limit = { occupancy >= 0.75 } value = 0.75 }
+		else_if = { limit = { occupancy >= 0.5 } value = 0.5 }
+		else_if = { limit = { occupancy >= 0.25 } value = 0.25 }
+		else_if = { limit = { occupancy >= 0.1 } value = 0.1 }
+	}
+}
+# Active PM on the req probe: 0 none, 1 wood, 2 oil, 3 electricity, 4 automobiles.
+boitm_probe_req_pm = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boitm_probe_req }
+		value = 0
+		if = { limit = { has_active_production_method = pm_boitm_req_wood } value = 1 }
+		else_if = { limit = { has_active_production_method = pm_boitm_req_oil } value = 2 }
+		else_if = { limit = { has_active_production_method = pm_boitm_req_electricity } value = 3 }
+		else_if = { limit = { has_active_production_method = pm_boitm_req_automobiles } value = 4 }
+	}
+}

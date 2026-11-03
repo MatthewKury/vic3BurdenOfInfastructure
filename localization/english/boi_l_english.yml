@@ -33,7 +33,7 @@
  building_boi_horse_ranch:0 "Horse Ranches"
  building_boi_horse_ranch_lens_option:0 "Expand $building_boi_horse_ranch$"
 
- building_boi_infrastructure:0 "Public Works"
+ building_boi_infrastructure:0 "Road Works"
  building_boi_infrastructure_lens_option:0 "Expand $building_boi_infrastructure$"
 
  building_boi_harbour_works:0 "Harbour Works"
@@ -54,7 +54,7 @@
  # ── Public Works: Haulage Method ──────────────────────────────────────────────
  pm_boi_cart_roads:0 "Cart Roads"
  pm_boi_macadam_roads:0 "Macadam Roads"
- pm_boi_rail_network:0 "Rail Network"
+ pm_boi_steam_rolled_roads:0 "Steam-Rolled Roads"
  pm_boi_motor_roads:0 "Motor Roads"
  pm_boi_modern_highways:0 "Modern Highways"
 
@@ -75,22 +75,41 @@
 
  # ── Public Works: Financing ───────────────────────────────────────────────────
  pmg_boi_road_financing:0 "Road Financing"
+ pmg_boi_rail_financing:0 "Rail Financing"
+ pmg_boi_harbour_financing:0 "Harbour Financing"
+ pmg_boi_rail_works_method:0 "Track and Signalling"
+ pmg_boi_rail_administration:0 "Rail Administration"
+ pm_boi_permanent_way:0 "Permanent Way"
+ pm_boi_steel_track:0 "Steel Track"
+ pm_boi_electric_signalling:0 "Electric Signalling"
+ pm_boi_national_rail_grid:0 "National Rail Grid"
+ pm_boi_appointed_rail_inspectors:0 "Appointed Rail Inspectors"
+ pm_boi_manorial_rail_commissioners:0 "Manorial Rail Commissioners"
+ pm_boi_elected_rail_boards:0 "Elected Rail Boards"
+ pm_boi_state_railways:0 "State Railways"
+ pm_boi_railway_concessions:0 "Railway Concessions"
+ pm_boi_conscripted_navvies:0 "Conscripted Navvies"
+ pm_boi_state_harbours:0 "State Harbours"
+ pm_boi_harbour_tolls:0 "Harbour Dues"
+ pm_boi_press_ganged_dock_labour:0 "Press-Ganged Dock Labour"
+ building_boi_rail_works:0 "Rail Works"
+ building_boi_rail_works_lens_option:0 "Expand $building_boi_rail_works$"
  pm_boi_public_highways:0 "Public Highways"
  pm_boi_turnpike_tolls:0 "Turnpike Tolls"
  pm_boi_statute_labour:0 "Statute Labour"
 
  # ── Laws: Road Financing ──────────────────────────────────────────────────────
- lawgroup_boi_road_financing:0 "Road Financing"
- lawgroup_boi_road_financing_desc:0 "Who pays to build and maintain the country's roads."
+ lawgroup_boi_road_financing:0 "Public Works Financing"
+ lawgroup_boi_road_financing_desc:0 "Who pays to build and maintain the country's roads, railways and harbours."
 
  law_boi_statute_labour:0 "Statute Labour"
- law_boi_statute_labour_desc:0 "Every rural household owes days of work on the roads each year and must bring its own horse and cart. The local landowner decides where that labour is spent."
+ law_boi_statute_labour_desc:0 "Every rural household owes days of work on the roads, railways and quays each year and must bring its own horse and cart. The local landowner decides where that labour is spent."
 
- law_boi_turnpike_trusts:0 "Turnpike Trusts"
- law_boi_turnpike_trusts_desc:0 "Local trusts of gentry and merchants build and maintain the roads and recover the cost through tolls on everyone who uses them."
+ law_boi_turnpike_trusts:0 "Tolls and Dues"
+ law_boi_turnpike_trusts_desc:0 "Local trusts and concessions of gentry and merchants build and maintain the roads, railways and harbours, and recover the cost through tolls and dues on everyone who uses them."
 
- law_boi_public_highways:0 "Public Highways"
- law_boi_public_highways_desc:0 "A state engineering corps builds and maintains the roads, paid for out of general taxation."
+ law_boi_public_highways:0 "State Funding"
+ law_boi_public_highways_desc:0 "A state engineering corps builds and maintains the roads, railways and harbours, paid for out of general taxation."
 
  # ── Ideologies: Road Financing ────────────────────────────────────────────────
  ideology_boi_manorial_roads:0 "Manorial Roads"
