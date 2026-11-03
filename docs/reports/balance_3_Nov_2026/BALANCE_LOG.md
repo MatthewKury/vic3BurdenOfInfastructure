@@ -92,3 +92,30 @@ Result: PASS. The define works: Aquitaine's infrastructure in December 1836 is 5
 5. **Luxury housing keeps falling short:** 0.80, 0.85 and 0.78 by 1845 in three games, with the price about £75 against a base of £60. New luxury levels are mostly villas, at 4 infrastructure each. No new Town Houses at all in this game, though they use only 2.5.
 
 **Correction for pass 4:** Town Houses from 400 to 200 construction points, the same as villas, so the AI's cheap option is also the denser one.
+
+## Pass 4 (`20261103-080354_mod`, 1836–1846)
+
+Result: PASS.
+
+| | 1836 | 1840 | 1845 |
+| --- | ---: | ---: | ---: |
+| GDP against vanilla, shared powers | -5.9% | -2.4% | +0.4% |
+| SoL against vanilla | -0.52 | -0.42 | -0.35 |
+| Radicals, mod / vanilla | 3.9 / 2.8 | 8.4 / 6.6 | 11.0 / 9.6 |
+| Short states, major powers | 45 | 8 | 4 |
+| Short states, world | 77 | 35 | 31 |
+| People in short states | 24% | 20% | 11% |
+| Basic housing supply/demand | 0.87 | 0.92 | 0.90 |
+| Luxury housing supply/demand | 0.94 | 0.90 | 0.82 |
+| Road / Rail / Harbour levels, world | 45 / 4 / 144 | 100 / 11 / 197 | 162 / 15 / 233 |
+
+**Takeaways:**
+
+1. **Within the aim on every headline by 1845,** and no power lost states. The 1836 GDP dip of about 6% stays a little outside it, but it recovers within a few years.
+2. **Town Houses barely moved luxury supply:** 0.82, and the same few new levels. Luxury stays somewhat short, and a price of about £73 isn't damaging, so I've left it.
+3. **Slums slowed to 20 → 27,** though that's within game-to-game noise.
+4. **Britain still runs debt** (0.35), and Spain 0.40 against vanilla's 0.22. France's radicals are 25% against 20%.
+
+No further correction. Everything still untested is late-game: oil and electric Light and Heat, Motor Roads, later Rail Works tiers and later housing tiers. Those need the century runs.
+
+**Settings carried into the century runs:** floor 125,000, slums and Town Houses at 200 points, basic seed coverage 0.92, Light and Heat +10/+30/+60%.
