@@ -92,21 +92,6 @@ def read_run(run):
     return country, states, pollution
 
 
-def vanilla_world():
-    db = TOOLS / "ensembles" / "ensembles.sqlite"
-    if not db.exists():
-        return {}
-    con = sqlite3.connect(db)
-    out = defaultdict(dict)
-    for date, metric, mean in con.execute(
-        """SELECT s.date, w.metric, AVG(w.value) FROM world_obs w JOIN snapshot s ON s.run_id = w.run_id AND s.t = w.t
-           JOIN run r ON r.run_id = w.run_id JOIN ensemble e ON e.ensemble_id = r.ensemble_id
-           WHERE e.name = 'vanilla_1836_1846' AND s.date LIKE '%-10-%' OR (e.name = 'vanilla_1836_1846' AND s.date LIKE '1846-01%')
-           GROUP BY s.date, w.metric"""):
-        out[int(date[:4])][metric] = mean
-    return out
-
-
 def vanilla_countries():
     """Mean GDP, SoL and radical share per power per year, from the ensemble's October snapshots."""
     db = TOOLS / "ensembles" / "ensembles.sqlite"

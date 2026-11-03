@@ -118,4 +118,4 @@ Result: PASS.
 
 No further correction. Everything still untested is late-game: oil and electric Light and Heat, Motor Roads, later Rail Works tiers and later housing tiers. Those need the century runs.
 
-**Settings carried into the century runs:** floor 125,000, slums and Town Houses at 200 points, basic seed coverage 0.92, Light and Heat +10/+30/+60%.
+**Settings carried into the century runs:** floor 125,000, slums and Town Houses at 200 points, basic seed coverage 0.92, Light and Heat +10/+30/+60%. Results are in the [century report](../century_3_Nov_2026/REPORT.md).

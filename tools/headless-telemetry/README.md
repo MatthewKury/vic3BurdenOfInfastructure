@@ -29,4 +29,4 @@ To add a metric:
 Housing is part of BOI (merged 2026-10-30), so the housing module loads in every
 BOI run. It is selected by the `boi_housing` good wherever it is defined.
 
-Report: `tools\Get-HeadlessReport.ps1 -Run <mod run> -Compare <control run>`. For a table against the vanilla baseline: `python tools/Get-BalanceSummary.py <run>`.
+Report: `tools\Get-HeadlessReport.ps1 -Run <mod run> -Compare <control run>`. For a table against the vanilla baseline: `python tools/Get-BalanceSummary.py <run>`. For long runs, `python tools/Get-CenturyDetail.py <run> [more runs]` adds state losses, stalled works orders, Municipal Estates losses, and the laws and PMs in the last autosave.

@@ -332,3 +332,9 @@ screenshots before marking anything verified.
     has such losses in 4 of 10 runs, with the same USA 39→27 and Austria 15→8 pattern;
     BOI has them in 3 of 6 ten-year runs. Infrastructure-short states among majors: 4
     against vanilla's 8.9, so housing's complication is price, not infrastructure.
+- **2026-11-03, headless, 1.13.11, 1836-1936, housing tiers and road/rail split, observer AI**
+  (`20261103-081447_mod`, `20261103-101832_mod`). Both PASS with 0 BOI error lines, fixtures off.
+  All 15 types were built. Basic supply stayed at 0.93-1.03 of demand from 1866 to 1916, then fell
+  to 0.79 / 0.89 by 1935, and luxury to 0.69 / 0.60. Municipal Estates were repeatedly wiped out.
+  Residential Standards reached only 5 / 2 countries. Details are in the
+  [century report](../reports/century_3_Nov_2026/REPORT.md).
