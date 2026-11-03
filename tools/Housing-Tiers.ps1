@@ -31,7 +31,7 @@ $HousingBuildings = @(
     # ---- Working-class ladder ----
     @{ Key = 'slums'; Name = 'Slum Districts'; Group = 'bg_boi_slum_housing'; GroupName = 'Slum Housing'; Parent = 'dense'
         Desc = 'Cheap accommodation with heavy infrastructure demand. Any constructed slum district raises state mortality, and staffing raises mortality further and lowers migration attraction. The only way out is to clear it and build something better.'
-        Cost = 'construction_cost_very_low'; Basic = 6; Luxury = 0; Infra = 3.5; Labor = 900; Clerks = 100; Icon = 'boi_slums.dds'
+        Cost = 'construction_cost_low'; Basic = 6; Luxury = 0; Infra = 3.5; Labor = 900; Clerks = 100; Icon = 'boi_slums.dds'
         Inputs = [ordered]@{ wood = 0.3; tools = 0.1; fabric = 0.2 }; Possible = $HousingStandardsGate; Fuels = @('wood')
         Scaled = [ordered]@{ state_mortality_mult = 0.02; state_migration_pull_mult = -0.002 }
         Unscaled = [ordered]@{ state_mortality_mult = 0.1 } }

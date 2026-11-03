@@ -5,7 +5,7 @@
   pmg_boi_slums
   pmg_boi_light_heat_slums
  }
- required_construction = construction_cost_very_low
+ required_construction = construction_cost_low
  ownership_type = self
  possible = {
   owner = { NOT = { has_law = law_type:law_boi_residential_standards } }

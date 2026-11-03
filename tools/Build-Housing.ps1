@@ -175,7 +175,7 @@ Write-HousingScript (Join-Path $OutputPath 'common/scripted_effects/zz_boi_housi
 # buildings start staffed. Apartment Blocks need a later tech, and shelters are an
 # emergency measure, so neither is seeded.
 # Above 1 on purpose: rounding small states down to no building loses about a fifth.
-$seedCoverageBasic = 1.0; $seedCoverageLuxury = 1.1
+$seedCoverageBasic = 0.92; $seedCoverageLuxury = 1.1
 $outputSlum = 6.0; $outputTenement = 7.0; $outputLuxuryBasic = 2.5; $outputLuxury = 6.0
 # Crowded districts of the 1830s beyond what the rule below finds: Naples, St
 # Petersburg, Bombay, Cairo, Constantinople, Canton, Boston and Amsterdam.
