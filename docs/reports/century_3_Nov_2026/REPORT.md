@@ -198,7 +198,7 @@ Levels vanish all at once, then the AI starts again:
 
 ## Suggested next steps
 
-Nothing below has been applied, so the branch still matches what these runs tested.
+Steps 1 and 2 (housing laws only) were applied afterwards and tested to 1866; see the [balance log](../balance_3_Nov_2026/BALANCE_LOG.md). The branch no longer matches what these century runs tested.
 
 1. **Add `downsizeable = no` to Municipal Estates.** It's one line and low risk.
 2. **Give the housing laws AI weights,** and strengthen the weights that move countries off Statute Labour.

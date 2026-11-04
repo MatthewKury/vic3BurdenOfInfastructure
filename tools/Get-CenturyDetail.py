@@ -132,7 +132,9 @@ def law_section(run):
     if not by_year:
         return
     print("\nLaw adoption, countries (employer unregulated/protected/mandated; standards; road statute/turnpike/highways):")
-    years = sorted(by_year)
+    # A run ending on 1 January logs only a few countries for its last year.
+    most = max(len(rows) for rows in by_year.values())
+    years = [y for y in sorted(by_year) if len(by_year[y]) >= most / 2]
     for y in sorted({*years[::5], years[-1]}):
         rows = by_year[y].values()
         count = lambda i, v: sum(r[i] == v for r in rows)

@@ -119,3 +119,42 @@ Result: PASS.
 No further correction. Everything still untested is late-game: oil and electric Light and Heat, Motor Roads, later Rail Works tiers and later housing tiers. Those need the century runs.
 
 **Settings carried into the century runs:** floor 125,000, slums and Town Houses at 200 points, basic seed coverage 0.92, Light and Heat +10/+30/+60%. Results are in the [century report](../century_3_Nov_2026/REPORT.md).
+
+## After the century runs: housing law politics (two runs to 1866)
+
+**Changed (commit `54f70ba`):** Devout, Armed Forces, Rural Folk and Petty Bourgeoisie gained housing stances, the housing laws gained AI weights, and Municipal Estates gained `downsizeable = no`. The floor stays at 125,000, now confirmed. See [the housing plan](../../plans/04_HOUSING.md#interest-group-stances).
+
+**Runs:** `20261103-200327_mod` (40 minutes) and `20261103-204330_mod` (43 minutes), both `-LongRun -NoFixtures`. "Before" is the same dates in the two century runs. Each column is one game, and games differ widely.
+
+| | Before 1 | Before 2 | After 1 | After 2 |
+| --- | ---: | ---: | ---: | ---: |
+| GDP against vanilla, 1846 | +4.4% | -4.0% | -4.6% | +0.1% |
+| SoL against vanilla, 1846 | -0.46 | -0.33 | -0.29 | -0.33 |
+| Radicals, 1846 (vanilla about 9.6) | 11.7 | 10.4 | 13.1 | 11.8 |
+| Radicals, 1865 | 14.7 | 16.4 | 14.7 | 13.8 |
+| Basic housing supply/demand, 1865 | 0.94 | 0.95 | 0.90 | 0.96 |
+| Luxury housing supply/demand, 1865 | 0.83 | 0.90 | 0.88 | 0.86 |
+| Power-years with debt over 0.5, to 1865 | 11 / 347 | 25 / 357 | 32 / 435 | 8 / 388 |
+| Major powers losing 25%+ of their states in a year | 2 | 3 | 3 | 0 |
+| Work Town levels, major powers, 1865 | 0 | 0 | 4 | 155 |
+| Work Camp levels, major powers, 1865 | 363 | 431 | 591 | 151 |
+
+| Countries with the law, of about 240 | After 1: 1845 / 1855 / 1865 | After 2: 1845 / 1855 / 1865 |
+| --- | ---: | ---: |
+| Protected Employer Housing | 26 / 52 / 50 | 36 / 58 / 77 |
+| Minimum Residential Standards | 2 / 8 / 18 | 3 / 7 / 12 |
+| Mandatory Serviced Housing | 0 / 0 / 0 | 0 / 0 / 0 |
+
+The century runs have no yearly law logs. Their only law counts are rough figures for 1936: Protected 4 / 0, Standards 5 / 2.
+
+**Takeaways:**
+
+1. **The AI now uses the housing laws,** decades earlier than before. Most adopters are small countries. Among major powers, Protected reached 1 and 6, and Standards 3 and 1. Game 2 now has more Work Town levels than Work Camp levels.
+2. **I can't tell how much comes from the stances and how much from the weights,** because they went in together.
+3. **No sign of harm in headline balance,** though two games can't rule out small effects. GDP stays within 5% of vanilla in 1846 and SoL about where it was. The weakest figures are After 1's radicals in 1846 (13.1) and basic housing in 1865 (0.90), and After 2 doesn't repeat them.
+4. **Debt needs watching.** After 1 has the most debt-heavy years (France 12, Britain 11, Bengal 8), and After 2 the fewest, so this looks like the existing game-to-game swing, though two games can't settle it. Britain's debt peaked at 1.00 in 1852, before it briefly lost 14 of its 30 states in 1855; it held 30 again by 1856. France stays in heavy debt in all four games.
+5. **Municipal Estates are untested in play.** Major powers first built them around 1897-1903 in the century runs, so a run to 1866 can't show whether the wipeouts stopped. Mandated also needs a later date.
+6. **Standards countries' housing is mixed:** 0.79 against 0.92 for the rest in game 1, where France and Bengal hold the law, and 1.03 against 0.96 in game 2. This is too little to judge, so check it again in a longer run.
+7. **Road financing is unchanged and still stuck:** about 84% of Road Works buildings were on Statute Labour in the last autosave. This pass left those laws alone.
+
+**One engine assertion made After 1 a harness FAIL:** `Failed creating backing building for Building Type building_boi_slums` in Rhone, around November 1861. France's yearly law log first shows Standards that December. The likely cause, inferred, is a slum order already queued when the law passed. The run continued to 1866, and a century run logged the same assertion for a vanilla coffee plantation, so I made no change.

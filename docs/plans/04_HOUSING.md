@@ -250,6 +250,28 @@ gate for a public BOI **release**, not for the merge. Definitions and generator
 were merged together, and `tools/Build-Housing.ps1` is the only buy-package
 generator. Existing saves need their own migration plan; start a new campaign.
 
+## Interest group stances
+
+Every interest group holds one housing stance. Each stance is its own ideology, attached by
+`boi_housing_setup_effect`, so no vanilla ideology is changed.
+
+| Interest group | Stance | Employer Housing: Unregulated / Protected / Mandated | Residential: Unregulated / Standards | Why |
+| --- | --- | --- | --- | --- |
+| Trade Unions, Intelligentsia | Housing Reform | Disapprove / Approve / Strongly approve | Disapprove / Approve | Tenants' interests and sanitary science |
+| Landowners, Industrialists | Unregulated Housing | Approve / Disapprove / Strongly disapprove | Approve / Disapprove | They own the housing and pay for any rules |
+| Devout | Moral Housing Reform | Disapprove / Approve / Neutral | Disapprove / Approve | Overcrowding as a moral danger; charity over a state mandate |
+| Armed Forces | Fit Recruits | Neutral / Approve / Neutral | Disapprove / Approve | Bad housing makes sickly recruits |
+| Rural Folk | Tied Cottages | Disapprove / Approve / Neutral | Neutral / Disapprove | Tied cottages are their grievance; by-laws outlaw the cheap cottage |
+| Petty Bourgeoisie | Ratepayers' Interest | Disapprove / Approve / Disapprove | Approve / Disapprove | Small landlords and builders against by-laws and rates; shopkeepers against the company store |
+
+**AI weights.** Each is +150. Protected: Trade Unions, Intelligentsia or Devout in government.
+Mandated: Trade Unions or Intelligentsia in government. Standards: Trade Unions, Intelligentsia,
+Devout or Armed Forces in government, and another +150 with Modern Sewerage.
+
+**AI gates, which don't bind a person.** Standards waits for Urban Planning, so Regulated Terraces
+exist before cheap housing is banned. Mandated waits for Modern Sewerage, so the law can't end a
+country's company housing by accident.
+
 ## Provisional values
 
 Every number, tech gate, building name and political stance in the housing
@@ -338,3 +360,8 @@ screenshots before marking anything verified.
   to 0.79 / 0.89 by 1935, and luxury to 0.69 / 0.60. Municipal Estates were repeatedly wiped out.
   Residential Standards reached only 5 / 2 countries. Details are in the
   [century report](../reports/century_3_Nov_2026/REPORT.md).
+- **2026-11-03, headless, 1.13.11, 1836-1866, housing law stances and AI weights, Municipal Estates
+  `downsizeable = no`, observer AI** (`20261103-200327_mod`, `20261103-204330_mod`). Protected reached
+  50 / 77 countries and Standards 18 / 12 by 1865, and all interest groups held a stance. Municipal
+  Estates weren't tested, because none exist that early. Details are in the
+  [balance log](../reports/balance_3_Nov_2026/BALANCE_LOG.md).

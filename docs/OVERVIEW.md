@@ -67,7 +67,7 @@ These come from the original agreed design (2026-08-16) and have held since.
   the Horse Ranch arable whitelist and the trait assignments).
 - **The population floor is the safety net** that stops the world collapsing
   when railways stop giving infrastructure. Left alone until 2026-11-03, when the
-  author agreed to a trial divisor of 125,000 (vanilla 100,000).
+  author confirmed a divisor of 125,000 (vanilla 100,000).
 - **Government cost centres use `ai_selection = most_productive`;** buildings
   that sell a good use `most_profitable`.
 - **The AI must be able to run it.** A system the player understands but the AI

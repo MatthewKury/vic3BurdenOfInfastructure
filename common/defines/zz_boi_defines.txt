@@ -1,6 +1,6 @@
 ﻿# Burden of Infrastructure: the population floor.
-# Vanilla is 100000. A trial value from the 3 Nov 2026 balance passes, relaxing the
-# author's 2026-08-16 rule to leave the floor alone, as agreed for a test. A tech-set
+# Vanilla is 100000. Set in the 3 Nov 2026 balance passes and confirmed by the author
+# the same day, replacing their 2026-08-16 rule to leave the floor alone. A tech-set
 # cap stops the floor growing at about 2 million people, so this mostly hits small
 # states. See docs/reports/balance_3_Nov_2026/BALANCE_LOG.md.
 NPops = {

@@ -66,7 +66,7 @@ Employment 5000/level (4000 laborers, 1000 farmers). Construction `low` (200).
 | light_industry | 1.5 | | arts, trade | 0.5 |
 | military | 0.2 | | owner_buildings, logistics | 0.1 |
 
-### The population floor (our safety net — divisor 125,000, a trial since 2026-11-03)
+### The population floor (our safety net — divisor 125,000 since 2026-11-03)
 
 `state_infrastructure_from_population_add` comes from **technology**, not by
 default:
