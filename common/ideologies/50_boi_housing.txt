@@ -1,4 +1,10 @@
 ﻿# Provisional political stances, attached additively; no vanilla ideology shadows.
+#  ideology_boi_housing_reform          Trade Unions, Intelligentsia
+#  ideology_boi_housing_laissez_faire   Landowners, Industrialists
+#  ideology_boi_housing_moral_reform    Devout
+#  ideology_boi_housing_recruit_fitness Armed Forces
+#  ideology_boi_housing_tied_cottages   Rural Folk
+#  ideology_boi_housing_ratepayers      Petty Bourgeoisie
 ideology_boi_housing_reform = {
  icon = "gfx/interface/icons/ideology_icons/paternalistic.dds"
  lawgroup_boi_employer_housing = {
@@ -17,6 +23,66 @@ ideology_boi_housing_laissez_faire = {
   law_boi_unregulated_company_housing = approve
   law_boi_protected_company_housing = disapprove
   law_boi_mandated_serviced_housing = strongly_disapprove
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = approve
+  law_boi_residential_standards = disapprove
+ }
+}
+
+# Overcrowding as a moral danger: the churches' slum missions and social teaching.
+# They trust charity and the good employer over a state mandate.
+ideology_boi_housing_moral_reform = {
+ icon = "gfx/interface/icons/ideology_icons/moralist.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = disapprove
+  law_boi_protected_company_housing = approve
+  law_boi_mandated_serviced_housing = neutral
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = disapprove
+  law_boi_residential_standards = approve
+ }
+}
+
+# Sickly recruits: Britain's Boer War rejection rates led to the 1904 inquiry into
+# physical deterioration. Street standards matter more to them than employers' terms.
+ideology_boi_housing_recruit_fitness = {
+ icon = "gfx/interface/icons/ideology_icons/patriotic.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = neutral
+  law_boi_protected_company_housing = approve
+  law_boi_mandated_serviced_housing = neutral
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = disapprove
+  law_boi_residential_standards = approve
+ }
+}
+
+# Tied cottages and labour camps are what they know of employer housing. Building
+# by-laws, though, outlaw the cheap cottage a village family can put up itself.
+ideology_boi_housing_tied_cottages = {
+ icon = "gfx/interface/icons/ideology_icons/agrarian.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = disapprove
+  law_boi_protected_company_housing = approve
+  law_boi_mandated_serviced_housing = neutral
+ }
+ lawgroup_boi_residential_standards = {
+  law_boi_unregulated_residential = neutral
+  law_boi_residential_standards = disapprove
+ }
+}
+
+# Small landlords and jobbing builders fight by-laws and the rates that pay for them.
+# Shopkeepers hate the company store, whether truck shop or fully serviced town.
+ideology_boi_housing_ratepayers = {
+ icon = "gfx/interface/icons/ideology_icons/meritocratic.dds"
+ lawgroup_boi_employer_housing = {
+  law_boi_unregulated_company_housing = disapprove
+  law_boi_protected_company_housing = approve
+  law_boi_mandated_serviced_housing = disapprove
  }
  lawgroup_boi_residential_standards = {
   law_boi_unregulated_residential = approve

@@ -24,6 +24,8 @@ $HousingLuxuryPrice = 60
 $HousingPowerPlantGate = 'has_building = building_power_plant'
 $HousingStandardsGate = 'owner = { NOT = { has_law = law_type:law_boi_residential_standards } }'
 
+# NotDownsizeable: AI budget cuts appear to have demolished whole countries' Municipal
+# Estates in the century runs (Austria 41 to 0). Temporary Shelter stays cuttable, being temporary.
 # Key, display name, description, building group, unlock, construction cost, basic
 # and luxury output, infrastructure per level, inputs per level, employment
 # (laborers, clerks), icon, and optional possible, state modifiers and fuels.
@@ -56,7 +58,7 @@ $HousingBuildings = @(
         Desc = 'Steel-framed blocks that use far less infrastructure per household than anything older.'
         Tech = 'steel_frame_buildings'; Cost = 'construction_cost_low'; Basic = 10; Luxury = 1; Infra = 1.5; Labor = 750; Clerks = 250; Icon = 'boi_apartments.dds'
         Inputs = [ordered]@{ steel = 0.4; glass = 0.4; tools = 0.5; wood = 0.3 } }
-    @{ Key = 'municipal_estates'; Name = 'Municipal Estates'; Group = 'bg_boi_municipal_housing'; GroupName = 'Municipal Housing'; Government = $true
+    @{ Key = 'municipal_estates'; Name = 'Municipal Estates'; Group = 'bg_boi_municipal_housing'; GroupName = 'Municipal Housing'; Government = $true; NotDownsizeable = $true
         Desc = 'Council estates built and run by the state, paid from the treasury rather than waiting on investors.'
         Tech = 'socialism'; Cost = 'construction_cost_medium'; Basic = 10; Luxury = 0; Infra = 1.5; Labor = 800; Clerks = 200; Icon = 'boi_municipal_estates.dds'
         Inputs = [ordered]@{ steel = 0.3; glass = 0.4; tools = 0.5; wood = 0.5 } }

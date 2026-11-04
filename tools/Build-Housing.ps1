@@ -288,6 +288,7 @@ foreach ($b in $HousingBuildings) {
     foreach ($g in $groups) { $lines.Add("  $g") }
     $lines.Add(" }")
     $lines.Add(" required_construction = $($b.Cost)")
+    if ($b.NotDownsizeable) { $lines.Add(' downsizeable = no') }
     $lines.Add(" ownership_type = $(if ($b.Government) { 'no_ownership' } else { 'self' })")
     if ($b.Tech) { $lines.Add(" unlocking_technologies = { $($b.Tech) }") }
     if ($b.Possible) { $lines.Add(" possible = {`n  $($b.Possible)`n }") }

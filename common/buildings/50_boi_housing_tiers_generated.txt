@@ -91,6 +91,7 @@ building_boi_municipal_estates = {
   pmg_boi_light_heat_municipal_estates
  }
  required_construction = construction_cost_medium
+ downsizeable = no
  ownership_type = no_ownership
  unlocking_technologies = { socialism }
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"

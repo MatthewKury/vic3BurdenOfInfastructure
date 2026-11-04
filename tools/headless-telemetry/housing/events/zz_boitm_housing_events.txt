@@ -33,6 +33,7 @@ boitm_housing.2 = {
 	trigger = { NOT = { is_country_type = decentralized } }
 
 	immediate = {
+		debug_log = "BOILAW|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|employer=[THIS.ScriptValue('boitm_law_employer_housing')|0];residential=[THIS.ScriptValue('boitm_law_residential')|0];road=[THIS.ScriptValue('boitm_law_road')|0];igs=[THIS.ScriptValue('boitm_igs_total')|0];stance_igs=[THIS.ScriptValue('boitm_igs_with_housing_stance')|0]"
 		every_scope_state = {
 			debug_log = "BOIHS|state|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|pop=[THIS.ScriptValue('boitm_hs_population')|0];urb=[THIS.ScriptValue('boitm_hs_urbanization')|1];uc=[THIS.ScriptValue('boitm_hs_urban_center_levels')|0];ind=[THIS.ScriptValue('boitm_hs_industry_levels')|0];res=[THIS.ScriptValue('boitm_hs_residential_levels')|0];infra=[THIS.ScriptValue('boitm_hs_infrastructure')|1];usage=[THIS.ScriptValue('boitm_hs_usage')|1];inc=[THIS.ScriptValue('boitm_hs_incorporated')|0]"
 			debug_log = "BOIHS|sol|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|all=[THIS.GetState.GetAverageStandardOfLivingAll|2];poor=[THIS.GetState.GetAverageStandardOfLivingPoor|2];middle=[THIS.GetState.GetAverageStandardOfLivingMiddle|2];rich=[THIS.GetState.GetAverageStandardOfLivingRich|2]"

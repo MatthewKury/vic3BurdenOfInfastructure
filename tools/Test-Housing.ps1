@@ -177,6 +177,7 @@ foreach ($ladder in @(
         $previous = $perUnit
     }
 }
+Assert-Housing ($buildings['building_boi_municipal_estates'] -match 'downsizeable\s*=\s*no') 'AI budget cuts must not be able to demolish Municipal Estates.'
 # Old types stay until demolished; standards stop new ones.
 foreach ($key in @('slums', 'tenements', 'tenement_blocks')) {
     Assert-Housing ($buildings["building_boi_$key"] -match 'has_law\s*=\s*law_type:law_boi_residential_standards') "Residential standards must block new $key."
@@ -189,6 +190,8 @@ Assert-Housing ($pm['pm_boi_work_camp'] -match 'unlocking_laws\s*=\s*\{\s*law_bo
 $tierLaws = @{ work_camp = 'law_boi_unregulated_company_housing'; work_town = 'law_boi_protected_company_housing'; serviced_town = 'law_boi_mandated_serviced_housing' }
 $tierEffects = @{ work_camp = 'boi_housing_enforce_work_camps_effect'; work_town = 'boi_housing_enforce_work_towns_effect'; serviced_town = 'boi_housing_enforce_serviced_towns_effect' }
 $laws = Read-HousingDomain $ModPath 'laws'
+Assert-Housing ($laws['law_boi_residential_standards'] -match 'ai_will_do\s*=\s*\{\s*has_technology_researched\s*=\s*urban_planning') 'The AI must wait for Regulated Terraces before banning cheap housing.'
+Assert-Housing ($laws['law_boi_mandated_serviced_housing'] -match 'ai_will_do\s*=\s*\{\s*has_technology_researched\s*=\s*modern_sewerage') 'The AI must wait for Serviced Towns before mandating them.'
 $setup = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_effects/50_boi_housing.txt'))
 foreach ($tier in $tierLaws.Keys) {
     $gate = [regex]::Match($pm["pm_boi_$tier"], 'unlocking_laws\s*=\s*\{([^{}]*)\}')

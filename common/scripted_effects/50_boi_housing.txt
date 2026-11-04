@@ -24,6 +24,30 @@ boi_housing_setup_effect = {
    add_ideology = ideology_boi_housing_laissez_faire
   }
  }
+ ig:ig_devout ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_moral_reform } }
+   add_ideology = ideology_boi_housing_moral_reform
+  }
+ }
+ ig:ig_armed_forces ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_recruit_fitness } }
+   add_ideology = ideology_boi_housing_recruit_fitness
+  }
+ }
+ ig:ig_rural_folk ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_tied_cottages } }
+   add_ideology = ideology_boi_housing_tied_cottages
+  }
+ }
+ ig:ig_petty_bourgeoisie ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_ratepayers } }
+   add_ideology = ideology_boi_housing_ratepayers
+  }
+ }
  if = {
   limit = {
    NOR = {

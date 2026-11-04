@@ -120,10 +120,33 @@ def save_section(run):
     print("Active BOI laws, countries:", dict(sorted(active.items())))
 
 
+def law_section(run):
+    """Yearly law adoption from BOILAW| lines; runs before 2026-11-03 don't have them."""
+    pattern = re.compile(r"BOILAW\|[A-Za-z]+ \d+, (\d{4})\|([^|]*)\|employer=(\d+);residential=(\d+);road=(\d+);igs=(\d+);stance_igs=(\d+)")
+    by_year = defaultdict(dict)
+    with (run / "logs" / "debug.log").open(encoding="utf-8", errors="replace") as handle:
+        for line in handle:
+            m = pattern.search(line)
+            if m:
+                by_year[int(m.group(1))][m.group(2)] = [int(v) for v in m.groups()[2:]]
+    if not by_year:
+        return
+    print("\nLaw adoption, countries (employer unregulated/protected/mandated; standards; road statute/turnpike/highways):")
+    years = sorted(by_year)
+    for y in sorted({*years[::5], years[-1]}):
+        rows = by_year[y].values()
+        count = lambda i, v: sum(r[i] == v for r in rows)
+        print(f"  {y} n={len(rows):3}: employer {count(0, 0)}/{count(0, 1)}/{count(0, 2)}; standards {count(1, 1)}; road {count(2, 0)}/{count(2, 1)}/{count(2, 2)}")
+    last = by_year[years[-1]]
+    missing = {tag: r[4] - r[3] for tag, r in last.items() if r[3] != r[4]}
+    print(f"  Interest groups without a housing stance, {years[-1]}: {len(missing)} countries {dict(list(missing.items())[:8])}")
+
+
 def main(run):
     country, states, pollution = balance.read_run(run)
     years = sorted(y for y in country if y)
     print(f"\n===== {run.name}")
+    law_section(run)
 
     print("\nMajor powers losing 25%+ of their states in a year:")
     for a, b in zip(years, years[1:]):

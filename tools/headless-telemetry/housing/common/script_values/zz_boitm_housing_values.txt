@@ -159,3 +159,61 @@ boitm_hs_horse_ranch_levels = {
 		add = level
 	}
 }
+
+# Yearly law state per country, read by tools/Get-CenturyDetail.py.
+# 0 = unregulated, 1 = protected, 2 = mandated.
+boitm_law_employer_housing = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_boi_protected_company_housing }
+		value = 1
+	}
+	else_if = {
+		limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+		value = 2
+	}
+}
+
+boitm_law_residential = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_boi_residential_standards }
+		value = 1
+	}
+}
+
+# 0 = Statute Labour, 1 = Turnpike Trusts, 2 = Public Highways.
+boitm_law_road = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_boi_turnpike_trusts }
+		value = 1
+	}
+	else_if = {
+		limit = { has_law = law_type:law_boi_public_highways }
+		value = 2
+	}
+}
+
+boitm_igs_total = {
+	value = 0
+	every_interest_group = { add = 1 }
+}
+
+# Should equal boitm_igs_total: every group holds one housing stance.
+boitm_igs_with_housing_stance = {
+	value = 0
+	every_interest_group = {
+		limit = {
+			OR = {
+				has_ideology = ideology:ideology_boi_housing_reform
+				has_ideology = ideology:ideology_boi_housing_laissez_faire
+				has_ideology = ideology:ideology_boi_housing_moral_reform
+				has_ideology = ideology:ideology_boi_housing_recruit_fitness
+				has_ideology = ideology:ideology_boi_housing_tied_cottages
+				has_ideology = ideology:ideology_boi_housing_ratepayers
+			}
+		}
+		add = 1
+	}
+}
