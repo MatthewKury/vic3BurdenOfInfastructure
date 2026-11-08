@@ -1,0 +1,232 @@
+﻿namespace = boitm_rs
+
+# Headless telemetry (rail_survey module, Test-Headless.ps1 -RailSurvey).
+# Stand-in players for the Rail Network Survey: Britain, Prussia, the USA
+# and Belgium survey their capital's strategic region from 1836.3.1, and
+# start another as soon as one ends, until mid-1850. The AI answers the
+# survey's events by ai_chance. Lines use the housing fixtures' format:
+#   BOIFIX|<date>|<check>|<pass/fail/warn/info>|<detail>
+# so Test-Headless.ps1 tables them and fails the run on a "fail".
+
+# Start a survey.
+boitm_rs.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		OR = {
+			c:GBR ?= this
+			c:PRU ?= this
+			c:USA ?= this
+			c:BEL ?= this
+		}
+		game_date >= 1836.3.1
+		game_date < 1850.6.1
+		has_technology_researched = railways
+		exists = capital
+		NOT = { has_journal_entry = je_boi_rail_survey }
+		any_scope_state = {
+			boi_rs_state_eligible = yes
+			region = root.capital.region
+		}
+	}
+
+	immediate = {
+		every_scope_state = {
+			limit = {
+				boi_rs_state_eligible = yes
+				region = root.capital.region
+			}
+			set_variable = { name = boi_in_rail_survey value = root }
+		}
+		trigger_event = { id = boi_rail_survey.9 days = 0 }
+		trigger_event = { id = boitm_rs.2 days = 2 }
+	}
+}
+
+# Two days on: the journal entry is open and the goal is set.
+boitm_rs.2 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_journal_entry = je_boi_rail_survey
+				has_variable = boi_rs_goal
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_start|pass|tag=[THIS.GetCountry.GetTagName];states=[THIS.ScriptValue('boitm_rs_var_states')|0];goal=[THIS.ScriptValue('boitm_rs_var_goal')|1];rate=[THIS.ScriptValue('boi_rs_monthly_rate')|2];weekly_cost=[THIS.ScriptValue('boitm_rs_weekly_cost')|0];expenses_pct=[THIS.ScriptValue('boitm_rs_expenses_share')|2];police_q=[THIS.ScriptValue('boitm_rs_var_police_q')|2]"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_start|fail|tag=[THIS.GetCountry.GetTagName];journal_entry_missing=1"
+		}
+	}
+}
+
+# A survey has finished since the last check: log it and check the cap.
+boitm_rs.3 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		has_variable = boi_rs_surveys_completed
+		OR = {
+			NOT = { has_variable = boitm_rs_logged }
+			var:boi_rs_surveys_completed > var:boitm_rs_logged
+		}
+	}
+
+	immediate = {
+		set_variable = { name = boitm_rs_logged value = var:boi_rs_surveys_completed }
+		if = {
+			limit = {
+				any_scope_state = {
+					has_modifier = boi_rail_cap_survey
+					has_variable = boi_rail_cap_surveyed
+				}
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_complete|pass|tag=[THIS.GetCountry.GetTagName];n=[THIS.ScriptValue('boitm_rs_var_completed')|0];levels=[THIS.ScriptValue('boitm_rs_var_last_levels')|0];quality=[THIS.ScriptValue('boitm_rs_var_last_quality')|1];months=[THIS.ScriptValue('boitm_rs_var_last_months')|0];states=[THIS.ScriptValue('boitm_rs_var_last_states')|0];cap_total=[THIS.ScriptValue('boitm_rail_cap_total')|0]"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_complete|fail|tag=[THIS.GetCountry.GetTagName];survey_modifier_missing=1"
+		}
+	}
+}
+
+# Yearly, while a survey runs.
+boitm_rs.4 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { has_journal_entry = je_boi_rail_survey }
+
+	immediate = {
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_progress|info|tag=[THIS.GetCountry.GetTagName];progress=[THIS.ScriptValue('boitm_rs_var_progress')|1];quality=[THIS.ScriptValue('boitm_rs_var_quality')|1];months=[THIS.ScriptValue('boitm_rs_var_months')|0];weekly_cost=[THIS.ScriptValue('boitm_rs_weekly_cost')|0];expenses_pct=[THIS.ScriptValue('boitm_rs_expenses_share')|2]"
+	}
+}
+
+# Engine check, once, as Britain from 1836.2.1: every state carries a cap
+# modifier. (A create_building past the cap was tried on 2026-11-07, run
+# 20261107-130030_mod: asked for 4 Rail Works in Lancashire, cap 2, and got
+# 4. It was taken out so it doesn't skew Britain in balance runs.)
+boitm_rs.10 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1836.2.1
+		NOT = { has_global_variable = boitm_rs_engine_checked }
+	}
+
+	immediate = {
+		set_global_variable = boitm_rs_engine_checked
+		if = {
+			limit = { boitm_rail_cap_modifier_states = boitm_states }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_cap_modifiers|pass|states=[THIS.ScriptValue('boitm_states')|0];with_modifier=[THIS.ScriptValue('boitm_rail_cap_modifier_states')|0];cap_total=[THIS.ScriptValue('boitm_rail_cap_total')|0]"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_cap_modifiers|fail|states=[THIS.ScriptValue('boitm_states')|0];with_modifier=[THIS.ScriptValue('boitm_rail_cap_modifier_states')|0]"
+		}
+	}
+}
+
+
+# AI cap pass, exercised once as France from 1837.1.1. In 15-year games no
+# AI state reaches its Rail Works cap on its own (balance passes 1 and 2),
+# so this forces the case: a normal-size French state with a railway gets
+# Rail Works up to its cap (1 since 2026-11-08) and a temporary -300 infrastructure, and
+# boi_rail_survey.60 (one chance in four per call) is then fired 8 times.
+# Test-only perturbation: 1 Rail Works level in one French state, and up
+# to +3 cap there.
+boitm_rs.20 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:FRA ?= this
+		game_date >= 1837.1.1
+		NOT = { has_global_variable = boitm_rs_ai_test }
+		any_scope_state = {
+			has_building = building_railway
+			boi_rail_cap_size = 1
+			NOT = { has_variable = boi_rail_cap_surveyed }
+		}
+	}
+
+	immediate = {
+		set_global_variable = boitm_rs_ai_test
+		random_scope_state = {
+			limit = {
+				has_building = building_railway
+				boi_rail_cap_size = 1
+				NOT = { has_variable = boi_rail_cap_surveyed }
+			}
+			set_variable = boitm_rs_ai_test_state
+			if = {
+				limit = { boi_rail_works_levels_state < 1 }
+				create_building = {
+					building = building_boi_rail_works
+					level = 1
+				}
+			}
+			add_modifier = { name = boitm_rs_infra_cut days = 120 }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_setup|info|rail_works=[THIS.ScriptValue('boitm_rs_state_rail_works')|0];cap=[THIS.ScriptValue('boitm_rs_state_cap')|0]"
+		}
+		trigger_event = { id = boitm_rs.21 days = 35 }
+	}
+}
+
+boitm_rs.21 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boitm_rs_ai_test_state }
+			if = {
+				limit = { boi_rs_ai_state_wants_cap = yes }
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_ready|pass|rail_works=[THIS.ScriptValue('boitm_rs_state_rail_works')|0];cap=[THIS.ScriptValue('boitm_rs_state_cap')|0];shortfall=[THIS.ScriptValue('boi_ai_infrastructure_shortfall')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_ready|warn|rail_works=[THIS.ScriptValue('boitm_rs_state_rail_works')|0];cap=[THIS.ScriptValue('boitm_rs_state_cap')|0];shortfall=[THIS.ScriptValue('boi_ai_infrastructure_shortfall')|0]"
+			}
+		}
+		set_variable = { name = boi_rs_ai_state_count value = 1 }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_money|info|gold=[THIS.ScriptValue('boitm_rs_gold')|0];cost_one_state=[THIS.ScriptValue('boi_rs_ai_cost')|0];scaled_debt=[THIS.ScriptValue('boitm_rs_scaled_debt')|2]"
+		remove_variable = boi_rs_ai_state_count
+		trigger_event = { id = boi_rail_survey.60 days = 0 }
+		trigger_event = { id = boi_rail_survey.60 days = 1 }
+		trigger_event = { id = boi_rail_survey.60 days = 2 }
+		trigger_event = { id = boi_rail_survey.60 days = 3 }
+		trigger_event = { id = boi_rail_survey.60 days = 4 }
+		trigger_event = { id = boi_rail_survey.60 days = 5 }
+		trigger_event = { id = boi_rail_survey.60 days = 6 }
+		trigger_event = { id = boi_rail_survey.60 days = 7 }
+		trigger_event = { id = boitm_rs.22 days = 10 }
+	}
+}
+
+boitm_rs.22 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boitm_rs_ai_test_state }
+			if = {
+				limit = {
+					has_variable = boi_rail_cap_surveyed
+					has_modifier = boi_rail_cap_survey
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_result|pass|cap=[THIS.ScriptValue('boitm_rs_state_cap')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_result|warn|cap=[THIS.ScriptValue('boitm_rs_state_cap')|0]"
+			}
+			remove_modifier = boitm_rs_infra_cut
+			remove_variable = boitm_rs_ai_test_state
+		}
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_count|info|ai_surveys=[THIS.ScriptValue('boitm_rail_ai_surveys')|0]"
+	}
+}

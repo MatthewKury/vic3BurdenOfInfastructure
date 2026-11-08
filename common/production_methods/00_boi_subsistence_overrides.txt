@@ -36,6 +36,7 @@
 #
 #  PATCH SENSITIVITY: full copies of vanilla 1.13. Re-diff against
 #  12_subsistence.txt after every game update.
+#  1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # ================================================================
 
 pm_home_workshops_no_building_subsistence_pasture = {

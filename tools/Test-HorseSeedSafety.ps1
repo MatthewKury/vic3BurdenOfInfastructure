@@ -14,9 +14,9 @@ try {
     foreach ($row in $rows) { $byState[$row.State] = $row }
 
     $seeded = @($rows | Where-Object { [int]$_.Ranch -gt 0 })
-    if ($seeded.Count -ne 216) { throw "Expected 216 seeded Horse Ranch states; found $($seeded.Count)." }
+    if ($seeded.Count -ne 223) { throw "Expected 223 seeded Horse Ranch states; found $($seeded.Count)." }
     $levels = ($seeded | Measure-Object -Property Ranch -Sum).Sum
-    if ($levels -ne 492) { throw "Expected 492 Horse Ranch levels; found $levels." }
+    if ($levels -ne 525) { throw "Expected 525 Horse Ranch levels (1.15.0, balance pass 4); found $levels." }
     foreach ($row in $seeded) {
         if ([int]$row.DeclaredHeadroom -lt 10) {
             throw "$($row.State) has only $($row.DeclaredHeadroom) declared arable levels left."
@@ -25,19 +25,25 @@ try {
 
     $additions = @(Get-Content (Join-Path $ModPath 'tools/horse_seed_additions.tsv') |
         Where-Object { $_ -match '^STATE_([A-Z0-9_]+)\s+(\d+)$' })
-    if ($additions.Count -ne 14) { throw "Expected 14 new ranch states; found $($additions.Count)." }
+    # 1.15.0: 13; Oryol now passes curation itself after the Tula split. Balance passes 3 and 4 add 4 and 3.
+    if ($additions.Count -ne 20) { throw "Expected 20 new ranch states; found $($additions.Count)." }
+    # Company and colonial states are never core to their owner, so the core rule would
+    # leave British India and the Dutch East Indies with no ranch at all. These are
+    # still sole-owner and incorporated.
+    $nonCoreAllowed = @('STATE_BIHAR', 'STATE_EAST_JAVA')
     foreach ($line in $additions) {
         $parts = $line -split '\s+'
         $row = $byState[$parts[0]]
+        $coreOk = $row -and ($row.Core -eq 'True' -or $parts[0] -in $nonCoreAllowed)
         if (-not $row -or [int]$row.Ranch -gt [int]$parts[1] -or
-            [int]$row.Owners -ne 1 -or $row.Core -ne 'True' -or $row.Unincorporated -ne 'False') {
+            [int]$row.Owners -ne 1 -or -not $coreOk -or $row.Unincorporated -ne 'False') {
             throw "Unsafe or mismatched new Horse Ranch state: $($parts[0])."
         }
     }
 
     $holds = @(Get-Content (Join-Path $ModPath 'tools/horse_seed_holds.tsv') |
         Where-Object { $_ -match '^STATE_([A-Z0-9_]+)\s+(\d+)$' })
-    if ($holds.Count -ne 15) { throw "Expected 15 held ranch states; found $($holds.Count)." }
+    if ($holds.Count -ne 14) { throw "Expected 14 held ranch states (1.15.0); found $($holds.Count)." }
     foreach ($line in $holds) {
         $parts = $line -split '\s+'
         $row = $byState[$parts[0]]
@@ -45,7 +51,7 @@ try {
             throw "Held Horse Ranch state changed: $($parts[0])."
         }
     }
-    Write-Host 'PASS: ranch levels fit declared land; 14 additions are core, sole-owner, incorporated and within their reviewed levels; 15 unincorporated holds do not exceed their safe levels.'
+    Write-Host 'PASS: ranch levels fit declared land; 20 additions are sole-owner, incorporated, core (or allowed by name) and within their reviewed levels; 14 unincorporated holds do not exceed their safe levels.'
 }
 finally {
     Remove-Item -LiteralPath $auditPath -Force -ErrorAction SilentlyContinue

@@ -27,7 +27,7 @@ must work from the 1836 start, and the AI must keep its states supplied.
 | Public Works | 5 tiers: Cart Roads 15 → Macadam 22 → Rail Network 30 → Motor Roads 38 → Modern Highways 48 infra. 400 technical + 100 admin staff per level | `common/production_methods/50_boi_infrastructure.txt` |
 | Harbour Works | Coastal only. 3 tiers: Coastal Lighters 10 → Steam Lighters 18 → Electrified Quays 25 infra. 375 technical + 125 admin | `common/production_methods/50_boi_harbour_works.txt` |
 | Bureaucracy admin group | Manorial (hereditary / crownland diets) → Appointed (default) → Elected, on both works | same files |
-| No maximum level | Deliberate, matching railways (2026-09-23). `stateregion_max_level` alone does not cap; do not add `has_max_level` without checking how its dynamic modifier initialises | `common/buildings/50_boi_buildings.txt` |
+| Maximum level | None on Road Works and Harbour Works, matching railways (2026-09-23). **Rail Works is capped since 2026-11-07** (`has_max_level`, cap modifiers set at game start and kept by a monthly event), raised by the Rail Network Survey: see the [proposal](01_RAIL_SURVEY_PROPOSAL.md) and the [balance log](../reports/rail_survey_7_Nov_2026/BALANCE_LOG.md) | `common/buildings/50_boi_buildings.txt` |
 | Rail and port changes | `state_infrastructure_add` removed; transport output unchanged | vanilla PM shadows |
 | Haulage horses | `pm_road_carts` +3 (one key reaches 18 PM groups); rail haulage tiers +1; electric and refrigeration tiers untouched. `pm_log_carts` is the most advanced tier, not a horse cart, and is left alone | PM shadows |
 | Other horse consumers | Crop farm draft animals, urban centre transport (1 horse per level on the start PM) | PM shadows |

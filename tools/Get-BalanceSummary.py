@@ -4,8 +4,10 @@ Usage: python tools/Get-BalanceSummary.py <run folder or name> [--years 1836,184
                                           [--out FILE]
 
 Reads BOITM|, BOIHS| and BOIPOL| lines from the run's mirrored debug logs. Vanilla
-figures come from tools/ensembles/ensembles.sqlite, which stops at 1846, so later
-years show no vanilla column. Country totals cover major powers only, and which
+figures come from an ensemble in tools/ensembles/ensembles.sqlite (--baseline;
+default vanilla115_1836_1936_all, the 1.15.0 baseline, whose games thin out after
+1856; vanilla_1836_1846 is the 1.13.11 one). Years the baseline lacks show no
+vanilla column. Country totals cover major powers only, and which
 countries those are changes over time. Where a civil war gives a tag two pulses in
 a year, the larger side (by states) is kept.
 """
@@ -92,8 +94,12 @@ def read_run(run):
     return country, states, pollution
 
 
-def vanilla_countries():
+BASELINE = "vanilla115_1836_1936_all"
+
+
+def vanilla_countries(baseline=None):
     """Mean GDP, SoL and radical share per power per year, from the ensemble's October snapshots."""
+    baseline = baseline or BASELINE
     db = TOOLS / "ensembles" / "ensembles.sqlite"
     if not db.exists():
         return {}
@@ -102,8 +108,8 @@ def vanilla_countries():
     cols = {r[1] for r in con.execute("PRAGMA table_info(country_obs)")}
     wanted = [c for c in ("gdp", "sol", "population", "radicals", "states") if c in cols]
     q = f"""SELECT tag, date, {', '.join('AVG(' + c + ')' for c in wanted)} FROM v_country
-            WHERE ensemble = 'vanilla_1836_1846' AND (date LIKE '%-10-%' OR date LIKE '1846-01%') GROUP BY tag, date"""
-    for row in con.execute(q):
+            WHERE ensemble = ? AND (date LIKE '%-10-%' OR date LIKE '1846-01%') GROUP BY tag, date"""
+    for row in con.execute(q, (baseline,)):
         for c, v in zip(wanted, row[2:]):
             out[int(row[1][:4])][row[0]][c] = v
     return out
@@ -118,13 +124,13 @@ def pop_weighted(rows, key):
     return sum((r.get(key, 0) or 0) * (r.get("population", 0) or 0) for r in rows) / w if w else 0
 
 
-def summarize(run, years):
+def summarize(run, years, baseline=None):
     country, states, pollution = read_run(run)
-    vc = vanilla_countries()
+    vc = vanilla_countries(baseline)
     all_years = sorted(y for y in country if y)
     if not years:
         years = all_years
-    lines = [f"# Balance summary: {run.name}", ""]
+    lines = [f"# Balance summary: {run.name}", "", f"Vanilla baseline: `{baseline or BASELINE}`.", ""]
     lines.append(f"Years logged: {all_years[0] if all_years else '-'} to {all_years[-1] if all_years else '-'}. Major powers only for country columns.")
     lines.append("")
 
@@ -136,7 +142,7 @@ def summarize(run, years):
         if not tags:
             continue
         rows = list(tags.values())
-        van = vc.get(y if y <= 1846 else -1, {})
+        van = vc.get(y, {})
         shared = [t for t in tags if t in van]
         gdp_mod = sum(tags[t].get("gdp", 0) for t in shared)
         gdp_van = sum(van[t].get("gdp", 0) for t in shared)
@@ -235,12 +241,13 @@ def main():
     ap.add_argument("run")
     ap.add_argument("--years")
     ap.add_argument("--out")
+    ap.add_argument("--baseline", default=BASELINE, help="vanilla ensemble name in ensembles.sqlite")
     args = ap.parse_args()
     run = Path(args.run)
     if not run.exists():
         run = TOOLS / "headless-runs" / args.run
     years = [int(y) for y in args.years.split(",")] if args.years else None
-    text = summarize(run, years)
+    text = summarize(run, years, args.baseline)
     if args.out:
         Path(args.out).write_text(text, encoding="utf-8")
     print(text)

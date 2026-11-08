@@ -87,13 +87,14 @@ These come from the original agreed design (2026-08-16) and have held since.
 | Horses, Horse Ranch, Horse-Breeding Traditions trait | Yes | Passes | Short smoke test only |
 | Road, Rail and Harbour Works (5, 4 and 3 PM tiers, Bureaucracy admin groups) | Yes | Passes | 10-year headless runs; see the century report for later tiers |
 | Rail and port infrastructure removed; haulage, farm, urban, cavalry horse inputs | Yes | Passes | Smoke test only |
+| Rail Network Survey: Rail Works 2.5× (3× until 2026-11-08), capped 1/2/4 per state (2/4/6 until then), cap raised by a region survey (decision and journal entry) or the AI pass (2026-11-07) | Yes | Passes | Three 15-year balance passes, 2 games each, with 4 stand-in players; [balance log](reports/rail_survey_7_Nov_2026/BALANCE_LOG.md) |
 | Horse mobilization options (Recon, Horse-Drawn Transport, Extra Supplies) | Yes | Passes | Not recorded |
 | 1836 seed (20 Public Works, 139 Harbour Works, 216 Horse Ranches, scarce by horse history) | Yes | Passes | 20-year headless run, 2026-11-01: supply 65% of demand in 1836, 88% in 1855 |
 | AI construction fallback event and `downsizeable = no` | Yes | Passes | 10-year headless runs: deficit states 26 → 1 across 12 major powers |
 | Infrastructure-aware `ai_value` weights (Public Works, Harbour Works) | Yes | Passes | No visible effect; kept pending reinvestigation (plan 1, step 3) |
 | Price-scaled `ai_value` for railways and Horse Ranches; opt-in auto-expansion | Yes | Passes | Not observed |
 | Public Works Financing laws, ideologies, PMs, starting laws | Yes (all works) | Passes | Runs in headless games; political balance not assessed |
-| Housing (merged into the main mod 2026-10-30) | Yes | Regression suite passes | 10-year headless runs, no housing errors; automated fixture checks; 1836 supply seeded from measured demand (2026-11-01); one-run calibration only |
+| Housing (merged into the main mod 2026-10-30); housing law groups in the Social tab since 2026-11-08; seed privately owned since 2026-11-08 | Yes | Regression suite passes | 10-year headless runs, no housing errors; automated fixture checks; 1836 supply seeded from measured demand (2026-11-01); one-run calibration only |
 | Release files | `PATCHING.md` and `.gitignore` yes; licence and changelog no | — | — |
 | Vanilla baseline ensemble and report tooling (2026-10-31) | Yes: `Invoke-HeadlessEnsemble.ps1`, `ensembles.sqlite`, `Make-EnsembleReport.py` | Comparison mode tested on a 5-vs-5 split | 10 vanilla runs, 1836–1846, all passed; [report](reports/vanilla_1836_1846/REPORT.md). No BOI ensemble yet |
 
@@ -161,6 +162,16 @@ financing, housing ownership laws).
     Must go through the shared buy-package generator.
 11. **Broader public works.** Sewers and telegraphs could extend the theme
     beyond transport. Long-term only.
+
+## 6a. To revisit (noted 2026-11-07)
+
+Raised by you on 2026-11-07, after the Rail Network Survey passes. None is designed yet. What I found when noting them is under each.
+
+1. **Done 2026-11-08 (PMs only):** the Horse Ranch now has a by-product group (meat, then fertilizer, valued like Livestock's wool group) and vanilla's `pmg_fencing`; refrigeration is left out. The map look (`city_type = farm`) still needs mesh mappings in 34 city-type files, so it is still open. *Noted 2026-11-07:* **Give Horse Ranches more of the Livestock Ranch's features.** Vanilla's `building_livestock_ranch` has `city_type = farm`, `levels_per_mesh = 50`, `terrain_manipulator = pasture` and four PM groups: base, sheep ranch, fencing and refrigeration. BOI's Horse Ranch is `bg_ranching` with two groups, `pmg_boi_company_housing` and `pmg_boi_horse_ranch_method`, and no map look; plan 1 notes it was left without `city_type` or `levels_per_mesh` on purpose. Candidates: a fencing-style secondary group, a by-product such as meat or fertiliser (see idea 9), and the pasture terrain look.
+2. **Partly done 2026-11-08.** Cause found: the 1836 seed gave every housing level to the country (`add_ownership = { country = … }`). It now goes to manor houses (aristocrats) and, in states with industry, financial districts (capitalists), which is how vanilla seeds private buildings. Housing the player builds is still government-owned, as with any building under vanilla rules. Still open: the private investment pool may never build housing at all. Vanilla's manor houses and financial districts list `investment_scores` per building group, and the root group `bg_boi_residential` is under none of them; the category is not the gate, since railways are `development` too. The housing telemetry now logs `BOIOWN|` ownership counts to show it. *Noted 2026-11-07:* **Housing looks government-owned in game.** The residential groups are `is_government_funded = no`, the buildings `ownership_type = self` (Municipal Estates, `no_ownership`, are the one exception). But `bg_boi_residential` sits in `category = development`, the same category as urban centres. That may keep the private investment pool from building it, so only the state ever does. The seeded levels may also start state-owned. Check both: what owns a seeded slum in 1836, and whether private investors queue housing anywhere in a headless run. If the category is the cause, move housing to a category the investment pool uses. That's a generator change in `tools/Housing-Tiers.ps1` / `tools/Build-Housing.ps1`, not a hand edit.
+3. **Cut the construction cost of Road Works and Harbour Works.** Both are `construction_cost_medium` (400 points) against Rail Works' `construction_cost_high` (600) and the Horse Ranch's `construction_cost_low` (200). `construction_cost_low` (200) is the obvious first test. Re-run the AI works event's numbers afterwards: cheaper works build faster, which changes how quickly short states recover.
+
+Also open, from the same day: the Rail Network Survey's next steps in its [balance log](reports/rail_survey_7_Nov_2026/BALANCE_LOG.md), starting with the AI pass's money check.
 
 ## 7. Where the archived documents are out of date
 

@@ -14,12 +14,14 @@
 on_yearly_pulse_country = {
 	events = {
 		boi_road_financing.1
+		boi_rail_survey.60
 	}
 }
 
 # Root = country
 on_monthly_pulse_country = {
 	events = {
+		boi_rail_survey.50
 		boi_ai_infrastructure.1
 		boi_ai_infrastructure.2
 	}

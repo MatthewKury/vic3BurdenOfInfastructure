@@ -1,0 +1,34 @@
+﻿namespace = boitm_parity
+
+# Headless telemetry (parity module, control runs only). The vanilla-readable
+# lines of the boi and housing modules, under the same keys, so a control run and
+# a mod run can be read by the same tools. Major powers once a year, like the
+# modules it mirrors, whose lines ran clean through two runs to 1936. Nothing here
+# comes from boi_states, the crash-linked module.
+
+boitm_parity.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { country_rank >= rank_value:major_power }
+
+	immediate = {
+		debug_log = "BOITM|works|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|railway_levels=[THIS.ScriptValue('boitm_railway_levels')|0];expenses=[THIS.ScriptValue('boitm_ct_expenses')|0]"
+		debug_log = "BOITM|politics|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|radicals=[THIS.GetCountry.GetNumRadicals|0];loyalists=[THIS.GetCountry.GetNumLoyalists|0];turmoil=[THIS.ScriptValue('boitm_ct_turmoil')|4];at_war=[THIS.ScriptValue('boitm_ct_at_war')|0]"
+		debug_log = "BOITM|budget|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|gold_reserves=[THIS.ScriptValue('boitm_gold_reserves')|0]"
+		debug_log = "BOITM|debt|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|scaled_debt=[THIS.ScriptValue('boitm_scaled_debt')|2]"
+		every_scope_state = {
+			debug_log = "BOIPOL|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|impact=[THIS.GetState.GetStateRegion.GetPollutionImpact|4];generation=[THIS.GetState.GetPollutionGeneration|1]"
+		}
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=automobiles;price=[GetGoods('automobiles').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('automobiles').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('automobiles').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=oil;price=[GetGoods('oil').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('oil').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('oil').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=electricity;price=[GetGoods('electricity').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('electricity').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('electricity').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=coal;price=[GetGoods('coal').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('coal').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('coal').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=wood;price=[GetGoods('wood').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('wood').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('wood').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=services;price=[GetGoods('services').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('services').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('services').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=iron;price=[GetGoods('iron').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('iron').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('iron').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=steel;price=[GetGoods('steel').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('steel').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('steel').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=glass;price=[GetGoods('glass').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('glass').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('glass').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+		debug_log = "BOITM|goods|[TimeKeeper.GetCurrentDate.GetString]|[THIS.GetCountry.GetTagName]|goods=copper;price=[GetGoods('copper').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketPrice|2];buy=[GetGoods('copper').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|2];sell=[GetGoods('copper').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketSellOrders|2]"
+	}
+}

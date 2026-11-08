@@ -1,10 +1,10 @@
 # State<TAB>Horse Ranch levels. New ranches only; core, sole-owner, incorporated,
+# 1.15.0 (2026-11-06): Oryol left this list, because the 1.15 split from Tula makes it pass curation itself.
 # and declared arable headroom were checked against the installed 1.13 history.
 # Historic horse regions and arable states near opening horse demand.
 STATE_AUVERGNE_LIMOUSIN	6
 STATE_YORKSHIRE	6
 STATE_LOWLANDS	5
-STATE_ORYOL	5
 STATE_KAZAN	5
 STATE_OHIO	5
 STATE_TOHOKU	5
@@ -15,3 +15,16 @@ STATE_BAVARIA	4
 STATE_MORAVIA	4
 STATE_ZHILI	4
 STATE_NEW_CASTILE	4
+# 1.15 balance pass 3 (2026-11-06): starting markets at 0.05-0.45 horse coverage, below the
+# 0.5 shortage line, lost 10-22% of GDP. Bihar and East Java are company and colonial states,
+# never core to their owner; Test-HorseSeedSafety.ps1 allows them by name.
+STATE_BIHAR	8
+STATE_SHANDONG	4
+STATE_BEIJING	4
+STATE_EAST_JAVA	4
+# 1.15 balance pass 4 (2026-11-06): the British market (with British India) opened at 0.39-0.49
+# horse coverage at the £52.50 ceiling. English draught-horse homelands: the Shire (Midlands),
+# the Suffolk Punch (East Anglia), and Exmoor and Dartmoor ponies (West Country).
+STATE_MIDLANDS	6
+STATE_EAST_ANGLIA	4
+STATE_WEST_COUNTRY	4

@@ -1,0 +1,74 @@
+﻿# Headless telemetry (rail_survey module). Country scope unless noted.
+# Each guards its variable, so a log line never prints blank.
+
+boitm_rs_var_progress = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_progress } value = var:boi_rs_progress }
+}
+boitm_rs_var_quality = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_quality } value = var:boi_rs_quality }
+}
+boitm_rs_var_goal = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_goal } value = var:boi_rs_goal }
+}
+boitm_rs_var_states = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_states } value = var:boi_rs_states }
+}
+boitm_rs_var_months = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_months } value = var:boi_rs_months }
+}
+boitm_rs_var_last_levels = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_last_levels } value = var:boi_rs_last_levels }
+}
+boitm_rs_var_last_quality = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_last_quality } value = var:boi_rs_last_quality }
+}
+boitm_rs_var_last_months = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_last_months } value = var:boi_rs_last_months }
+}
+boitm_rs_var_last_states = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_last_states } value = var:boi_rs_last_states }
+}
+boitm_rs_var_police_q = {
+	value = 1
+	if = { limit = { has_variable = boi_rs_police_quality_mult } value = var:boi_rs_police_quality_mult }
+}
+boitm_rs_var_completed = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_surveys_completed } value = var:boi_rs_surveys_completed }
+}
+boitm_rs_weekly_cost = {
+	value = 0
+	if = { limit = { has_variable = boi_rs_goal } value = boi_rs_weekly_cost }
+}
+boitm_rs_expenses_share = {
+	value = boitm_rs_weekly_cost
+	divide = {
+		value = total_expenses
+		min = 1
+	}
+	multiply = 100
+}
+
+# State scope.
+boitm_rs_state_rail_works = {
+	value = boi_rail_works_levels_state
+}
+boitm_rs_state_cap = {
+	value = boi_rail_cap
+}
+
+boitm_rs_gold = {
+	value = gold_reserves
+}
+boitm_rs_scaled_debt = {
+	value = scaled_debt
+}

@@ -34,6 +34,7 @@
 #
 #  NOT shadowed: pm_anchorage (has no state_infrastructure_add),
 #  and the passenger-carriage PMs (transportation output only).
+#  1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # ================================================================
 
 

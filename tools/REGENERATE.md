@@ -6,14 +6,14 @@ housing files are in section 3. Set `GAME` first:
 
 ```bash
 GAME="/c/Program Files (x86)/Steam/steamapps/common/Victoria 3/game"
-MOD="/c/Users/mkury/Documents/Paradox Interactive/Victoria 3/mod/BurdenOfInfrastructure"
+MOD="/c/Users/mkury/Documents/Paradox Interactive/Victoria 3/mod/BurdenOfInfastructure"
 ```
 
 ## 1. State regions — the arable whitelist
 
 A building whose group has `land_usage = rural` can only be built in states
 whose `arable_resources` list names it. `building_boi_horse_ranch` must be
-inserted into all 675 lists or it cannot be built anywhere on Earth.
+inserted into all 676 lists (1.15.0; 675 on 1.13) or it cannot be built anywhere on Earth.
 
 ```bash
 mkdir -p "$MOD/map_data/state_regions"
@@ -29,7 +29,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File \
 
 ```
 
-Expect **16 files**, **675** Horse Ranch whitelist insertions, and **12**
+Expect **16 files**, **676** (1.15.0) Horse Ranch whitelist insertions, and **12**
 Horse-Breeding Traditions assignments:
 
 ```bash
@@ -45,7 +45,7 @@ created during world initialization start staffed**.
 Extract the two inputs, then generate:
 
 ```bash
-# state -> owner (1147 actual pairs, 675 unique states; comments excluded)
+# state -> owner (1156 actual pairs, 676 unique states on 1.15.0; comments excluded)
 awk '
   { sub(/#.*/, "") }
   /^[[:space:]]*"?s:STATE_[A-Z_]+"?[[:space:]]*=/ { s=$1; gsub(/"/,"",s); sub(/^s:/,"",s); st=s }
@@ -114,11 +114,20 @@ awk -f "$MOD/tools/gen_seed.awk" /tmp/pairs.txt /tmp/ranch.txt /tmp/owned_region
 identical seed output. Keep the `sort > /tmp/regions.txt` step if this procedure
 is adapted.
 
-Expected output on 1.13 — the script prints these counts to stderr:
+Expected output on 1.15.0 — the script prints these counts to stderr:
 
 ```
-generated: 20 Public Works (40 levels), 139 Harbour Works (141 levels), 216 Horse Ranches (492 levels)
+generated: 36 Public Works (87 levels), 139 Harbour Works (141 levels), 223 Horse Ranches (525 levels)   # 1.15.0 balance pass 4; 216 / 492 on 1.13
 ```
+
+`infrastructure_seed_plan.tsv` has no comment lines, because `Test-Seed.ps1`
+rejects them. Since 1.15 balance pass 2 (2026-11-06), its Public Works column is
+more than rail and port replacement. It also carries 47 levels in 26 states that
+the 1836 opening left short, mostly through the housing seed's own infrastructure
+use. They were sized at one level per 10 points of mean April 1836 shortfall
+across the 4 `boi115_pass1` games, in markets where horses can be bought. The
+reasoning is in `docs/reports/balance_6_Nov_2026_1.15/BALANCE_LOG.md`. If the
+housing seed changes, remeasure these.
 
 To change how scarce horses are, edit a state's tier in `tools/horse_seed_tiers.tsv`
 or run `python tools/Set-HorseSeedTiers.py --retain T1 T2 T3 T4` (current defaults
@@ -156,7 +165,7 @@ Sanity checks:
 
 ```bash
 f="$MOD/common/history/buildings/zz_boi_buildings.txt"
-grep -c '^	s:STATE_' "$f"                       # 675
+grep -c '^	s:STATE_' "$f"                       # 320 states with a seeded building (1.15.0 pass 2)
 echo "$(grep -o '{' "$f"|wc -l) $(grep -o '}' "$f"|wc -l)"   # must match
 head -c 3 "$f" | od -An -tx1                     # ef bb bf
 ```

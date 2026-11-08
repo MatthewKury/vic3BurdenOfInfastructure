@@ -261,7 +261,8 @@ foreach ($block in (Get-HousingScriptBlocks $generatedSource)) {
 $ranch = [regex]::Replace($buildings['building_boi_horse_ranch'], '(?m)#[^\r\n]*', '')
 Assert-Housing ($ranch -match 'production_method_groups\s*=\s*\{[^}]*\bpmg_boi_company_housing\b') 'The Horse Ranch must list pmg_boi_company_housing.'
 $ruralCount++
-Assert-Housing ($ruralCount -eq 27 -and $subsistenceCount -eq 5) 'Rural coverage changed; review expected supported buildings.'
+# 1.15.0: +copper mine (company), +Cossack Host (subsistence).
+Assert-Housing ($ruralCount -eq 28 -and $subsistenceCount -eq 6) 'Rural coverage changed; review expected supported buildings.'
 
 # The 1836 seed places only buildings available at the start, for real starting owners.
 $seed = [IO.File]::ReadAllText((Join-Path $ModPath 'common/history/buildings/zz_boi_housing_seed_generated.txt'))
@@ -310,7 +311,9 @@ foreach ($file in $housingFiles) {
         @{ list='production_methods'; domain='production_methods' }
     )) {
         foreach ($match in [regex]::Matches($source, ('\b' + $reference.list + '\s*=\s*\{([^{}]*)\}'))) {
-            foreach ($key in ($match.Groups[1].Value.Trim() -split '\s+')) {
+            # Drop comments first: 1.15's copper mine has one inside its PM group list.
+            $listText = [regex]::Replace($match.Groups[1].Value, '#[^\r\n]*', '')
+            foreach ($key in ($listText.Trim() -split '\s+')) {
                 Assert-Housing ($known[$reference.domain].ContainsKey($key)) "Unknown $($reference.domain) list entry: $key"
             }
         }

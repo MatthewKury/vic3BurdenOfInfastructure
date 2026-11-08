@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="414.72pt" viewBox="0 0 720 414.72" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.11.2, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 414.72 
+L 720 414.72 
+L 720 0 
+L 0 0 
+z
+" style="fill: #fcfcfb"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 30.96125 380.273086 
+L 710.28 380.273086 
+L 710.28 22.858359 
+L 30.96125 22.858359 
+z
+" style="fill: #fcfcfb"/>
+   </g>
+   <g clip-path="url(#p2dd9c890ef)">
+    <image xlink:href="data:image/png;base64,
+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p3TyclpndX29HTwAAeJVuJv8/0wUWAACABAELAABAgoAFAAAgQcACAACQIGABAABIELAAAAAkCFgAAAASBCwAAAAJAhYAAIAEAQsAAECCgAUAACBBwAIAAJAgYAEAAEgQsAAAACQIWAAAABIELAAAAAkCFgAAgAQBCwAAQIKABQAAIEHAAgAAkCBgAQAASBCwAAAAJAhYAAAAEgQsAAAACQIWAACABAELAABAgoAFAAAgQcACAACQIGABAABI2Kzr+bJM7HBcpvXp82n0BJ7p/nrr7QAA4D9ygQUAACBBwAIAAJAgYAEAAEgQsAAAACQIWAAAABIELAAAAAkCFgAAgAQBCwAAQIKABQAAIEHAAgAAkCBgAQAASBCwAAAAJAhYAAAAEgQsAAAACQIWAACABAELAABAgoAFAAAgQcACAACQIGABAABIELAAAAAkCFgAAAASBCwAAAAJAhYAAIAEAQsAAECCgAUAACBBwAIAAJAgYAEAAEgQsAAAACS8uXk4LTP78vX3ZVaPt1ejJwAAAPw0LrAAAAAkCFgAAAASBCwAAAAJAhYAAIAEAQsAAECCgAUAACBBwAIAAJAgYAEAAEgQsAAAACQIWAAAABIELAAAAAkCFgAAgAQBCwAAQIKABQAAIEHAAgAAkCBgAQAASBCwAAAAJAhYAAAAEgQsAAAACQIWAACABAELAABAgoAFAAAgQcACAACQIGABAABIELAAAAAkCFgAAAASBCwAAAAJAhYAAICEN1++/r7M7OP7q9ETAAAAforDce6HdoEFAAAgQcACAACQIGABAABIELAAAAAkCFgAAAASBCwAAAAJAhYAAIAEAQsAAECCgAUAACBBwAIAAJAgYAEAAEgQsAAAACQIWAAAABIELAAAAAkCFgAAgAQBCwAAQIKABQAAIEHAAgAAkCBgAQAASBCwAAAAJAhYAAAAEgQsAAAACQIWAACABAELAABAgoAFAAAgQcACAACQIGABAABIELAAAAAsBX8ArbWZSxT4Vk0AAAAASUVORK5CYII=" id="image9eb0bfb0b9" transform="scale(1 -1) translate(0 -357.12)" x="30.96" y="-23.04" width="679.68" height="357.12"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1"/>
+     <g id="text_1">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="50.941213" y="390.325332" transform="rotate(-0 50.941213 390.325332)">1</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_2"/>
+     <g id="text_2">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="90.90114" y="390.325332" transform="rotate(-0 90.90114 390.325332)">2</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_3"/>
+     <g id="text_3">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="130.861066" y="390.325332" transform="rotate(-0 130.861066 390.325332)">3</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_4"/>
+     <g id="text_4">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="170.820993" y="390.325332" transform="rotate(-0 170.820993 390.325332)">4</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_5"/>
+     <g id="text_5">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="210.780919" y="390.325332" transform="rotate(-0 210.780919 390.325332)">5</text>
+     </g>
+    </g>
+    <g id="xtick_6">
+     <g id="line2d_6"/>
+     <g id="text_6">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="250.740846" y="390.325332" transform="rotate(-0 250.740846 390.325332)">6</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_7"/>
+     <g id="text_7">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="290.700772" y="390.325332" transform="rotate(-0 290.700772 390.325332)">7</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_8"/>
+     <g id="text_8">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="330.660699" y="390.325332" transform="rotate(-0 330.660699 390.325332)">8</text>
+     </g>
+    </g>
+    <g id="xtick_9">
+     <g id="line2d_9"/>
+     <g id="text_9">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="370.620625" y="390.325332" transform="rotate(-0 370.620625 390.325332)">9</text>
+     </g>
+    </g>
+    <g id="xtick_10">
+     <g id="line2d_10"/>
+     <g id="text_10">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="410.580551" y="390.325332" transform="rotate(-0 410.580551 390.325332)">10</text>
+     </g>
+    </g>
+    <g id="xtick_11">
+     <g id="line2d_11"/>
+     <g id="text_11">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="450.540478" y="390.325332" transform="rotate(-0 450.540478 390.325332)">11</text>
+     </g>
+    </g>
+    <g id="xtick_12">
+     <g id="line2d_12"/>
+     <g id="text_12">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="490.500404" y="390.325332" transform="rotate(-0 490.500404 390.325332)">12</text>
+     </g>
+    </g>
+    <g id="xtick_13">
+     <g id="line2d_13"/>
+     <g id="text_13">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="530.460331" y="390.325332" transform="rotate(-0 530.460331 390.325332)">13</text>
+     </g>
+    </g>
+    <g id="xtick_14">
+     <g id="line2d_14"/>
+     <g id="text_14">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="570.420257" y="390.325332" transform="rotate(-0 570.420257 390.325332)">14</text>
+     </g>
+    </g>
+    <g id="xtick_15">
+     <g id="line2d_15"/>
+     <g id="text_15">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="610.380184" y="390.325332" transform="rotate(-0 610.380184 390.325332)">15</text>
+     </g>
+    </g>
+    <g id="xtick_16">
+     <g id="line2d_16"/>
+     <g id="text_16">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="650.34011" y="390.325332" transform="rotate(-0 650.34011 390.325332)">16</text>
+     </g>
+    </g>
+    <g id="xtick_17">
+     <g id="line2d_17"/>
+     <g id="text_17">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="690.300037" y="390.325332" transform="rotate(-0 690.300037 390.325332)">17</text>
+     </g>
+    </g>
+    <g id="text_18">
+     <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #52514e" x="370.620625" y="402.882188" transform="rotate(-0 370.620625 402.882188)">GDP rank among these 17 at 1886-01</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_18"/>
+     <g id="text_19">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="36.64668" transform="rotate(-0 27.46125 36.64668)">CHI</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_19"/>
+     <g id="text_20">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="57.671076" transform="rotate(-0 27.46125 57.671076)">GBR</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_20"/>
+     <g id="text_21">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="78.695472" transform="rotate(-0 27.46125 78.695472)">USA</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_21"/>
+     <g id="text_22">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="99.719867" transform="rotate(-0 27.46125 99.719867)">PRU</text>
+     </g>
+    </g>
+    <g id="ytick_5">
+     <g id="line2d_22"/>
+     <g id="text_23">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="120.744263" transform="rotate(-0 27.46125 120.744263)">RUS</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_23"/>
+     <g id="text_24">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="141.768659" transform="rotate(-0 27.46125 141.768659)">FRA</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_24"/>
+     <g id="text_25">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="162.793054" transform="rotate(-0 27.46125 162.793054)">SPA</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_25"/>
+     <g id="text_26">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="183.81745" transform="rotate(-0 27.46125 183.81745)">AUS</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_26"/>
+     <g id="text_27">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="204.841846" transform="rotate(-0 27.46125 204.841846)">PAN</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_27"/>
+     <g id="text_28">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="225.866241" transform="rotate(-0 27.46125 225.866241)">TUR</text>
+     </g>
+    </g>
+    <g id="ytick_11">
+     <g id="line2d_28"/>
+     <g id="text_29">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="246.890637" transform="rotate(-0 27.46125 246.890637)">JAP</text>
+     </g>
+    </g>
+    <g id="ytick_12">
+     <g id="line2d_29"/>
+     <g id="text_30">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="267.915033" transform="rotate(-0 27.46125 267.915033)">BRZ</text>
+     </g>
+    </g>
+    <g id="ytick_13">
+     <g id="line2d_30"/>
+     <g id="text_31">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="288.939428" transform="rotate(-0 27.46125 288.939428)">BEL</text>
+     </g>
+    </g>
+    <g id="ytick_14">
+     <g id="line2d_31"/>
+     <g id="text_32">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="309.963824" transform="rotate(-0 27.46125 309.963824)">SWE</text>
+     </g>
+    </g>
+    <g id="ytick_15">
+     <g id="line2d_32"/>
+     <g id="text_33">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="330.98822" transform="rotate(-0 27.46125 330.98822)">NET</text>
+     </g>
+    </g>
+    <g id="ytick_16">
+     <g id="line2d_33"/>
+     <g id="text_34">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="352.012615" transform="rotate(-0 27.46125 352.012615)">SIC</text>
+     </g>
+    </g>
+    <g id="ytick_17">
+     <g id="line2d_34"/>
+     <g id="text_35">
+      <text style="font-size: 9px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: end; fill: #52514e" x="27.46125" y="373.037011" transform="rotate(-0 27.46125 373.037011)">SIA</text>
+     </g>
+    </g>
+   </g>
+   <g id="text_36">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="50.941213" y="35.311475" transform="rotate(-0 50.941213 35.311475)">3</text>
+   </g>
+   <g id="text_37">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="90.90114" y="35.311475" transform="rotate(-0 90.90114 35.311475)">1</text>
+   </g>
+   <g id="text_38">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="690.300037" y="35.311475" transform="rotate(-0 690.300037 35.311475)">1</text>
+   </g>
+   <g id="text_39">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="50.941213" y="56.335871" transform="rotate(-0 50.941213 56.335871)">2</text>
+   </g>
+   <g id="text_40">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="90.90114" y="56.335871" transform="rotate(-0 90.90114 56.335871)">3</text>
+   </g>
+   <g id="text_41">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="90.90114" y="77.360267" transform="rotate(-0 90.90114 77.360267)">1</text>
+   </g>
+   <g id="text_42">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="130.861066" y="77.360267" transform="rotate(-0 130.861066 77.360267)">2</text>
+   </g>
+   <g id="text_43">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="170.820993" y="77.360267" transform="rotate(-0 170.820993 77.360267)">2</text>
+   </g>
+   <g id="text_44">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="130.861066" y="98.384662" transform="rotate(-0 130.861066 98.384662)">1</text>
+   </g>
+   <g id="text_45">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="210.780919" y="98.384662" transform="rotate(-0 210.780919 98.384662)">2</text>
+   </g>
+   <g id="text_46">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="690.300037" y="98.384662" transform="rotate(-0 690.300037 98.384662)">2</text>
+   </g>
+   <g id="text_47">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="130.861066" y="119.409058" transform="rotate(-0 130.861066 119.409058)">1</text>
+   </g>
+   <g id="text_48">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="170.820993" y="119.409058" transform="rotate(-0 170.820993 119.409058)">3</text>
+   </g>
+   <g id="text_49">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="250.740846" y="119.409058" transform="rotate(-0 250.740846 119.409058)">1</text>
+   </g>
+   <g id="text_50">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="130.861066" y="140.433454" transform="rotate(-0 130.861066 140.433454)">1</text>
+   </g>
+   <g id="text_51">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="210.780919" y="140.433454" transform="rotate(-0 210.780919 140.433454)">1</text>
+   </g>
+   <g id="text_52">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="290.700772" y="140.433454" transform="rotate(-0 290.700772 140.433454)">1</text>
+   </g>
+   <g id="text_53">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="650.34011" y="140.433454" transform="rotate(-0 650.34011 140.433454)">1</text>
+   </g>
+   <g id="text_54">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="690.300037" y="140.433454" transform="rotate(-0 690.300037 140.433454)">1</text>
+   </g>
+   <g id="text_55">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="210.780919" y="161.457849" transform="rotate(-0 210.780919 161.457849)">1</text>
+   </g>
+   <g id="text_56">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="250.740846" y="161.457849" transform="rotate(-0 250.740846 161.457849)">1</text>
+   </g>
+   <g id="text_57">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="290.700772" y="161.457849" transform="rotate(-0 290.700772 161.457849)">2</text>
+   </g>
+   <g id="text_58">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="330.660699" y="161.457849" transform="rotate(-0 330.660699 161.457849)">1</text>
+   </g>
+   <g id="text_59">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="250.740846" y="182.482245" transform="rotate(-0 250.740846 182.482245)">1</text>
+   </g>
+   <g id="text_60">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="370.620625" y="182.482245" transform="rotate(-0 370.620625 182.482245)">1</text>
+   </g>
+   <g id="text_61">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="650.34011" y="182.482245" transform="rotate(-0 650.34011 182.482245)">2</text>
+   </g>
+   <g id="text_62">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="690.300037" y="182.482245" transform="rotate(-0 690.300037 182.482245)">1</text>
+   </g>
+   <g id="text_63">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="370.620625" y="203.506641" transform="rotate(-0 370.620625 203.506641)">1</text>
+   </g>
+   <g id="text_64">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="610.380184" y="203.506641" transform="rotate(-0 610.380184 203.506641)">3</text>
+   </g>
+   <g id="text_65">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="650.34011" y="203.506641" transform="rotate(-0 650.34011 203.506641)">1</text>
+   </g>
+   <g id="text_66">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="210.780919" y="224.531036" transform="rotate(-0 210.780919 224.531036)">1</text>
+   </g>
+   <g id="text_67">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="250.740846" y="224.531036" transform="rotate(-0 250.740846 224.531036)">2</text>
+   </g>
+   <g id="text_68">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="330.660699" y="224.531036" transform="rotate(-0 330.660699 224.531036)">2</text>
+   </g>
+   <g id="text_69">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="370.620625" y="245.555432" transform="rotate(-0 370.620625 245.555432)">1</text>
+   </g>
+   <g id="text_70">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="570.420257" y="245.555432" transform="rotate(-0 570.420257 245.555432)">3</text>
+   </g>
+   <g id="text_71">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="650.34011" y="245.555432" transform="rotate(-0 650.34011 245.555432)">1</text>
+   </g>
+   <g id="text_72">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="330.660699" y="266.579828" transform="rotate(-0 330.660699 266.579828)">1</text>
+   </g>
+   <g id="text_73">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="370.620625" y="266.579828" transform="rotate(-0 370.620625 266.579828)">1</text>
+   </g>
+   <g id="text_74">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="410.580551" y="266.579828" transform="rotate(-0 410.580551 266.579828)">3</text>
+   </g>
+   <g id="text_75">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="290.700772" y="287.604223" transform="rotate(-0 290.700772 287.604223)">2</text>
+   </g>
+   <g id="text_76">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="450.540478" y="287.604223" transform="rotate(-0 450.540478 287.604223)">1</text>
+   </g>
+   <g id="text_77">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="490.500404" y="287.604223" transform="rotate(-0 490.500404 287.604223)">1</text>
+   </g>
+   <g id="text_78">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="530.460331" y="287.604223" transform="rotate(-0 530.460331 287.604223)">1</text>
+   </g>
+   <g id="text_79">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="370.620625" y="308.628619" transform="rotate(-0 370.620625 308.628619)">1</text>
+   </g>
+   <g id="text_80">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="410.580551" y="308.628619" transform="rotate(-0 410.580551 308.628619)">2</text>
+   </g>
+   <g id="text_81">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="450.540478" y="308.628619" transform="rotate(-0 450.540478 308.628619)">1</text>
+   </g>
+   <g id="text_82">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="490.500404" y="308.628619" transform="rotate(-0 490.500404 308.628619)">1</text>
+   </g>
+   <g id="text_83">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="330.660699" y="329.653015" transform="rotate(-0 330.660699 329.653015)">1</text>
+   </g>
+   <g id="text_84">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="450.540478" y="329.653015" transform="rotate(-0 450.540478 329.653015)">1</text>
+   </g>
+   <g id="text_85">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="490.500404" y="329.653015" transform="rotate(-0 490.500404 329.653015)">1</text>
+   </g>
+   <g id="text_86">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="570.420257" y="329.653015" transform="rotate(-0 570.420257 329.653015)">1</text>
+   </g>
+   <g id="text_87">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="610.380184" y="329.653015" transform="rotate(-0 610.380184 329.653015)">1</text>
+   </g>
+   <g id="text_88">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="450.540478" y="350.67741" transform="rotate(-0 450.540478 350.67741)">2</text>
+   </g>
+   <g id="text_89">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #ffffff" x="530.460331" y="350.67741" transform="rotate(-0 530.460331 350.67741)">3</text>
+   </g>
+   <g id="text_90">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="490.500404" y="371.701806" transform="rotate(-0 490.500404 371.701806)">2</text>
+   </g>
+   <g id="text_91">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="530.460331" y="371.701806" transform="rotate(-0 530.460331 371.701806)">1</text>
+   </g>
+   <g id="text_92">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="570.420257" y="371.701806" transform="rotate(-0 570.420257 371.701806)">1</text>
+   </g>
+   <g id="text_93">
+    <text style="font-size: 7.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: middle; fill: #0b0b0b" x="610.380184" y="371.701806" transform="rotate(-0 610.380184 371.701806)">1</text>
+   </g>
+   <g id="text_94">
+    <text style="font-weight: 600; font-size: 9.5px; font-family: 'Segoe UI', 'DejaVu Sans'; text-anchor: start; fill: #0b0b0b" x="30.96125" y="16.858359" transform="rotate(-0 30.96125 16.858359)">vanilla: members (of 5) placing each power at each GDP rank</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p2dd9c890ef">
+   <rect x="30.96125" y="22.858359" width="679.31875" height="357.414727"/>
+  </clipPath>
+ </defs>
+</svg>

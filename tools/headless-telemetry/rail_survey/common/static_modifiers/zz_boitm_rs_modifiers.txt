@@ -1,0 +1,7 @@
+﻿# Headless telemetry (rail_survey module): test-only. Makes one French
+# state short of infrastructure for 4 months, so the AI cap pass
+# (boi_rail_survey.60) has a state to act on. See boitm_rs.20.
+boitm_rs_infra_cut = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds
+	state_infrastructure_add = -300
+}

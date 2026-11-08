@@ -1,17 +1,18 @@
 # Existing ranch states that game history marks unincorporated. Keep their
 # previously seeded three levels; the core-culture proxy does not catch these.
+# 1.15.0 (2026-11-06): Tartaria became Saratov (same 46 provinces), still unincorporated.
+# 1.15.0 (2026-11-06): Ural left this list; 1.15 history makes it incorporated, so curation covers it.
 STATE_ARKANSAS	3
 STATE_IOWA	3
 STATE_IRKUTSK	3
 STATE_MICHIGAN	3
 STATE_OUTER_MANCHURIA	3
 STATE_STAVROPOL	3
-STATE_TARTARIA	3
+STATE_SARATOV	3
 STATE_TOBOLSK	3
 STATE_TOMSK	3
 STATE_TRANS_BAIKAL	3
 STATE_TUCUMAN	3
 STATE_ULSTER	3
-STATE_URAL	3
 STATE_VISAYAS	3
 STATE_WISCONSIN	3

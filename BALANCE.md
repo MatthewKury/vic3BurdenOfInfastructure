@@ -57,6 +57,10 @@ comfortably exceed that without distorting anything.
 
 Employment 5000/level (4000 laborers, 1000 farmers). Construction `low` (200).
 
+Its other groups: `pmg_sheep_ranch` (wool: +100, then grain 10 → wool 15 + fertilizer 2.5
+for +175, then +350), `pmg_fencing` (iron in, fewer laborers) and refrigeration
+(electricity in, fewer laborers).
+
 ### Infrastructure demand (`infrastructure_usage_per_level`)
 
 | Group | Usage | | Group | Usage |
@@ -144,6 +148,18 @@ arable land.
 
 Tracks livestock's +300 → +390 → +550 progression closely. **No unlocking
 technology on the base PM** — it must work in 1836.
+
+**Since 2026-11-08 it also has the Livestock Ranch's by-product and fencing groups**,
+so the comparison above holds for the whole building, not just the base group:
+
+| `pmg_boi_horse_ranch_byproduct` | Unlock | Inputs | Output | Net | Livestock's wool PM |
+|---|---|---|---|---|---|
+| pm_boi_knackers_yard | start | — | meat 3 | +90 | +100 |
+| pm_boi_manure_trade | `intensive_agriculture` | grain 5 | meat 4, fertilizer 5 | +170 | +175 |
+| pm_boi_mixed_grazing | `mechanized_farming` | grain 10 | meat 6, fertilizer 12 | +340 | +350 |
+
+`pmg_fencing` is vanilla's own group, shared with the Livestock Ranch. Refrigeration
+is left out, since horses are sold live.
 
 ### How these buildings work economically — pure cost centres
 
@@ -262,12 +278,25 @@ Needs a railway in the state (`possible`, which blocks new and further levels) a
 the `railways` technology. 400 technical staff plus 100 administrative, with its own
 `pmg_boi_rail_administration`.
 
+**Capped per state since 2026-11-07** (`has_max_level`; [Rail Network Survey
+proposal](docs/plans/01_RAIL_SURVEY_PROPOSAL.md)), and the infrastructure raised to
+match: 3× on 2026-11-07, 2.5× since 2026-11-08. The cap is 1 level, 2 in states of 70+
+provinces and 4 in states of 230+ (2/4/6 until 2026-11-08). A
+completed survey adds 1–5 levels per surveyed state, by quality. The AI pass adds 3,
+one year in four, to up to 5 states at the cap and short of infrastructure. Test values.
+
 | PM | Unlock | Input | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_permanent_way | `railways` | transportation 8 | 240 | 13 | 18.5 |
-| pm_steel_track | `steel_railway_cars` | transportation 10 | 300 | 20 | 15 |
-| pm_electric_signalling | `electric_railway` | transportation 12 | 360 | 27 | 13.3 |
-| pm_national_rail_grid | `compression_ignition` | transportation 15 | 450 | 33 | 13.6 |
+| pm_permanent_way | `railways` | transportation 8 | 240 | 32.5 (13 before) | 7.4 |
+| pm_steel_track | `steel_railway_cars` | transportation 10 | 300 | 50 (20) | 6.0 |
+| pm_electric_signalling | `electric_railway` | transportation 12 | 360 | 67.5 (27) | 5.3 |
+| pm_national_rail_grid | `compression_ignition` | transportation 15 | 450 | 82.5 (33) | 5.5 |
+
+Rail Network Survey, per survey: goal = the states' shares (6 each, plus 0.15 per urban
+centre level up to 18, plus 20% for each earlier survey of that state; 50% until 2026-11-08), divided by
+1 + 0.15 per state after the first. Progress is 1 a month, plus up to 0.5 from surplus
+bureaucracy. Cost is £60 per state plus GDP / 50,000 a week. Balance runs:
+`docs/reports/rail_survey_7_Nov_2026/BALANCE_LOG.md`.
 
 ### Financing, per works building
 
@@ -277,7 +306,7 @@ Each building has its own group on the same three laws:
 |---|---|---|---|
 | Goods input | -30% | -35% | Baseline |
 | Staff | Unchanged | -60 laborers, +50 shopkeepers, +10 capitalists | Baseline |
-| Infra per level | Road -2, Rail -2.5, Harbour -1.5 | Unchanged | Baseline |
+| Infra per level | Road -2, Rail -6.25 (-2.5 before the 2.5× change), Harbour -1.5 | Unchanged | Baseline |
 | +15% of state infrastructure | No | Road Works only | No |
 | Peasant mortality per level | Road and Rail +3%, Harbour +1% | No | No |
 | Farm and ranch throughput per level | Road and Rail +1% | No | No |

@@ -1,0 +1,25 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey bars
+#
+#  Both bars mirror country variables (boi_rs_progress, boi_rs_quality)
+#  through set_bar_progress in boi_rs_monthly, so the logic never has to
+#  read a bar. See common/script_values/52_boi_rail_survey_values.txt.
+# ================================================================
+
+boi_rs_progress_bar = {
+	name = "boi_rs_progress_bar"
+	desc = "boi_rs_progress_bar_desc"
+	default_green = yes
+	start_value = 0
+	min_value = 0
+	max_value = 100
+}
+
+boi_rs_quality_bar = {
+	name = "boi_rs_quality_bar"
+	desc = "boi_rs_quality_bar_desc"
+	default = yes
+	start_value = 50
+	min_value = 0
+	max_value = 100
+}

@@ -56,9 +56,14 @@ building_boi_horse_ranch = {
 	# group, written here by hand. tools/Build-Housing.ps1 adds it to
 	# vanilla rural buildings only; a generated copy of this block
 	# would sort first (00_) and silently replace this definition.
+	# The by-product and fencing groups match vanilla's Livestock Ranch
+	# (2026-11-08); pmg_fencing is vanilla's own group. Its refrigeration
+	# group is left out: horses travel live.
 	production_method_groups = {
 		pmg_boi_company_housing
 		pmg_boi_horse_ranch_method
+		pmg_boi_horse_ranch_byproduct
+		pmg_fencing
 	}
 
 	required_construction = construction_cost_low
@@ -201,6 +206,12 @@ building_boi_rail_works = {
 
 	required_construction = construction_cost_high
 
+	# Capped per state (Rail Network Survey, docs/plans/01_RAIL_SURVEY_PROPOSAL.md).
+	# The engine reads the cap from state_building_boi_rail_works_max_level_add,
+	# declared in 50_boi_modifier_types.txt and set by the boi_rail_cap_*
+	# static modifiers that events/boi_rail_survey_events.txt keeps on states.
+	has_max_level = yes
+
 	# Same reason as Road Works: AI budget cuts ignore ai_value.
 	downsizeable = no
 
@@ -219,6 +230,7 @@ building_boi_rail_works = {
 			infrastructure_delta < 5
 			owner = { in_default = no }
 			has_building = building_railway
+			boi_ai_rail_works_room > 0
 			NOT = {
 				any_scope_building = {
 					is_building_type = building_boi_rail_works

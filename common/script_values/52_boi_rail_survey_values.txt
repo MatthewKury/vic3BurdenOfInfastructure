@@ -1,0 +1,320 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey values
+#
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md. All numbers are
+#  test values. Progress and quality are country variables
+#  (boi_rs_progress, boi_rs_quality, both 0-100); the journal entry's
+#  bars only mirror them, so every comparison below reads a variable
+#  set in a monthly pulse or hidden event, never in an event option
+#  (VIC3_MODDING_LESSONS.md §7).
+# ================================================================
+
+# ── Rail Works cap (state scope) ────────────────────────────────
+
+# Size thresholds: 70 provinces is the 80th percentile of BOI's state
+# regions, 230 the 95th (measured 2026-11-07 from map_data/state_regions).
+# Caps 1/2/4 since 2026-11-08 (were 2/4/6): at 2.5x, one Permanent Way
+# level gives 32.5 infrastructure, so an early survey matters.
+boi_rail_cap_size = {
+	value = 1
+	if = {
+		limit = { num_provinces >= 230 }
+		value = 4
+	}
+	else_if = {
+		limit = { num_provinces >= 70 }
+		value = 2
+	}
+}
+
+# The engine's cap, repeated: size modifier plus survey gains. Script
+# can't read a building's max level.
+boi_rail_cap = {
+	value = boi_rail_cap_size
+	if = {
+		limit = { has_variable = boi_rail_cap_surveyed }
+		add = var:boi_rail_cap_surveyed
+	}
+}
+
+boi_rail_works_levels_state = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_rail_works }
+		add = level
+	}
+}
+
+boi_rail_works_cap_room = {
+	value = boi_rail_cap
+	subtract = boi_rail_works_levels_state
+	min = 0
+}
+
+# ── Survey goal (state scope) ───────────────────────────────────
+
+boi_rs_urban_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_urban_center }
+		add = level
+	}
+}
+
+# A state's share of the goal, in months at the base rate: 6, plus 6 for
+# every R = 40 urban centre levels (R is a guess at a well-developed state
+# in the 1930s; world urban centre levels reach about 18,000 by 1936 in
+# the vanilla 1.15 baseline), at most 18. Each earlier survey of the
+# state adds 20% of that (was 50% until 2026-11-08, which put a fourth
+# survey of the same states at 63-75 months).
+boi_rs_state_goal_share = {
+	value = boi_rs_urban_levels
+	multiply = 0.15
+	max = 18
+	add = 6
+	if = {
+		limit = { has_variable = boi_rs_times_surveyed }
+		multiply = {
+			value = var:boi_rs_times_surveyed
+			multiply = 0.2
+			add = 1
+		}
+	}
+}
+
+# ── Running the survey (country scope) ──────────────────────────
+
+# The states' shares, divided by 1 + 0.15 per state after the first: a
+# bigger survey shares its parties and overheads. Without this (pass 1),
+# Britain's 13-state home region took 92-100 months and the USA's 27 took
+# 155. Rail survey balance pass 2.
+boi_rs_goal_total = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_in_rail_survey }
+		add = boi_rs_state_goal_share
+	}
+	divide = {
+		value = boi_rs_state_count
+		subtract = 1
+		multiply = 0.15
+		add = 1
+		min = 1
+	}
+	min = 1
+}
+
+boi_rs_state_count = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_in_rail_survey }
+		add = 1
+	}
+}
+
+# Surplus bureaucracy as a share of usage, times 0.5, at most +0.5: each
+# 10% surplus speeds the survey by 5%.
+boi_rs_bureaucracy_bonus = {
+	value = produced_bureaucracy
+	subtract = bureaucracy_usage
+	divide = {
+		value = bureaucracy_usage
+		min = 1
+	}
+	multiply = 0.5
+	min = 0
+	max = 0.5
+}
+
+boi_rs_monthly_rate = {
+	value = 1
+	add = boi_rs_bureaucracy_bonus
+}
+
+# Percentage points of progress per month.
+boi_rs_monthly_pct = {
+	value = boi_rs_monthly_rate
+	multiply = 100
+	divide = {
+		value = var:boi_rs_goal
+		min = 1
+	}
+}
+
+# Weekly expenses: £60 per surveyed state plus GDP / 50,000. Pass 2 had
+# £100, which put the USA's 27-state surveys at about 3-3.5% of expenses
+# against a 1-2% aim. Rail survey balance pass 3.
+boi_rs_weekly_cost = {
+	value = gdp
+	divide = 50000
+	add = {
+		value = boi_rs_state_count
+		multiply = 60
+	}
+}
+
+# ── Police (country scope) ──────────────────────────────────────
+
+boi_rs_police_level = {
+	value = 0
+	if = {
+		limit = { institution_investment_level = { institution = institution_police value >= 1 } }
+		add = 1
+	}
+	if = {
+		limit = { institution_investment_level = { institution = institution_police value >= 2 } }
+		add = 1
+	}
+	if = {
+		limit = { institution_investment_level = { institution = institution_police value >= 3 } }
+		add = 1
+	}
+	if = {
+		limit = { institution_investment_level = { institution = institution_police value >= 4 } }
+		add = 1
+	}
+	if = {
+		limit = { institution_investment_level = { institution = institution_police value >= 5 } }
+		add = 1
+	}
+}
+
+# Multiplies the quality gained from "force them out" options. Local
+# police +5% per level, Dedicated +10%, Secret as Dedicated plus a flat
+# +10%, Militarized +25%.
+boi_rs_police_quality_mult = {
+	value = 1
+	if = {
+		limit = { has_law = law_type:law_local_police }
+		add = { value = boi_rs_police_level multiply = 0.05 }
+	}
+	else_if = {
+		limit = { has_law = law_type:law_dedicated_police }
+		add = { value = boi_rs_police_level multiply = 0.10 }
+	}
+	else_if = {
+		limit = { has_law = law_type:law_secret_police }
+		add = { value = boi_rs_police_level multiply = 0.10 }
+		add = 0.10
+	}
+	else_if = {
+		limit = { has_law = law_type:law_militarized_police }
+		add = { value = boi_rs_police_level multiply = 0.25 }
+	}
+}
+
+# Multiplies the radicals from those options: -2% per level for Local,
+# -4% for Dedicated, -4% and a flat -2% for Secret, -6% for Militarized.
+boi_rs_police_radicals_mult = {
+	value = 1
+	if = {
+		limit = { has_law = law_type:law_local_police }
+		subtract = { value = boi_rs_police_level multiply = 0.02 }
+	}
+	else_if = {
+		limit = { has_law = law_type:law_dedicated_police }
+		subtract = { value = boi_rs_police_level multiply = 0.04 }
+	}
+	else_if = {
+		limit = { has_law = law_type:law_secret_police }
+		subtract = { value = boi_rs_police_level multiply = 0.04 }
+		subtract = 0.02
+	}
+	else_if = {
+		limit = { has_law = law_type:law_militarized_police }
+		subtract = { value = boi_rs_police_level multiply = 0.06 }
+	}
+	min = 0.5
+}
+
+# ── Event amounts ───────────────────────────────────────────────
+# Quality and progress are in points of a 0-100 bar.
+
+boi_rs_forced_quality_medium = {
+	value = 10
+	multiply = var:boi_rs_police_quality_mult
+}
+
+boi_rs_forced_quality_large = {
+	value = 15
+	multiply = var:boi_rs_police_quality_mult
+}
+
+# State scope: radicals from forcing, softened by the owner's police.
+boi_rs_forced_radicals_small = {
+	value = small_radicals
+	multiply = owner.var:boi_rs_police_radicals_mult
+}
+
+boi_rs_forced_radicals_medium = {
+	value = medium_radicals
+	multiply = owner.var:boi_rs_police_radicals_mult
+}
+
+boi_rs_forced_radicals_large = {
+	value = large_radicals
+	multiply = owner.var:boi_rs_police_radicals_mult
+}
+
+# One-off payments, as a share of GDP. Britain's 1836 GDP is roughly
+# £60M, so these are about £60k, £150k and £300k.
+boi_rs_payment_small = {
+	value = gdp
+	multiply = -0.001
+	max = -1000
+}
+
+boi_rs_payment_medium = {
+	value = gdp
+	multiply = -0.0025
+	max = -2500
+}
+
+boi_rs_payment_large = {
+	value = gdp
+	multiply = -0.005
+	max = -5000
+}
+
+boi_rs_windfall_small = {
+	value = gdp
+	multiply = 0.001
+	min = 1000
+}
+
+# ── Result ──────────────────────────────────────────────────────
+
+# Rail Works levels each surveyed state gains, by final quality.
+boi_rs_result_levels = {
+	value = 1
+	if = {
+		limit = { var:boi_rs_quality >= 20 }
+		add = 1
+	}
+	if = {
+		limit = { var:boi_rs_quality >= 40 }
+		add = 1
+	}
+	if = {
+		limit = { var:boi_rs_quality >= 60 }
+		add = 1
+	}
+	if = {
+		limit = { var:boi_rs_quality >= 80 }
+		add = 1
+	}
+}
+
+# ── AI (country scope) ──────────────────────────────────────────
+
+# A year of survey expenses for the states the AI pass raises, charged
+# once. Uses boi_rs_ai_state_count, set by boi_rail_survey.60.
+boi_rs_ai_cost = {
+	value = gdp
+	divide = 50000
+	add = {
+		value = var:boi_rs_ai_state_count
+		multiply = 60
+	}
+	multiply = 52
+}

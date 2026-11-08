@@ -1,0 +1,151 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey triggers
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md.
+# ================================================================
+
+# State scope, run from the owner. Any owned state not already under
+# survey can join (unincorporated states too, for now).
+boi_rs_state_eligible = {
+	NOT = { has_variable = boi_in_rail_survey }
+}
+
+# State scope. The cap modifiers don't match what the state should have:
+# a new state (split, release, civil war) starts with none, a state may
+# grow or shrink, and a transfer may drop modifiers.
+boi_rail_cap_needs_refresh = {
+	OR = {
+		AND = {
+			boi_rail_cap_size = 1
+			NOT = { has_modifier = boi_rail_cap_normal }
+		}
+		AND = {
+			boi_rail_cap_size = 2
+			NOT = { has_modifier = boi_rail_cap_large }
+		}
+		AND = {
+			boi_rail_cap_size = 4
+			NOT = { has_modifier = boi_rail_cap_very_large }
+		}
+		AND = {
+			has_variable = boi_rail_cap_surveyed
+			NOT = { has_modifier = boi_rail_cap_survey }
+		}
+	}
+}
+
+# Country scope: the survey can start somewhere on each continent.
+boi_rs_has_eligible_in_europe = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_western_europe
+			region = sr:region_southern_europe
+			region = sr:region_balkans
+			region = sr:region_central_europe
+			region = sr:region_northern_europe
+			region = sr:region_russia
+			region = sr:region_eastern_europe
+		}
+	}
+}
+
+boi_rs_has_eligible_in_africa = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_nile_basin
+			region = sr:region_north_africa
+			region = sr:region_west_africa
+			region = sr:region_equatorial_africa
+			region = sr:region_southern_africa
+			region = sr:region_east_africa
+		}
+	}
+}
+
+boi_rs_has_eligible_in_east_asia = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_indochina
+			region = sr:region_indonesia
+			region = sr:region_south_china
+			region = sr:region_north_china
+			region = sr:region_northeast_asia
+			region = sr:region_siberia
+			region = sr:region_oceania
+		}
+	}
+}
+
+boi_rs_has_eligible_in_south_asia = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_near_east
+			region = sr:region_arabia
+			region = sr:region_greater_persia
+			region = sr:region_central_asia
+			region = sr:region_south_india
+			region = sr:region_himalayas
+			region = sr:region_north_india
+		}
+	}
+}
+
+boi_rs_has_eligible_in_north_america = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_canada
+			region = sr:region_pacific_coast
+			region = sr:region_great_plains
+			region = sr:region_atlantic_coast
+			region = sr:region_central_america
+		}
+	}
+}
+
+boi_rs_has_eligible_in_south_america = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		OR = {
+			region = sr:region_brazil
+			region = sr:region_andes
+			region = sr:region_la_plata
+			region = sr:region_gran_colombia
+		}
+	}
+}
+
+# Country scope, with $REGION$ a strategic region key.
+boi_rs_has_eligible_in_region = {
+	any_scope_state = {
+		boi_rs_state_eligible = yes
+		region = sr:$REGION$
+	}
+}
+
+boi_rs_has_any_eligible = {
+	OR = {
+		boi_rs_has_eligible_in_europe = yes
+		boi_rs_has_eligible_in_africa = yes
+		boi_rs_has_eligible_in_east_asia = yes
+		boi_rs_has_eligible_in_south_asia = yes
+		boi_rs_has_eligible_in_north_america = yes
+		boi_rs_has_eligible_in_south_america = yes
+	}
+}
+
+# Country scope. At least one state is still under this country's survey.
+boi_rs_has_surveyed_state = {
+	any_scope_state = { has_variable = boi_in_rail_survey }
+}
+
+# State scope. The AI cap pass should raise this state: Rail Works at the
+# cap, a railway to use, and short of infrastructure.
+boi_rs_ai_state_wants_cap = {
+	has_building = building_railway
+	boi_rail_works_cap_room <= 0
+	boi_ai_infrastructure_shortfall > 0
+}

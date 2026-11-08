@@ -72,6 +72,21 @@ boi_housing_enforce_work_camps_effect = {
         if = {
             limit = {
                 any_scope_building = {
+                    is_building_type = building_copper_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_town
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_copper_mine
+                production_method = pm_boi_work_camp
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
                     is_building_type = building_cotton_plantation
                     OR = {
                         has_active_production_method = pm_boi_work_town
@@ -484,6 +499,21 @@ boi_housing_enforce_work_towns_effect = {
             }
             activate_production_method = {
                 building_type = building_coffee_plantation
+                production_method = pm_boi_work_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_copper_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_serviced_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_copper_mine
                 production_method = pm_boi_work_town
             }
         }
@@ -911,6 +941,21 @@ boi_housing_enforce_serviced_towns_effect = {
         if = {
             limit = {
                 any_scope_building = {
+                    is_building_type = building_copper_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_copper_mine
+                production_method = pm_boi_serviced_town
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
                     is_building_type = building_cotton_plantation
                     OR = {
                         has_active_production_method = pm_boi_work_camp
@@ -1322,6 +1367,21 @@ boi_housing_enforce_serviced_towns_effect = {
             }
             activate_production_method = {
                 building_type = building_coffee_plantation
+                production_method = pm_boi_no_company_housing
+            }
+        }
+        if = {
+            limit = {
+                any_scope_building = {
+                    is_building_type = building_copper_mine
+                    OR = {
+                        has_active_production_method = pm_boi_work_camp
+                        has_active_production_method = pm_boi_work_town
+                    }
+                }
+            }
+            activate_production_method = {
+                building_type = building_copper_mine
                 production_method = pm_boi_no_company_housing
             }
         }

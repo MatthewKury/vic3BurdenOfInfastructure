@@ -1,0 +1,62 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey modifiers
+#
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md. All numbers are
+#  test values.
+#
+#  Rail Works has has_max_level = yes, so its per-state cap is the sum
+#  of state_building_boi_rail_works_max_level_add on the state. Every
+#  state carries exactly one size modifier (1, 2 or 4), kept in place by
+#  the monthly boi_rail_survey.50 maintenance event, plus, once surveyed,
+#  boi_rail_cap_survey applied with multiplier = the levels gained.
+# ================================================================
+
+# ── Rail Works cap, by state size (province count) ──────────────
+
+boi_rail_cap_normal = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_building_boi_rail_works_max_level_add = 1
+}
+
+boi_rail_cap_large = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_building_boi_rail_works_max_level_add = 2
+}
+
+boi_rail_cap_very_large = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_building_boi_rail_works_max_level_add = 4
+}
+
+# Applied with multiplier = var:boi_rail_cap_surveyed.
+boi_rail_cap_survey = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds
+	state_building_boi_rail_works_max_level_add = 1
+}
+
+# ── While a survey runs ─────────────────────────────────────────
+
+# Country. Scaled by the journal entry (scaling_modifiers_while_active)
+# with boi_rs_weekly_cost, so the cost follows GDP as it changes.
+boi_rail_survey_expenses = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+
+# State. Marks the states under survey; no effect of its own.
+boi_rail_survey_underway = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds
+}
+
+# ── Event outcomes ──────────────────────────────────────────────
+
+# Interest groups. Two years, decaying.
+boi_rs_ig_angered = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fist_negative.dds
+	interest_group_approval_add = -2
+}
+
+boi_rs_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 2
+}

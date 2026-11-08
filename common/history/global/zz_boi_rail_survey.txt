@@ -1,0 +1,16 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Works cap at game start
+#
+#  Puts the size cap modifier (2, 4 or 6 levels) on every state, so
+#  Rail Works can be built from the first day. If this block does not
+#  run, the monthly boi_rail_survey.50 fills the gap a month in.
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md.
+# ================================================================
+
+GLOBAL = {
+	every_country = {
+		every_scope_state = {
+			boi_rail_cap_refresh = yes
+		}
+	}
+}

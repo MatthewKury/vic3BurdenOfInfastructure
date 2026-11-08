@@ -87,6 +87,24 @@ at 14 levels for 20 years. GDP and SoL showed no collapse.
 | Moravia | 4 | Central European farm and transport demand |
 | Zhili | 4 | North Chinese distribution and Qing horse demand |
 | New Castile | 4 | Iberian breeding and Spanish demand |
+| Bihar | 8 | East India Company cavalry stud at Pusa (1796) and the Sonepur fair; added in 1.15 balance pass 3 |
+| Shandong | 4 | North China plain farm horses; pass 3 |
+| Beijing | 4 | Imperial stables and Qing horse demand; pass 3 |
+| East Java | 4 | Javanese pony breeding; pass 3 |
+| Midlands | 6 | The Shire horse; pass 4, for the British market at the ceiling price |
+| East Anglia | 4 | The Suffolk Punch; pass 4 |
+| West Country | 4 | Exmoor and Dartmoor ponies; pass 4 |
+
+**1.15.0 notes (2026-11-06).** Oryol left the additions list: after 1.15 split it from
+Tula, it passes curation on its own. The seed is 216 ranches and 491 levels after the
+patch. Balance pass 3 added four ranches and pass 4 three more, for 223 ranches and 525
+levels. Pass 4 was for the British market, which includes British India and opened at
+0.39–0.49 coverage at the £52.50 ceiling. The
+first 1.15 ensemble found the markets with no or little horse production losing 10–22%
+of GDP: British India had no ranch at all, and China, the Dutch East Indies and Japan
+were at 0.24–0.54 coverage. See `docs/reports/balance_6_Nov_2026_1.15/BALANCE_LOG.md`.
+Bihar and East Java aren't core to their owners (company and colonial states), so
+`Test-HorseSeedSafety.ps1` allows them by name.
 
 Historical anchors include the [Pompadour national stud in Limousin](https://cheval-patrimoine.culture.gouv.fr/fr/le-haras-national-de-pompadour),
 [nineteenth-century British breeding districts](https://darwin-online.org.uk/converted/pdf/1829_Lawrence_Horse_CUL-DAR.LIB.356.pdf),

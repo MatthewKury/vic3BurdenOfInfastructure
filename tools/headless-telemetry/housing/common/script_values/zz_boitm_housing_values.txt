@@ -217,3 +217,116 @@ boitm_igs_with_housing_stance = {
 		add = 1
 	}
 }
+
+# Ownership of private-type housing (all residential buildings except
+# Municipal Estates and shelters), added 2026-11-08 when the 1836 seed moved
+# from country to private owners. Whole-building buckets, since script
+# cannot sum owned levels: levels in buildings with any state share, and in
+# fully private ones. country_ownership_fraction and private_ownership_fraction
+# are vanilla building-scope triggers (06_portugal_politics.txt, achievements).
+boitm_res_private_type_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+		}
+		add = level
+	}
+}
+
+boitm_res_any_state_share_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0 # the fraction triggers error on unbuilt buildings
+			country_ownership_fraction > 0
+		}
+		add = level
+	}
+}
+
+boitm_res_fully_private_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0
+			private_ownership_fraction = 1
+		}
+		add = level
+	}
+}
+
+boitm_res_mostly_state_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0
+			country_ownership_fraction > 0.5
+		}
+		add = level
+	}
+}
+

@@ -1,4 +1,5 @@
 ﻿# Vanilla 1.13.11 transport-option shadows. Each existing option excludes BOI horse-drawn transport.
+# 1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # Re-diff these full blocks against vanilla after game updates.
 
 mobilization_option_forced_march = {

@@ -43,7 +43,7 @@ building_coal_mine = {
 	ownership_type = self
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_mining.dds"
-	
+
 	ai_value = {
 		value = 1000
 
@@ -82,6 +82,59 @@ building_coffee_plantation = {
 	ownership_type = self
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_plantations.dds"
+}
+
+building_copper_mine = {
+	building_group = bg_mining
+	icon = "gfx/interface/icons/building_icons/copper_mine.dds"
+	city_type = mine
+	levels_per_mesh = 50
+	required_construction = construction_cost_medium
+	terrain_manipulator = mining
+
+	unlocking_technologies = {
+		shaft_mining
+	}
+
+	production_method_groups = { # TODO PRCAL-42747
+		pmg_boi_company_housing
+		pmg_mining_equipment_building_copper_mine
+		pmg_explosives_building_copper_mine
+		pmg_steam_automation_building_copper_mine
+		pmg_train_automation_building_copper_mine
+	}
+	ownership_type = self
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_mining.dds"
+}
+
+building_cossack_host = {
+	building_group = bg_cossack_host
+
+	icon = "gfx/interface/icons/building_icons/cossack_host.dds"
+
+	production_method_groups = {
+		pmg_boi_subsistence_housing
+		pmg_base_building_cossack_host
+		pmg_special_building_cossack_host
+	}
+
+	valid_pop_culture_traits = {
+		heritage_east_slavic
+		tradition_cossacks
+	}
+
+	potential = {
+		always = no # Cannot be constructed manually so we filter it out from the GUI
+	}
+
+	buildable = no
+	expandable = no
+	downsizeable = no
+	can_switch_owner = no
+	ownership_type = self
+
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_farming.dds"
 }
 
 building_cotton_plantation = {
@@ -239,7 +292,7 @@ building_iron_mine = {
 	ownership_type = self
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_mining.dds"
-	
+
 	ai_value = {
 		value = 1000
 
@@ -254,7 +307,7 @@ building_iron_mine = {
 			add = 2000
 		}
 	}
- }
+}
 
 building_lead_mine = {
 	building_group = bg_mining
@@ -277,7 +330,7 @@ building_lead_mine = {
 	ownership_type = self
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_mining.dds"
-	
+
 	ai_value = {
 		value = 1000
 
@@ -363,6 +416,23 @@ building_maize_farm = {
 
 	required_construction = construction_cost_low
 
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
+
 	terrain_manipulator = farmland_maize
 	ownership_type = self
 
@@ -389,6 +459,23 @@ building_millet_farm = {
 	}
 
 	required_construction = construction_cost_low
+
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
 
 	terrain_manipulator = farmland_millet
 	ownership_type = self
@@ -492,6 +579,23 @@ building_rice_farm = {
 
 	required_construction = construction_cost_low
 
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
+
 	terrain_manipulator = farmland_rice
 	ownership_type = self
 
@@ -543,6 +647,23 @@ building_rye_farm = {
 	}
 
 	required_construction = construction_cost_low
+
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
 
 	terrain_manipulator = farmland_rye
 	ownership_type = self
@@ -747,7 +868,7 @@ building_sulfur_mine = {
 	ownership_type = self
 
 	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_mining.dds"
-	
+
 	ai_value = {
 		value = 1000
 
@@ -867,6 +988,23 @@ building_vineyard = {
 	icon = "gfx/interface/icons/building_icons/vineyards.dds"
 	required_construction = construction_cost_low
 
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
+
 	unlocking_technologies = {
 		enclosure
 	}
@@ -929,6 +1067,23 @@ building_wheat_farm = {
 	}
 
 	required_construction = construction_cost_low
+
+	ai_value = {
+		value = 1000
+
+		if = {
+			limit = {
+				owner ?= {
+					has_journal_entry = je_five_year_plan
+					je:je_five_year_plan ?= {
+						has_variable = five_year_plan_agriculture_var
+					}
+					five_year_plan_agriculture_goal_met = no
+				}
+			}
+			add = 2500
+		}
+	}
 
 	terrain_manipulator = farmland_wheat
 	ownership_type = self

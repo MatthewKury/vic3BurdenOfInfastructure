@@ -1,0 +1,1208 @@
+﻿namespace = boi_rail_survey
+
+# ================================================================
+#  Burden of Infrastructure — Rail Network Survey events
+#
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md. All numbers are
+#  test values.
+#
+#   .1        choose a continent (from the decision)
+#   .2 - .7   choose a strategic region on that continent
+#   .9        hidden: start the survey
+#   .11 - .14 first stage (25%): routes
+#   .21 - .24 second stage (50%): land
+#   .31 - .34 third stage (75%): approval
+#   .40       Militarized Police only, second or third stage
+#   .50       hidden monthly: keep the Rail Works cap modifiers right
+#   .60       hidden yearly: the AI's stand-in for surveys
+#   .90       completion: award the levels
+#
+#  Stage events act on scope:survey_state (a random surveyed state) or
+#  on every surveyed state, never elsewhere; only interest group
+#  approval is country-wide. "Force them out" options scale with the
+#  police law and institution (boi_rs_forced_* values).
+# ================================================================
+
+# ── Choose a continent ──────────────────────────────────────────
+
+boi_rail_survey.1 = {
+	type = country_event
+	title = boi_rail_survey.1.t
+	desc = boi_rail_survey.1.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.1.europe
+		trigger = { boi_rs_has_eligible_in_europe = yes }
+		trigger_event = { id = boi_rail_survey.2 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.africa
+		trigger = { boi_rs_has_eligible_in_africa = yes }
+		trigger_event = { id = boi_rail_survey.3 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.east_asia
+		trigger = { boi_rs_has_eligible_in_east_asia = yes }
+		trigger_event = { id = boi_rail_survey.4 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.south_asia
+		trigger = { boi_rs_has_eligible_in_south_asia = yes }
+		trigger_event = { id = boi_rail_survey.5 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.north_america
+		trigger = { boi_rs_has_eligible_in_north_america = yes }
+		trigger_event = { id = boi_rail_survey.6 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.south_america
+		trigger = { boi_rs_has_eligible_in_south_america = yes }
+		trigger_event = { id = boi_rail_survey.7 popup = yes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+# ── Choose a region ─────────────────────────────────────────────
+
+boi_rail_survey.2 = {
+	type = country_event
+	title = boi_rail_survey.2.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_western_europe
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_western_europe } }
+		boi_rs_choose_region = { REGION = region_western_europe }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_southern_europe
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_southern_europe } }
+		boi_rs_choose_region = { REGION = region_southern_europe }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_balkans
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_balkans } }
+		boi_rs_choose_region = { REGION = region_balkans }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_central_europe
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_central_europe } }
+		boi_rs_choose_region = { REGION = region_central_europe }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_northern_europe
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_northern_europe } }
+		boi_rs_choose_region = { REGION = region_northern_europe }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_russia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_russia } }
+		boi_rs_choose_region = { REGION = region_russia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_eastern_europe
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_eastern_europe } }
+		boi_rs_choose_region = { REGION = region_eastern_europe }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+boi_rail_survey.3 = {
+	type = country_event
+	title = boi_rail_survey.3.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_nile_basin
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_nile_basin } }
+		boi_rs_choose_region = { REGION = region_nile_basin }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_north_africa
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_north_africa } }
+		boi_rs_choose_region = { REGION = region_north_africa }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_west_africa
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_west_africa } }
+		boi_rs_choose_region = { REGION = region_west_africa }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_equatorial_africa
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_equatorial_africa } }
+		boi_rs_choose_region = { REGION = region_equatorial_africa }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_southern_africa
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_southern_africa } }
+		boi_rs_choose_region = { REGION = region_southern_africa }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_east_africa
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_east_africa } }
+		boi_rs_choose_region = { REGION = region_east_africa }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+boi_rail_survey.4 = {
+	type = country_event
+	title = boi_rail_survey.4.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_indochina
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_indochina } }
+		boi_rs_choose_region = { REGION = region_indochina }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_indonesia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_indonesia } }
+		boi_rs_choose_region = { REGION = region_indonesia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_south_china
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_south_china } }
+		boi_rs_choose_region = { REGION = region_south_china }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_north_china
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_north_china } }
+		boi_rs_choose_region = { REGION = region_north_china }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_northeast_asia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_northeast_asia } }
+		boi_rs_choose_region = { REGION = region_northeast_asia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_siberia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_siberia } }
+		boi_rs_choose_region = { REGION = region_siberia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_oceania
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_oceania } }
+		boi_rs_choose_region = { REGION = region_oceania }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+boi_rail_survey.5 = {
+	type = country_event
+	title = boi_rail_survey.5.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_near_east
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_near_east } }
+		boi_rs_choose_region = { REGION = region_near_east }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_arabia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_arabia } }
+		boi_rs_choose_region = { REGION = region_arabia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_greater_persia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_greater_persia } }
+		boi_rs_choose_region = { REGION = region_greater_persia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_central_asia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_central_asia } }
+		boi_rs_choose_region = { REGION = region_central_asia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_south_india
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_south_india } }
+		boi_rs_choose_region = { REGION = region_south_india }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_himalayas
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_himalayas } }
+		boi_rs_choose_region = { REGION = region_himalayas }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_north_india
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_north_india } }
+		boi_rs_choose_region = { REGION = region_north_india }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+boi_rail_survey.6 = {
+	type = country_event
+	title = boi_rail_survey.6.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_canada
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_canada } }
+		boi_rs_choose_region = { REGION = region_canada }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_pacific_coast
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_pacific_coast } }
+		boi_rs_choose_region = { REGION = region_pacific_coast }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_great_plains
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_great_plains } }
+		boi_rs_choose_region = { REGION = region_great_plains }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_atlantic_coast
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_atlantic_coast } }
+		boi_rs_choose_region = { REGION = region_atlantic_coast }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_central_america
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_central_america } }
+		boi_rs_choose_region = { REGION = region_central_america }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+boi_rail_survey.7 = {
+	type = country_event
+	title = boi_rail_survey.7.t
+	desc = boi_rail_survey.region.d
+	flavor = boi_rail_survey.1.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	option = {
+		name = boi_rail_survey.region.region_brazil
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_brazil } }
+		boi_rs_choose_region = { REGION = region_brazil }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_andes
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_andes } }
+		boi_rs_choose_region = { REGION = region_andes }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_la_plata
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_la_plata } }
+		boi_rs_choose_region = { REGION = region_la_plata }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.region_gran_colombia
+		trigger = { boi_rs_has_eligible_in_region = { REGION = region_gran_colombia } }
+		boi_rs_choose_region = { REGION = region_gran_colombia }
+		ai_chance = { base = 1 }
+	}
+
+	option = {
+		name = boi_rail_survey.region.back
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+		ai_chance = { base = 0 }
+	}
+
+	option = {
+		name = boi_rail_survey.1.cancel
+		default_option = yes
+		custom_tooltip = boi_rs_picker_cancel_tt
+		ai_chance = { base = 0 }
+	}
+}
+
+# ── Start ───────────────────────────────────────────────────────
+
+# The region option has marked the states; set the goal and open the
+# journal entry.
+boi_rail_survey.9 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		boi_rs_has_surveyed_state = yes
+		NOT = { has_journal_entry = je_boi_rail_survey }
+	}
+
+	immediate = {
+		boi_rs_start = yes
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  First stage (25%): routes
+# ════════════════════════════════════════════════════════════════
+
+boi_rail_survey.11 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.11.t
+	desc = boi_rail_survey.11.d
+	flavor = boi_rail_survey.11.f
+	event_image = { video = "unspecific_trains" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# The long route: dear, but a better line.
+	option = {
+		name = boi_rail_survey.11.a
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		boi_rs_quality_add = { AMOUNT = 10 TT = up_10 }
+		ai_chance = { base = 2 }
+	}
+
+	# The steep gradient: quick and cheap, a worse line.
+	option = {
+		name = boi_rail_survey.11.b
+		boi_rs_quality_add = { AMOUNT = -10 TT = down_10 }
+		boi_rs_progress_add = { AMOUNT = 5 TT = up_5 }
+		ai_chance = { base = 1 }
+	}
+}
+
+boi_rail_survey.12 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.12.t
+	desc = boi_rail_survey.12.d
+	flavor = boi_rail_survey.12.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Send a relief party.
+	option = {
+		name = boi_rail_survey.12.a
+		default_option = yes
+		add_treasury = boi_rs_payment_small
+		ai_chance = { base = 2 }
+	}
+
+	# Press on without them.
+	option = {
+		name = boi_rail_survey.12.b
+		boi_rs_progress_add = { AMOUNT = -10 TT = down_10 }
+		boi_rs_quality_add = { AMOUNT = -5 TT = down_5 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# A boon.
+boi_rail_survey.13 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.13.t
+	desc = boi_rail_survey.13.d
+	flavor = boi_rail_survey.13.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Take his advice.
+	option = {
+		name = boi_rail_survey.13.a
+		default_option = yes
+		boi_rs_quality_add = { AMOUNT = 10 TT = up_10 }
+		ai_chance = { base = 1 }
+	}
+
+	# Put him in charge.
+	option = {
+		name = boi_rail_survey.13.b
+		boi_rs_quality_add = { AMOUNT = 5 TT = up_5 }
+		boi_rs_progress_add = { AMOUNT = 10 TT = up_10 }
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_rs_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+boi_rail_survey.14 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.14.t
+	desc = boi_rail_survey.14.d
+	flavor = boi_rail_survey.14.f
+	event_image = { video = "middleeast_engineer_blueprint" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_map.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Survey it again.
+	option = {
+		name = boi_rail_survey.14.a
+		default_option = yes
+		boi_rs_progress_add = { AMOUNT = -10 TT = down_10 }
+		boi_rs_quality_add = { AMOUNT = 10 TT = up_10 }
+		ai_chance = { base = 2 }
+	}
+
+	# Live with the errors.
+	option = {
+		name = boi_rail_survey.14.b
+		boi_rs_quality_add = { AMOUNT = -10 TT = down_10 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  Second stage (50%): land
+# ════════════════════════════════════════════════════════════════
+
+boi_rail_survey.21 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.21.t
+	desc = boi_rail_survey.21.d
+	flavor = boi_rail_survey.21.f
+	event_image = { video = "africa_prosperous_farm" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Force them out.
+	option = {
+		name = boi_rail_survey.21.a
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_medium TT = forced_medium }
+		scope:survey_state = {
+			add_radicals_in_state = { value = boi_rs_forced_radicals_medium }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 2 }
+		}
+	}
+
+	# Pay over the odds.
+	option = {
+		name = boi_rail_survey.21.b
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		ai_chance = { base = 2 }
+	}
+
+	# Route around them.
+	option = {
+		name = boi_rail_survey.21.c
+		boi_rs_quality_add = { AMOUNT = -10 TT = down_10 }
+		ai_chance = { base = 1 }
+	}
+}
+
+boi_rail_survey.22 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.22.t
+	desc = boi_rail_survey.22.d
+	flavor = boi_rail_survey.22.f
+	event_image = { video = "africa_public_protest" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Clear the village.
+	option = {
+		name = boi_rail_survey.22.a
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_large TT = forced_large }
+		scope:survey_state = {
+			add_radicals_in_state = { value = boi_rs_forced_radicals_large }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 2 }
+		}
+	}
+
+	# Bend the line around it.
+	option = {
+		name = boi_rail_survey.22.b
+		default_option = yes
+		boi_rs_quality_add = { AMOUNT = -10 TT = down_10 }
+		boi_rs_progress_add = { AMOUNT = -5 TT = down_5 }
+		ai_chance = { base = 2 }
+	}
+}
+
+boi_rail_survey.23 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.23.t
+	desc = boi_rail_survey.23.d
+	flavor = boi_rail_survey.23.f
+	event_image = { video = "unspecific_politicians_arguing" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Pay them.
+	option = {
+		name = boi_rail_survey.23.a
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_rs_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Refuse.
+	option = {
+		name = boi_rail_survey.23.b
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		boi_rs_quality_add = { AMOUNT = -5 TT = down_5 }
+		ai_chance = { base = 1 }
+	}
+
+	# Compel the sale at the assessed value.
+	option = {
+		name = boi_rail_survey.23.c
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_medium TT = forced_medium }
+		scope:survey_state = {
+			add_radicals_in_state = { value = boi_rs_forced_radicals_small }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 1 }
+		}
+	}
+}
+
+# A boon or a trap.
+boi_rail_survey.24 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.24.t
+	desc = boi_rail_survey.24.d
+	flavor = boi_rail_survey.24.f
+	event_image = { video = "unspecific_politicians_arguing" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Buy them out.
+	option = {
+		name = boi_rail_survey.24.a
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		boi_rs_progress_add = { AMOUNT = 10 TT = up_10 }
+		ai_chance = { base = 1 }
+	}
+
+	# Expose them.
+	option = {
+		name = boi_rail_survey.24.b
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		boi_rs_progress_add = { AMOUNT = -5 TT = down_5 }
+		boi_rs_quality_add = { AMOUNT = 5 TT = up_5 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  Third stage (75%): approval
+# ════════════════════════════════════════════════════════════════
+
+boi_rail_survey.31 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.31.t
+	desc = boi_rail_survey.31.d
+	flavor = boi_rail_survey.31.f
+	event_image = { video = "unspecific_politicians_arguing" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Defend the budget.
+	option = {
+		name = boi_rail_survey.31.a
+		default_option = yes
+		add_treasury = boi_rs_payment_small
+		ai_chance = { base = 2 }
+	}
+
+	# Trim the survey.
+	option = {
+		name = boi_rail_survey.31.b
+		boi_rs_quality_add = { AMOUNT = -10 TT = down_10 }
+		boi_rs_progress_add = { AMOUNT = 10 TT = up_10 }
+		ai_chance = { base = 1 }
+	}
+}
+
+boi_rail_survey.32 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.32.t
+	desc = boi_rail_survey.32.d
+	flavor = boi_rail_survey.32.f
+	event_image = { video = "africa_construction_colony" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Break the strike.
+	option = {
+		name = boi_rail_survey.32.a
+		boi_rs_progress_add = { AMOUNT = 5 TT = up_5 }
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_medium TT = forced_medium }
+		scope:survey_state = {
+			add_radicals_in_state = { value = boi_rs_forced_radicals_medium }
+		}
+		ig:ig_trade_unions ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 2 }
+		}
+	}
+
+	# Raise their pay.
+	option = {
+		name = boi_rail_survey.32.b
+		default_option = yes
+		add_treasury = boi_rs_payment_small
+		ai_chance = { base = 2 }
+	}
+}
+
+# A boon.
+boi_rail_survey.33 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.33.t
+	desc = boi_rail_survey.33.d
+	flavor = boi_rail_survey.33.f
+	event_image = { video = "unspecific_trains" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Accept their money.
+	option = {
+		name = boi_rail_survey.33.a
+		default_option = yes
+		add_treasury = boi_rs_windfall_small
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_rs_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Keep it a public survey.
+	option = {
+		name = boi_rail_survey.33.b
+		boi_rs_quality_add = { AMOUNT = 5 TT = up_5 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# Only offered when a surveyed state has a city of some size.
+boi_rail_survey.34 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.34.t
+	desc = boi_rail_survey.34.d
+	flavor = boi_rail_survey.34.f
+	event_image = { video = "africa_city_center" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_rail_survey
+			boi_rs_urban_levels >= 5
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			order_by = boi_rs_urban_levels
+			position = 0
+			check_range_bounds = no
+			save_scope_as = survey_state
+		}
+	}
+
+	# Clear the rookeries.
+	option = {
+		name = boi_rail_survey.34.a
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_large TT = forced_large }
+		scope:survey_state = {
+			add_radicals_in_state = { value = boi_rs_forced_radicals_medium }
+		}
+		ig:ig_petty_bourgeoisie ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 2 }
+		}
+	}
+
+	# Tunnel beneath them.
+	option = {
+		name = boi_rail_survey.34.b
+		default_option = yes
+		add_treasury = boi_rs_payment_large
+		boi_rs_quality_add = { AMOUNT = 5 TT = up_5 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  Militarized Police: heavy-handed clearances (stage 2 or 3)
+# ════════════════════════════════════════════════════════════════
+
+boi_rail_survey.40 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.40.t
+	desc = boi_rail_survey.40.d
+	flavor = boi_rail_survey.40.f
+	event_image = { video = "africa_soldiers_breaking_protest" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		boi_rs_has_surveyed_state = yes
+		has_law = law_type:law_militarized_police
+	}
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Stand by the police.
+	option = {
+		name = boi_rail_survey.40.a
+		boi_rs_quality_add = { AMOUNT = 10 TT = up_10 }
+		boi_rs_radicals_all = { VALUE = large_radicals }
+		ai_chance = { base = 1 }
+	}
+
+	# Rein them in.
+	option = {
+		name = boi_rail_survey.40.b
+		default_option = yes
+		boi_rs_quality_add = { AMOUNT = -5 TT = down_5 }
+		scope:survey_state = {
+			add_radicals_in_state = { value = small_radicals }
+		}
+		ig:ig_armed_forces ?= {
+			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  Upkeep and AI
+# ════════════════════════════════════════════════════════════════
+
+# Monthly, every country: keep each owned state's cap modifiers right.
+# Hooked from common/on_actions/zz_boi_on_actions.txt.
+boi_rail_survey.50 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		any_scope_state = { boi_rail_cap_needs_refresh = yes }
+	}
+
+	immediate = {
+		every_scope_state = {
+			limit = { boi_rail_cap_needs_refresh = yes }
+			boi_rail_cap_refresh = yes
+		}
+	}
+}
+
+# Yearly, AI only: the stand-in for a survey. One year in four, the up to
+# five states most short of infrastructure with Rail Works at the cap gain
+# 3 levels (a mid-quality result), for a year of survey expenses paid at
+# once. Skipped when the treasury can't cover it.
+boi_rail_survey.60 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_ai = yes
+		in_default = no
+		has_technology_researched = railways
+		NOT = { has_journal_entry = je_boi_rail_survey }
+		any_scope_state = { boi_rs_ai_state_wants_cap = yes }
+	}
+
+	immediate = {
+		random_list = {
+			3 = {}
+			1 = {
+				set_variable = { name = boi_rs_ai_state_count value = 0 }
+				ordered_scope_state = {
+					limit = { boi_rs_ai_state_wants_cap = yes }
+					order_by = boi_ai_infrastructure_shortfall
+					max = 5
+					check_range_bounds = no
+					set_variable = boi_rs_ai_pick
+					root = { change_variable = { name = boi_rs_ai_state_count add = 1 } }
+				}
+				# A debt test, not gold: AI countries that borrow hold almost no
+				# gold, so gold_reserves > cost skipped nearly all of them. In the
+				# 2026-11-08 smoke run France had £0 in gold at 3% scaled debt.
+				# The charge goes on credit when there is no gold.
+				if = {
+					limit = { scaled_debt < 0.5 }
+					add_treasury = {
+						value = boi_rs_ai_cost
+						multiply = -1
+					}
+					every_scope_state = {
+						limit = { has_variable = boi_rs_ai_pick }
+						if = {
+							limit = { has_variable = boi_rail_cap_surveyed }
+							change_variable = { name = boi_rail_cap_surveyed add = 3 }
+						}
+						else = {
+							set_variable = { name = boi_rail_cap_surveyed value = 3 }
+						}
+						boi_rail_cap_refresh = yes
+					}
+					if = {
+						limit = { has_variable = boi_rs_ai_surveys }
+						change_variable = { name = boi_rs_ai_surveys add = 1 }
+					}
+					else = {
+						set_variable = { name = boi_rs_ai_surveys value = 1 }
+					}
+				}
+				every_scope_state = {
+					limit = { has_variable = boi_rs_ai_pick }
+					remove_variable = boi_rs_ai_pick
+				}
+				remove_variable = boi_rs_ai_state_count
+			}
+		}
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  Completion
+# ════════════════════════════════════════════════════════════════
+
+boi_rail_survey.90 = {
+	type = country_event
+	title = boi_rail_survey.90.t
+	desc = boi_rail_survey.90.d
+	flavor = boi_rail_survey.90.f
+	event_image = { video = "unspecific_trains" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	immediate = {
+		boi_rs_award = yes
+	}
+
+	option = {
+		name = boi_rail_survey.90.a
+		default_option = yes
+		custom_tooltip = boi_rs_award_tt
+	}
+}

@@ -1,0 +1,23 @@
+﻿# Headless telemetry (parity module, control runs only): the vanilla-safe values
+# the boi module defines under the same names. Never loaded alongside boi. Country scope.
+
+boitm_gold_reserves = { value = gold_reserves }
+boitm_scaled_debt = { value = scaled_debt }
+boitm_ct_turmoil = { value = country_turmoil }
+boitm_ct_expenses = { value = total_expenses }
+
+boitm_ct_at_war = {
+	value = 0
+	if = {
+		limit = { is_at_war = yes }
+		value = 1
+	}
+}
+
+boitm_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}

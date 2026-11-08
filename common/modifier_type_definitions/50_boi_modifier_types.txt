@@ -57,3 +57,13 @@ goods_output_horses_mult={
 		ai_value=0
 	}
 }
+
+# Rail Works cap (has_max_level = yes on building_boi_rail_works). Same
+# format as vanilla's state_building_barrack_max_level_add.
+state_building_boi_rail_works_max_level_add={
+	decimals=0
+	color=good
+	game_data={
+		ai_value=0
+	}
+}

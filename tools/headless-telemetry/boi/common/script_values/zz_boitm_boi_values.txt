@@ -187,3 +187,83 @@ boitm_works_goods_base = {
 		}
 	}
 }
+
+# ── Rail Network Survey (docs/plans/01_RAIL_SURVEY_PROPOSAL.md) ──
+
+boitm_rail_cap_total = {
+	value = 0
+	every_scope_state = { add = boi_rail_cap }
+}
+
+# States with a railway whose Rail Works are at the cap.
+boitm_rail_states_at_cap = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			has_building = building_railway
+			boi_rail_works_cap_room <= 0
+		}
+		add = 1
+	}
+}
+
+# States with more Rail Works than the cap script repeats: should stay 0.
+boitm_rail_states_over_cap = {
+	value = 0
+	every_scope_state = {
+		limit = { boi_rail_works_levels_state > boi_rail_cap }
+		add = 1
+	}
+}
+
+boitm_rail_surveyed_levels = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_rail_cap_surveyed }
+		add = var:boi_rail_cap_surveyed
+	}
+}
+
+# States carrying the right size modifier (should equal the state count).
+boitm_rail_cap_modifier_states = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			OR = {
+				has_modifier = boi_rail_cap_normal
+				has_modifier = boi_rail_cap_large
+				has_modifier = boi_rail_cap_very_large
+			}
+		}
+		add = 1
+	}
+}
+
+boitm_states = {
+	value = 0
+	every_scope_state = { add = 1 }
+}
+
+boitm_rail_ai_surveys = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_rs_ai_surveys }
+		value = var:boi_rs_ai_surveys
+	}
+}
+
+boitm_rail_surveys_completed = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_rs_surveys_completed }
+		value = var:boi_rs_surveys_completed
+	}
+}
+
+boitm_infrastructure_shortfall_states = {
+	value = 0
+	every_scope_state = {
+		limit = { boi_ai_infrastructure_shortfall > 0 }
+		add = 1
+	}
+}

@@ -85,3 +85,59 @@ pm_boi_stud_farms = {
 		}
 	}
 }
+
+
+# ── By-products (pmg_boi_horse_ranch_byproduct) ──────────────────
+# Added 2026-11-08 to match vanilla's Livestock Ranch, whose wool group
+# (pmg_sheep_ranch) adds +100 -> +175 -> +350 on top of its meat. Without
+# this, the Horse Ranch earned less per level than a Livestock Ranch,
+# despite the comparison in this file's header. Same techs as the sheep
+# group and about the same net value. No employment: the staff come from
+# the breeding group (VIC3_MODDING_LESSONS.md, "Employment is per PM group").
+# meat = 30, fertilizer = 30, grain = 20.
+
+# Worn-out and unsound stock goes to the knacker. Net +90 (sheep +100).
+pm_boi_knackers_yard = {
+	texture = "gfx/interface/icons/production_method_icons/butchering_tools.dds"
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_output_meat_add = 3 # 90
+		}
+	}
+}
+
+# Stable manure sold to farms. Net +170 (sheep farms +175).
+pm_boi_manure_trade = {
+	texture = "gfx/interface/icons/production_method_icons/fertilization.dds"
+
+	unlocking_technologies = {
+		intensive_agriculture
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_grain_add = 5 # 100
+			goods_output_meat_add = 4 # 120
+			goods_output_fertilizer_add = 5 # 150
+		}
+	}
+}
+
+# Horses grazed with cattle on rotated pasture. Net +340 (intensive
+# grazing +350).
+pm_boi_mixed_grazing = {
+	texture = "gfx/interface/icons/production_method_icons/intensive_grazing.dds"
+
+	unlocking_technologies = {
+		mechanized_farming
+	}
+
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_grain_add = 10 # 200
+			goods_output_meat_add = 6 # 180
+			goods_output_fertilizer_add = 12 # 360
+		}
+	}
+}

@@ -1,0 +1,17 @@
+﻿# Headless telemetry (rail_survey module, Test-Headless.ps1 -RailSurvey).
+# events = { } only; see the core module.
+
+on_monthly_pulse_country = {
+	events = {
+		boitm_rs.1
+		boitm_rs.3
+		boitm_rs.10
+		boitm_rs.20
+	}
+}
+
+on_yearly_pulse_country = {
+	events = {
+		boitm_rs.4
+	}
+}

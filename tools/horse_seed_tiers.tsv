@@ -2,6 +2,8 @@
 # Set-HorseSeedTiers.py reads this, applies each tier's retained share and writes
 # horse_seed_reductions.tsv. See HORSE_SEED_1836.md for the reasoning.
 # Columns: state, tier, levels before the 2026-11-01 scarcity pass.
+# 1.15.0 (2026-11-06): Galich became Vologda and Tartaria became Saratov (matched by provinces). Kostroma is new,
+# split from Yaroslavl, Nizhny Novgorod and Galich, and is given Galich's tier at its declared-arable base of 6 levels.
 # Tier 1: Great horse country: open grassland, steppe and studs
 STATE_ANKARA	1	4
 STATE_ASTRAKHAN	1	4
@@ -43,7 +45,7 @@ STATE_ORYOL	1	5
 STATE_RIO_GRANDE	1	3
 STATE_RIO_GRANDE_DO_SUL	1	6
 STATE_ROSTOV	1	8
-STATE_SEMIRECHE	1	4
+# STATE_SEMIRECHE	1	4  (1.15: region is split between owners, so curation no longer seeds it)
 STATE_SONORA	1	3
 STATE_STAVROPOL	1	3
 STATE_TABRIZ	1	5
@@ -126,7 +128,7 @@ STATE_SLOVENIA	2	3
 STATE_SOUTHERN_MANCHURIA	2	5
 STATE_SOUTHERN_TRANSYLVANIA	2	4
 STATE_STYRIA	2	3
-STATE_TARTARIA	2	3
+STATE_SARATOV	2	3
 STATE_TOBOLSK	2	3
 STATE_TOHOKU	2	5
 STATE_TOMSK	2	3
@@ -159,7 +161,8 @@ STATE_CHAMPAGNE	3	4
 STATE_CROATIA	3	3
 STATE_EAST_SWITZERLAND	3	3
 STATE_ENTRE_DOURO_E_MINHO	3	4
-STATE_GALICH	3	4
+STATE_VOLOGDA	3	4
+STATE_KOSTROMA	3	6
 STATE_GALICIA	3	4
 STATE_GEORGIA	3	5
 STATE_GOTALAND	3	3

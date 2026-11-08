@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$ModPath,
-    [int]$ExpectedHorseRanches = 216,
-    [int]$ExpectedHorseRanchLevels = 492
+    [int]$ExpectedHorseRanches = 223,      # 1.15 balance passes 3 (Bihar, Shandong, Beijing, East Java) and 4 (Midlands, East Anglia, West Country)
+    [int]$ExpectedHorseRanchLevels = 525   # 491 after the 1.15.0 patch (Semireche out, Kostroma in), +20 in pass 3, +14 in pass 4
 )
 
 $ErrorActionPreference = 'Stop'

@@ -5,6 +5,10 @@ folders. Renders in VS Code's built-in Markdown preview (Ctrl+Shift+V).
 
     python Make-EnsembleReport.py --ensemble vanilla_1836_1846
     python Make-EnsembleReport.py --ensemble vanilla_1836_1846 --compare boi_1836_1846
+    python Make-EnsembleReport.py --ensemble vanilla115_1836_1936 --horizon 1886
+
+--horizon reads a mixed-length ensemble as a fixed-length one: only the members
+that reached January of that year, with every series cut there.
 
 With --compare, the first ensemble is the reference (A, blue) and the second
 the treatment (B, orange): every world chart overlays both, and the tables add
@@ -165,19 +169,31 @@ def table(headers, rows, align=None):
 
 # --- data -----------------------------------------------------------------------
 class Ensemble:
-    def __init__(self, db, name, color, label):
+    def __init__(self, db, name, color, label, horizon_t=None):
         self.db, self.name, self.color, self.label = db, name, color, label
         row = db.execute("SELECT ensemble_id, description, n_runs, first_date, last_date, game_version, arm"
                          " FROM ensemble WHERE name = ?", (name,)).fetchone()
         if not row:
             raise SystemExit(f"No ensemble '{name}' in the database")
         self.id, self.description, self.n, self.first_date, self.last_date, self.version, self.arm = row
-        self.runs = db.execute("SELECT member, run_id, run_name, minutes, n_snapshots, run_json FROM run"
-                               " WHERE ensemble_id = ? ORDER BY member", (self.id,)).fetchall()
+        runs = db.execute("SELECT r.member, r.run_id, r.run_name, r.minutes, r.n_snapshots, r.run_json,"
+                          " (SELECT MAX(t) FROM snapshot s WHERE s.run_id = r.run_id) FROM run r"
+                          " WHERE r.ensemble_id = ? ORDER BY r.member", (self.id,)).fetchall()
+        if horizon_t is not None:
+            # A mixed-length ensemble is read as a fixed-length one: only the
+            # members that reached the horizon, cut at the horizon.
+            runs = [r for r in runs if r[6] is not None and r[6] >= horizon_t]
+            if not runs:
+                raise SystemExit(f"No member of '{name}' reaches t={horizon_t}")
+            self.T = horizon_t + 1
+            self.n = len(runs)
+            self.last_date = db.execute("SELECT MAX(date) FROM snapshot WHERE t = ? AND run_id IN (%s)"
+                                        % ",".join("?" * len(runs)), [horizon_t] + [r[1] for r in runs]).fetchone()[0]
+        else:
+            self.T = max(r[6] for r in runs) + 1
+        self.runs = [r[:6] for r in runs]
         self.members = [r[0] for r in self.runs]
         self.run_ids = [r[1] for r in self.runs]
-        self.T = db.execute("SELECT MAX(t) FROM snapshot WHERE run_id IN (%s)" % ",".join("?" * len(self.run_ids)),
-                            self.run_ids).fetchone()[0] + 1
         self.cache = {}
 
     def q(self, sql, *args):
@@ -188,7 +204,7 @@ class Ensemble:
         m = np.full((len(self.members), self.T), np.nan)
         index = {mem: i for i, mem in enumerate(self.members)}
         for mem, t, v in rows:
-            if v is not None and mem in index:
+            if v is not None and mem in index and t < self.T:
                 m[index[mem], t] = v
         return m
 
@@ -413,11 +429,11 @@ class Report:
             disabled = info[0].get("disabled_dlc") or []
             mods = info[0].get("mods") or []
             minutes = [r[3] for r in e.runs if r[3]]
-            dropped = sum(e.T - r[4] for r in e.runs)
+            dropped = sum(max(e.T - r[4], 0) for r in e.runs)
             self.w(f"**{e.label}: `{e.name}`** ({e.arm}). {e.description}", "",
                    table(["item", "value"], [
                        ["members", e.n],
-                       ["snapshots per member", f"{min(r[4] for r in e.runs)}–{max(r[4] for r in e.runs)} of {e.T}"
+                       ["snapshots per member", f"{min(min(r[4], e.T) for r in e.runs)}–{max(min(r[4], e.T) for r in e.runs)} of {e.T}"
                         + (f" ({dropped} dropped as incomplete)" if dropped else " (none dropped)")],
                        ["minutes per member", f"{min(minutes):.1f}–{max(minutes):.1f} (total {sum(minutes) / 60:.1f} h)"],
                        ["game version", e.version],
@@ -451,9 +467,10 @@ class Report:
         u0, u1 = summary(at(A.world("unemployed"), 0)), summary(at(A.world("unemployed"), t))
         self.findings.append(
             f"World GDP grows {pct(g1['mean'] / g0['mean'] - 1, sign=True)} over {t / 4:.0f} years "
-            f"(member spread {pct(g1['cv'])} cv), but pop-weighted SoL falls {fmt(s0['mean'])} → {fmt(s1['mean'])} "
+            f"(member spread {pct(g1['cv'])} cv); pop-weighted SoL {'falls' if s1['mean'] < s0['mean'] else 'rises'} "
+            f"{fmt(s0['mean'])} → {fmt(s1['mean'])} "
             f"and unemployment goes ×{u1['mean'] / u0['mean']:.1f} ({fmt(u0['mean'])} → {fmt(u1['mean'])})"
-            + (": the decade gets richer in total and poorer per head." if s1["mean"] < s0["mean"] else "."))
+            + (": the world gets richer in total and poorer per head." if s1["mean"] < s0["mean"] else "."))
         self.w(self.sol_weight_note(), "")
         mid = summary(at(A.world("gdp"), t // 2))["mean"]
         first, second = mid / g0["mean"] - 1, g1["mean"] / mid - 1
@@ -592,21 +609,24 @@ class Report:
                                  pct(statistics.mean(w_vals) / statistics.mean(o_vals) - 1, sign=True)])
             self.w(table(["metric", "other members", "wave members", "wave vs other"], rows), "")
             shifts = {r[0]: abs(float(r[3].rstrip("%")) / 100) for r in rows if r[3] != "–"}
-            econ = max(v for k, v in shifts.items() if k in ("World GDP", "SoL", "Unemployed", "Infrastructure usage", "Construction levels"))
+            econ = max((v for k, v in shifts.items() if k in ("World GDP", "SoL", "Unemployed", "Infrastructure usage", "Construction levels")), default=None)
             other = [v for k, v in shifts.items() if k in ("Countries alive", "Radicals", "Gold")]
             gone_w = statistics.mean(gone[m] for m in wave)
-            gone_o = statistics.mean(gone[m] for m in A.members if m not in wave)
-            self.findings.append(
-                f"{len(wave)}/{A.n} members (#{', #'.join(map(str, wave))}) hit a European revolution wave "
-                f"({', '.join(str(splits[m]) for m in wave)} civil-war splits vs a median of {med:.0f}; "
-                f"{gone_w:.0f} vs {gone_o:.0f} countries gone). It shifts economic world totals by at most {pct(econ)}, but "
-                f"country counts, radicals and gold by {pct(min(other), 0)}–{pct(max(other), 0)}: a mod that changes the odds of a wave moves those through "
-                f"that alone.")
+            gone_o = statistics.mean([gone[m] for m in A.members if m not in wave] or [float("nan")])
+            if econ is not None and other:
+                self.findings.append(
+                    f"{len(wave)}/{A.n} members (#{', #'.join(map(str, wave))}) hit a European revolution wave "
+                    f"({', '.join(str(splits[m]) for m in wave)} civil-war splits vs a median of {med:.0f}; "
+                    f"{gone_w:.0f} vs {gone_o:.0f} countries gone). It shifts economic world totals by at most {pct(econ)}, but "
+                    f"country counts, radicals and gold by {pct(min(other), 0)}–{pct(max(other), 0)}: a mod that changes the odds of a wave moves those through "
+                    f"that alone.")
 
     def splits_and_gone(self, e):
+        # Within the horizon only; a member's first snapshot is t=0 (version 3) or t=1 (version 4).
         splits = dict(e.q("SELECT r.member, COUNT(*) FROM run_country rc JOIN run r USING (run_id) JOIN country c USING (country_id)"
-                          " WHERE r.ensemble_id = ? AND c.tag LIKE '%#%' GROUP BY r.member", e.id))
-        gone = dict(e.q("""SELECT r.member, COUNT(*) FROM run r JOIN country_obs o0 ON o0.run_id = r.run_id AND o0.t = 0
+                          " WHERE r.ensemble_id = ? AND c.tag LIKE '%#%' AND rc.first_t < ? GROUP BY r.member", e.id, e.T))
+        gone = dict(e.q("""SELECT r.member, COUNT(*) FROM run r JOIN country_obs o0 ON o0.run_id = r.run_id
+                           AND o0.t = (SELECT MIN(t) FROM snapshot s WHERE s.run_id = r.run_id)
                            WHERE r.ensemble_id = ? AND NOT EXISTS (SELECT 1 FROM country_obs o WHERE o.run_id = r.run_id
                            AND o.t = ? AND o.country_id = o0.country_id) GROUP BY r.member""", e.id, e.T - 1))
         return {m: splits.get(m, 0) for m in e.members}, {m: gone.get(m, 0) for m in e.members}
@@ -670,13 +690,16 @@ class Report:
             war = np.nanmean(A.country(tag, "at_war"))
             rank = A.country(tag, "rank")[:, t]
             gp = sum(1 for v in rank if np.isfinite(v) and v >= 7)
-            row = [tag, fmt(g1["median"]), pct(g1["median"] / g0["median"] - 1, sign=True) if g0["median"] else "–",
+            row = [tag, fmt(g1["median"]), pct(g1["median"] / g0["median"] - 1, sign=True) if g0["median"] and g1["median"] is not None else "–",
                    pct(g1["cv"]), fmt(sol["median"]), fmt(rail["median"]), fmt(techs["median"]),
                    pct(war, 0) if np.isfinite(war) else "–", f"{gp}/{A.n}"]
             if self.B:
                 b = at(self.B.country(tag, "gdp"), t)
+                # welch() is None when an arm has fewer than 2 values, e.g. a power
+                # annexed in one of only 2 members.
+                p = welch(at(A.country(tag, 'gdp'), t), b) if b else None
                 row += [fmt(summary(b)["median"]), pct(summary(b)["mean"] / g1["mean"] - 1, sign=True) if b and g1["mean"] else "–",
-                        f"{welch(at(A.country(tag, 'gdp'), t), b):.3f}" if b else "–"]
+                        f"{p:.3f}" if p is not None else "–"]
             rows.append(row)
         headers = ["power", "GDP (median)", "growth", "GDP cv", "SoL", "railways", "techs", "time at war", "great power at end"]
         if self.B:
@@ -1041,6 +1064,8 @@ def main():
     parser.add_argument("--compare", help="treatment ensemble (B) to compare against A")
     parser.add_argument("--out", type=pathlib.Path)
     parser.add_argument("--png", type=pathlib.Path, help="also write PNG copies of the figures to this folder")
+    parser.add_argument("--horizon", type=int, metavar="YEAR",
+                        help="read a mixed-length ensemble as fixed-length: only members that reached January of YEAR, cut there")
     args = parser.parse_args()
     global PNG_DIR
     if args.png:
@@ -1048,10 +1073,11 @@ def main():
         PNG_DIR = args.png
 
     db = sqlite3.connect(f"file:{args.db}?mode=ro", uri=True)
-    ensembles = [Ensemble(db, args.ensemble, SERIES[0], "A" if args.compare else "vanilla" if "vanilla" in args.ensemble else "A")]
+    h = (args.horizon - 1836) * 4 if args.horizon else None
+    ensembles = [Ensemble(db, args.ensemble, SERIES[0], "A" if args.compare else "vanilla" if "vanilla" in args.ensemble else "A", h)]
     if args.compare:
-        ensembles.append(Ensemble(db, args.compare, SERIES[1], "B"))
-    name = args.ensemble + (f"_vs_{args.compare}" if args.compare else "")
+        ensembles.append(Ensemble(db, args.compare, SERIES[1], "B", h))
+    name = args.ensemble + (f"_vs_{args.compare}" if args.compare else "") + (f"_to_{args.horizon}" if args.horizon else "")
     out = args.out or REPO / "docs" / "reports" / name
     report = Report(db, ensembles, out)
     report.build()

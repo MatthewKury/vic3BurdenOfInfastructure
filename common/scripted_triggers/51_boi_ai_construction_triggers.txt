@@ -23,18 +23,19 @@ boi_ai_state_wants_works = {
 	}
 }
 
-# State scope. Rail Works suits this state. Checks everything itself:
+# State scope. Rail Works suits this state. boi_ai_rail_works_room includes
+# the room left under the Rail Works cap. Checks everything itself:
 # start_building_construction ignores unlocking_technologies and logs an error
 # when possible fails. A pure transportation price test wouldn't work, because
 # the price sits at its ceiling across most of the world, so dear horses count too.
+# Since Rail Works went to 3x infrastructure (2026-11-07; 2.5x from 2026-11-08), it is the cheaper
+# point even with transportation at its price ceiling, so the old price test
+# (transportation not dear, or horses dear) is gone: the AI takes Rail Works
+# wherever a railway and room under the cap allow. Rail survey balance pass 2.
 boi_ai_state_prefers_rail_works = {
 	owner = { has_technology_researched = railways }
 	has_building = building_railway
 	boi_ai_rail_works_room > 0
-	OR = {
-		NOT = { sg:transportation = { state_goods_pricier >= 0.5 } }
-		sg:horses = { state_goods_pricier >= 0.5 }
-	}
 }
 
 # State scope. Incorporated, with housing at least 50% above base price.

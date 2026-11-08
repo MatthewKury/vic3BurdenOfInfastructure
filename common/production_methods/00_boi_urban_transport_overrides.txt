@@ -1,5 +1,6 @@
 ﻿# Burden of Infrastructure — Base urban transport horse input
 # Early-load shadow of vanilla 1.13.11 common/production_methods/06_urban_center.txt.
+# 1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # Adds 1 horse per level; preserves the base output of 2 transportation.
 # Expected: one additional duplicate-key log entry from vanilla.
 # Re-diff this complete block against vanilla after game updates.

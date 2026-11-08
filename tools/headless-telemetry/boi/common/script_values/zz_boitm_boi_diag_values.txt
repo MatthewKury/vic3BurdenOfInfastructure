@@ -5,6 +5,14 @@
 # rejects as a value blanks only that line.
 boitm_gold_reserves = { value = gold_reserves }
 boitm_scaled_debt = { value = scaled_debt }
+# 1.15.0 trigger, used as a value by vanilla's war_support_values.txt. Added
+# 2026-11-06 to study works orders that stall in indebted countries. What it
+# reads for a country that isn't borrowing is not yet known.
+boitm_weeks_until_bankruptcy = { value = weeks_until_bankruptcy }
+boitm_taking_loans = {
+	value = 0
+	if = { limit = { taking_loans = yes } value = 1 }
+}
 
 boitm_states_with_public_works = {
 	value = 0

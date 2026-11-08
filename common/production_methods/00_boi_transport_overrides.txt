@@ -40,6 +40,7 @@
 #    pm_rail_transport_building_logging_camp,
 #    pm_rail_transport_building_oil_rig,
 #    pm_tanker_cars                               -> 09_misc_resource.txt
+#  1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # ================================================================
 
 

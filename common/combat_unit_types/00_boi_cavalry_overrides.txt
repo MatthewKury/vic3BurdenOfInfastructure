@@ -28,6 +28,7 @@
 #  00_land_combat_unit_types.txt after every game update. Note the
 #  culture-gated combat_unit_image blocks must be carried through
 #  intact, including the final untriggered fallback.
+#  1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # ================================================================
 
 

@@ -1,0 +1,275 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey effects
+#
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md. Each effect notes
+#  whether it can be reached from an event option (tooltip-previewed,
+#  so no comparisons of variables it sets) or only from pulses and
+#  hidden events (VIC3_MODDING_LESSONS.md §7).
+# ================================================================
+
+# State scope. Pulse / hidden events only. Puts the right size modifier
+# on the state and re-applies the survey gains as one scaled modifier.
+boi_rail_cap_refresh = {
+	remove_modifier = boi_rail_cap_normal
+	remove_modifier = boi_rail_cap_large
+	remove_modifier = boi_rail_cap_very_large
+	if = {
+		limit = { boi_rail_cap_size = 4 }
+		add_modifier = { name = boi_rail_cap_very_large }
+	}
+	else_if = {
+		limit = { boi_rail_cap_size = 2 }
+		add_modifier = { name = boi_rail_cap_large }
+	}
+	else = {
+		add_modifier = { name = boi_rail_cap_normal }
+	}
+	remove_modifier = boi_rail_cap_survey
+	if = {
+		limit = { has_variable = boi_rail_cap_surveyed }
+		add_modifier = {
+			name = boi_rail_cap_survey
+			multiplier = var:boi_rail_cap_surveyed
+		}
+	}
+}
+
+# Country scope. Reached from region options. Marks every eligible state
+# the country owns in $REGION$, then the hidden start event does the rest.
+boi_rs_choose_region = {
+	custom_tooltip = boi_rs_choose_region_tt
+	hidden_effect = {
+		every_scope_state = {
+			limit = {
+				boi_rs_state_eligible = yes
+				region = sr:$REGION$
+			}
+			set_variable = { name = boi_in_rail_survey value = root }
+		}
+		trigger_event = { id = boi_rail_survey.9 days = 0 }
+	}
+}
+
+# Country scope. Pulse / hidden events only. Police multipliers, cached as
+# variables so state-scope values can read them through owner.
+boi_rs_refresh_police = {
+	set_variable = { name = boi_rs_police_quality_mult value = boi_rs_police_quality_mult }
+	set_variable = { name = boi_rs_police_radicals_mult value = boi_rs_police_radicals_mult }
+}
+
+# Country scope. Hidden start event only.
+boi_rs_start = {
+	set_variable = { name = boi_rs_goal value = boi_rs_goal_total }
+	set_variable = { name = boi_rs_states value = boi_rs_state_count }
+	set_variable = { name = boi_rs_progress value = 0 }
+	set_variable = { name = boi_rs_quality value = 50 }
+	set_variable = { name = boi_rs_months value = 0 }
+	boi_rs_refresh_police = yes
+	every_scope_state = {
+		limit = { has_variable = boi_in_rail_survey }
+		add_modifier = { name = boi_rail_survey_underway }
+	}
+	add_journal_entry = { type = je_boi_rail_survey }
+}
+
+# Country scope. Pulse only. Drops states the country no longer owns
+# from its survey, so a new owner doesn't inherit the marker.
+boi_rs_drop_lost_states = {
+	every_state = {
+		limit = {
+			has_variable = boi_in_rail_survey
+			var:boi_in_rail_survey = root
+			NOT = { owner = root }
+		}
+		remove_variable = boi_in_rail_survey
+		remove_modifier = boi_rail_survey_underway
+	}
+}
+
+# Country scope. Pulse only. Advances the survey, fires the stage events
+# and mirrors progress and quality onto the journal entry's bars.
+boi_rs_monthly = {
+	boi_rs_refresh_police = yes
+	boi_rs_drop_lost_states = yes
+	change_variable = { name = boi_rs_months add = 1 }
+	change_variable = { name = boi_rs_progress add = boi_rs_monthly_pct }
+
+	# Every stage event fires before the survey can finish.
+	if = {
+		limit = {
+			var:boi_rs_progress > 99
+			NOT = { has_variable = boi_rs_stage_3 }
+		}
+		set_variable = { name = boi_rs_progress value = 99 }
+	}
+	if = {
+		limit = { var:boi_rs_progress > 100 }
+		set_variable = { name = boi_rs_progress value = 100 }
+	}
+	if = {
+		limit = { var:boi_rs_progress < 0 }
+		set_variable = { name = boi_rs_progress value = 0 }
+	}
+	if = {
+		limit = { var:boi_rs_quality > 100 }
+		set_variable = { name = boi_rs_quality value = 100 }
+	}
+	if = {
+		limit = { var:boi_rs_quality < 0 }
+		set_variable = { name = boi_rs_quality value = 0 }
+	}
+
+	# One stage event per month at most.
+	if = {
+		limit = {
+			var:boi_rs_progress >= 25
+			NOT = { has_variable = boi_rs_stage_1 }
+		}
+		set_variable = boi_rs_stage_1
+		boi_rs_fire_stage_1 = yes
+	}
+	else_if = {
+		limit = {
+			var:boi_rs_progress >= 50
+			NOT = { has_variable = boi_rs_stage_2 }
+		}
+		set_variable = boi_rs_stage_2
+		boi_rs_fire_stage_2 = yes
+	}
+	else_if = {
+		limit = {
+			var:boi_rs_progress >= 75
+			NOT = { has_variable = boi_rs_stage_3 }
+		}
+		set_variable = boi_rs_stage_3
+		boi_rs_fire_stage_3 = yes
+	}
+
+	scope:journal_entry = {
+		set_bar_progress = { name = boi_rs_progress_bar value = root.var:boi_rs_progress }
+		set_bar_progress = { name = boi_rs_quality_bar value = root.var:boi_rs_quality }
+	}
+}
+
+# Country scope. Stage pickers; pulse only.
+boi_rs_fire_stage_1 = {
+	random_list = {
+		10 = { trigger_event = { id = boi_rail_survey.11 popup = yes } }
+		10 = { trigger_event = { id = boi_rail_survey.12 popup = yes } }
+		7 = { trigger_event = { id = boi_rail_survey.13 popup = yes } }
+		10 = { trigger_event = { id = boi_rail_survey.14 popup = yes } }
+	}
+}
+
+boi_rs_fire_stage_2 = {
+	random_list = {
+		10 = { trigger_event = { id = boi_rail_survey.21 popup = yes } }
+		10 = { trigger_event = { id = boi_rail_survey.22 popup = yes } }
+		10 = { trigger_event = { id = boi_rail_survey.23 popup = yes } }
+		8 = { trigger_event = { id = boi_rail_survey.24 popup = yes } }
+		10 = {
+			trigger = { has_law = law_type:law_militarized_police }
+			trigger_event = { id = boi_rail_survey.40 popup = yes }
+		}
+	}
+}
+
+boi_rs_fire_stage_3 = {
+	random_list = {
+		10 = { trigger_event = { id = boi_rail_survey.31 popup = yes } }
+		10 = { trigger_event = { id = boi_rail_survey.32 popup = yes } }
+		7 = { trigger_event = { id = boi_rail_survey.33 popup = yes } }
+		10 = {
+			trigger = { any_scope_state = { has_variable = boi_in_rail_survey boi_rs_urban_levels >= 5 } }
+			trigger_event = { id = boi_rail_survey.34 popup = yes }
+		}
+		10 = {
+			trigger = { has_law = law_type:law_militarized_police }
+			trigger_event = { id = boi_rail_survey.40 popup = yes }
+		}
+	}
+}
+
+# Country scope. Completion event only. Gives every surveyed state its
+# levels, records the result for the completion text and telemetry, then
+# clears the survey.
+boi_rs_award = {
+	set_variable = { name = boi_rs_last_levels value = boi_rs_result_levels }
+	set_variable = { name = boi_rs_last_quality value = var:boi_rs_quality }
+	set_variable = { name = boi_rs_last_months value = var:boi_rs_months }
+	set_variable = { name = boi_rs_last_states value = boi_rs_state_count }
+	if = {
+		limit = { has_variable = boi_rs_surveys_completed }
+		change_variable = { name = boi_rs_surveys_completed add = 1 }
+	}
+	else = {
+		set_variable = { name = boi_rs_surveys_completed value = 1 }
+	}
+	every_scope_state = {
+		limit = { has_variable = boi_in_rail_survey }
+		if = {
+			limit = { has_variable = boi_rail_cap_surveyed }
+			change_variable = { name = boi_rail_cap_surveyed add = root.var:boi_rs_last_levels }
+		}
+		else = {
+			set_variable = { name = boi_rail_cap_surveyed value = root.var:boi_rs_last_levels }
+		}
+		if = {
+			limit = { has_variable = boi_rs_times_surveyed }
+			change_variable = { name = boi_rs_times_surveyed add = 1 }
+		}
+		else = {
+			set_variable = { name = boi_rs_times_surveyed value = 1 }
+		}
+		boi_rail_cap_refresh = yes
+	}
+	boi_rs_cleanup = yes
+}
+
+# Country scope. Clears every trace of the current survey.
+boi_rs_cleanup = {
+	every_state = {
+		limit = {
+			has_variable = boi_in_rail_survey
+			var:boi_in_rail_survey = root
+		}
+		remove_variable = boi_in_rail_survey
+		remove_modifier = boi_rail_survey_underway
+	}
+	remove_variable = boi_rs_goal
+	remove_variable = boi_rs_states
+	remove_variable = boi_rs_progress
+	remove_variable = boi_rs_quality
+	remove_variable = boi_rs_months
+	remove_variable = boi_rs_stage_1
+	remove_variable = boi_rs_stage_2
+	remove_variable = boi_rs_stage_3
+	remove_variable = boi_rs_cancelled
+}
+
+# ── Event option helpers (tooltip-previewed: no comparisons) ────
+
+# Country scope. Quality and progress changes, in points, each with a
+# plain tooltip (boi_rs_quality_<TT>_tt / boi_rs_progress_<TT>_tt)
+# instead of the raw variable change.
+boi_rs_quality_add = {
+	custom_tooltip = boi_rs_quality_$TT$_tt
+	hidden_effect = {
+		change_variable = { name = boi_rs_quality add = $AMOUNT$ }
+	}
+}
+
+boi_rs_progress_add = {
+	custom_tooltip = boi_rs_progress_$TT$_tt
+	hidden_effect = {
+		change_variable = { name = boi_rs_progress add = $AMOUNT$ }
+	}
+}
+
+# Country scope. Radicals in every surveyed state.
+boi_rs_radicals_all = {
+	every_scope_state = {
+		limit = { has_variable = boi_in_rail_survey }
+		add_radicals_in_state = { value = $VALUE$ }
+	}
+}

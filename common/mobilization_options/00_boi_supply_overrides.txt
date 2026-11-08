@@ -1,4 +1,5 @@
 ﻿# Vanilla 1.13.11 supply shadows. Re-diff after game updates.
+# 1.15.0 check (2026-11-06, tools/Compare-ShadowBodies.py): vanilla blocks unchanged; copies still exact apart from BOI's changes.
 # Basic Supplies is copied unchanged to preserve the vanilla display order.
 # Extra Supplies adds a horse-supply requirement and 0.5 horse upkeep.
 

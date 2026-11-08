@@ -1,0 +1,31 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey decision
+#
+#  Opens the region picker (events/boi_rail_survey_events.txt). The AI
+#  never takes it: AI caps rise through the hidden yearly
+#  boi_rail_survey.60 instead (user's choice, 2026-11-07).
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md.
+# ================================================================
+
+boi_commission_rail_survey = {
+	is_shown = {
+		is_ai = no
+		has_technology_researched = railways
+	}
+
+	possible = {
+		NOT = { has_journal_entry = je_boi_rail_survey }
+		custom_tooltip = {
+			text = boi_rs_needs_eligible_state_tt
+			boi_rs_has_any_eligible = yes
+		}
+	}
+
+	when_taken = {
+		trigger_event = { id = boi_rail_survey.1 popup = yes }
+	}
+
+	ai_chance = {
+		value = 0
+	}
+}

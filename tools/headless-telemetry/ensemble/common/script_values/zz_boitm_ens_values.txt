@@ -162,6 +162,14 @@ boitm_ens_coal_levels = {
 	}
 }
 
+boitm_ens_copper_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_copper_mine }
+		add = level
+	}
+}
+
 boitm_ens_iron_levels = {
 	value = 0
 	every_scope_building = {
