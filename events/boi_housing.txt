@@ -5,7 +5,8 @@ boi_housing.3 = {
  type = country_event
  hidden = yes
  immediate = {
-  activate_law = law_type:law_boi_unregulated_company_housing
+  activate_law = law_type:law_no_workers_rights
+  boi_housing_labour_rights_sync_effect = yes
   activate_law = law_type:law_boi_unregulated_residential
  }
 }
@@ -14,7 +15,8 @@ boi_housing.4 = {
  type = country_event
  hidden = yes
  immediate = {
-  activate_law = law_type:law_boi_protected_company_housing
+  activate_law = law_type:law_regulatory_bodies
+  boi_housing_labour_rights_sync_effect = yes
   activate_law = law_type:law_boi_residential_standards
  }
 }
@@ -22,7 +24,10 @@ boi_housing.4 = {
 boi_housing.5 = {
  type = country_event
  hidden = yes
- immediate = { activate_law = law_type:law_boi_mandated_serviced_housing }
+ immediate = {
+  activate_law = law_type:law_worker_protections
+  boi_housing_labour_rights_sync_effect = yes
+ }
 }
 
 boi_housing.1 = {
@@ -61,4 +66,35 @@ boi_housing.2 = {
    }
   }
  }
+}
+
+# Monthly: company housing follows the Labour Rights law (2026-11-08). The trigger
+# is true only when the law differs from the level last enforced, so the
+# conversion runs once per law change.
+boi_housing.10 = {
+ type = country_event
+ hidden = yes
+ trigger = {
+  NOT = { is_country_type = decentralized }
+  OR = {
+   NOT = { has_variable = boi_labour_rights_level }
+   AND = {
+    has_law_or_variant = law_type:law_worker_protections
+    has_variable = boi_labour_rights_level
+    NOT = { var:boi_labour_rights_level = 3 }
+   }
+   AND = {
+    has_law_or_variant = law_type:law_regulatory_bodies
+    has_variable = boi_labour_rights_level
+    NOT = { var:boi_labour_rights_level = 2 }
+   }
+   AND = {
+    NOT = { has_law_or_variant = law_type:law_worker_protections }
+    NOT = { has_law_or_variant = law_type:law_regulatory_bodies }
+    has_variable = boi_labour_rights_level
+    NOT = { var:boi_labour_rights_level = 1 }
+   }
+  }
+ }
+ immediate = { boi_housing_labour_rights_sync_effect = yes }
 }

@@ -1,0 +1,100 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation journal entry
+#
+#  Added only by boi_cm_start, after the region picker. Progress (0-100)
+#  is a country variable advanced monthly by boi_cm_monthly; the bar
+#  mirrors it. Clearance and events at 25%, 50% and 75%; the rest is
+#  cleared at 100% by boi_city_modernisation.90.
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4.
+# ================================================================
+
+je_boi_city_modernisation = {
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	group = je_group_internal_affairs
+
+	activation_description = {
+		custom_tooltip = je_boi_city_modernisation_activation_tt
+	}
+
+	scripted_progress_bar = boi_cm_progress_bar
+
+	scripted_button = boi_cm_cancel_button
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+
+	scaling_modifiers_while_active = {
+		modifier = boi_city_modernisation_expenses
+		value = boi_cm_weekly_cost
+	}
+
+	on_monthly_pulse = {
+		effect = {
+			boi_cm_monthly = yes
+		}
+	}
+
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_boi_city_modernisation_completed_desc
+		color = "gold_positive"
+		trigger = {
+			custom_tooltip = {
+				text = boi_cm_complete_tt
+				var:boi_cm_progress >= 100
+			}
+		}
+		effect = {
+			custom_tooltip = boi_cm_complete_effect_tt
+			hidden_effect = {
+				trigger_event = { id = boi_city_modernisation.90 popup = yes }
+			}
+		}
+	}
+
+	outcome = {
+		header = boi_cm_stopped_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_boi_city_modernisation_stopped_desc
+		color = "blue_negative"
+		trigger = {
+			custom_tooltip = {
+				text = boi_cm_stopped_tt
+				OR = {
+					has_variable = boi_cm_cancelled
+					has_variable = boi_cm_stopped
+				}
+			}
+		}
+		effect = {
+			custom_tooltip = boi_cm_stopped_effect_tt
+			hidden_effect = {
+				boi_cm_abandon = yes
+			}
+		}
+	}
+
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_boi_city_modernisation_lost_desc
+		color = "blue_negative"
+		trigger = {
+			custom_tooltip = {
+				text = boi_cm_lost_tt
+				NOT = { boi_cm_has_state_in_progress = yes }
+			}
+		}
+		effect = {
+			custom_tooltip = boi_cm_lost_effect_tt
+			hidden_effect = {
+				boi_cm_abandon = yes
+			}
+		}
+	}
+
+	weight = 100
+	transferable = no
+	can_revolution_inherit = no
+}

@@ -7,11 +7,14 @@ on_monthly_pulse_country = {
 		boitm_rs.3
 		boitm_rs.10
 		boitm_rs.20
+		boitm_rs.30
+		boitm_rs.32
 	}
 }
 
 on_yearly_pulse_country = {
 	events = {
 		boitm_rs.4
+		boitm_rs.40
 	}
 }

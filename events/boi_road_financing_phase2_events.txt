@@ -1,0 +1,228 @@
+﻿namespace = boi_road_financing
+
+# ================================================================
+#  Burden of Infrastructure — Public Works Financing events (phase 2)
+#
+#  Plan 2, step 4, built 2026-11-08 (docs/plans/06_FEATURE_COMPLETE_PLAN.md,
+#  B10). All numbers are test values.
+#
+#   .9    hidden yearly dispatcher: one roll for .10 (8%) or .20 (4%)
+#   .10   Rebecca Riots (Tolls and Dues, a restless state)
+#   .20   road-duty defaulters (Statute Labour)
+#   .30   hidden monthly: notices when Statute Labour ends
+#   .31   "A Highway Act" (flavour, on leaving Statute Labour)
+#  Each popup event cools down 5 years per country.
+# ================================================================
+
+boi_road_financing.9 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		NOT = { is_country_type = decentralized }
+	}
+
+	immediate = {
+		# Defaulters 8% -> 4% a year (2026-11-08): at 8% about 30 Statute
+		# Labour countries had one running at any time in the 20-year games.
+		random_list = {
+			8 = { trigger_event = { id = boi_road_financing.10 popup = yes } }
+			4 = { trigger_event = { id = boi_road_financing.20 popup = yes } }
+			88 = {}
+		}
+	}
+}
+
+# ── Rebecca Riots ───────────────────────────────────────────────
+# Wales, 1839-43: farmers dressed as women smashed the tollgates.
+
+boi_road_financing.10 = {
+	type = country_event
+	placement = scope:rf_state
+	title = boi_road_financing.10.t
+	desc = boi_road_financing.10.d
+	flavor = boi_road_financing.10.f
+	event_image = { video = "unspecific_vandalized_storefront" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		has_law = law_type:law_boi_turnpike_trusts
+		NOT = { has_variable = boi_rf_rebecca_cooldown }
+		any_scope_state = {
+			is_incorporated = yes
+			turmoil >= 0.1
+		}
+	}
+
+	immediate = {
+		set_variable = { name = boi_rf_rebecca_cooldown value = yes years = 5 }
+		ordered_scope_state = {
+			limit = {
+				is_incorporated = yes
+				turmoil >= 0.1
+			}
+			order_by = turmoil
+			save_scope_as = rf_state
+		}
+	}
+
+	# Abolish the tolls in that state, for a while.
+	option = {
+		name = boi_road_financing.10.a
+		default_option = yes
+		scope:rf_state = {
+			add_modifier = { name = boi_rf_tolls_abolished years = 3 }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_pleased days = 730 is_decaying = yes }
+		}
+		ig:ig_petty_bourgeoisie ?= {
+			add_modifier = { name = boi_rf_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+
+	# Send the dragoons and rebuild the gates.
+	option = {
+		name = boi_road_financing.10.b
+		scope:rf_state = {
+			add_radicals_in_state = { value = medium_radicals }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_angered days = 730 is_decaying = yes }
+		}
+		ig:ig_petty_bourgeoisie ?= {
+			add_modifier = { name = boi_rf_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+
+	# A commission of inquiry, and consolidated trusts.
+	option = {
+		name = boi_road_financing.10.c
+		add_treasury = boi_rs_payment_medium
+		scope:rf_state = {
+			add_radicals_in_state = { value = small_radicals }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# ── Road-duty defaulters ────────────────────────────────────────
+
+boi_road_financing.20 = {
+	type = country_event
+	placement = scope:rf_state
+	title = boi_road_financing.20.t
+	desc = boi_road_financing.20.d
+	flavor = boi_road_financing.20.f
+	event_image = { video = "europenorthamerica_russian_serfs" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		has_law = law_type:law_boi_statute_labour
+		NOT = { has_variable = boi_rf_defaulters_cooldown }
+		any_scope_state = {
+			is_incorporated = yes
+			has_building = building_boi_infrastructure
+		}
+	}
+
+	immediate = {
+		set_variable = { name = boi_rf_defaulters_cooldown value = yes years = 5 }
+		ordered_scope_state = {
+			limit = {
+				is_incorporated = yes
+				has_building = building_boi_infrastructure
+			}
+			order_by = turmoil
+			save_scope_as = rf_state
+		}
+	}
+
+	# Fine them, and distrain their carts if they won't pay.
+	option = {
+		name = boi_road_financing.20.a
+		default_option = yes
+		scope:rf_state = {
+			add_radicals_in_state = { value = small_radicals }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_rf_ig_pleased days = 730 is_decaying = yes }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Let them pay a money rate instead of their days.
+	option = {
+		name = boi_road_financing.20.b
+		add_treasury = boi_rs_payment_medium
+		scope:rf_state = {
+			add_modifier = { name = boi_rf_duty_commuted years = 3 }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+# ── A Highway Act ───────────────────────────────────────────────
+
+boi_road_financing.30 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		OR = {
+			AND = {
+				has_law = law_type:law_boi_statute_labour
+				NOT = { has_variable = boi_rf_had_statute_labour }
+			}
+			AND = {
+				has_variable = boi_rf_had_statute_labour
+				NOT = { has_law = law_type:law_boi_statute_labour }
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { has_law = law_type:law_boi_statute_labour }
+			set_variable = boi_rf_had_statute_labour
+		}
+		else = {
+			remove_variable = boi_rf_had_statute_labour
+			trigger_event = { id = boi_road_financing.31 popup = yes }
+		}
+	}
+}
+
+boi_road_financing.31 = {
+	type = country_event
+	title = boi_road_financing.31.t
+	desc = boi_road_financing.31.d
+	flavor = boi_road_financing.31.f
+	event_image = { video = "unspecific_signed_contract" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+	duration = 3
+
+	option = {
+		name = boi_road_financing.31.a
+		default_option = yes
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_pleased days = 730 is_decaying = yes }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_rf_ig_angered days = 730 is_decaying = yes }
+		}
+	}
+}

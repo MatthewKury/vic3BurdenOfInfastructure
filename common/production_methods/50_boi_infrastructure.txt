@@ -288,6 +288,25 @@ pm_boi_public_highways = {
 	disallowing_laws = {
 		law_boi_statute_labour
 		law_boi_turnpike_trusts
+		law_boi_road_fund # BOI 2026-11-08: Road Works use pm_boi_road_fund instead
+	}
+}
+
+
+# Dedicated Road Fund (2026-11-08): motor taxes pay for the roads, so the
+# state buys 25% fewer goods. No other change; Rail and Harbour Works keep
+# their state-funding PMs under this law.
+pm_boi_road_fund = {
+	texture = "gfx/interface/icons/production_method_icons/professional_bureaucrats.dds"
+
+	unlocking_laws = {
+		law_boi_road_fund
+	}
+
+	building_modifiers = {
+		unscaled = {
+			building_goods_input_mult = -0.25
+		}
 	}
 }
 

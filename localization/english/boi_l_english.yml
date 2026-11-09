@@ -51,7 +51,7 @@
  pm_boi_selective_breeding:0 "Selective Breeding"
  pm_boi_stud_farms:0 "Stud Farms"
  pmg_boi_horse_ranch_byproduct:0 "By-products"
- pm_boi_knackers_yard:0 "Knacker's Yard"
+ pm_boi_stable_manure:0 "Stable Manure"
  pm_boi_manure_trade:0 "Manure Trade"
  pm_boi_mixed_grazing:0 "Mixed Grazing"
 
@@ -114,6 +114,10 @@
 
  law_boi_public_highways:0 "State Funding"
  law_boi_public_highways_desc:0 "A state engineering corps builds and maintains the roads, railways and harbours, paid for out of general taxation."
+
+ law_boi_road_fund:0 "Dedicated Road Fund"
+ law_boi_road_fund_desc:0 "Taxes on motor vehicles and fuel go into a fund that may only be spent on the roads. Road Works buy a quarter fewer goods, and the vehicle duties add a little to the cost of trade. Railways and harbours stay on state funding."
+ pm_boi_road_fund:0 "Road Fund"
 
  # ── Ideologies: Road Financing ────────────────────────────────────────────────
  ideology_boi_manorial_roads:0 "Manorial Roads"

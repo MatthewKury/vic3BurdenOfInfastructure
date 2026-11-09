@@ -182,29 +182,38 @@ Assert-Housing ($buildings['building_boi_municipal_estates'] -match 'downsizeabl
 foreach ($key in @('slums', 'tenements', 'tenement_blocks')) {
     Assert-Housing ($buildings["building_boi_$key"] -match 'has_law\s*=\s*law_type:law_boi_residential_standards') "Residential standards must block new $key."
 }
+# City Modernisation: cleared states never get Slums or Workers' Rows back (2026-11-08).
+foreach ($key in @('slums', 'tenements')) {
+    Assert-Housing ($buildings["building_boi_$key"] -match 'NOT\s*=\s*\{\s*has_variable\s*=\s*boi_modernised_city') "A modernised state must block new $key."
+}
+Assert-Housing ($buildings['building_boi_municipal_estates'] -match 'law_council_republic') 'Municipal Estates need a socialist-type government.'
 Assert-Housing ($pm['pm_boi_no_company_housing'] -match 'is_default\s*=\s*yes') 'No Housing must be the default.'
 Assert-Housing ($pm['pm_boi_no_company_housing'] -notmatch 'unlocking_|goods_|state_modifiers') 'No Housing must be unconditional and supply no housing.'
 Assert-Housing ($pm['pm_boi_work_camp'] -notmatch 'state_modifiers') 'Work Camp penalties must not affect an entire state.'
-Assert-Housing ($pm['pm_boi_work_camp'] -match 'unlocking_laws\s*=\s*\{\s*law_boi_unregulated_company_housing') 'Work Camp needs its separate law gate.'
-# Each employer housing law permits No Housing plus exactly one tier.
-$tierLaws = @{ work_camp = 'law_boi_unregulated_company_housing'; work_town = 'law_boi_protected_company_housing'; serviced_town = 'law_boi_mandated_serviced_housing' }
+Assert-Housing ($pm['pm_boi_work_camp'] -match 'unlocking_laws\s*=\s*\{\s*law_no_workers_rights') 'Work Camp needs its separate law gate.'
+# Each vanilla Labour Rights law permits No Housing plus exactly one tier (2026-11-08).
+$tierLaws = @{ work_camp = 'law_no_workers_rights'; work_town = 'law_regulatory_bodies'; serviced_town = 'law_worker_protections' }
+$tierLevels = @{ work_camp = 1; work_town = 2; serviced_town = 3 }
 $tierEffects = @{ work_camp = 'boi_housing_enforce_work_camps_effect'; work_town = 'boi_housing_enforce_work_towns_effect'; serviced_town = 'boi_housing_enforce_serviced_towns_effect' }
 $laws = Read-HousingDomain $ModPath 'laws'
 Assert-Housing ($laws['law_boi_residential_standards'] -match 'ai_will_do\s*=\s*\{\s*has_technology_researched\s*=\s*urban_planning') 'The AI must wait for Regulated Terraces before banning cheap housing.'
-Assert-Housing ($laws['law_boi_mandated_serviced_housing'] -match 'ai_will_do\s*=\s*\{\s*has_technology_researched\s*=\s*modern_sewerage') 'The AI must wait for Serviced Towns before mandating them.'
 $setup = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_effects/50_boi_housing.txt'))
 foreach ($tier in $tierLaws.Keys) {
     $gate = [regex]::Match($pm["pm_boi_$tier"], 'unlocking_laws\s*=\s*\{([^{}]*)\}')
     Assert-Housing ($gate.Success -and ($gate.Groups[1].Value.Trim() -eq $tierLaws[$tier])) "$tier must be unlocked by exactly $($tierLaws[$tier])."
     Assert-Housing ($pm["pm_boi_$tier"] -notmatch 'disallowing_laws') "$tier must rely on its one unlocking law."
-    Assert-Housing ($laws[$tierLaws[$tier]] -match ('on_activate\s*=\s*\{\s*' + $tierEffects[$tier])) "$($tierLaws[$tier]) must move paying tiers to $tier."
-    Assert-Housing ($setup -match ('has_law\s*=\s*law_type:' + $tierLaws[$tier] + '\s*\}\s*' + $tierEffects[$tier])) "Monthly setup must enforce $tier under its law."
-    Assert-Housing ($setup -match ('NOR\s*=\s*\{[^{}]*' + $tierLaws[$tier])) "Monthly setup must recognise $($tierLaws[$tier]) or it resets the law every month."
+    Assert-Housing ($setup -match ($tierEffects[$tier] + '\s*=\s*yes\s*set_variable\s*=\s*\{\s*name\s*=\s*boi_labour_rights_level\s*value\s*=\s*' + $tierLevels[$tier])) "The Labour Rights sync must enforce $tier at level $($tierLevels[$tier])."
 }
+foreach ($law in @('law_worker_protections', 'law_regulatory_bodies')) {
+    Assert-Housing ($setup -match ('has_law_or_variant\s*=\s*law_type:' + $law)) "The Labour Rights sync must recognise $law."
+}
+Assert-Housing ($setup -match 'boi_housing_labour_rights_sync_effect\s*=\s*yes') 'Setup must run the Labour Rights sync.'
+$housingEvents = [IO.File]::ReadAllText((Join-Path $ModPath 'events/boi_housing.txt'))
+Assert-Housing ($housingEvents -match 'boi_housing\.10\s*=') 'The monthly Labour Rights check event must exist.'
+$onActions = [IO.File]::ReadAllText((Join-Path $ModPath 'common/on_actions/zz_boi_on_actions.txt'))
+Assert-Housing ($onActions -match 'boi_housing\.10') 'The monthly Labour Rights check must be hooked to the monthly pulse.'
+Assert-Housing (-not $laws.ContainsKey('law_boi_mandated_serviced_housing')) 'The Employer Housing laws were folded into Labour Rights and must not return.'
 Assert-Housing ($pm['pm_boi_serviced_town'] -match 'unlocking_technologies\s*=\s*\{\s*modern_sewerage') 'Serviced Town must keep its technology gate.'
-$mandate = $laws['law_boi_mandated_serviced_housing']
-Assert-Housing ($mandate -match 'unlocking_technologies\s*=\s*\{\s*socialism') 'Mandatory Serviced Housing must unlock with Socialism.'
-Assert-Housing ($mandate -notmatch 'can_enact') 'Mandatory Serviced Housing must stay enactable without Modern Sewerage.'
 $enforcement = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_effects/zz_boi_housing_fallback_generated.txt'))
 Assert-Housing ($enforcement -match 'has_technology_researched\s*=\s*modern_sewerage') 'The mandate must check for Modern Sewerage.'
 foreach ($destination in @('pm_boi_work_camp', 'pm_boi_work_town', 'pm_boi_serviced_town', 'pm_boi_no_company_housing')) {

@@ -72,3 +72,174 @@ boitm_rs_gold = {
 boitm_rs_scaled_debt = {
 	value = scaled_debt
 }
+
+# City Modernisation fixture (2026-11-08). Country scope.
+boitm_cm_progress = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_progress } value = var:boi_cm_progress }
+}
+boitm_cm_states = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_states } value = var:boi_cm_states }
+}
+boitm_cm_cleared_levels = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_levels_cleared } value = var:boi_cm_levels_cleared }
+}
+boitm_cm_last_levels = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_last_levels } value = var:boi_cm_last_levels }
+}
+boitm_cm_last_states = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_last_states } value = var:boi_cm_last_states }
+}
+boitm_cm_last_months = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_last_months } value = var:boi_cm_last_months }
+}
+boitm_cm_count = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_count } value = var:boi_cm_count }
+}
+boitm_cm_weekly_cost = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_goal } value = boi_cm_weekly_cost }
+}
+boitm_cm_expenses_share = {
+	value = boitm_cm_weekly_cost
+	divide = {
+		value = total_expenses
+		min = 1
+	}
+	multiply = 100
+}
+# Modernised states that still (wrongly) hold Slums or Workers' Rows.
+boitm_cm_modernised_with_low_tiers = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			has_variable = boi_modernised_city
+			OR = {
+				has_building = building_boi_slums
+				has_building = building_boi_tenements
+			}
+		}
+		add = 1
+	}
+}
+boitm_cm_modernised_states = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_modernised_city }
+		add = 1
+	}
+}
+boitm_cm_bonus_states = {
+	value = 0
+	every_scope_state = {
+		limit = { has_modifier = boi_cm_modernised_city }
+		add = 1
+	}
+}
+
+# How many countries each 2026-11-08 event has fired for (its cooldown
+# variable is set). Any scope; counts the whole world.
+boitm_ev_rebecca = {
+	value = 0
+	every_country = { limit = { has_variable = boi_rf_rebecca_cooldown } add = 1 }
+}
+boitm_ev_defaulters = {
+	value = 0
+	every_country = { limit = { has_variable = boi_rf_defaulters_cooldown } add = 1 }
+}
+boitm_ev_glanders = {
+	value = 0
+	every_country = { limit = { has_variable = boi_glanders_cooldown } add = 1 }
+}
+boitm_ev_remounts = {
+	value = 0
+	every_country = { limit = { has_variable = boi_remount_cooldown } add = 1 }
+}
+boitm_ev_cm_running = {
+	value = 0
+	every_country = { limit = { has_journal_entry = je_boi_city_modernisation } add = 1 }
+}
+boitm_ev_cm_done = {
+	value = 0
+	every_country = { limit = { has_variable = boi_cm_count } add = 1 }
+}
+
+boitm_cm_target = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_target } value = var:boi_cm_target }
+}
+boitm_cm_cleared_states = {
+	value = 0
+	if = { limit = { has_variable = boi_cm_cleared_states } value = var:boi_cm_cleared_states }
+}
+
+boitm_hev_company_store = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_company_store_cd } add = 1 }
+}
+
+boitm_hev_tied_cottage = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_tied_cottage_cd } add = 1 }
+}
+
+boitm_hev_camp_disaster = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_camp_disaster_cd } add = 1 }
+}
+
+boitm_hev_model_village = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_model_village_cd } add = 1 }
+}
+
+boitm_hev_pullman = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_pullman_cd } add = 1 }
+}
+
+boitm_hev_collapse = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_collapse_cd } add = 1 }
+}
+
+boitm_hev_rent_strike = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_rent_strike_cd } add = 1 }
+}
+
+boitm_hev_philanthropist = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_philanthropist_cd } add = 1 }
+}
+
+boitm_hev_commission = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_commission_cd } add = 1 }
+}
+
+boitm_hev_great_fire = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_great_fire_cd } add = 1 }
+}
+
+boitm_hev_bubble = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_bubble_cd } add = 1 }
+}
+
+boitm_hev_red_vienna_done = {
+	value = 0
+	every_country = { limit = { has_variable = boi_hev_red_vienna_done } add = 1 }
+}
+
+boitm_ev_pledges = {
+	value = 0
+	every_country = { limit = { has_journal_entry = je_boi_rehousing_pledge } add = 1 }
+}

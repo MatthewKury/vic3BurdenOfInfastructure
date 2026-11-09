@@ -45,7 +45,7 @@ bg_boi_municipal_housing = {
  is_government_funded = yes
  cash_reserves_max = 10000
  urbanization = 0
- infrastructure_usage_per_level = 1.5
+ infrastructure_usage_per_level = 1.25
 }
 bg_boi_elevator_apartment_housing = {
  parent_group = bg_boi_dense_housing

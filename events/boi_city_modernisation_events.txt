@@ -1,0 +1,458 @@
+﻿namespace = boi_city_modernisation
+
+# ================================================================
+#  Burden of Infrastructure — City Modernisation events
+#
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4. All numbers are
+#  test values (2026-11-08).
+#
+#   .1 - .7   region picker (generated: boi_city_modernisation_picker_generated.txt)
+#   .9        hidden: start
+#   .11       first clearance (25%): the owners
+#   .12       ... the evicted: rehousing pledge or force them out (2026-11-08)
+#   .21       second clearance (50%): what to build
+#   .22       ... rents soar in what is left (the poor pay)
+#   .31       third clearance (75%): paying for it
+#   .32, .33  ... cholera in the courts, or barricades (the poor pay)
+#   .90       completion: the last states cleared, the bonus set
+# ================================================================
+
+boi_city_modernisation.9 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		boi_cm_has_state_in_progress = yes
+		NOT = { has_journal_entry = je_boi_city_modernisation }
+	}
+
+	immediate = {
+		boi_cm_start = yes
+	}
+}
+
+# ── First clearance: the owners ─────────────────────────────────
+
+boi_city_modernisation.11 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.11.t
+	desc = boi_city_modernisation.11.d
+	flavor = boi_city_modernisation.11.f
+	event_image = { video = "unspecific_devastation" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = { boi_cm_has_state_in_progress = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				has_variable = boi_cm_cleared
+			}
+			save_scope_as = cm_state
+		}
+	}
+
+	# Pay the landlords for what was pulled down.
+	option = {
+		name = boi_city_modernisation.11.a
+		default_option = yes
+		add_treasury = boi_cm_payment
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Expropriate: the law allows it, and the treasury prefers it.
+	option = {
+		name = boi_city_modernisation.11.b
+		scope:cm_state = {
+			add_radicals_in_state = { value = medium_radicals }
+			# The poorest minority on the spot pays most (2026-11-08).
+			boi_disp_culture_penalty = { SIZE = medium_radicals }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_cm_ig_angered days = 730 is_decaying = yes }
+		}
+		ig:ig_petty_bourgeoisie ?= {
+			add_modifier = { name = boi_cm_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+# ── Second clearance: what to build ─────────────────────────────
+
+boi_city_modernisation.21 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.21.t
+	desc = boi_city_modernisation.21.d
+	flavor = boi_city_modernisation.21.f
+	event_image = { video = "unspecific_world_fair" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = { boi_cm_has_state_in_progress = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_modernisation }
+			save_scope_as = cm_state
+		}
+	}
+
+	# Grand boulevards, squares and an opera house.
+	option = {
+		name = boi_city_modernisation.21.a
+		default_option = yes
+		custom_tooltip = boi_cm_boulevards_tt
+		hidden_effect = { set_variable = boi_cm_choice_boulevards }
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+
+	# Workers' housing on the cleared ground.
+	option = {
+		name = boi_city_modernisation.21.b
+		custom_tooltip = boi_cm_workers_tt
+		hidden_effect = { set_variable = boi_cm_choice_workers }
+		ig:ig_trade_unions ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# ── Third clearance: paying for it ──────────────────────────────
+
+boi_city_modernisation.31 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.31.t
+	desc = boi_city_modernisation.31.d
+	flavor = boi_city_modernisation.31.f
+	event_image = { video = "europenorthamerica_capitalists_meeting" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = { boi_cm_has_state_in_progress = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_modernisation }
+			save_scope_as = cm_state
+		}
+	}
+
+	# Keep paying as the works go.
+	option = {
+		name = boi_city_modernisation.31.a
+		default_option = yes
+		ai_chance = { base = 2 }
+	}
+
+	# Borrow, and finish sooner.
+	option = {
+		name = boi_city_modernisation.31.b
+		add_treasury = boi_cm_loan_payment
+		boi_cm_progress_add = { AMOUNT = 15 TT = up_15 }
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { scaled_debt > 0.3 }
+				add = -1
+			}
+		}
+	}
+}
+
+# ════════════════════════════════════════════════════════════════
+#  The evicted, and the poor who pay for it (2026-11-08)
+# ════════════════════════════════════════════════════════════════
+
+# After the first clearance: where are they to go? Offers the rehousing
+# pledge (je_boi_rehousing_pledge) once good housing can be built.
+boi_city_modernisation.12 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.12.t
+	desc = boi_city_modernisation.12.d
+	flavor = boi_city_modernisation.12.f
+	event_image = { video = "unspecific_devastation" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_modernisation
+			has_variable = boi_cm_cleared
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				has_variable = boi_cm_cleared
+			}
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = cm_state
+		}
+	}
+
+	# Promise them new homes within two years.
+	option = {
+		name = boi_city_modernisation.12.a
+		trigger = {
+			has_technology_researched = urban_planning
+			NOT = { has_journal_entry = je_boi_rehousing_pledge }
+		}
+		boi_pledge_start_city = yes
+		ai_chance = { base = 1 }
+	}
+
+	# They will find somewhere. Force them out now.
+	option = {
+		name = boi_city_modernisation.12.b
+		default_option = yes
+		scope:cm_state = {
+			add_radicals_in_state = {
+				value = medium_radicals
+				strata = poor
+			}
+			boi_disp_culture_penalty = { SIZE = medium_radicals }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# After the second clearance: the displaced crowd into what is left.
+boi_city_modernisation.22 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.22.t
+	desc = boi_city_modernisation.22.d
+	flavor = boi_city_modernisation.22.f
+	event_image = { video = "unspecific_vandalized_storefront" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_modernisation
+			has_variable = boi_cm_cleared
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				has_variable = boi_cm_cleared
+			}
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = cm_state
+		}
+	}
+
+	# Cap the rents.
+	option = {
+		name = boi_city_modernisation.22.a
+		scope:cm_state = {
+			add_modifier = { name = boi_disp_rent_control years = 2 }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_cm_ig_angered days = 730 is_decaying = yes }
+		}
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_cm_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+
+	# The market will build what is wanted.
+	option = {
+		name = boi_city_modernisation.22.b
+		default_option = yes
+		scope:cm_state = {
+			add_modifier = { name = boi_disp_overcrowding years = 2 }
+			add_radicals_in_state = {
+				value = medium_radicals
+				strata = poor
+			}
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# After the third clearance: cholera in the crowded courts.
+boi_city_modernisation.32 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.32.t
+	desc = boi_city_modernisation.32.d
+	flavor = boi_city_modernisation.32.f
+	event_image = { video = "unspecific_sick_in_hospital" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_modernisation
+			has_variable = boi_cm_cleared
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				has_variable = boi_cm_cleared
+			}
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = cm_state
+		}
+	}
+
+	# Emergency sanitation works.
+	option = {
+		name = boi_city_modernisation.32.a
+		default_option = yes
+		add_treasury = boi_cm_payment
+		ai_chance = { base = 2 }
+	}
+
+	# Close the courts and wait for it to pass.
+	option = {
+		name = boi_city_modernisation.32.b
+		scope:cm_state = {
+			add_modifier = { name = boi_disp_cholera years = 1 }
+			add_radicals_in_state = {
+				value = small_radicals
+				strata = poor
+			}
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+# After the third clearance, likelier where the state is restless: the
+# displaced raise barricades.
+boi_city_modernisation.33 = {
+	type = country_event
+	placement = scope:cm_state
+	title = boi_city_modernisation.33.t
+	desc = boi_city_modernisation.33.d
+	flavor = boi_city_modernisation.33.f
+	event_image = { video = "europenorthamerica_springtime_of_nations" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_modernisation
+			has_variable = boi_cm_cleared
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				has_variable = boi_cm_cleared
+			}
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = cm_state
+		}
+	}
+
+	# Send in the troops.
+	option = {
+		name = boi_city_modernisation.33.a
+		scope:cm_state = {
+			add_radicals_in_state = {
+				value = large_radicals
+				strata = poor
+			}
+		}
+		ig:ig_armed_forces ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 1 }
+	}
+
+	# Negotiate with the faubourgs.
+	option = {
+		name = boi_city_modernisation.33.b
+		default_option = yes
+		add_treasury = boi_cm_payment
+		ig:ig_trade_unions ?= {
+			add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
+# ── Completion ──────────────────────────────────────────────────
+
+boi_city_modernisation.90 = {
+	type = country_event
+	title = boi_city_modernisation.90.t
+	desc = boi_city_modernisation.90.d
+	flavor = boi_city_modernisation.90.f
+	event_image = { video = "europenorthamerica_london_center" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	# Always true. It reads the last-result variables, which only the
+	# completion text uses; without a script read the engine warns they are
+	# "set but never used" (2026-11-08).
+	trigger = {
+		OR = {
+			NOT = { has_variable = boi_cm_last_levels }
+			AND = {
+				var:boi_cm_last_levels >= 0
+				var:boi_cm_last_months >= 0
+				var:boi_cm_last_states >= 0
+			}
+		}
+	}
+
+	immediate = {
+		boi_cm_complete = yes
+	}
+
+	option = {
+		name = boi_city_modernisation.90.a
+		default_option = yes
+		custom_tooltip = boi_cm_complete_effect_tt
+	}
+}

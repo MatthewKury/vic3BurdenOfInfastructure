@@ -1,0 +1,13 @@
+﻿# ================================================================
+#  Burden of Infrastructure — rehousing pledge bar
+#  Mirrors boi_pledge_progress_pct through set_bar_progress in boi_pledge_monthly.
+# ================================================================
+
+boi_pledge_bar = {
+	name = "boi_pledge_bar"
+	desc = "boi_pledge_bar_desc"
+	default_green = yes
+	start_value = 0
+	min_value = 0
+	max_value = 100
+}

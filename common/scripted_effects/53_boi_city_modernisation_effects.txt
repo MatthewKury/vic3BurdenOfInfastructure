@@ -1,0 +1,265 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation effects
+#
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4 (agreed 2026-11-08).
+#  One strategic region at a time. At 25%, 50%, 75% and 100% about a
+#  quarter of its states are cleared, most crowded first: remove_building
+#  takes out every level of Slum Districts and Workers' Rows, whoever owns
+#  them, because script can't remove single levels. A cleared state gets the
+#  permanent variable boi_modernised_city, which the two buildings' possible
+#  checks, so they never return there. The construction bonus starts at the
+#  first clearance and lasts 5 years after completion; the decision cools
+#  down for the same 5 years.
+# ================================================================
+
+# Country scope. Region option of the picker.
+boi_cm_choose_region = {
+	custom_tooltip = boi_cm_choose_region_tt
+	hidden_effect = {
+		every_scope_state = {
+			limit = {
+				boi_cm_state_eligible = yes
+				region = sr:$REGION$
+			}
+			set_variable = { name = boi_in_modernisation value = root }
+		}
+		trigger_event = { id = boi_city_modernisation.9 days = 0 }
+	}
+}
+
+# Country scope. Hidden start event only.
+boi_cm_start = {
+	set_variable = { name = boi_cm_states value = boi_cm_state_count }
+	set_variable = { name = boi_cm_goal value = boi_cm_goal_total }
+	set_variable = { name = boi_cm_progress value = 0 }
+	set_variable = { name = boi_cm_months value = 0 }
+	set_variable = { name = boi_cm_stage value = 0 }
+	set_variable = { name = boi_cm_levels_cleared value = 0 }
+	set_variable = { name = boi_cm_cleared_states value = 0 }
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		add_modifier = { name = boi_cm_underway }
+	}
+	add_journal_entry = { type = je_boi_city_modernisation }
+}
+
+# Country scope. Drops every state whose marker isn't its owner's: states
+# this country lost, and states marked by a country that no longer exists
+# (`?=`: see boi_rs_drop_lost_states).
+boi_cm_drop_lost_states = {
+	every_state = {
+		limit = {
+			has_variable = boi_in_modernisation
+			NOT = { var:boi_in_modernisation ?= owner }
+		}
+		remove_variable = boi_in_modernisation
+		remove_variable = boi_cm_cleared
+		remove_modifier = boi_cm_underway
+		remove_modifier = boi_cm_modernised_city
+	}
+}
+
+# State scope. Clears one state.
+boi_cm_clear_state = {
+	set_local_variable = { name = boi_cm_levels_here value = boi_cm_state_low_tier_levels }
+	owner = {
+		change_variable = { name = boi_cm_levels_cleared add = local_var:boi_cm_levels_here }
+		change_variable = { name = boi_cm_cleared_states add = 1 }
+	}
+	if = {
+		limit = { has_building = building_boi_slums }
+		remove_building = building_boi_slums
+	}
+	if = {
+		limit = { has_building = building_boi_tenements }
+		remove_building = building_boi_tenements
+	}
+	set_variable = boi_cm_cleared
+	set_variable = boi_modernised_city
+}
+
+# Country scope. Clears states, most crowded first, until the stage's
+# share is done. Starts the construction bonus at the first clearance.
+# Each pass clears one state (max = 1 below) and counts it in a variable.
+boi_cm_clear_to_target = {
+	set_variable = { name = boi_cm_target value = boi_cm_clear_target }
+	while = {
+		limit = {
+			var:boi_cm_cleared_states < var:boi_cm_target
+			boi_cm_has_state_to_clear = yes
+		}
+		ordered_scope_state = {
+			limit = {
+				has_variable = boi_in_modernisation
+				NOT = { has_variable = boi_cm_cleared }
+			}
+			order_by = boi_cm_state_low_tier_levels
+			# Without max, ordered_scope_state runs on EVERY matching state in
+			# order, not just the first: game 1 cleared all 10 states at once.
+			max = 1
+			check_range_bounds = no
+			boi_cm_clear_state = yes
+		}
+	}
+	if = {
+		limit = { NOT = { has_variable = boi_cm_bonus_started } }
+		set_variable = boi_cm_bonus_started
+		every_scope_state = {
+			limit = { has_variable = boi_in_modernisation }
+			add_modifier = { name = boi_cm_modernised_city }
+		}
+	}
+}
+
+# Country scope. Monthly, from the journal entry.
+boi_cm_monthly = {
+	boi_cm_drop_lost_states = yes
+	# Repealing Residential Standards stops the works (no more clearance, no bonus).
+	if = {
+		limit = { NOT = { has_law = law_type:law_boi_residential_standards } }
+		set_variable = boi_cm_stopped
+	}
+	change_variable = { name = boi_cm_months add = 1 }
+	change_variable = { name = boi_cm_progress add = boi_cm_monthly_pct }
+	if = {
+		limit = {
+			var:boi_cm_progress > 99
+			var:boi_cm_stage < 3
+		}
+		set_variable = { name = boi_cm_progress value = 99 }
+	}
+	if = {
+		limit = { var:boi_cm_progress > 100 }
+		set_variable = { name = boi_cm_progress value = 100 }
+	}
+
+	# One stage per month at most: clear that stage's states, then its event.
+	if = {
+		limit = {
+			NOT = { has_variable = boi_cm_stopped }
+			var:boi_cm_progress >= 25
+			var:boi_cm_stage < 1
+		}
+		set_variable = { name = boi_cm_stage value = 1 }
+		boi_cm_clear_to_target = yes
+		trigger_event = { id = boi_city_modernisation.11 popup = yes }
+		trigger_event = { id = boi_city_modernisation.12 days = 10 popup = yes }
+	}
+	else_if = {
+		limit = {
+			NOT = { has_variable = boi_cm_stopped }
+			var:boi_cm_progress >= 50
+			var:boi_cm_stage < 2
+		}
+		set_variable = { name = boi_cm_stage value = 2 }
+		boi_cm_clear_to_target = yes
+		trigger_event = { id = boi_city_modernisation.21 popup = yes }
+		trigger_event = { id = boi_city_modernisation.22 days = 20 popup = yes }
+	}
+	else_if = {
+		limit = {
+			NOT = { has_variable = boi_cm_stopped }
+			var:boi_cm_progress >= 75
+			var:boi_cm_stage < 3
+		}
+		set_variable = { name = boi_cm_stage value = 3 }
+		boi_cm_clear_to_target = yes
+		trigger_event = { id = boi_city_modernisation.31 popup = yes }
+		# The displaced: cholera, or the barricades where the state is restless.
+		if = {
+			limit = { any_scope_state = { has_variable = boi_in_modernisation turmoil >= 0.1 } }
+			random_list = {
+				10 = { trigger_event = { id = boi_city_modernisation.32 days = 20 popup = yes } }
+				15 = { trigger_event = { id = boi_city_modernisation.33 days = 20 popup = yes } }
+			}
+		}
+		else = {
+			random_list = {
+				10 = { trigger_event = { id = boi_city_modernisation.32 days = 20 popup = yes } }
+				5 = { trigger_event = { id = boi_city_modernisation.33 days = 20 popup = yes } }
+			}
+		}
+	}
+
+	scope:journal_entry = {
+		set_bar_progress = { name = boi_cm_progress_bar value = root.var:boi_cm_progress }
+	}
+}
+
+# Country scope. Completion event only.
+boi_cm_complete = {
+	set_variable = { name = boi_cm_stage value = 4 }
+	boi_cm_clear_to_target = yes
+	set_variable = { name = boi_cm_last_states value = var:boi_cm_states }
+	set_variable = { name = boi_cm_last_levels value = var:boi_cm_levels_cleared }
+	set_variable = { name = boi_cm_last_months value = var:boi_cm_months }
+	if = {
+		limit = { has_variable = boi_cm_count }
+		change_variable = { name = boi_cm_count add = 1 }
+	}
+	else = {
+		set_variable = { name = boi_cm_count value = 1 }
+	}
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		remove_modifier = boi_cm_modernised_city
+		add_modifier = { name = boi_cm_modernised_city years = 5 }
+		if = {
+			limit = { root = { has_variable = boi_cm_choice_workers } }
+			add_modifier = { name = boi_cm_workers_housing years = 5 }
+		}
+	}
+	add_modifier = { name = boi_cm_new_capital years = 5 }
+	if = {
+		limit = { has_variable = boi_cm_choice_boulevards }
+		add_modifier = { name = boi_cm_boulevards years = 5 }
+	}
+	# The decision waits as long as the bonus lasts.
+	set_variable = { name = boi_cm_cooldown value = yes years = 5 }
+	boi_cm_cleanup = yes
+}
+
+# Country scope. Cancelled or stopped: cleared states keep their ban, the
+# bonus goes.
+boi_cm_abandon = {
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		remove_modifier = boi_cm_modernised_city
+	}
+	boi_cm_cleanup = yes
+}
+
+# Country scope. Clears every trace of the current modernisation, except
+# boi_modernised_city on the cleared states.
+boi_cm_cleanup = {
+	every_state = {
+		limit = {
+			has_variable = boi_in_modernisation
+			var:boi_in_modernisation ?= root
+		}
+		remove_variable = boi_in_modernisation
+		remove_variable = boi_cm_cleared
+		remove_modifier = boi_cm_underway
+	}
+	remove_variable = boi_cm_states
+	remove_variable = boi_cm_goal
+	remove_variable = boi_cm_progress
+	remove_variable = boi_cm_months
+	remove_variable = boi_cm_stage
+	remove_variable = boi_cm_levels_cleared
+	remove_variable = boi_cm_cleared_states
+	remove_variable = boi_cm_target
+	remove_variable = boi_cm_bonus_started
+	remove_variable = boi_cm_cancelled
+	remove_variable = boi_cm_stopped
+	remove_variable = boi_cm_choice_workers
+	remove_variable = boi_cm_choice_boulevards
+}
+
+# Country scope. Event options.
+boi_cm_progress_add = {
+	custom_tooltip = boi_cm_progress_$TT$_tt
+	hidden_effect = {
+		change_variable = { name = boi_cm_progress add = $AMOUNT$ }
+	}
+}

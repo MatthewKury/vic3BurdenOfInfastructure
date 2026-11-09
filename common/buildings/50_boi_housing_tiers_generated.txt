@@ -9,6 +9,7 @@
  ownership_type = self
  possible = {
   owner = { NOT = { has_law = law_type:law_boi_residential_standards } }
+  NOT = { has_variable = boi_modernised_city }
  }
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
@@ -24,6 +25,7 @@ building_boi_tenements = {
  ownership_type = self
  possible = {
   owner = { NOT = { has_law = law_type:law_boi_residential_standards } }
+  NOT = { has_variable = boi_modernised_city }
  }
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
@@ -90,10 +92,13 @@ building_boi_municipal_estates = {
   pmg_boi_municipal_estates
   pmg_boi_light_heat_municipal_estates
  }
- required_construction = construction_cost_medium
+ required_construction = construction_cost_low
  downsizeable = no
  ownership_type = no_ownership
  unlocking_technologies = { socialism }
+ possible = {
+  owner = { OR = { has_law_or_variant = law_type:law_council_republic has_law_or_variant = law_type:law_command_economy has_law_or_variant = law_type:law_cooperative_ownership } }
+ }
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }
 

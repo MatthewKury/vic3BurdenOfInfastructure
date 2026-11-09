@@ -68,6 +68,9 @@ def write_dds(image: Image.Image, path: Path) -> None:
 
 
 for name, (source, shift, label) in PLACEHOLDERS.items():
+    if (MOD / 'art/buildings' / f'{name}.png').exists():
+        print(f'{name}: finished artwork exists; skipping placeholder')
+        continue
     icon = Image.open(ICONS / f"{source}.png").convert("RGBA").resize((256, 256))
     icon = stamp(tint(icon, shift), label)
     icon.save(ICONS / f"{name}.png")

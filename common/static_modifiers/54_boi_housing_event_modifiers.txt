@@ -1,0 +1,50 @@
+﻿# ================================================================
+#  Burden of Infrastructure — housing event modifiers (2026-11-08)
+#  Events: events/boi_housing_events.txt. All numbers are test values.
+# ================================================================
+
+boi_hev_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 2
+}
+
+boi_hev_ig_angered = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fist_negative.dds
+	interest_group_approval_add = -2
+}
+
+# State, 1 year. After a disaster at a company camp.
+boi_hev_camp_disaster = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_mortality_mult = 0.05
+}
+
+# State, 5 years. A model village draws people.
+boi_hev_model_village = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	state_migration_pull_mult = 0.05
+}
+
+# Country, 5 years.
+boi_hev_model_village_prestige = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 10
+}
+
+# State, 1 year. The great fire.
+boi_hev_great_fire = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_mortality_mult = 0.05
+}
+
+# Country, 1 year. The building societies fail.
+boi_hev_building_crash = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_private_construction_allocation_mult = -0.1
+}
+
+# Country, 10 years.
+boi_hev_red_vienna = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 25
+}

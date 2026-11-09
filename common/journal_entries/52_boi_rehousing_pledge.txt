@@ -1,0 +1,94 @@
+﻿# ================================================================
+#  Burden of Infrastructure — rehousing pledge journal entry
+#
+#  Added by the "Promise them new homes" options (rail survey .25, City
+#  Modernisation .12), after the vanilla promise quests
+#  (je_negotiate_buildings). Build var:boi_pledge_target levels of good
+#  working-class housing in the pledge's states within 2 years. One pledge
+#  at a time. Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md.
+# ================================================================
+
+je_boi_rehousing_pledge = {
+	icon = "gfx/interface/icons/event_icons/event_scales.dds"
+
+	group = je_group_internal_affairs
+
+	activation_description = {
+		custom_tooltip = je_boi_rehousing_pledge_activation_tt
+	}
+
+	scripted_progress_bar = boi_pledge_bar
+
+	# "Built X / Y levels", shown under the title and in the outliner.
+	status_desc = {
+		first_valid = {
+			triggered_desc = {
+				desc = je_boi_rehousing_pledge_status
+			}
+		}
+	}
+
+	should_be_pinned_by_default_uninvolved_or_context = yes
+
+	on_monthly_pulse = {
+		effect = {
+			boi_pledge_monthly = yes
+		}
+	}
+
+	outcome = {
+		header = je_standard_completion_header
+		effect_header = je_standard_on_completion_header
+		conclusion_desc = je_boi_rehousing_pledge_kept_desc
+		color = "gold_positive"
+		trigger = {
+			custom_tooltip = {
+				text = boi_pledge_kept_tt
+				has_variable = boi_pledge_built
+				var:boi_pledge_built >= var:boi_pledge_target
+			}
+		}
+		effect = {
+			custom_tooltip = boi_pledge_kept_effect_tt
+			hidden_effect = { boi_pledge_kept = yes }
+		}
+	}
+
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_boi_rehousing_pledge_broken_desc
+		color = "blue_negative"
+		trigger = {
+			custom_tooltip = {
+				text = boi_pledge_time_tt
+				scope:journal_entry.journal_entry_age >= 730
+			}
+		}
+		effect = {
+			custom_tooltip = boi_pledge_broken_effect_tt
+			hidden_effect = { boi_pledge_broken = yes }
+		}
+	}
+
+	# The states passed out of our hands: the promise lapses.
+	outcome = {
+		header = je_standard_failure_header
+		effect_header = je_standard_on_failure_header
+		conclusion_desc = je_boi_rehousing_pledge_lost_desc
+		color = "blue_negative"
+		trigger = {
+			custom_tooltip = {
+				text = boi_pledge_lost_tt
+				NOT = { any_scope_state = { has_variable = boi_pledge_state } }
+			}
+		}
+		effect = {
+			hidden_effect = { boi_pledge_cleanup = yes }
+		}
+	}
+
+	weight = 100
+	transferable = no
+	can_revolution_inherit = no
+}

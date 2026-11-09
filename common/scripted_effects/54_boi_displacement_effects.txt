@@ -1,0 +1,172 @@
+﻿# ================================================================
+#  Burden of Infrastructure — displacement effects (2026-11-08)
+#
+#  Forcing people out (the rail survey's clearances, City Modernisation's
+#  expropriation and evictions) and breaking a rehousing pledge both hit
+#  the largest group on the spot not in the best acceptance tier: the
+#  largest poor pop in the state whose acceptance is under 80 (vanilla's
+#  acceptance_status_5, the top tier; user's choice 2026-11-08). Its culture
+#  loses 20 acceptance for 10 years and radicalizes. If every poor pop
+#  there is fully accepted, only the poor radicalize.
+#  Values: common/script_values/54_boi_displacement_values.txt.
+# ================================================================
+
+# State scope. Saves scope:boi_disp_culture: the culture of the largest
+# poor pop here below the top acceptance tier, if there is one.
+boi_disp_find_culture = {
+	ordered_scope_pop = {
+		limit = {
+			strata = poor
+			pop_acceptance < acceptance_status_5
+		}
+		order_by = total_size
+		position = 0
+		check_range_bounds = no
+		culture = { save_scope_as = boi_disp_culture }
+	}
+}
+
+# State scope. The culture penalty: -20 acceptance for 10 years for that
+# culture, and radicals among it ($SIZE$).
+boi_disp_culture_penalty = {
+	boi_disp_find_culture = yes
+	if = {
+		limit = { exists = scope:boi_disp_culture }
+		custom_tooltip = boi_disp_culture_penalty_tt
+		hidden_effect = {
+			owner = {
+				add_culture_acceptance_modifier = {
+					culture = scope:boi_disp_culture
+					multiplier = -20
+					days = 3650
+				}
+			}
+			add_radicals_in_state = {
+				value = $SIZE$
+				culture = scope:boi_disp_culture
+			}
+		}
+	}
+}
+
+# ── Rehousing pledge ────────────────────────────────────────────
+
+# Country scope. Common start: baseline, counters, journal entry.
+boi_pledge_start_common = {
+	set_variable = { name = boi_pledge_baseline value = boi_pledge_good_levels }
+	set_variable = { name = boi_pledge_built value = 0 }
+	add_journal_entry = { type = je_boi_rehousing_pledge }
+}
+
+# Country scope. City Modernisation: every state of the works.
+boi_pledge_start_city = {
+	custom_tooltip = boi_pledge_start_city_tt
+	hidden_effect = {
+		set_variable = { name = boi_pledge_target value = boi_pledge_target_city }
+		set_variable = { name = boi_pledge_kind value = 2 }
+		every_scope_state = {
+			limit = { has_variable = boi_in_modernisation }
+			set_variable = boi_pledge_state
+		}
+		boi_pledge_start_common = yes
+	}
+}
+
+# Country scope. Rail survey: the state on the route (scope:survey_state).
+boi_pledge_start_rail = {
+	custom_tooltip = boi_pledge_start_rail_tt
+	hidden_effect = {
+		scope:survey_state = {
+			set_local_variable = { name = boi_pledge_rail_target value = boi_pledge_target_rail }
+		}
+		set_variable = { name = boi_pledge_target value = local_var:boi_pledge_rail_target }
+		set_variable = { name = boi_pledge_kind value = 1 }
+		scope:survey_state = { set_variable = boi_pledge_state }
+		boi_pledge_start_common = yes
+	}
+}
+
+# Country scope. A philanthropist's grant (boi_housing_events): the state in
+# scope:hev_state, half a good level per Slum or Workers' Rows level there.
+boi_pledge_start_state = {
+	custom_tooltip = boi_pledge_start_state_tt
+	hidden_effect = {
+		scope:hev_state = {
+			set_local_variable = { name = boi_pledge_state_target value = boi_pledge_target_state }
+			set_variable = boi_pledge_state
+		}
+		set_variable = { name = boi_pledge_target value = local_var:boi_pledge_state_target }
+		set_variable = { name = boi_pledge_kind value = 3 }
+		boi_pledge_start_common = yes
+	}
+}
+
+# Country scope. Monthly, from the journal entry.
+boi_pledge_monthly = {
+	set_variable = { name = boi_pledge_built value = boi_pledge_good_levels }
+	change_variable = { name = boi_pledge_built subtract = var:boi_pledge_baseline }
+	if = {
+		limit = { var:boi_pledge_built < 0 }
+		set_variable = { name = boi_pledge_built value = 0 }
+	}
+	set_variable = { name = boi_pledge_pct value = boi_pledge_progress_pct }
+	scope:journal_entry = {
+		set_bar_progress = { name = boi_pledge_bar value = root.var:boi_pledge_pct }
+	}
+}
+
+# Country scope. Kept: the people rehoused remember it.
+boi_pledge_kept = {
+	every_scope_state = {
+		limit = { has_variable = boi_pledge_state }
+		add_loyalists_in_state = {
+			value = medium_radicals
+			strata = poor
+		}
+	}
+	ig:ig_trade_unions ?= {
+		add_modifier = { name = boi_cm_ig_pleased days = 730 is_decaying = yes }
+	}
+	boi_pledge_cleanup = yes
+}
+
+# Country scope. Broken: heavy radicals among the poor in every pledge
+# state, the culture penalty once (in the largest such state), Trade Unions
+# angry, and a legitimacy penalty for 5 years.
+boi_pledge_broken = {
+	every_scope_state = {
+		limit = { has_variable = boi_pledge_state }
+		add_radicals_in_state = {
+			value = boi_pledge_broken_radicals
+			strata = poor
+		}
+	}
+	ordered_scope_state = {
+		limit = { has_variable = boi_pledge_state }
+		order_by = state_population
+		max = 1
+		check_range_bounds = no
+		boi_disp_culture_penalty = { SIZE = large_radicals }
+	}
+	ig:ig_trade_unions ?= {
+		add_modifier = { name = boi_cm_ig_angered days = 1825 is_decaying = yes }
+	}
+	add_modifier = { name = boi_pledge_broken years = 5 }
+	boi_pledge_cleanup = yes
+}
+
+# Country scope.
+boi_pledge_cleanup = {
+	every_state = {
+		limit = {
+			has_variable = boi_pledge_state
+			owner = root
+		}
+		remove_variable = boi_pledge_state
+	}
+	remove_variable = boi_pledge_target
+	remove_variable = boi_pledge_kind
+	remove_variable = boi_pledge_baseline
+	remove_variable = boi_pledge_built
+	remove_variable = boi_pledge_pct
+}

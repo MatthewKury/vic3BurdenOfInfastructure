@@ -12,7 +12,7 @@ discarded with one harmless `error.log` line: `Duplicated key X will not be
 created`. Every shadow is a full copy of the vanilla block with BOI's changes
 tagged `# BOI:`.
 
-**Expected count: 65 `Duplicated key` lines per launch on 1.15.0** (measured, run `20261106-102840_mod`) (63 on
+**Expected count: 67 `Duplicated key` lines per launch on 1.15.0** (measured, run `20261108-131100_mod`; 65 before the two ownership buildings were added on 2026-11-08, run `20261106-102840_mod`) (63 on
 1.13.11, headless run `20261030-174303_mod`; 1.15 adds the copper mine and the
 Cossack Host to the generated housing shadows). A different count after a patch
 means a key was renamed, removed or added; investigate before playing.
@@ -21,7 +21,7 @@ Two file sets replace whole vanilla files instead, because the engine reads
 them by file path: the 16 state-region files and `00_buy_packages.txt`. They
 log nothing, so drift there is silent.
 
-## Shadowed keys (65)
+## Shadowed keys (67)
 
 | BOI file | Keys | Vanilla source | Change |
 |---|---:|---|---|
@@ -34,6 +34,7 @@ log nothing, so drift there is silent.
 | `common/mobilization_options/00_boi_supply_overrides.txt` | 2 | `00_mobilization_option.txt` | Extra Supplies needs potential horse supply and costs 0.5 horses; Basic Supplies is an unchanged copy, kept so the options list keeps vanilla's order |
 | `common/mobilization_options/00_boi_transport_overrides.txt` | 3 | `00_mobilization_option.txt` | Forced March, Truck and Rail Transport exclusive with Horse-Drawn Transport |
 | `common/buildings/00_boi_railway_ai_override.txt` | 1 | `11_private_infrastructure.txt` | `building_railway`: price-scaled `ai_value`; no auto-expansion on infrastructure deficit |
+| `common/buildings/00_boi_ownership_overrides.txt` | 2 | `11_private_infrastructure.txt` | **generated** by `tools/Build-OwnershipOverrides.py`: `building_manor_house` and `building_financial_district` gain an investment score for each private housing tier (2026-11-08) |
 | `common/buildings/00_boi_housing_rural_generated.txt` | 33 | `02_agro`, `03_mines`, `04_plantations`, `09_misc_resource`, `12_subsistence`, `15_special` | **generated**: housing PM group added to 27 rural workplaces and 6 subsistence-style buildings (1.15 adds the copper mine, and the Cossack Host as subsistence) |
 
 GUI types are first-read-wins per type, without a log line:
@@ -42,6 +43,7 @@ GUI types are first-read-wins per type, without a log line:
 |---|---|---|
 | `gui/01_boi_panel_military.gui` | `mobilization_widget` | wrapping grid so the extra horse options fit (loses to Community Mod Framework 1.65.0 when that is loaded, which has its own wrap) |
 | `gui/01_boi_military_formation_panel.gui` | `military_formation_panel` | bulk-selection grid wrap 3 → 2 |
+| `gui/01_boi_building_details_panel.gui` | `condensed_building_information` | buildings with 5+ PM groups get 58px PM slots instead of 72px, so the row stays clear of the employment and cash-reserve bars (loses to Community Mod Framework when that is loaded, which puts groups 5+ on a second row) |
 
 ## Whole-file replacements (generated)
 
@@ -49,6 +51,7 @@ GUI types are first-read-wins per type, without a log line:
 |---|---|---|
 | `map_data/state_regions/*.txt` (16) | `building_boi_horse_ranch` inserted into all `arable_resources` lists (675 on 1.13, 676 on 1.15) (a rural building missing from that list cannot be built), plus the Horse-Breeding Traditions trait | `tools/REGENERATE.md` §1, then `tools/Add-HorseBreedingTrait.ps1` |
 | `common/buy_packages/00_buy_packages.txt` | all 99 `wealth_N` packages, vanilla needs plus housing demand | `tools/Build-Housing.ps1` |
+| `gfx/map/city_data/city_types/*.txt` (34: 19 base game, 15 from five DLCs) | map models for the Horse Ranch (farm), Road and Rail Works (city) and Harbour Works (port); a building with a `city_type` missing from any file of its hub type asserts `Failed creating backing building` (2026-11-08) | `python tools/Build-CityTypes.py` |
 
 `tools/Build-Housing.ps1` also writes the 31-building shadow above,
 `common/modifier_type_definitions/zz_boi_housing_generated.txt`,
@@ -88,13 +91,17 @@ over-allocated 10 states and crashed world initialisation.
 3. Re-run `tools/Build-Housing.ps1`.
 4. Re-measure the housing seed demand (`tools/Get-HousingSeedDemand.py`; it
    needs a one-year run with the housing seed emptied), then re-run step 3.
-5. Run `tools/Validate-All.ps1`, then a headless run
-   (`tools/Test-Headless.ps1`) and compare the `Duplicated key` count with 65.
+5. Re-run `python tools/Build-OwnershipOverrides.py` and `python tools/Build-CityTypes.py`
+   (both copy vanilla blocks or files whole), and `python tools/Build-ModernisationPicker.py`
+   if the rail survey picker changed.
+6. Run `tools/Validate-All.ps1`, then a headless run
+   (`tools/Test-Headless.ps1`) and compare the `Duplicated key` count with 67.
 
 ## Conflicts
 
 Any mod that edits the 16 state-region files, buy packages, the 31 housing
-buildings, or any key in the shadow table conflicts with BOI. Community Mod
+buildings, the map city types, or any key in the shadow table conflicts with BOI.
+The README's "Vanilla overrides and mod conflicts" table lists them all. Community Mod
 Framework is compatible (`tools/Test-CMFCompatibility.ps1`, CMF 1.65.0).
 
 ## Defines

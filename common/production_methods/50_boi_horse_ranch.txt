@@ -94,20 +94,26 @@ pm_boi_stud_farms = {
 # despite the comparison in this file's header. Same techs as the sheep
 # group and about the same net value. No employment: the staff come from
 # the breeding group (VIC3_MODDING_LESSONS.md, "Employment is per PM group").
-# meat = 30, fertilizer = 30, grain = 20.
+# meat = 30, fertilizer = 30, horses = 30.
+# Since 2026-11-08 (user's change) the two fertilizer PMs no longer buy
+# grain. Their meat comes from slaughtered horses, so they cut the ranch's
+# horse output instead: horses at £30 replace grain at £20, about the same
+# value.
 
-# Worn-out and unsound stock goes to the knacker. Net +90 (sheep +100).
-pm_boi_knackers_yard = {
-	texture = "gfx/interface/icons/production_method_icons/butchering_tools.dds"
+# The default: stable manure carted to nearby farms. Net +90 (sheep +100).
+# Was Knacker's Yard (3 meat) until 2026-11-08; the user made the default a
+# low fertilizer output instead of meat.
+pm_boi_stable_manure = {
+	texture = "gfx/interface/icons/production_method_icons/fertilization.dds"
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_output_meat_add = 3 # 90
+			goods_output_fertilizer_add = 3 # 90
 		}
 	}
 }
 
-# Stable manure sold to farms. Net +170 (sheep farms +175).
+# Stable manure sold to farms, and horse meat. Net +180 (sheep farms +175).
 pm_boi_manure_trade = {
 	texture = "gfx/interface/icons/production_method_icons/fertilization.dds"
 
@@ -117,15 +123,15 @@ pm_boi_manure_trade = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_grain_add = 5 # 100
+			goods_output_horses_add = -3 # -90: the horses slaughtered for meat
 			goods_output_meat_add = 4 # 120
 			goods_output_fertilizer_add = 5 # 150
 		}
 	}
 }
 
-# Horses grazed with cattle on rotated pasture. Net +340 (intensive
-# grazing +350).
+# Horses grazed with cattle on rotated pasture, the culls sold for meat.
+# Net +360 (intensive grazing +350).
 pm_boi_mixed_grazing = {
 	texture = "gfx/interface/icons/production_method_icons/intensive_grazing.dds"
 
@@ -135,7 +141,7 @@ pm_boi_mixed_grazing = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_grain_add = 10 # 200
+			goods_output_horses_add = -6 # -180: the horses slaughtered for meat
 			goods_output_meat_add = 6 # 180
 			goods_output_fertilizer_add = 12 # 360
 		}

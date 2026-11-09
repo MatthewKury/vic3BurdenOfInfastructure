@@ -1,0 +1,45 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation decision
+#
+#  After Haussmann's Paris. Needs Minimum Residential Standards (the
+#  slums are banned) and a state that still has Slums or Workers' Rows.
+#  Opens the region picker (events/boi_city_modernisation_picker_generated.txt).
+#  Cools down for 5 years after a completed modernisation.
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4.
+# ================================================================
+
+boi_city_modernisation = {
+	is_shown = {
+		has_law = law_type:law_boi_residential_standards
+	}
+
+	possible = {
+		NOT = { has_journal_entry = je_boi_city_modernisation }
+		NOT = { has_variable = boi_cm_cooldown }
+		is_at_war = no
+		custom_tooltip = {
+			text = boi_cm_debt_tt
+			scaled_debt < 0.5
+		}
+		custom_tooltip = {
+			text = boi_cm_needs_eligible_state_tt
+			boi_cm_has_any_eligible = yes
+		}
+	}
+
+	when_taken = {
+		trigger_event = { id = boi_city_modernisation.1 popup = yes }
+	}
+
+	# The AI modernises where a lot of low housing is left and it can borrow.
+	ai_chance = {
+		value = 0
+		if = {
+			limit = {
+				scaled_debt < 0.3
+				boi_cm_ai_low_tier_levels >= 4
+			}
+			add = 10
+		}
+	}
+}

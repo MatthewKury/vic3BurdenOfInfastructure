@@ -1,8 +1,27 @@
 # Burden of Infrastructure: plan to feature complete
 
-Written 2026-11-08. Nothing in this plan has been built yet. It starts from your four items and adds the open work from the other plans, the overview's revisit list and the balance logs. Numbers marked *test value* are first guesses, to be tuned in headless runs.
+Written 2026-11-08. It starts from your four items and adds the open work from the other plans, the overview's revisit list and the balance logs. Numbers marked *test value* are first guesses, to be tuned in headless runs.
 
 **Feature complete** here means every module the mod sets out to have is built, the AI can run it, and it has passed a long headless game. Polish and the overview's "big ideas" (§6) come after. Some of them could be pulled in; see question 6.
+
+## Status (2026-11-08, branch `feature-complete`)
+
+**Built:** A1, A2, A3, A4, B1, B2, B6, B10, B11, B13 (changelog only), B15 (works buildings and Horse Ranch) and B16 (Municipal Estates reworked rather than removed), plus the horse events. [CHANGELOG.md](../../CHANGELOG.md) lists every change, and the README lists every override and conflict.
+
+Two smoke runs: `20261108-130549_mod` and `20261108-131100_mod`. The second passed with 0 BOI errors, 67 `Duplicated key` lines and no `Failed creating backing building`. The two 20-year games are in [the 8 Nov balance log](../reports/feature_complete_8_Nov_2026/BALANCE_LOG.md).
+
+Changed from the plan while building:
+
+- **A4 construction bonus:** it is `state_construction_mult` (+20%, and +10% more for workers' housing), so it speeds all construction in a modernised state, not housing alone. The engine only registers `building_group_*_construction_efficiency_add` for vanilla groups. The housing-only key logged "defined in script but not in code".
+- **B16:** Municipal Estates were kept, at your request. They are now gated on a socialist-type government (council republic, Command Economy or Cooperative Ownership), and they are the best working-class housing: 14 basic and 2 luxury on 1.25 infrastructure, at low cost, with +0.4% migration pull per level.
+- **A3:** the conversion runs from a monthly event, `boi_housing.10`, which records the law last enforced in `boi_labour_rights_level`.
+
+**Not done:**
+- B5: no housing concept text.
+- B7 and B12: no long ensemble beyond the two 20-year games.
+- B8: your hand playtest.
+- B13: the licence and Workshop page are yours to choose.
+- B3: Work Camp's role.
 
 ## Part A: your four items
 
@@ -283,3 +302,34 @@ Notes:
 - **Check after building it:**
   - A smoke run with 0 `Failed creating backing building` assertions.
   - A look in game at one European and one non-European state for each building. You can do that while I'm not running games.
+
+## Proposed housing events (2026-11-08, not built)
+
+You asked for more housing events, for both employer housing (Work Camp, Work Town, Serviced Town) and residential housing. Each one triggers from things the mod already tracks: company-housing PMs on workplaces, housing tiers and prices, the two housing law groups and Labour Rights. Each has a real choice. Costs are deaths, radicals, interest-group approval and money, not standard of living directly.
+
+### Employer housing
+
+| Event | Trigger | Choices |
+| --- | --- | --- |
+| **The Company Store** (truck wages) | Many Work Camp levels, under No Workers' Rights | Ban truck wages (Industrialists angered, Trade Unions pleased), or tolerate it (radicals among labourers in the states with the most camps) |
+| **Tied Cottage Evictions** | A rural state with company housing on farms or ranches; Rural Folk hold the Tied Cottages stance | Protect the tenant's tenure (Landowners angered), or the cottage goes with the job (radicals among farmers) |
+| **Disaster at the Camp** (fire or collapse at a mining or logging camp) | Work Camps on mines or logging camps | A public inquiry (cost; pushes Regulatory Bodies along through interest-group approval), or blame the men (radicals; the state's mortality rises for a while) |
+| **A Model Village** (Saltaire, Bournville, Pullman) | Work Towns or Serviced Towns in a state, and an industrialist government or a strong Industrialists group | Honour the founder (prestige, migration pull for the state), or tax the village like any other (Industrialists angered) |
+| **The Pullman Strike** | Many Serviced Town or Work Town levels and strong Trade Unions; wages cut but company rents not | Send the troops (heavy radicals among workers, Armed Forces pleased), or arbitrate (cost, Trade Unions pleased) |
+
+### Residential housing
+
+| Event | Trigger | Choices |
+| --- | --- | --- |
+| **A Tenement Collapses** (jerry-building) | Workers' Rows or Tenement Blocks in a crowded state, without Residential Standards | Draft building by-laws (the reformers' approval rises toward Residential Standards; the landlord groups angered), or blame the builder (radicals among the poor) |
+| **The Rent Strike** (Glasgow 1915) | Housing at its price ceiling in an industrial state | Restrict rents (landlords angered, construction slows), or evict the strikers (radicals among the poor) |
+| **A Philanthropist's Offer** (Peabody, Guinness trusts) | Model Dwellings unlocked, and a state with many slums | Accept (a grant toward building, Devout pleased), or decline (nothing) |
+| **A Royal Commission on Housing** (1884) | Many slum levels, and the Intelligentsia or Trade Unions strong | Publish the report (some radicals now, the reformers' approval rises), or bury it (the Intelligentsia angered) |
+| **The Great Fire** | A state with Slum Districts | The slums burn: their levels are removed, like a clearance, and deaths rise. Rebuild on a plan (a construction bonus and cost), or let them rebuild as they were |
+| **A Suburban Building Bubble** | Luxury housing cheap (oversupplied) in several states | Bail out the building societies (cost), or let them fail (radicals among the middle strata, a construction slowdown) |
+| **Red Vienna** (Karl-Marx-Hof) | A socialist government with many Municipal Estate levels | Flavour and prestige: a monument to council housing |
+
+Notes:
+- **The Great Fire** reuses City Modernisation's clearance (`remove_building`, and the `boi_modernised_city` ban if "rebuild on a plan" is chosen).
+- **A Model Village** and **Red Vienna** are the positive ones; the rest are costs.
+- **A Philanthropist's Offer** would give money, not build directly, because `start_building_construction` ignores technology and BOI would rather not build for the player.

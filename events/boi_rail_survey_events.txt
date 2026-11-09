@@ -12,6 +12,9 @@
 #   .11 - .14 first stage (25%): routes
 #   .21 - .24 second stage (50%): land
 #   .31 - .34 third stage (75%): approval
+#   .15       first stage: navvy camps (the poor pay)
+#   .25, .26  second stage: families on the route (rehousing pledge),
+#             cottagers turned off the land (the poor pay)
 #   .40       Militarized Police only, second or third stage
 #   .50       hidden monthly: keep the Rail Works cap modifiers right
 #   .60       hidden yearly: the AI's stand-in for surveys
@@ -688,6 +691,8 @@ boi_rail_survey.21 = {
 		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_medium TT = forced_medium }
 		scope:survey_state = {
 			add_radicals_in_state = { value = boi_rs_forced_radicals_medium }
+			# The poorest minority on the route pays most (2026-11-08).
+			boi_disp_culture_penalty = { SIZE = medium_radicals }
 		}
 		ig:ig_rural_folk ?= {
 			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
@@ -740,6 +745,8 @@ boi_rail_survey.22 = {
 		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_large TT = forced_large }
 		scope:survey_state = {
 			add_radicals_in_state = { value = boi_rs_forced_radicals_large }
+			# The poorest minority on the route pays most (2026-11-08).
+			boi_disp_culture_penalty = { SIZE = large_radicals }
 		}
 		ig:ig_rural_folk ?= {
 			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
@@ -1022,6 +1029,8 @@ boi_rail_survey.34 = {
 		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_large TT = forced_large }
 		scope:survey_state = {
 			add_radicals_in_state = { value = boi_rs_forced_radicals_medium }
+			# The poorest minority on the route pays most (2026-11-08).
+			boi_disp_culture_penalty = { SIZE = medium_radicals }
 		}
 		ig:ig_petty_bourgeoisie ?= {
 			add_modifier = { name = boi_rs_ig_angered days = 730 is_decaying = yes }
@@ -1098,6 +1107,161 @@ boi_rail_survey.40 = {
 
 # Monthly, every country: keep each owned state's cap modifiers right.
 # Hooked from common/on_actions/zz_boi_on_actions.txt.
+# ════════════════════════════════════════════════════════════════
+#  The poor pay for it (2026-11-08)
+# ════════════════════════════════════════════════════════════════
+
+# First stage: fever in the contractors' camps.
+boi_rail_survey.15 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.15.t
+	desc = boi_rail_survey.15.d
+	flavor = boi_rail_survey.15.f
+	event_image = { video = "unspecific_sick_in_hospital" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		random_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			save_scope_as = survey_state
+		}
+	}
+
+	# Pay for drains, huts and a doctor.
+	option = {
+		name = boi_rail_survey.15.a
+		default_option = yes
+		add_treasury = boi_rs_payment_small
+		ai_chance = { base = 2 }
+	}
+
+	# The contractors' men are the contractors' business.
+	option = {
+		name = boi_rail_survey.15.b
+		scope:survey_state = {
+			add_modifier = { name = boi_disp_navvy_fever years = 1 }
+			add_radicals_in_state = {
+				value = small_radicals
+				strata = poor
+			}
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+# Second stage: the families who live on the route. Offers the rehousing
+# pledge (je_boi_rehousing_pledge) once good housing can be built.
+boi_rail_survey.25 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.25.t
+	desc = boi_rail_survey.25.d
+	flavor = boi_rail_survey.25.f
+	event_image = { video = "africa_city_center" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = {
+		any_scope_state = {
+			has_variable = boi_in_rail_survey
+			boi_rs_urban_levels >= 2
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			order_by = boi_rs_urban_levels
+			position = 0
+			check_range_bounds = no
+			save_scope_as = survey_state
+		}
+	}
+
+	# Promise them new homes within two years.
+	option = {
+		name = boi_rail_survey.25.a
+		trigger = {
+			has_technology_researched = urban_planning
+			NOT = { has_journal_entry = je_boi_rehousing_pledge }
+		}
+		boi_pledge_start_rail = yes
+		boi_rs_quality_add = { AMOUNT = 5 TT = up_5 }
+		ai_chance = { base = 1 }
+	}
+
+	# Force them out now.
+	option = {
+		name = boi_rail_survey.25.b
+		default_option = yes
+		boi_rs_quality_add = { AMOUNT = boi_rs_forced_quality_medium TT = forced_medium }
+		scope:survey_state = {
+			add_radicals_in_state = {
+				value = boi_rs_forced_radicals_medium
+				strata = poor
+			}
+			boi_disp_culture_penalty = { SIZE = medium_radicals }
+		}
+		ai_chance = {
+			base = 2
+			modifier = { trigger = { has_law = law_type:law_militarized_police } add = 2 }
+		}
+	}
+}
+
+# Second stage: tenant cottagers lose their homes to the line.
+boi_rail_survey.26 = {
+	type = country_event
+	placement = scope:survey_state
+	title = boi_rail_survey.26.t
+	desc = boi_rail_survey.26.d
+	flavor = boi_rail_survey.26.f
+	event_image = { video = "europenorthamerica_russian_serfs" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_protest.dds"
+	duration = 3
+
+	trigger = { boi_rs_has_surveyed_state = yes }
+
+	immediate = {
+		ordered_scope_state = {
+			limit = { has_variable = boi_in_rail_survey }
+			order_by = { value = 0 subtract = boi_rs_urban_levels } # the most rural state
+			position = 0
+			check_range_bounds = no
+			save_scope_as = survey_state
+		}
+	}
+
+	# Resettle them, at a price and some delay.
+	option = {
+		name = boi_rail_survey.26.a
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		boi_rs_progress_add = { AMOUNT = -5 TT = down_5 }
+		ai_chance = { base = 1 }
+	}
+
+	# Let them go where they will.
+	option = {
+		name = boi_rail_survey.26.b
+		scope:survey_state = {
+			add_radicals_in_state = {
+				value = medium_radicals
+				strata = poor
+			}
+			add_modifier = { name = boi_disp_cottagers years = 1 }
+		}
+		ai_chance = { base = 2 }
+	}
+}
+
 boi_rail_survey.50 = {
 	type = country_event
 	hidden = yes
@@ -1195,6 +1359,20 @@ boi_rail_survey.90 = {
 	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
 	icon = "gfx/interface/icons/event_icons/event_industry.dds"
 	duration = 3
+
+	# Always true. It reads the last-result variables, which only the
+	# completion text uses; without a script read the engine warns they are
+	# "set but never used" (2026-11-08).
+	trigger = {
+		OR = {
+			NOT = { has_variable = boi_rs_last_months }
+			AND = {
+				var:boi_rs_last_months >= 0
+				var:boi_rs_last_quality >= 0
+				var:boi_rs_last_states >= 0
+			}
+		}
+	}
 
 	immediate = {
 		boi_rs_award = yes

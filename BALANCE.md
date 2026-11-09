@@ -154,9 +154,9 @@ so the comparison above holds for the whole building, not just the base group:
 
 | `pmg_boi_horse_ranch_byproduct` | Unlock | Inputs | Output | Net | Livestock's wool PM |
 |---|---|---|---|---|---|
-| pm_boi_knackers_yard | start | — | meat 3 | +90 | +100 |
-| pm_boi_manure_trade | `intensive_agriculture` | grain 5 | meat 4, fertilizer 5 | +170 | +175 |
-| pm_boi_mixed_grazing | `mechanized_farming` | grain 10 | meat 6, fertilizer 12 | +340 | +350 |
+| pm_boi_stable_manure (was Knacker's Yard, meat 3, until 2026-11-08) | start | — | fertilizer 3 | +90 | +100 |
+| pm_boi_manure_trade | `intensive_agriculture` | 3 fewer horses (was grain 5 until 2026-11-08) | meat 4, fertilizer 5 | +180 | +175 |
+| pm_boi_mixed_grazing | `mechanized_farming` | 6 fewer horses (was grain 10 until 2026-11-08) | meat 6, fertilizer 12 | +360 | +350 |
 
 `pmg_fencing` is vanilla's own group, shared with the Livestock Ranch. Refrigeration
 is left out, since horses are sold live.
@@ -201,7 +201,7 @@ One contrast worth noting: Government Administration's *base* PMs
 paper arriving only at later PMs. Our design front-loads horses from the first
 PM instead, because paying for infrastructure in goods is the mod's whole point.
 
-### Road Works (`building_boi_infrastructure`) — `construction_cost_medium` (400), employment 500/level
+### Road Works (`building_boi_infrastructure`) — `construction_cost_low` (200 since 2026-11-08; was medium, 400), employment 500/level
 
 Government-funded, so employment is a permanent budget line. **500 per level**,
 matching Government Administration's own scale (500 clerks/level).
@@ -313,6 +313,21 @@ Each building has its own group on the same three laws:
 
 ### Housing roster
 
+**Changed 2026-11-08** (plan 6; all test values; the roster in `tools/Housing-Tiers.ps1` is the source):
+
+| Tier | Change |
+| --- | --- |
+| Slum Districts | −0.5% prestige per staffed level; +50 pollution per staffed level; can't be built in a modernised state |
+| Workers' Rows | −0.25% prestige per staffed level; can't be built in a modernised state |
+| Tenement Blocks | −0.125% prestige per staffed level |
+| Elevator Apartments | +0.3% migration pull per staffed level (new) |
+| Elevator Residences | migration pull +0.2% → +0.4% |
+| Motor Suburbs | migration pull +0.3% → +0.5% |
+| Municipal Estates | socialist governments only; 14 basic + 2 luxury on 1.25 infrastructure (was 10 + 0 on 1.5); low construction cost (was medium); +0.4% migration pull |
+| Serviced Town (company housing) | +0.05% migration pull per staffed level of the workplace |
+
+Company housing tiers now follow vanilla Labour Rights (Work Camp under No Workers' Rights, Work Town under Regulatory Bodies, Serviced Town under Worker Protections). City Modernisation: +20% state construction from the first clearance until 5 years after completion, weekly cost GDP/40,000 + £80 per state. Dedicated Road Fund: Road Works goods −25%, market access cost +2%.
+
 `tools/Housing-Tiers.ps1` is the single source of housing numbers; see
 [the proposal](docs/plans/04_HOUSING_TIERS_PROPOSAL.md) for why. Light and Heat gives
 +10% (wood), +30% (oil, needs `pumpjacks`) or +60% (electricity, needs
@@ -320,7 +335,7 @@ Each building has its own group on the same three laws:
 half that output's value at base price. Slums and Town Houses both cost 200
 construction points after the 2026-11-03 passes, and basic seed coverage is 0.92.
 
-### Harbour Works — coastal only, `construction_cost_medium` (400), employment 500/level
+### Harbour Works — coastal only, `construction_cost_low` (200 since 2026-11-08; was medium, 400), employment 500/level
 
 Dock labour is heavier on clerks than roadwork — manifests, customs, and
 harbour dues are paperwork a road never generates — so clerks sit at 75 rather

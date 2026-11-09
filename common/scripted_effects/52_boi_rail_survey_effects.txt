@@ -72,14 +72,17 @@ boi_rs_start = {
 	add_journal_entry = { type = je_boi_rail_survey }
 }
 
-# Country scope. Pulse only. Drops states the country no longer owns
-# from its survey, so a new owner doesn't inherit the marker.
+# Country scope. Pulse only. Drops every state whose marker isn't its
+# owner's: states this country lost, and states left marked by a country
+# that no longer exists. `?=` because `var:x = root` errors ("Event target
+# link 'var' returned an invalid object") once the marking country is dead
+# (run 20261108-135815_mod, 2026-11-08); such a state would otherwise
+# never be surveyable again.
 boi_rs_drop_lost_states = {
 	every_state = {
 		limit = {
 			has_variable = boi_in_rail_survey
-			var:boi_in_rail_survey = root
-			NOT = { owner = root }
+			NOT = { var:boi_in_rail_survey ?= owner }
 		}
 		remove_variable = boi_in_rail_survey
 		remove_modifier = boi_rail_survey_underway
@@ -158,6 +161,7 @@ boi_rs_fire_stage_1 = {
 		10 = { trigger_event = { id = boi_rail_survey.12 popup = yes } }
 		7 = { trigger_event = { id = boi_rail_survey.13 popup = yes } }
 		10 = { trigger_event = { id = boi_rail_survey.14 popup = yes } }
+		8 = { trigger_event = { id = boi_rail_survey.15 popup = yes } }
 	}
 }
 
@@ -167,6 +171,11 @@ boi_rs_fire_stage_2 = {
 		10 = { trigger_event = { id = boi_rail_survey.22 popup = yes } }
 		10 = { trigger_event = { id = boi_rail_survey.23 popup = yes } }
 		8 = { trigger_event = { id = boi_rail_survey.24 popup = yes } }
+		10 = {
+			trigger = { any_scope_state = { has_variable = boi_in_rail_survey boi_rs_urban_levels >= 2 } }
+			trigger_event = { id = boi_rail_survey.25 popup = yes }
+		}
+		8 = { trigger_event = { id = boi_rail_survey.26 popup = yes } }
 		10 = {
 			trigger = { has_law = law_type:law_militarized_police }
 			trigger_event = { id = boi_rail_survey.40 popup = yes }
@@ -231,7 +240,7 @@ boi_rs_cleanup = {
 	every_state = {
 		limit = {
 			has_variable = boi_in_rail_survey
-			var:boi_in_rail_survey = root
+			var:boi_in_rail_survey ?= root
 		}
 		remove_variable = boi_in_rail_survey
 		remove_modifier = boi_rail_survey_underway

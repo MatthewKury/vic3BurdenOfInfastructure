@@ -1,0 +1,89 @@
+﻿# ================================================================
+#  Burden of Infrastructure — displacement and rehousing pledge values
+#
+#  The rail survey and City Modernisation turn people out of their homes.
+#  An event offers a rehousing pledge (je_boi_rehousing_pledge): build X
+#  levels of good working-class housing in the affected states within two
+#  years, or face heavy radicalization (agreed 2026-11-08). All numbers
+#  are test values.
+# ================================================================
+
+# State scope. Levels of good working-class housing: every working-class
+# tier above Workers' Rows (Tenement Blocks excepted).
+boi_pledge_state_good_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_municipal_estates
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_streetcar_suburbs
+			}
+		}
+		add = level
+	}
+}
+
+# Country scope. Good housing in the pledge's states.
+boi_pledge_good_levels = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_pledge_state }
+		add = boi_pledge_state_good_levels
+	}
+}
+
+# Country scope. City Modernisation: half a good level for every level of
+# Slums and Workers' Rows the works pull down (cleared so far plus what is
+# left in the works' states), at least 1.
+boi_pledge_target_city = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_cm_levels_cleared }
+		add = var:boi_cm_levels_cleared
+	}
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		add = boi_cm_state_low_tier_levels
+	}
+	divide = 2
+	ceiling = yes
+	min = 1
+}
+
+# State scope. Rail survey: one good level per 5 urban centre levels in the
+# state on the route, at least 1.
+boi_pledge_target_rail = {
+	value = boi_rs_urban_levels
+	divide = 5
+	ceiling = yes
+	min = 1
+}
+
+# Country scope. For the bar, 0-100.
+boi_pledge_progress_pct = {
+	value = 0
+	if = {
+		limit = {
+			has_variable = boi_pledge_built
+			has_variable = boi_pledge_target
+		}
+		value = var:boi_pledge_built
+		multiply = 100
+		divide = {
+			value = var:boi_pledge_target
+			min = 1
+		}
+		max = 100
+		min = 0
+	}
+}
+
+# Radicals when a pledge is broken: twice vanilla's large_radicals.
+boi_pledge_broken_radicals = {
+	value = large_radicals
+	multiply = 2
+}

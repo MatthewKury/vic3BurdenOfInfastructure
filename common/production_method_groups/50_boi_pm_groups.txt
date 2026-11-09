@@ -33,7 +33,7 @@ pmg_boi_horse_ranch_byproduct = {
 	ai_selection = most_profitable
 
 	production_methods = {
-		pm_boi_knackers_yard
+		pm_boi_stable_manure
 		pm_boi_manure_trade
 		pm_boi_mixed_grazing
 	}
@@ -86,6 +86,7 @@ pmg_boi_road_financing = {
 		pm_boi_public_highways
 		pm_boi_turnpike_tolls
 		pm_boi_statute_labour
+		pm_boi_road_fund
 	}
 }
 

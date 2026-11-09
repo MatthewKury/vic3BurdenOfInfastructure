@@ -67,3 +67,4 @@ state_building_boi_rail_works_max_level_add={
 		ai_value=0
 	}
 }
+

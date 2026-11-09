@@ -1,0 +1,301 @@
+﻿# BOI: Type shadow of vanilla `condensed_building_information`
+# (gui/building_details_panel.gui, game 1.15.0).
+#
+# WHY: BOI adds a company-housing PM group to 11 vanilla buildings that already
+# had four (mines, logging camp, livestock ranch, coffee/sugar/tobacco
+# plantations). The header of the building details panel lays the groups out in
+# one row of 72px slots and budgets room for four. Five slots (362px) run under
+# the 230px employment and cash-reserve bars, which start at x = 305.
+#
+# FIX: the PM row is drawn twice, and only one copy is visible at a time:
+#   - 4 groups or fewer: vanilla's row, unchanged (72px slots, 70px icons).
+#   - 5 groups or more: the same vanilla `condensed_building_information_pms`
+#     widget with 58px slots and 56px icons. Five of them take 292px, about
+#     what four vanilla slots take (290px).
+# Lines tagged "# BOI" are the only changes from vanilla. The rest is a
+# verbatim copy.
+#
+# LOAD ORDER: GUI types are first-read-wins, like keyed databases. `01_` sorts
+# before vanilla `building_details_panel.gui`, so this beats vanilla, and after
+# Community Mod Framework's `00_MPM_building_details_panel.gui`. When CMF is
+# loaded its copy wins instead; it puts groups 5+ on a second row.
+#
+# NOT COVERED: the building browser list (`building_browser_building_item`)
+# gives the PM row 220px, so five 52px slots (260px) spill about 20px either
+# side. Fixing that would mean shadowing that type too.
+#
+# PATCH-SENSITIVE: re-diff against vanilla `type condensed_building_information`
+# after every game update.
+
+@panel_width = 540  				# used to be 460
+
+types boi_building_details_types {
+	type condensed_building_information = flowcontainer {
+		direction = vertical
+		parentanchor = hcenter
+		datacontext = "[Building.AccessState]"
+
+		block "animated_building_controls_trigger" {}
+
+		alwaystransparent = no
+
+		### EXPAND / SUBSIDIZE ETC
+		widget = {
+			size = { @panel_width 40 }
+
+			block "background" {
+				background = {
+					using = entry_bg_simple
+				}
+			}
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+				spacing = 5
+
+				### STATE NAME AND BUTTON
+				block "state_name_button" {
+					button = {
+						layoutpolicy_horizontal = expanding
+						size = { 0 30 }
+						using = default_button
+						onclick = "[InformationPanelBar.OpenBuildingDetailsPanel(Building.AccessSelf)]"
+						tooltip = "GO_TO_BUTTON_BUILDING"
+						using = tooltip_ne
+
+						textbox = {
+							size = { 100% 100% }
+							margin = { 10 0 }
+							datacontext = "[Building.GetState]"
+							text = "STATE_NAME_WITH_FOREIGN_FLAG_NO_FORMAT"
+							parentanchor = vcenter
+							align = nobaseline
+							elide =  right
+						}
+					}
+				}
+
+				block "action_status_icons" {
+					building_auto_expand_icon = {
+						visible = "[Building.IsAutoExpanding]"
+					}
+
+					building_subsidized_icon = {
+						visible = "[Building.IsSubsidized]"
+					}
+
+					building_country_monopoly_icon = {
+						visible = "[BuildingType.HasCountryMonopoly]"
+						datacontext = "[Building.GetBuildingType]"
+					}
+
+					building_privatize_icon = {
+						visible = "[Building.CanBePrivatized]"
+					}
+
+					### AUTO DOWNSIZE WARNING
+					icon = {
+						visible = "[Building.IsAutoDownsizing]"
+						size = { 30 30 }
+						using = tooltip_ne
+						tooltip = "[Building.GetAutoDownsizeTooltip]"
+						texture = "gfx/interface/production_methods/auto_downsize.dds"
+					}
+				}
+
+				block "action_buttons" {}
+
+				expand = {
+					visible = "[Not(Building.IsBuildingType('building_company_headquarter'))]"
+				}
+
+				hbox = {
+					layoutpolicy_horizontal = preferred
+					layoutpolicy_vertical = expanding
+					spacing = 10
+					margin_right = 5
+
+					block "company_owned_button" {
+						button = {
+							visible = "[Building.IsBuildingType('building_company_headquarter')]"
+							layoutpolicy_horizontal = expanding
+							size = { 0 30 }
+							datacontext = "[Building.GetCompany]"
+							using = default_button
+							onclick = "[InformationPanelBar.OpenCompanyPanel(Company.Self)]"
+							tooltip = "GO_TO_BUTTON_COMPANY"
+							using = tooltip_ne
+
+							textbox = {
+								size = { 100% 100% }
+								align = hcenter|nobaseline
+								using = elide_fontsize_min
+								margin = { 10 0 }
+								text = "BUILDING_OWNED_BY_COMPANY"
+							}
+						}
+					}
+
+					expand = {}
+
+					### STATE TRAITS
+					hbox = {
+						visible = "[Not(IsDataModelEmpty(State.AccessStateRegion.AccessTraits))]"
+						datamodel = "[State.AccessStateRegion.AccessTraits]"
+
+						item = {
+							icon = {
+								size = { 30 30 }
+								tooltip = "TOOLTIP_STATE_TRAIT"
+								using = tooltip_ne
+								onmousehierarchyenter = "[AccessHighlightManager.HighlightStateTrait(StateTrait.Self)]"
+								onmousehierarchyleave = "[AccessHighlightManager.RemoveHighlight]"
+								alwaystransparent = no
+								texture = "[StateTrait.GetTexture]"
+							}
+						}
+					}
+
+					### TIMED MODIFIERS
+					hbox = {
+						visible = "[Not(IsDataModelEmpty(Building.GetTimedModifiers))]"
+						margin = { 5 0 }
+						datamodel = "[Building.GetTimedModifiers]"
+						spacing = 5
+
+						item = {
+							icon = {
+								tooltip = "[TimedModifier.GetTooltip]"
+								texture = "[TimedModifier.GetIcon]"
+								size = { 30 30 }
+							}
+						}
+					}
+
+					block "productivity" {
+						textbox = {
+							visible = "[And(Not(Building.IsGovernmentFunded), Not(Building.IsSubsistenceBuilding))]"
+							using = productivity_tooltip_with_graph
+							using = tooltip_ne
+							raw_text = "@money![Building.GetAverageAnnualEarningsPerEmployeeFormatted|+]"
+							align = hcenter|nobaseline
+							autoresize = yes
+						}
+					}
+
+					vbox = {
+						### DOWNSIZE / EXPAND
+						building_level_controls = {
+							blockoverride "controller_size" {
+								size = { 130 35 }
+							}
+							blockoverride "expand_button_widgetid" {
+								widgetid = "[Concatenate('building_details_expand', Building.GetIDString)]"
+							}
+						}
+
+						### BUILD PROGRESS
+						hbox = {
+							visible = "[Building.HasConstructionQueued]"
+
+							default_progressbar_horizontal = {
+								tooltip = "BUILDING_PROGRESS_TOOLTIP"
+								size = { 110 5 }
+
+								blockoverride "values" {
+									value = "[Building.GetConstructionProgressPercentage]"
+									min = 0
+									max = 1
+								}
+							}
+						}
+					}
+
+					button_icon_round = {
+						size = { 34 34 }
+						onclick = "[RightClickMenuManager.ToggleBuildingActions(Building.AccessSelf, PdxGuiWidget.AccessSelf)]"
+						enabled = "[ObjectsEqual(Building.GetState.GetOwner.Self, GetPlayer.Self)]"
+						tooltip = "SHOW_BUILDING_ACTIONS"
+						using = tooltip_ne
+
+						blockoverride "icon" {
+							texture = "gfx/interface/buttons/button_icons/menu.dds"
+						}
+
+						blockoverride "icon_size" {
+							size = { 80% 80% }
+						}
+					}
+				}
+			}
+		}
+
+		block "divider" {}
+
+		### PMS / EMPLOYMENT / CASH RESERVES
+		container = {
+			minimumsize = { @panel_width 80 }
+			container = {
+				parentanchor = vcenter
+
+				# BOI - vanilla row, kept for buildings with 4 PM groups or fewer
+				flowcontainer = {
+					visible = "[LessThan_int32(GetDataModelSize(Building.AccessProductionMethodGroups), '(int32)5')]" # BOI
+					parentanchor = vcenter
+					margin_left = 2
+
+					condensed_building_information_pms = {
+						blockoverride "pms_slot_sizes" {
+							addcolumn = 72
+							addrow = 70
+						}
+						blockoverride "pms_minimumsize" {
+							minimumsize = { 208 -1 }
+						}
+						blockoverride "pms_item_size" {
+							size = { 70 70 }
+						}
+					}
+				}
+
+				# BOI - compact row for 5+ groups, so it stays clear of the employment and cash-reserve bars
+				flowcontainer = { # BOI
+					visible = "[GreaterThan_int32(GetDataModelSize(Building.AccessProductionMethodGroups), '(int32)4')]" # BOI
+					parentanchor = vcenter # BOI
+					margin_left = 2 # BOI
+
+					condensed_building_information_pms = { # BOI
+						blockoverride "pms_slot_sizes" { # BOI
+							addcolumn = 58 # BOI
+							addrow = 56 # BOI
+						} # BOI
+						blockoverride "pms_minimumsize" { # BOI
+							minimumsize = { 208 -1 } # BOI
+						} # BOI
+						blockoverride "pms_item_size" { # BOI
+							size = { 56 56 } # BOI
+						} # BOI
+					} # BOI
+				} # BOI
+			}
+
+			widget = {
+				size = { 300 80 }
+
+				block "extra_items_in_production_methods_list" {}
+			}
+
+			block "building_progressbars" {
+				building_progressbars = {
+					position = { -5 0 }
+					parentanchor = right|vcenter
+
+					blockoverride "progressbar_size" {
+						size = { 230 26 }
+					}
+				}
+			}
+		}
+	}
+}

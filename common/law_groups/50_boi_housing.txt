@@ -1,10 +1,7 @@
 ﻿# Burden of Infrastructure - housing law groups.
 # Social laws (human_rights, vanilla's Social tab) since 2026-11-08; they
 # were under economy. Housing standards sit beside Labor Rights and Welfare.
-lawgroup_boi_employer_housing = {
- law_group_category = human_rights
- ideological_opinion_impact = 0.5
-}
+# Employer Housing was folded into vanilla Labour Rights on 2026-11-08.
 lawgroup_boi_residential_standards = {
  law_group_category = human_rights
  ideological_opinion_impact = 0.5

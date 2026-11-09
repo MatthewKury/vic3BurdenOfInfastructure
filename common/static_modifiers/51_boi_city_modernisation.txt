@@ -1,0 +1,56 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation modifiers
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4. All numbers are
+#  test values (2026-11-08).
+# ================================================================
+
+# Country. Scaled by the journal entry with boi_cm_weekly_cost.
+boi_city_modernisation_expenses = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+
+# State. Marks the states of the current modernisation.
+boi_cm_underway = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds
+}
+
+# State. From the first clearance until 5 years after completion: building
+# goes faster on the cleared ground, and the new city draws people.
+# state_construction_mult, not a housing-only key: the engine registers
+# building_group_*_construction_efficiency_add for vanilla groups only
+# (smoke run 20261108-130549_mod), so the bonus covers all construction here.
+boi_cm_modernised_city = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_construction_mult = 0.2
+	state_migration_pull_mult = 0.05
+}
+
+# State. "Workers' housing" choice: a further boost, 5 years from completion.
+boi_cm_workers_housing = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	state_construction_mult = 0.1
+}
+
+# Country. 5 years after completion.
+boi_cm_new_capital = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 10
+}
+
+# Country. "Grand boulevards" choice, 5 years after completion.
+boi_cm_boulevards = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_prestige_add = 20
+}
+
+# Interest groups. Two years, decaying.
+boi_cm_ig_angered = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fist_negative.dds
+	interest_group_approval_add = -2
+}
+
+boi_cm_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 2
+}

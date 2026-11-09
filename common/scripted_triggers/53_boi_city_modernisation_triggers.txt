@@ -1,0 +1,35 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation triggers
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4. The continent and
+#  region triggers are generated: 53_boi_city_modernisation_picker_generated.txt.
+# ================================================================
+
+# State scope. Can join a modernisation: it still has Slum or Workers' Rows
+# levels and isn't in one already. has_building alone is not enough: in game 1
+# (run 20261108-131318_mod) 7 of Britain's 10 states passed it with 0 levels,
+# so the first stage cleared the whole region (2026-11-08).
+boi_cm_state_eligible = {
+	NOT = { has_variable = boi_in_modernisation }
+	OR = {
+		has_building = building_boi_slums
+		has_building = building_boi_tenements
+	}
+	boi_cm_state_low_tier_levels > 0
+}
+
+# Country scope.
+boi_cm_has_any_eligible = {
+	any_scope_state = { boi_cm_state_eligible = yes }
+}
+
+boi_cm_has_state_in_progress = {
+	any_scope_state = { has_variable = boi_in_modernisation }
+}
+
+# Country scope. A state of the current modernisation is still to clear.
+boi_cm_has_state_to_clear = {
+	any_scope_state = {
+		has_variable = boi_in_modernisation
+		NOT = { has_variable = boi_cm_cleared }
+	}
+}

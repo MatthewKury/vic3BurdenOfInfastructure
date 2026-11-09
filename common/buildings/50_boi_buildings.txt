@@ -42,15 +42,12 @@ building_boi_horse_ranch = {
 
 	icon = "gfx/interface/icons/building_icons/boi_horse_ranch.dds"
 
-	# NO city_type. A building that declares one must also be mapped
-	# to a 3D mesh in gfx/map/city_data/city_types/*.txt - 34 files,
-	# one per culture x hub type - or it has no "backing building"
-	# and cannot be placed. building_livestock_ranch and every
-	# plantation are mapped in default_farm.txt; this one was in
-	# none of them. Vanilla's building_railway sets no city_type at
-	# all and works fine, so we follow that: fully functional, just
-	# no model on the map. levels_per_mesh is dropped with it, since
-	# it only governs mesh placement.
+	# Map model (2026-11-08): the culture's Livestock Ranch model. tools/Build-CityTypes.py lists this
+	# building in every farm city type file; a building with a city_type must be
+	# in every file of its hub type or the game asserts "Failed creating backing
+	# building". Re-run the script after a game patch.
+	city_type = farm
+	levels_per_mesh = 50
 
 	# pmg_boi_company_housing is the housing module's employer-housing
 	# group, written here by hand. tools/Build-Housing.ps1 adds it to
@@ -118,8 +115,12 @@ building_boi_infrastructure = {
 	# Development buildings and the coastal Harbour Works icon.
 	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
 
-	# No city_type / levels_per_mesh - see the note on the Horse
-	# Ranch above. Railways manage without one too.
+	# Map model (2026-11-08): the culture's Construction Sector model, a builder's yard. tools/Build-CityTypes.py lists this
+	# building in every city city type file; a building with a city_type must be
+	# in every file of its hub type or the game asserts "Failed creating backing
+	# building". Re-run the script after a game patch.
+	city_type = city
+	levels_per_mesh = 50
 
 	production_method_groups = {
 		pmg_boi_infrastructure_method
@@ -127,7 +128,7 @@ building_boi_infrastructure = {
 		pmg_boi_road_financing
 	}
 
-	required_construction = construction_cost_medium
+	required_construction = construction_cost_low # was medium until 2026-11-08
 
 	# The AI's budget cuts downsize government buildings regardless of
 	# ai_value: headless runs saw Yorkshire cut from 2 levels to 0 at
@@ -189,6 +190,13 @@ building_boi_rail_works = {
 	building_group = bg_boi_public_works
 
 	icon = "gfx/interface/icons/building_icons/boi_rail_works.dds"
+
+	# Map model (2026-11-08): the Army Logistics Centre's depot model; vanilla has no station model. tools/Build-CityTypes.py lists this
+	# building in every city city type file; a building with a city_type must be
+	# in every file of its hub type or the game asserts "Failed creating backing
+	# building". Re-run the script after a game patch.
+	city_type = city
+	levels_per_mesh = 50
 
 	unlocking_technologies = {
 		railways
@@ -265,9 +273,13 @@ building_boi_harbour_works = {
 
 	icon = "gfx/interface/icons/building_icons/boi_harbour_works.dds"
 
-	# No city_type / levels_per_mesh - see the Horse Ranch note.
-	# The coastal restriction comes from potential below, NOT from
-	# city_type = port, so dropping it costs nothing functionally.
+	# Map model (2026-11-08): the culture's lighthouse; vanilla's Port has no building model to copy. tools/Build-CityTypes.py lists this
+	# building in every port city type file; a building with a city_type must be
+	# in every file of its hub type or the game asserts "Failed creating backing
+	# building". Re-run the script after a game patch.
+	city_type = port
+	levels_per_mesh = 50
+	# The coastal restriction still comes from potential below.
 
 	potential = {
 		is_coastal = yes
@@ -279,7 +291,7 @@ building_boi_harbour_works = {
 		pmg_boi_harbour_financing
 	}
 
-	required_construction = construction_cost_medium
+	required_construction = construction_cost_low # was medium until 2026-11-08
 
 	# Same reason as Road Works: AI budget cuts ignore ai_value.
 	downsizeable = no

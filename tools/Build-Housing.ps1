@@ -331,6 +331,12 @@ foreach ($b in $HousingBuildings) {
         if ($b.Unscaled) { $body.Add("  unscaled = {`n   $(Format-HousingModifiers $b.Unscaled)`n  }") }
         $body.Add(" }")
     }
+    # Country modifiers, per staffed level (the low tiers' prestige share, 2026-11-08).
+    if ($b.Country) {
+        # Five decimals: the shares are as small as -0.00125, below Format-HousingNumber's 3.
+        $countryLines = ($b.Country.Keys | ForEach-Object { "$_ = $(([double]$b.Country[$_]).ToString('0.#####', [Globalization.CultureInfo]::InvariantCulture))" }) -join "`n   "
+        $body.Add(" country_modifiers = {`n  workforce_scaled = {`n   $countryLines`n  }`n }")
+    }
     $inputs = [ordered]@{}
     foreach ($good in $b.Inputs.Keys) { $inputs[(Get-HousingGoodsInput $good)] = $b.Inputs[$good] }
     $inputs['goods_output_boi_housing_add'] = $b.Basic

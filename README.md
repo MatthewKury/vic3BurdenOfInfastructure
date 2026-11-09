@@ -47,9 +47,49 @@ It overrides one define, `INDIVIDUALS_PER_POP_INFRASTRUCTURE` (125,000 against 1
 
 Testing so far: a short Portugal debug-mode game, and automated 10-year observer runs (1836–1846) that load without mod errors and in which AI countries keep up with infrastructure demand. Nobody has played a full campaign yet. Long-term AI behaviour, market balance, and compatibility with other mods still need evaluation. See [balance notes](BALANCE.md) and the [planning overview](docs/OVERVIEW.md) for the design and remaining work.
 
+## Vanilla overrides and mod conflicts
+
+Every place where BOI replaces base-game content. Any other mod that changes the same thing conflicts with BOI: whichever loads first or last wins, depending on the file type, and the other mod's change, or BOI's, is lost. All of these must be re-checked after a Victoria 3 patch; [PATCHING.md](PATCHING.md) has the procedure. "Generated" means a script rebuilds it from the game files.
+
+| What BOI replaces | Files | Conflicts with mods that… | Rebuild with |
+| --- | --- | --- | --- |
+| All 16 state-region files (Horse Ranch arable lists, Horse-Breeding Traditions trait) | `map_data/state_regions/*.txt` | edit state regions: map mods, resource mods, new-state mods | `tools/REGENERATE.md` §1 |
+| Household buy packages (housing demand) | `common/buy_packages/00_buy_packages.txt` | change pop needs or buy packages | `tools/Build-Housing.ps1` |
+| 33 rural and subsistence buildings (housing PM group) | `common/buildings/00_boi_housing_rural_generated.txt` | edit farms, mines, plantations, logging, fishing, subsistence buildings | `tools/Build-Housing.ps1` |
+| `building_railway` (AI value) | `common/buildings/00_boi_railway_ai_override.txt` | edit railways | by hand |
+| `building_manor_house`, `building_financial_district` (housing investment scores, 2026-11-08) | `common/buildings/00_boi_ownership_overrides.txt` | edit ownership buildings or investment: economy overhauls | `tools/Build-OwnershipOverrides.py` |
+| 34 map city-type files: Horse Ranch, Road, Rail and Harbour Works models (2026-11-08), 15 of them from DLCs | `gfx/map/city_data/city_types/*.txt` | change city graphics, or add buildings with models: graphics mods, building mods | `tools/Build-CityTypes.py` |
+| 22 production methods (rail and port infrastructure removed; horse inputs on haulage, farms, pasture, urban transport) | `common/production_methods/00_boi_*_overrides.txt` | edit railway, port, mine, plantation, farm, subsistence or urban-centre PMs | by hand |
+| 4 cavalry combat units (horse upkeep) | `common/combat_unit_types/00_boi_cavalry_overrides.txt` | edit land units: military overhauls | by hand |
+| 5 mobilization options | `common/mobilization_options/00_boi_*_overrides.txt` | edit mobilization options | by hand |
+| 3 GUI types (mobilization grid, formation panel, building details header) | `gui/01_boi_*.gui` | change those panels (Community Mod Framework is compatible) | by hand |
+| One define, `INDIVIDUALS_PER_POP_INFRASTRUCTURE` | `common/defines/zz_boi_defines.txt` | change the same define | by hand |
+
+**Not overrides, but shared hooks:** BOI reads the vanilla Labour Rights laws (`law_no_workers_rights`, `law_regulatory_bodies`, `law_worker_protections`) to decide company housing, without changing them (2026-11-08). A mod that renames or replaces those laws leaves company housing on Work Camps. BOI's on-action hooks only add to `events = { }` lists, which merge with other mods'.
+
+**DLC city types:** the 15 DLC city-type copies keep their `has_dlc_feature` triggers, so a player without a DLC never gets that city type. Their mesh names still load, though, and may log missing-asset errors for players without the DLC. Not yet tested.
+
 ## AI assistance and artwork disclaimer
 
-**AI assistance was used to write and revise parts of the mod's scripting and to generate the custom icons.** The horse good, Horse Ranch, Road Works, Rail Works, Harbour Works, Horse-Breeding Traditions, financing law, housing good, and residential building icons are provisional AI-assisted artwork. They were made using base-game icons as visual references. **The hope is to replace these icons with original artwork in a later update.** Other production method icons and some interface art still reference base-game assets.
+**AI assistance was used to write and revise parts of the mod's scripting and to generate the custom icons.** The horse good, Horse Ranch, Road Works, Rail Works, Harbour Works, Horse-Breeding Traditions, financing law, housing good, and residential building icons are provisional AI-assisted artwork. Earlier icons were made using base-game icons as visual references. **The hope is to replace these icons with human-created artwork in a later update.** Other production method icons and some interface art still reference base-game assets.
+
+On 2026-11-08, the following 11 building images were generated with OpenAI's built-in image generation tool to replace tinted, text-labeled placeholders. Each was generated separately from a text prompt, without supplying a reference image to the tool:
+
+| Building | AI-generated image filename |
+| --- | --- |
+| Regulated Terraces | `boi_regulated_terraces.png` |
+| Tenement Blocks | `boi_tenement_blocks.png` |
+| Model Dwellings | `boi_model_dwellings.png` |
+| Municipal Estates | `boi_municipal_estates.png` |
+| Elevator Apartments | `boi_elevator_apartments.png` |
+| Boulevard Apartments | `boi_boulevard_apartments.png` |
+| Elevator Residences | `boi_elevator_residences.png` |
+| Railway Suburbs | `boi_railway_suburbs.png` |
+| Streetcar Suburbs | `boi_streetcar_suburbs.png` |
+| Motor Suburbs | `boi_motor_suburbs.png` |
+| Rail Works | `boi_rail_works.png` |
+
+The full-resolution images are in [art/buildings](art/buildings/). This disclosure also covers their resized PNG and DDS versions in `gfx/interface/icons/building_icons/`. The [generation prompts and export details](art/buildings/PROMPTS.md) are recorded alongside the source images.
 
 AI-assisted work can contain mistakes. The scripts and artwork should be judged by how they behave and appear in game, and issues are welcome.
 

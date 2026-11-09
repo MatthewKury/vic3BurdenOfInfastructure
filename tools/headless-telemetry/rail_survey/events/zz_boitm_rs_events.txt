@@ -230,3 +230,114 @@ boitm_rs.22 = {
 		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rs_ai_pass_count|info|ai_surveys=[THIS.ScriptValue('boitm_rail_ai_surveys')|0]"
 	}
 }
+
+# ── City Modernisation fixture (2026-11-08) ─────────────────────
+# Britain enacts Minimum Residential Standards on 1837.1.1 and modernises
+# its capital's strategic region, as the decision's region option would.
+# Perturbs Britain's housing from 1837: it can't build new slums, rows or
+# tenement blocks.
+boitm_rs.30 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1837.1.1
+		exists = capital
+		NOT = { has_global_variable = boitm_cm_started }
+	}
+
+	immediate = {
+		set_global_variable = boitm_cm_started
+		activate_law = law_type:law_boi_residential_standards
+		every_scope_state = {
+			limit = {
+				boi_cm_state_eligible = yes
+				region = root.capital.region
+			}
+			set_variable = { name = boi_in_modernisation value = root }
+		}
+		trigger_event = { id = boi_city_modernisation.9 days = 0 }
+		trigger_event = { id = boitm_rs.31 days = 2 }
+	}
+}
+
+boitm_rs.31 = {
+	type = country_event
+	hidden = yes
+
+	immediate = {
+		if = {
+			limit = {
+				has_journal_entry = je_boi_city_modernisation
+				has_variable = boi_cm_goal
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|cm_start|pass|tag=[THIS.GetCountry.GetTagName];states=[THIS.ScriptValue('boitm_cm_states')|0];weekly_cost=[THIS.ScriptValue('boitm_cm_weekly_cost')|0];expenses_pct=[THIS.ScriptValue('boitm_cm_expenses_share')|2];low_levels=[THIS.ScriptValue('boi_cm_ai_low_tier_levels')|0]"
+		}
+		else = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|cm_start|fail|tag=[THIS.GetCountry.GetTagName];journal_entry_missing=1"
+		}
+	}
+}
+
+# Every country, monthly: progress each June and December, completion once.
+boitm_rs.32 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		OR = {
+			has_journal_entry = je_boi_city_modernisation
+			AND = {
+				has_variable = boi_cm_count
+				NOT = { has_variable = boitm_cm_logged_count }
+			}
+			AND = {
+				has_variable = boi_cm_count
+				has_variable = boitm_cm_logged_count
+				var:boitm_cm_logged_count < var:boi_cm_count
+			}
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				has_journal_entry = je_boi_city_modernisation
+				OR = { month = 5 month = 11 }
+			}
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|cm_progress|info|tag=[THIS.GetCountry.GetTagName];progress=[THIS.ScriptValue('boitm_cm_progress')|1];target=[THIS.ScriptValue('boitm_cm_target')|0];cleared_states=[THIS.ScriptValue('boitm_cm_cleared_states')|0];cleared_levels=[THIS.ScriptValue('boitm_cm_cleared_levels')|0];bonus_states=[THIS.ScriptValue('boitm_cm_bonus_states')|0];weekly_cost=[THIS.ScriptValue('boitm_cm_weekly_cost')|0];expenses_pct=[THIS.ScriptValue('boitm_cm_expenses_share')|2]"
+		}
+		if = {
+			limit = {
+				has_variable = boi_cm_count
+				OR = {
+					NOT = { has_variable = boitm_cm_logged_count }
+					var:boitm_cm_logged_count < var:boi_cm_count
+				}
+			}
+			set_variable = { name = boitm_cm_logged_count value = var:boi_cm_count }
+			if = {
+				limit = { boitm_cm_modernised_with_low_tiers = 0 }
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|cm_complete|pass|tag=[THIS.GetCountry.GetTagName];n=[THIS.ScriptValue('boitm_cm_count')|0];states=[THIS.ScriptValue('boitm_cm_last_states')|0];levels=[THIS.ScriptValue('boitm_cm_last_levels')|0];months=[THIS.ScriptValue('boitm_cm_last_months')|0];modernised=[THIS.ScriptValue('boitm_cm_modernised_states')|0];bonus_states=[THIS.ScriptValue('boitm_cm_bonus_states')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|cm_complete|fail|tag=[THIS.GetCountry.GetTagName];modernised_with_low_tiers=[THIS.ScriptValue('boitm_cm_modernised_with_low_tiers')|0]"
+			}
+		}
+	}
+}
+
+# Yearly, from Britain: world counts of the 2026-11-08 events. Each
+# cooldown lasts 4-5 years, so a count is "fired in about the last 5 years".
+boitm_rs.40 = {
+	type = country_event
+	hidden = yes
+
+	trigger = { c:GBR ?= this }
+
+	immediate = {
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|ev_counts|info|rebecca=[THIS.ScriptValue('boitm_ev_rebecca')|0];defaulters=[THIS.ScriptValue('boitm_ev_defaulters')|0];glanders=[THIS.ScriptValue('boitm_ev_glanders')|0];remounts=[THIS.ScriptValue('boitm_ev_remounts')|0];cm_running=[THIS.ScriptValue('boitm_ev_cm_running')|0];cm_done=[THIS.ScriptValue('boitm_ev_cm_done')|0]"
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|hev_counts|info|company_store=[THIS.ScriptValue('boitm_hev_company_store')|0];tied_cottage=[THIS.ScriptValue('boitm_hev_tied_cottage')|0];camp_disaster=[THIS.ScriptValue('boitm_hev_camp_disaster')|0];model_village=[THIS.ScriptValue('boitm_hev_model_village')|0];pullman=[THIS.ScriptValue('boitm_hev_pullman')|0];collapse=[THIS.ScriptValue('boitm_hev_collapse')|0];rent_strike=[THIS.ScriptValue('boitm_hev_rent_strike')|0];philanthropist=[THIS.ScriptValue('boitm_hev_philanthropist')|0];commission=[THIS.ScriptValue('boitm_hev_commission')|0];great_fire=[THIS.ScriptValue('boitm_hev_great_fire')|0];bubble=[THIS.ScriptValue('boitm_hev_bubble')|0];red_vienna_done=[THIS.ScriptValue('boitm_hev_red_vienna_done')|0];pledges=[THIS.ScriptValue('boitm_ev_pledges')|0]"
+	}
+}

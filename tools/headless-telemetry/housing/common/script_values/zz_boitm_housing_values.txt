@@ -161,15 +161,16 @@ boitm_hs_horse_ranch_levels = {
 }
 
 # Yearly law state per country, read by tools/Get-CenturyDetail.py.
-# 0 = unregulated, 1 = protected, 2 = mandated.
+# Company housing law, from vanilla Labour Rights since 2026-11-08:
+# 0 = No Workers' Rights (Work Camps), 1 = Regulatory Bodies (Work Towns), 2 = Worker Protections (Serviced Towns).
 boitm_law_employer_housing = {
 	value = 0
 	if = {
-		limit = { has_law = law_type:law_boi_protected_company_housing }
+		limit = { has_law = law_type:law_regulatory_bodies }
 		value = 1
 	}
 	else_if = {
-		limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+		limit = { has_law = law_type:law_worker_protections }
 		value = 2
 	}
 }
@@ -330,3 +331,7 @@ boitm_res_mostly_state_levels = {
 	}
 }
 
+# Prestige, for the low-tier housing penalty (2026-11-08).
+boitm_prestige = {
+	value = prestige
+}

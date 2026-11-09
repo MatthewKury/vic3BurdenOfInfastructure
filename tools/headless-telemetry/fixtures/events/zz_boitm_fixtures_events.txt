@@ -101,7 +101,7 @@ boitm_fixture.4 = {
 	immediate = {
 		if = {
 			limit = {
-				has_law = law_type:law_boi_unregulated_company_housing
+				has_law = law_type:law_no_workers_rights
 				has_law = law_type:law_boi_unregulated_residential
 			}
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|permissive_laws|pass|event=boi_housing.3"
@@ -154,7 +154,7 @@ boitm_fixture.6 = {
 	immediate = {
 		if = {
 			limit = {
-				has_law = law_type:law_boi_protected_company_housing
+				has_law = law_type:law_regulatory_bodies
 				has_law = law_type:law_boi_residential_standards
 			}
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|protective_laws|pass|event=boi_housing.4"
@@ -243,7 +243,7 @@ boitm_fixture.8 = {
 
 	immediate = {
 		if = {
-			limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+			limit = { has_law = law_type:law_worker_protections }
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_law|pass|event=boi_housing.5"
 		}
 		else = {
@@ -323,7 +323,7 @@ boitm_fixture.11 = {
 
 	immediate = {
 		if = {
-			limit = { has_law = law_type:law_boi_mandated_serviced_housing }
+			limit = { has_law = law_type:law_worker_protections }
 			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|mandate_survives_maintenance|pass|law=mandated"
 		}
 		else = {

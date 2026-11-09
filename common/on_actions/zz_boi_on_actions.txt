@@ -15,6 +15,10 @@ on_yearly_pulse_country = {
 	events = {
 		boi_road_financing.1
 		boi_rail_survey.60
+		boi_road_financing.9
+		boi_horses.1
+		boi_horses.20
+		boi_housing_events.1
 	}
 }
 
@@ -22,6 +26,9 @@ on_yearly_pulse_country = {
 on_monthly_pulse_country = {
 	events = {
 		boi_rail_survey.50
+		boi_housing.10
+		boi_road_financing.30
+		boi_horses.2
 		boi_ai_infrastructure.1
 		boi_ai_infrastructure.2
 	}

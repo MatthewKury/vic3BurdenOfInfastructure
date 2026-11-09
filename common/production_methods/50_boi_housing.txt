@@ -18,7 +18,7 @@ pm_boi_subsistence_housing = {
 # housing price (and so the profit order between tiers) unchanged.
 pm_boi_work_camp = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
- unlocking_laws = { law_boi_unregulated_company_housing }
+ unlocking_laws = { law_no_workers_rights } # Labour Rights decides company housing (2026-11-08)
  building_modifiers = {
   workforce_scaled = {
    goods_input_wood_add = 0.075
@@ -43,7 +43,7 @@ pm_boi_work_camp = {
 
 pm_boi_work_town = {
  texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
- unlocking_laws = { law_boi_protected_company_housing }
+ unlocking_laws = { law_regulatory_bodies }
  building_modifiers = {
   workforce_scaled = {
    goods_input_wood_add = 0.15
@@ -51,7 +51,7 @@ pm_boi_work_town = {
    goods_output_boi_housing_add = 0.45
   }
   # Same housing as a Work Camp at half its penalties. Each employer housing
-  # law permits No Housing plus exactly one tier; this one is Protected's.
+  # law permits No Housing plus exactly one tier; this one is Regulatory Bodies'.
   unscaled = {
    building_laborers_mortality_mult = 0.075
    building_farmers_mortality_mult = 0.075
@@ -70,7 +70,7 @@ pm_boi_work_town = {
 pm_boi_serviced_town = {
  texture = "gfx/interface/icons/production_method_icons/market_squares.dds"
  unlocking_technologies = { modern_sewerage }
- unlocking_laws = { law_boi_mandated_serviced_housing }
+ unlocking_laws = { law_worker_protections }
  building_modifiers = {
   workforce_scaled = {
    goods_input_wood_add = 0.15
@@ -78,5 +78,10 @@ pm_boi_serviced_town = {
    goods_input_tools_add = 0.075
    goods_output_boi_housing_add = 0.45
   }
+ }
+ # The best company housing draws migrants (2026-11-08). Per staffed level of the
+ # workplace, so kept small: a state with 200 serviced levels gets +10%.
+ state_modifiers = {
+  workforce_scaled = { state_migration_pull_mult = 0.0005 }
  }
 }
