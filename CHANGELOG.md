@@ -39,6 +39,11 @@ Burden of Infrastructure has not had a public release yet. This log starts with 
   - From the first clearance until five years after the works finish, those states build 20% faster and draw more migrants.
   - The decision then waits five years.
   - The region picker is generated from the Rail Network Survey's (`tools/Build-ModernisationPicker.py`).
+- **Housing has moved to its own construction tab.**
+  - All housing tiers are now built from the Urban tab, renamed "Urban and Housing". Before, they shared the crowded Development tab.
+  - Vanilla's only building in the Urban tab is the Trade Center.
+  - Housing still counts as a development building: only `lens` changed, from `development` to `trade`. `category` is still `development`.
+  - The rename overrides the vanilla keys `urban_lens_tab` and `urban_lens_tab_tooltip`, in `localization/english/replace/boi_replace_l_english.yml`.
 
 ### Displacement (2026-11-08)
 

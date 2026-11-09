@@ -45,6 +45,13 @@ GUI types are first-read-wins per type, without a log line:
 | `gui/01_boi_military_formation_panel.gui` | `military_formation_panel` | bulk-selection grid wrap 3 → 2 |
 | `gui/01_boi_building_details_panel.gui` | `condensed_building_information` | buildings with 5+ PM groups get 58px PM slots instead of 72px, so the row stays clear of the employment and cash-reserve bars (loses to Community Mod Framework when that is loaded, which puts groups 5+ on a second row) |
 
+Vanilla localization keys are overridden from `localization/english/replace/`,
+which loads after vanilla and wins, also without a log line:
+
+| BOI file | Keys | Change |
+|---|---|---|
+| `localization/english/replace/boi_replace_l_english.yml` | `urban_lens_tab`, `urban_lens_tab_tooltip` | the Urban construction tab becomes "Urban and Housing", because the housing groups use `lens = trade` and show there (2026-11-08). The tooltip copies the vanilla 1.15 text and adds one sentence about housing. |
+
 ## Whole-file replacements (generated)
 
 | Files | Why | Regenerate with |
@@ -94,7 +101,10 @@ over-allocated 10 states and crashed world initialisation.
 5. Re-run `python tools/Build-OwnershipOverrides.py` and `python tools/Build-CityTypes.py`
    (both copy vanilla blocks or files whole), and `python tools/Build-ModernisationPicker.py`
    if the rail survey picker changed.
-6. Run `tools/Validate-All.ps1`, then a headless run
+6. Compare `urban_lens_tab_tooltip` in vanilla `localization/english/interfaces_l_english.yml`
+   with the BOI copy in `localization/english/replace/`, and check that vanilla
+   still uses `lens = trade` for the Urban tab.
+7. Run `tools/Validate-All.ps1`, then a headless run
    (`tools/Test-Headless.ps1`) and compare the `Duplicated key` count with 67.
 
 ## Conflicts
