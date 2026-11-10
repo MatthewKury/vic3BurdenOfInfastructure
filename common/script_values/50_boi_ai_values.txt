@@ -139,22 +139,27 @@ boi_ai_horse_output_price = {
 }
 
 # Railways PRODUCE transportation: expensive output raises their priority.
+# Raised 2026-11-09 (plan 6, iteration 3): from 0.8-1.2 around a base of 1 to
+# 0.9-1.4 around 1.15. BOI railways give no infrastructure, so the AI lost
+# vanilla's deficit motive for building them; in every BOI test game railways
+# ran 23-40% below vanilla and heavy industry (their steel and engines)
+# 12-35% below, with world transportation as dear as vanilla's (+50%).
 boi_ai_railway_output_price = {
-	value = 1
+	value = 1.15
 	if = {
 		limit = { sg:transportation = { state_goods_pricier >= 0.5 } }
-		value = 1.2
+		value = 1.4
 	}
 	else_if = {
 		limit = { sg:transportation = { state_goods_pricier >= 0.25 } }
-		value = 1.1
+		value = 1.3
 	}
 	else_if = {
 		limit = { sg:transportation = { state_goods_cheaper >= 0.5 } }
-		value = 0.8
+		value = 0.9
 	}
 	else_if = {
 		limit = { sg:transportation = { state_goods_cheaper >= 0.25 } }
-		value = 0.9
+		value = 1
 	}
 }

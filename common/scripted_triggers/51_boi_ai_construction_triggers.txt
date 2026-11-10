@@ -36,6 +36,47 @@ boi_ai_state_prefers_rail_works = {
 	owner = { has_technology_researched = railways }
 	has_building = building_railway
 	boi_ai_rail_works_room > 0
+	# The room counts built levels only; the engine's cap also counts levels
+	# still in the queue. Without this, a state with a level queued and one
+	# built against a cap of 2 logged "Rail Works is at maximum capacity"
+	# (p6_iter1, Carnatic, 2026-11-09). has_building is false while the first
+	# level is still being built, so a state with nothing built yet must also
+	# have nothing under construction (as vanilla's railway checks do in
+	# 11_private_infrastructure.txt); without this, a first level still in the
+	# queue a year on logged the same error (p6_iter2, Montenegro, cap 1).
+	# Two more guards, after the same error in Porto Rico and Rajputana in
+	# p6_iter3 (2026-11-09) despite the checks below: the engine's own build
+	# check, and our last queue order must be built before another.
+	can_construct_building = building_boi_rail_works
+	OR = {
+		NOT = { has_variable = boi_ai_rw_pending }
+		boi_rail_works_levels_state >= var:boi_ai_rw_pending
+	}
+	OR = {
+		NOR = {
+			has_building = building_boi_rail_works
+			any_scope_building = {
+				is_building_type = building_boi_rail_works
+				is_under_construction = yes
+			}
+		}
+		any_scope_building = {
+			is_building_type = building_boi_rail_works
+			can_queue_building_levels = 1
+		}
+	}
+}
+
+# State scope. A state in our rehousing pledge that is still short of its
+# share, and where we have queued fewer levels than its share (so a level in
+# the queue isn't queued again every month).
+boi_ai_state_wants_pledge_housing = {
+	var:boi_pledge_state ?= owner
+	boi_pledge_state_shortfall > 0
+	OR = {
+		NOT = { has_variable = boi_pledge_state_queued }
+		var:boi_pledge_state_queued < var:boi_pledge_state_target
+	}
 }
 
 # State scope. Incorporated, with housing at least 50% above base price.

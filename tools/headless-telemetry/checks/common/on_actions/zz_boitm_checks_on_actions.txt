@@ -1,0 +1,16 @@
+﻿# Headless telemetry (checks module, Test-Headless.ps1 -Checks). 2026-11-09:
+# one-off checks of the plan 6 phase 6 fixes and D1. events = { } only.
+
+on_monthly_pulse_country = {
+	events = {
+		boitm_chk.1
+		boitm_chk.2
+		boitm_chk.3
+		boitm_chk.4
+		boitm_chk.5
+		boitm_chk.6
+		boitm_chk.7
+		boitm_chk.8
+		boitm_chk.9
+	}
+}

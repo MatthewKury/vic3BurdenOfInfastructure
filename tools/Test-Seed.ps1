@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param(
     [string]$ModPath,
+    [string]$GamePath = 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game',
     [int]$ExpectedHorseRanches = 223,      # 1.15 balance passes 3 (Bihar, Shandong, Beijing, East Java) and 4 (Midlands, East Anglia, West Country)
     [int]$ExpectedHorseRanchLevels = 525   # 491 after the 1.15.0 patch (Semireche out, Kostroma in), +20 in pass 3, +14 in pass 4
 )
@@ -14,6 +15,24 @@ if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes
     throw "Seed is missing its UTF-8 BOM: $seedPath"
 }
 $seed = [IO.File]::ReadAllText($seedPath)
+
+# Review finding C1 (2026-11-09): the plan must still hold the hand-made adjustments, and the
+# baseline must still be what vanilla's rail and ports need, so a regeneration can't drop either.
+& (Join-Path $PSScriptRoot 'Merge-InfrastructurePlan.ps1') -ModPath $ModPath -Check
+if ($GamePath -and (Test-Path -LiteralPath $GamePath)) {
+    $freshBaseline = Join-Path $env:TEMP ('boi-baseline-' + [guid]::NewGuid().ToString('N') + '.tsv')
+    $freshCsv = [IO.Path]::ChangeExtension($freshBaseline, '.csv')
+    try {
+        & (Join-Path $PSScriptRoot 'Get-StartingInfrastructure.ps1') -GamePath $GamePath -ModPath $ModPath `
+            -PlanPath $freshBaseline -OutputPath $freshCsv | Out-Null
+        $committedBaseline = (Get-Content -LiteralPath (Join-Path $ModPath 'tools/infrastructure_seed_baseline.tsv')) -join "`n"
+        if (((Get-Content -LiteralPath $freshBaseline) -join "`n") -ne $committedBaseline) {
+            throw 'infrastructure_seed_baseline.tsv no longer matches vanilla rail and port replacement; run Regenerate-WorldSeed.ps1.'
+        }
+        Write-Host 'PASS: infrastructure_seed_baseline.tsv matches vanilla rail and port replacement.'
+    }
+    finally { Remove-Item -LiteralPath $freshBaseline, $freshCsv -Force -ErrorAction SilentlyContinue }
+}
 $plan = foreach ($line in Get-Content -LiteralPath $planPath) {
     $parts = $line -split "`t"
     if ($parts.Count -ne 4 -or $parts[0] -notmatch '^STATE_' -or $parts[1] -notmatch '^[A-Z0-9_]+$' -or

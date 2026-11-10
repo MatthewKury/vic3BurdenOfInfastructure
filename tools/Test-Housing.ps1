@@ -53,10 +53,79 @@ $readerBlocks = @(Get-HousingScriptBlocks $readerFixture)
 Assert-Housing ($readerBlocks.Count -eq 2 -and $readerBlocks[1].Key -eq 'beta') 'Source parser failed quoted/comment brace fixture.'
 
 # Housing is part of the main mod. Its script files are the ones named for
-# housing, plus the generated buy-package file it owns.
+# housing or displacement (the rehousing pledge), plus the generated buy-package
+# file it owns. Each must be in this manifest with the keys it has to define, so a
+# new file fails here until someone says what it is for. This replaced a bare file
+# count on 2026-11-09 (plan 6, review finding C2), which had stopped at 22-versus-28.
+$housingManifest = [ordered]@{
+    'common/building_groups/50_boi_housing_tiers_generated.txt'       = @('bg_boi_residential', 'bg_boi_slum_housing')
+    'common/buildings/00_boi_housing_rural_generated.txt'             = @('building_coal_mine', 'building_copper_mine')
+    'common/buildings/50_boi_housing_tiers_generated.txt'             = @('building_boi_slums', 'building_boi_tenements', 'building_boi_municipal_estates', 'building_boi_temporary_shelter')
+    'common/buy_packages/00_buy_packages.txt'                         = @('wealth_1', 'wealth_99')
+    'common/decrees/50_boi_housing.txt'                               = @('decree_boi_emergency_accommodation')
+    'common/goods/50_boi_housing.txt'                                 = @('boi_housing', 'boi_luxury_housing')
+    'common/history/buildings/zz_boi_housing_seed_generated.txt'      = @('BUILDINGS')
+    'common/history/global/zz_boi_housing.txt'                        = @('GLOBAL')
+    'common/ideologies/50_boi_housing.txt'                            = @('ideology_boi_housing_reform', 'ideology_boi_housing_laissez_faire')
+    'common/journal_entries/52_boi_rehousing_pledge.txt'              = @('je_boi_rehousing_pledge')
+    'common/law_groups/50_boi_housing.txt'                            = @('lawgroup_boi_residential_standards')
+    'common/laws/50_boi_housing.txt'                                  = @('law_boi_unregulated_residential', 'law_boi_residential_standards')
+    'common/modifier_type_definitions/zz_boi_housing_generated.txt'   = @('building_aristocrats_mortality_mult')
+    'common/on_actions/zz_boi_housing.txt'                            = @('on_monthly_pulse_country', 'on_country_formed')
+    'common/pop_needs/50_boi_housing.txt'                             = @('popneed_boi_housing', 'popneed_boi_luxury_housing')
+    'common/production_method_groups/50_boi_housing.txt'              = @('pmg_boi_company_housing', 'pmg_boi_subsistence_housing')
+    'common/production_method_groups/50_boi_housing_tiers_generated.txt' = @('pmg_boi_slums', 'pmg_boi_light_heat_slums')
+    'common/production_methods/50_boi_housing.txt'                    = @('pm_boi_no_company_housing', 'pm_boi_work_camp', 'pm_boi_work_town', 'pm_boi_serviced_town')
+    'common/production_methods/50_boi_housing_tiers_generated.txt'    = @('pm_boi_no_light_heat', 'pm_boi_slums')
+    'common/script_values/54_boi_displacement_values.txt'             = @('boi_pledge_state_good_levels', 'boi_pledge_state_built', 'boi_pledge_built_total', 'boi_pledge_target_total')
+    'common/script_values/55_boi_housing_event_values.txt'            = @('boi_hev_state_camp_levels')
+    'common/scripted_effects/50_boi_housing.txt'                      = @('boi_housing_setup_effect', 'boi_housing_labour_rights_sync_effect')
+    'common/scripted_effects/54_boi_displacement_effects.txt'         = @('boi_disp_find_culture', 'boi_disp_culture_penalty', 'boi_pledge_start_common', 'boi_pledge_mark_state', 'boi_pledge_clear_foreign_markers')
+    'common/scripted_effects/zz_boi_housing_fallback_generated.txt'   = @('boi_housing_enforce_work_camps_effect', 'boi_housing_enforce_work_towns_effect', 'boi_housing_enforce_serviced_towns_effect')
+    'common/scripted_progress_bars/52_boi_rehousing_pledge.txt'       = @('boi_pledge_bar')
+    'common/scripted_triggers/55_boi_housing_event_triggers.txt'      = @('boi_hev_state_wood_fire', 'boi_hev_socialist_government')
+    'common/static_modifiers/53_boi_displacement_modifiers.txt'       = @('boi_pledge_broken')
+    'common/static_modifiers/54_boi_housing_event_modifiers.txt'      = @('boi_hev_ig_pleased', 'boi_hev_ig_angered')
+    'events/boi_housing.txt'                                          = @('boi_housing.1', 'boi_housing.10')
+    'events/boi_housing_events.txt'                                   = @('boi_housing_events.1', 'boi_housing_events.24')
+    'gui/boi_housing_texticons.gui'                                   = @('texticon')
+}
 $housingFiles = @(Get-ChildItem -LiteralPath (Join-Path $ModPath 'common'), (Join-Path $ModPath 'events'), (Join-Path $ModPath 'gui') -Recurse -File |
-    Where-Object { $_.Extension -in '.txt', '.gui' -and ($_.Name -like '*housing*' -or $_.Directory.Name -eq 'buy_packages') })
-Assert-Housing ($housingFiles.Count -eq 22) "Expected 22 housing script files, found $($housingFiles.Count); review the merged file set."
+    Where-Object { $_.Extension -in '.txt', '.gui' -and ($_.Name -like '*housing*' -or $_.Name -like '*displacement*' -or $_.Directory.Name -eq 'buy_packages') })
+$modRootLength = ([IO.Path]::GetFullPath($ModPath).TrimEnd('\')).Length + 1
+foreach ($file in $housingFiles) {
+    $relative = $file.FullName.Substring($modRootLength).Replace('\', '/')
+    Assert-Housing ($housingManifest.Contains($relative)) "Housing file not in Test-Housing's manifest: $relative. Add it with the keys it must define."
+}
+foreach ($relative in $housingManifest.Keys) {
+    $path = Join-Path $ModPath $relative
+    Assert-Housing (Test-Path -LiteralPath $path) "Housing file missing: $relative"
+    $text = [IO.File]::ReadAllText($path).TrimStart([char]0xFEFF)
+    foreach ($key in $housingManifest[$relative]) {
+        Assert-Housing ($text -match ('(?m)^\s*' + [regex]::Escape($key) + '\s*=\s*\{')) "$relative must define $key."
+    }
+}
+
+# Added after the 8 Nov games: the pledge, the twelve housing events, and the
+# Labour Rights conversion (checked further down).
+$pledge = [IO.File]::ReadAllText((Join-Path $ModPath 'common/journal_entries/52_boi_rehousing_pledge.txt'))
+Assert-Housing ($pledge -match 'scripted_progress_bar\s*=\s*boi_pledge_bar') 'The rehousing pledge must show its progress bar.'
+$housingEventText = [IO.File]::ReadAllText((Join-Path $ModPath 'events/boi_housing_events.txt'))
+$popupEvents = @([regex]::Matches($housingEventText, '(?m)^boi_housing_events\.(\d+)\s*=') | Where-Object { $_.Groups[1].Value -ne '1' })
+Assert-Housing ($popupEvents.Count -eq 12) "Expected the twelve housing events, found $($popupEvents.Count)."
+$housingOnActions = [IO.File]::ReadAllText((Join-Path $ModPath 'common/on_actions/zz_boi_on_actions.txt'))
+Assert-Housing ($housingOnActions -match 'boi_housing_events\.1\b') 'The housing event dispatcher must be on the yearly pulse.'
+$python = Get-ChildItem -Path (Join-Path $env:LOCALAPPDATA 'Programs\Python\Python3*\python.exe') -ErrorAction SilentlyContinue | Select-Object -First 1
+if ($python) {
+    $eventRoot = Join-Path ([IO.Path]::GetTempPath()) ('boi-hev-test-' + [guid]::NewGuid().ToString('N'))
+    try {
+        & $python.FullName (Join-Path $PSScriptRoot 'Build-HousingEvents.py') --out-root $eventRoot | Out-Null
+        foreach ($relative in @('events/boi_housing_events.txt', 'common/scripted_triggers/55_boi_housing_event_triggers.txt')) {
+            Assert-Housing ((Get-FileHash (Join-Path $eventRoot $relative)).Hash -eq (Get-FileHash (Join-Path $ModPath $relative)).Hash) "Stale generated housing event file: $relative; run tools/Build-HousingEvents.py."
+        }
+    }
+    finally { if (Test-Path -LiteralPath $eventRoot) { Remove-Item -LiteralPath $eventRoot -Recurse -Force } }
+}
 
 $pm = Read-HousingDomain $ModPath 'production_methods'
 $pmg = Read-HousingDomain $ModPath 'production_method_groups'
@@ -94,24 +163,22 @@ foreach ($key in @('boi_housing', 'boi_luxury_housing')) {
     Assert-Housing ($goods.ContainsKey($key) -and $goods[$key] -match 'local\s*=\s*yes') "Housing must remain local: $key"
 }
 
-# Evaluate the actual PM's nested modifier blocks, including staffing and the
-# crucial discontinuity between zero constructed slums and any slums present.
+# Evaluate the actual PM's nested modifier blocks, including staffing.
+# Since 2026-11-10 Slums cost pollution and migration, not mortality.
 $state = Child-HousingBlock $pm['pm_boi_slums'] 'state_modifiers'
 $scaled = Child-HousingBlock $state 'workforce_scaled'
-$unscaled = Child-HousingBlock $state 'unscaled'
-$mortality = Housing-Number $scaled 'state_mortality_mult'
-$flatMortality = Housing-Number $unscaled 'state_mortality_mult'
 $migration = Housing-Number $scaled 'state_migration_pull_mult'
-Assert-Housing ($mortality -gt 0 -and $flatMortality -gt 0 -and $migration -lt 0) 'Slum effect signs are incorrect.'
+$pollution = Housing-Number $scaled 'state_pollution_generation_add'
+Assert-Housing ($pollution -gt 0 -and $migration -lt 0) 'Slum effect signs are incorrect.'
+Assert-Housing ($pm['pm_boi_slums'] -notmatch '_mortality_mult') 'Slums must carry no mortality.'
+Assert-Housing ($pm['pm_boi_tenement_blocks'] -notmatch '_mortality_mult') 'Tenement Blocks must carry no mortality.'
 foreach ($case in @(
-    @{ levels=0; staffing=1.0; mortality=0.0; migration=0.0 },
-    @{ levels=1; staffing=1.0; mortality=0.12; migration=-0.002 },
-    @{ levels=10; staffing=0.5; mortality=0.2; migration=-0.01 },
-    @{ levels=20; staffing=0.0; mortality=0.1; migration=0.0 }
+    @{ levels=0; staffing=1.0; migration=0.0 },
+    @{ levels=1; staffing=1.0; migration=-0.002 },
+    @{ levels=10; staffing=0.5; migration=-0.01 },
+    @{ levels=20; staffing=0.0; migration=0.0 }
 )) {
     $effectiveLevels = $case.levels * $case.staffing
-    $flat = if ($case.levels -gt 0) { $flatMortality } else { 0 }
-    Assert-Housing ([Math]::Abs($effectiveLevels * $mortality + $flat - $case.mortality) -lt 0.000001) 'Slum mortality fixture failed.'
     Assert-Housing ([Math]::Abs($effectiveLevels * $migration - $case.migration) -lt 0.000001) 'Slum migration fixture failed.'
 }
 # The mod applies no direct SoL penalty. Harm is mortality; see
@@ -186,10 +253,19 @@ foreach ($key in @('slums', 'tenements', 'tenement_blocks')) {
 foreach ($key in @('slums', 'tenements')) {
     Assert-Housing ($buildings["building_boi_$key"] -match 'NOT\s*=\s*\{\s*has_variable\s*=\s*boi_modernised_city') "A modernised state must block new $key."
 }
-Assert-Housing ($buildings['building_boi_municipal_estates'] -match 'law_council_republic') 'Municipal Estates need a socialist-type government.'
+Assert-Housing ($buildings['building_boi_municipal_estates'] -match 'boi_hev_socialist_government\s*=\s*yes') 'Municipal Estates need a socialist-type government.'
+$socialistTrigger = [IO.File]::ReadAllText((Join-Path $ModPath 'common/scripted_triggers/55_boi_housing_event_triggers.txt'))
+Assert-Housing ($socialistTrigger -match 'law_council_republic' -and $socialistTrigger -match 'law_command_economy' -and $socialistTrigger -match 'law_cooperative_ownership') 'The socialist-government trigger must name all three laws.'
+# Review finding C3 (2026-11-09): the AI's construction event must ask what the building asks.
+$aiEvents = [IO.File]::ReadAllText((Join-Path $ModPath 'events/boi_ai_infrastructure_events.txt'))
+$aiMunicipal = [regex]::Match($aiEvents, '(?s)boi_ai_infrastructure\.2\s*=\s*\{.*?immediate')
+Assert-Housing ($aiMunicipal.Value -match 'has_technology_researched\s*=\s*socialism' -and $aiMunicipal.Value -match 'boi_hev_socialist_government\s*=\s*yes') 'The AI Municipal Estates event must check the tech and the government, as the building does.'
 Assert-Housing ($pm['pm_boi_no_company_housing'] -match 'is_default\s*=\s*yes') 'No Housing must be the default.'
 Assert-Housing ($pm['pm_boi_no_company_housing'] -notmatch 'unlocking_|goods_|state_modifiers') 'No Housing must be unconditional and supply no housing.'
-Assert-Housing ($pm['pm_boi_work_camp'] -notmatch 'state_modifiers') 'Work Camp penalties must not affect an entire state.'
+# Migration attraction exists only at state level, so since 2026-11-10 that is
+# the one state-wide effect a Work Camp may have.
+$campStateKeys = @([regex]::Matches((Child-HousingBlock $pm['pm_boi_work_camp'] 'state_modifiers'), '\b(state_\w+)\s*=') | ForEach-Object { $_.Groups[1].Value })
+Assert-Housing (@($campStateKeys | Where-Object { $_ -notin @('state_modifiers', 'state_migration_pull_mult') }).Count -eq 0) 'Work Camp state effects must be limited to migration attraction.'
 Assert-Housing ($pm['pm_boi_work_camp'] -match 'unlocking_laws\s*=\s*\{\s*law_no_workers_rights') 'Work Camp needs its separate law gate.'
 # Each vanilla Labour Rights law permits No Housing plus exactly one tier (2026-11-08).
 $tierLaws = @{ work_camp = 'law_no_workers_rights'; work_town = 'law_regulatory_bodies'; serviced_town = 'law_worker_protections' }
@@ -232,20 +308,18 @@ foreach ($step in 0..1) {
         Assert-Housing ($upperAmount -ge $lowerAmount) "$($tierOrder[$step + 1]) must use at least as much $good as $($tierOrder[$step])."
     }
 }
-# A Work Town houses as many workers as a Work Camp at half its penalties, for
-# every profession. Serviced Towns carry no penalty.
+# A Work Town houses as many workers as a Work Camp. Since 2026-11-10 neither
+# carries flat mortality; the camp lowers
+# migration attraction, the town has no penalty, nor does a Serviced Town.
 $campBuilding = Child-HousingBlock $pm['pm_boi_work_camp'] 'building_modifiers'
 $townBuilding = Child-HousingBlock $pm['pm_boi_work_town'] 'building_modifiers'
 Assert-Housing ((Housing-Number (Child-HousingBlock $townBuilding 'workforce_scaled') 'goods_output_boi_housing_add') -eq (Housing-Number (Child-HousingBlock $campBuilding 'workforce_scaled') 'goods_output_boi_housing_add')) 'Work Town must supply the same housing as a Work Camp.'
-$campPenalties = Child-HousingBlock $campBuilding 'unscaled'
-$townPenalties = Child-HousingBlock $townBuilding 'unscaled'
-$campPenaltyKeys = @([regex]::Matches($campPenalties, 'building_\w+_mortality_mult') | ForEach-Object Value)
-$townPenaltyKeys = @([regex]::Matches($townPenalties, 'building_\w+_mortality_mult') | ForEach-Object Value)
-Assert-Housing ($campPenaltyKeys.Count -eq 10 -and $townPenaltyKeys.Count -eq 10) 'Work Camp and Work Town must penalise all ten professions.'
-foreach ($key in $campPenaltyKeys) {
-    Assert-Housing ([Math]::Abs((Housing-Number $townPenalties $key) * 2 - (Housing-Number $campPenalties $key)) -lt 0.000001) "Work Town penalty must be half of Work Camp: $key"
+$campState = Child-HousingBlock (Child-HousingBlock $pm['pm_boi_work_camp'] 'state_modifiers') 'workforce_scaled'
+Assert-Housing ((Housing-Number $campState 'state_migration_pull_mult') -lt 0) 'Work Camp must lower migration attraction with staffing.'
+foreach ($key in @('pm_boi_work_camp', 'pm_boi_work_town', 'pm_boi_serviced_town')) {
+    Assert-Housing ($pm[$key] -notmatch 'standard_of_living_add|_mortality_mult') "$key must carry no flat SoL or mortality penalty."
 }
-Assert-Housing ($pm['pm_boi_serviced_town'] -notmatch 'standard_of_living|mortality') 'Serviced Town must carry no penalty.'
+Assert-Housing ($pm['pm_boi_work_town'] -notmatch 'state_modifiers') 'Work Town must carry no state penalty.'
 $servicedOutput = Housing-Number (Child-HousingBlock (Child-HousingBlock $pm['pm_boi_serviced_town'] 'building_modifiers') 'workforce_scaled') 'goods_output_boi_housing_add'
 Assert-Housing ($servicedOutput -eq (Housing-Number (Child-HousingBlock $campBuilding 'workforce_scaled') 'goods_output_boi_housing_add')) 'Every housing tier must supply the same housing.'
 Assert-Housing ($pm['pm_boi_slums'] -notmatch 'unlocking_laws') 'Residential law must not disable existing slum operation.'
@@ -265,6 +339,8 @@ foreach ($block in (Get-HousingScriptBlocks $generatedSource)) {
     $ruralCount += [int]($source -match '\bpmg_boi_company_housing\b')
     $subsistenceCount += [int]($source -match '\bpmg_boi_subsistence_housing\b')
     $restored = [regex]::Replace($source, '(?m)^\s*pmg_boi_(?:company|subsistence)_housing\s*\r?\n', '')
+    # The generator's one other change: owner ?= in vanilla's "British dictates" limits.
+    $restored = [regex]::Replace($restored, '(# British dictates\s*limit\s*=\s*\{\s*)owner \?= \{', '$1owner = {')
     Assert-Housing ((Normalize-HousingScript $restored) -eq (Normalize-HousingScript $originalBuildings[$key])) "Unexpected rural override change: $key"
 }
 $ranch = [regex]::Replace($buildings['building_boi_horse_ranch'], '(?m)#[^\r\n]*', '')

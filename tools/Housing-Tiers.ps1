@@ -27,8 +27,10 @@ $HousingStandardsGate = 'owner = { NOT = { has_law = law_type:law_boi_residentia
 # Residential Standards is later repealed (the journal entry sets boi_modernised_city).
 $HousingClearedGate = "$HousingStandardsGate`n  NOT = { has_variable = boi_modernised_city }"
 # Municipal Estates need a socialist-type government: a council republic, or an
-# economy without private capital (2026-11-08).
-$HousingSocialistGate = 'owner = { OR = { has_law_or_variant = law_type:law_council_republic has_law_or_variant = law_type:law_command_economy has_law_or_variant = law_type:law_cooperative_ownership } }'
+# economy without private capital (2026-11-08). The laws live in one scripted trigger,
+# boi_hev_socialist_government (written by tools/Build-HousingEvents.py), which the AI's
+# construction event also checks, so the two can't disagree (review finding C3, 2026-11-09).
+$HousingSocialistGate = 'owner = { boi_hev_socialist_government = yes }'
 # Country = country_modifiers, workforce_scaled (per staffed level). The low tiers cost a
 # share of prestige: -0.5% / -0.25% / -0.125% per staffed level (2026-11-08).
 
@@ -40,12 +42,12 @@ $HousingSocialistGate = 'owner = { OR = { has_law_or_variant = law_type:law_coun
 $HousingBuildings = @(
     # ---- Working-class ladder ----
     @{ Key = 'slums'; Name = 'Slum Districts'; Group = 'bg_boi_slum_housing'; GroupName = 'Slum Housing'; Parent = 'dense'
-        Desc = 'Cheap accommodation with heavy infrastructure demand. Any constructed slum district raises state mortality, and staffing raises mortality further and lowers migration attraction. The only way out is to clear it and build something better.'
+        Desc = 'Cheap accommodation with heavy infrastructure demand. Staffing pollutes heavily and lowers migration attraction. The only way out is to clear it and build something better.'
         Cost = 'construction_cost_low'; Basic = 6; Luxury = 0; Infra = 3.5; Labor = 900; Clerks = 100; Icon = 'boi_slums.dds'
         Inputs = [ordered]@{ wood = 0.3; tools = 0.1; fabric = 0.2 }; Possible = $HousingClearedGate; Fuels = @('wood')
-        Scaled = [ordered]@{ state_mortality_mult = 0.02; state_migration_pull_mult = -0.002; state_pollution_generation_add = 50 }
-        Country = [ordered]@{ country_prestige_mult = -0.005 }
-        Unscaled = [ordered]@{ state_mortality_mult = 0.1 } }
+        # 2026-11-10: mortality removed (was +10% per state plus +2% per staffed level); pollution 50 -> 75.
+        Scaled = [ordered]@{ state_migration_pull_mult = -0.002; state_pollution_generation_add = 75 }
+        Country = [ordered]@{ country_prestige_mult = -0.005 } }
     @{ Key = 'tenements'; Name = "Workers' Rows"; Group = 'bg_boi_tenement_housing'; GroupName = 'Rows and Terraces'; Parent = 'dense'
         Desc = 'Back-to-backs, chawls and cramped rows put up by speculative builders. Heavy infrastructure demand. Better housing has to be built new.'
         Cost = 'construction_cost_low'; Basic = 7; Luxury = 0; Infra = 3; Labor = 800; Clerks = 200; Icon = 'boi_tenements.dds'
@@ -56,10 +58,10 @@ $HousingBuildings = @(
         Tech = 'urban_planning'; Cost = 'construction_cost_low'; Basic = 8; Luxury = 0; Infra = 2.5; Labor = 800; Clerks = 200; Icon = 'boi_regulated_terraces.dds'
         Inputs = [ordered]@{ wood = 0.6; tools = 0.3; glass = 0.2 } }
     @{ Key = 'tenement_blocks'; Name = 'Tenement Blocks'; Group = 'bg_boi_tenement_block_housing'; GroupName = 'Tenement Blocks'; Parent = 'dense'
-        Desc = 'Mietskasernen and dumbbell tenements: cheap, dense and airless. Staffing raises state mortality a little and lowers migration attraction.'
+        Desc = 'Mietskasernen and dumbbell tenements: cheap, dense and airless. Staffing lowers migration attraction.'
         Tech = 'mechanized_workshops'; Cost = 'construction_cost_low'; Basic = 10; Luxury = 0; Infra = 2; Labor = 800; Clerks = 200; Icon = 'boi_tenement_blocks.dds'
         Inputs = [ordered]@{ wood = 0.6; tools = 0.3; iron = 0.2 }; Possible = $HousingStandardsGate
-        Scaled = [ordered]@{ state_mortality_mult = 0.001; state_migration_pull_mult = -0.001 }
+        Scaled = [ordered]@{ state_migration_pull_mult = -0.001 } # mortality (+0.1% per level) removed 2026-11-10
         Country = [ordered]@{ country_prestige_mult = -0.00125 } }
     @{ Key = 'model_dwellings'; Name = 'Model Dwellings'; Group = 'bg_boi_model_dwelling_housing'; GroupName = 'Model Dwellings'; Parent = 'dense'
         Desc = 'Philanthropic blocks with shared baths and laundries. As dense as a tenement block with none of its harm, at twice the construction cost.'

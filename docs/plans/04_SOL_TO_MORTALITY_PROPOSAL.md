@@ -2,6 +2,8 @@
 
 Written 2026-11-01, revised the same day with your answers. **The mortality swap is applied, without pollution yet.** All new numbers are test values. Back to [plan 4](04_HOUSING.md).
 
+**Superseded in part, 2026-11-10 (your choice, untested):** the mortality below has since been removed from Slums (pollution raised to +75 per staffed level instead), Tenement Blocks, Work Camps (migration attraction instead) and Work Towns (nothing instead), the Emergency Accommodation decree (radicals instead) and Statute Labour (fewer working adults instead). The event modifiers keep their mortality. See the [changelog](../../CHANGELOG.md).
+
 Remove every SoL penalty the mod applies directly, and charge the same harm as higher mortality, plus a small amount of pollution where it fits. I recommend doing it, and the data supports your suspicion: seeded slums cost a state about 1 SoL, and Britain has far more slum states than anyone else. I expect it to lower British radicals but not to end the revolutions on its own, because most of the core British SoL gap has another cause that isn't known yet.
 
 **Decided:**
@@ -100,7 +102,7 @@ Pollution therefore costs 0.06 SoL for every 1% of mortality. Used alone to repl
 | Work Camp | That building's staff | -1 SoL, +5% mortality | No SoL. +15% mortality, and +2 pollution per staffed level |
 | Work Town | That building's staff | -0.5 SoL, +2.5% mortality | No SoL. +7.5% mortality, exactly half a Work Camp's as the validator requires, and +1 pollution per staffed level |
 | Emergency Accommodation decree | Whole state | -1 SoL | No SoL. +10% mortality, and +50 pollution |
-| Statute Labour | Peasants, per works level | -0.25 SoL | No SoL. +3% peasant mortality per works level (`state_peasants_mortality_mult`) |
+| Statute Labour | Peasants, per works level | -0.25 SoL | No SoL. +3% peasant mortality per works level (`state_peasants_mortality_mult`). **Road Works tapered 2026-11-09:** +2% per state plus +1% per staffed level (review C8; see the [9 Nov balance log](../reports/phase6_9_Nov_2026/BALANCE_LOG.md)). **Moved to the law 2026-11-10, and no longer mortality:** −0.02 working-adult ratio for peasants and laborers, country-wide, and nothing on the works (per-pop-type keys unverified) |
 
 - **Slums keep today's shape.** The flat part still lasts until the last level is demolished, and the per-level part still follows staffing. A state with 1 level gets +12%, and West Bengal's 4 levels +18%. Migration penalties stay.
 - **Work Camp stays worse than Work Town,** and it's still limited to staff, without growing per level.

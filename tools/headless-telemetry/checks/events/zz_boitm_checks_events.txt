@@ -1,0 +1,299 @@
+﻿namespace = boitm_chk
+
+# Headless telemetry (checks module, Test-Headless.ps1 -Checks), 2026-11-09.
+# One-off checks of the plan 6 phase 6 fixes and D1, forcing each mechanism
+# once and logging BOIFIX|<date>|<check>|<pass/fail/warn/info>|<detail>.
+#   .1  C12: what ordered_scope_state does with save_scope_as and no position
+#   .2/.3  D1: eligibility counts; force the event for 3 countries; a direct
+#          multiplier test of the legitimacy modifier on Russia
+#   .4/.5/.6  C5: a pledge in one British state; build in it and in another
+#   .7/.8  C4: force the Great Fire, compare the state before and after
+
+# ── C12 ─────────────────────────────────────────────────────────
+boitm_chk.1 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:FRA ?= this
+		game_date >= 1836.2.1
+		NOT = { has_global_variable = boitm_chk_1 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_1
+		set_variable = { name = boitm_chk_iter value = 0 }
+		ordered_scope_state = {
+			order_by = state_population
+			root = { change_variable = { name = boitm_chk_iter add = 1 } }
+			save_scope_as = chk_nopos
+		}
+		ordered_scope_state = {
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = chk_top
+		}
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|c12_ordered_scope|info|iterations=[THIS.ScriptValue('boitm_chk_iterations')|0];states=[THIS.ScriptValue('boitm_states')|0]"
+		# SCOPE.sState prints NULL_STATE in debug_log (run 1), so log from inside each state.
+		scope:chk_nopos = { debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|c12_saved_nopos|info|state=[THIS.GetState.GetStateRegion.GetName];pop=[THIS.ScriptValue('boitm_chk_state_pop')|0]" }
+		scope:chk_top = { debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|c12_saved_top|info|state=[THIS.GetState.GetStateRegion.GetName];pop=[THIS.ScriptValue('boitm_chk_state_pop')|0]" }
+	}
+}
+
+# ── D1 ──────────────────────────────────────────────────────────
+boitm_chk.2 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		game_date >= 1837.1.1
+		NOT = { has_global_variable = boitm_chk_2 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_2
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|sp_eligibility|info|spare30_with_works=[THIS.ScriptValue('boitm_chk_sp_spare30')|0];eligible=[THIS.ScriptValue('boitm_chk_sp_eligible')|0];town=[THIS.ScriptValue('boitm_chk_sp_town')|0];country=[THIS.ScriptValue('boitm_chk_sp_country')|0]"
+		ordered_country = {
+			limit = {
+				NOT = { has_variable = boi_surplus_cooldown }
+				any_scope_state = { boi_surplus_state_eligible = yes }
+			}
+			order_by = gdp
+			max = 3
+			check_range_bounds = no
+			set_variable = boitm_chk_sp_forced
+			if = {
+				limit = { any_scope_state = { boi_surplus_state_eligible = yes boi_surplus_town_fits = yes } }
+				trigger_event = { id = boi_surplus.10 }
+			}
+			else = {
+				trigger_event = { id = boi_surplus.11 }
+			}
+		}
+		# Run 1 used Russia, at the 100 cap. The lowest-legitimacy real country instead.
+		ordered_country = {
+			limit = {
+				NOT = { is_country_type = decentralized }
+				legitimacy < 60
+				legitimacy > 10
+			}
+			order_by = boitm_chk_neg_legitimacy
+			position = 0
+			check_range_bounds = no
+			set_variable = boitm_chk_legit_target
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|sp_multiplier_before|info|tag=[THIS.GetCountry.GetTagName];press=[THIS.ScriptValue('boitm_chk_press')|0];legitimacy=[THIS.ScriptValue('boitm_chk_legitimacy')|1]"
+			add_modifier = {
+				name = boi_surplus_government_works
+				years = 5
+				multiplier = boi_surplus_press_control
+			}
+		}
+	}
+}
+
+boitm_chk.3 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		game_date >= 1837.3.1
+		has_global_variable = boitm_chk_2
+		NOT = { has_global_variable = boitm_chk_3 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_3
+		every_country = {
+			limit = { has_variable = boitm_chk_sp_forced }
+			if = {
+				limit = {
+					has_variable = boi_surplus_cooldown
+					OR = {
+						boitm_chk_sp_state_mods >= 1
+						boitm_chk_sp_gov >= 1
+					}
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|sp_forced_event|pass|tag=[THIS.GetCountry.GetTagName];state_mods=[THIS.ScriptValue('boitm_chk_sp_state_mods')|0];gov=[THIS.ScriptValue('boitm_chk_sp_gov')|0];cooldown=[THIS.ScriptValue('boitm_chk_sp_cooldown')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|sp_forced_event|fail|tag=[THIS.GetCountry.GetTagName];state_mods=[THIS.ScriptValue('boitm_chk_sp_state_mods')|0];gov=[THIS.ScriptValue('boitm_chk_sp_gov')|0];cooldown=[THIS.ScriptValue('boitm_chk_sp_cooldown')|0]"
+			}
+		}
+		every_country = {
+			limit = { has_variable = boitm_chk_legit_target }
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|sp_multiplier_after|info|tag=[THIS.GetCountry.GetTagName];press=[THIS.ScriptValue('boitm_chk_press')|0];legitimacy=[THIS.ScriptValue('boitm_chk_legitimacy')|1];gov=[THIS.ScriptValue('boitm_chk_sp_gov')|0]"
+		}
+	}
+}
+
+# ── C5 ──────────────────────────────────────────────────────────
+boitm_chk.4 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1837.2.1
+		NOT = { has_global_variable = boitm_chk_4 }
+		NOT = { has_journal_entry = je_boi_rehousing_pledge }
+		any_scope_state = { boi_cm_state_low_tier_levels >= 1 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_4
+		ordered_scope_state = {
+			limit = { boi_cm_state_low_tier_levels >= 1 }
+			order_by = boi_cm_state_low_tier_levels
+			position = 0
+			check_range_bounds = no
+			save_scope_as = hev_state
+		}
+		boi_pledge_start_state = yes
+		set_global_variable = { name = boitm_chk_pl_state value = scope:hev_state }
+		ordered_scope_state = {
+			limit = {
+				NOT = { this = scope:hev_state }
+				is_incorporated = yes
+			}
+			order_by = state_population
+			position = 0
+			check_range_bounds = no
+			save_scope_as = chk_other
+		}
+		set_global_variable = { name = boitm_chk_pl_other value = scope:chk_other }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_start|info|je=[THIS.ScriptValue('boitm_chk_pl_has_je')|0];target=[THIS.ScriptValue('boitm_chk_pl_target')|0];built=[THIS.ScriptValue('boitm_chk_pl_built')|0];states=[THIS.ScriptValue('boitm_chk_pl_states')|0];state=[SCOPE.sState('hev_state').GetName];other=[SCOPE.sState('chk_other').GetName]"
+	}
+}
+
+boitm_chk.5 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1837.4.1
+		has_global_variable = boitm_chk_4
+		NOT = { has_global_variable = boitm_chk_5 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_5
+		global_var:boitm_chk_pl_other = { create_building = { building = building_boi_regulated_terraces level = 3 } }
+		global_var:boitm_chk_pl_state = { create_building = { building = building_boi_regulated_terraces level = 1 } }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_built_mid|info|target=[THIS.ScriptValue('boitm_chk_pl_target')|0];built=[THIS.ScriptValue('boitm_chk_pl_built')|0];states=[THIS.ScriptValue('boitm_chk_pl_states')|0]"
+	}
+}
+
+boitm_chk.6 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1837.7.1
+		has_global_variable = boitm_chk_5
+		NOT = { has_global_variable = boitm_chk_6 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_6
+		# 1 level in the pledge state counts; 3 in another state must not.
+		# Since 2026-11-09 the AI also queues Regulated Terraces in the pledge
+		# state (boi_ai_infrastructure.3), so the state's count may exceed 1
+		# by what it queued, never more. Logged from inside the state scope.
+		global_var:boitm_chk_pl_state = {
+			if = {
+				limit = {
+					boi_pledge_state_built >= 1
+					boitm_chk_state_built_ok = 1
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|pass|built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|fail|built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0]"
+			}
+		}
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_country|info|je=[THIS.ScriptValue('boitm_chk_pl_has_je')|0];target=[THIS.ScriptValue('boitm_chk_pl_target')|0];built=[THIS.ScriptValue('boitm_chk_pl_built')|0];states=[THIS.ScriptValue('boitm_chk_pl_states')|0];urban_planning=[THIS.ScriptValue('boitm_chk_has_urban_planning')|0]"
+	}
+}
+
+# 2026-11-09, iteration 2: the AI pledge builder and the Rail Works queue
+# guard. In January 1838: GBR's pledge state, and how many states in the
+# world pass the Rail Works preference (the trigger must parse and run).
+boitm_chk.9 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1838.1.1
+		has_global_variable = boitm_chk_6
+		NOT = { has_global_variable = boitm_chk_9 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_9
+		global_var:boitm_chk_pl_state = {
+			debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_builder|info|built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0];terraces=[THIS.ScriptValue('boitm_chk_state_terraces')|0]"
+		}
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|rail_works_guard|info|prefers=[THIS.ScriptValue('boitm_chk_rw_prefers')|0];with_rail_works=[THIS.ScriptValue('boitm_chk_rw_states')|0];urban_planning=[THIS.ScriptValue('boitm_chk_has_urban_planning')|0]"
+	}
+}
+
+# ── C4 ──────────────────────────────────────────────────────────
+boitm_chk.7 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		game_date >= 1837.3.1
+		NOT = { has_global_variable = boitm_chk_7 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_7
+		ordered_country = {
+			limit = {
+				NOT = { has_variable = boi_hev_great_fire_cd }
+				NOT = { c:GBR ?= this }
+				any_scope_state = {
+					boi_hev_state_wood_fire = yes
+					boitm_chk_industry_levels >= 1
+				}
+			}
+			order_by = gdp
+			position = 0
+			check_range_bounds = no
+			save_scope_as = chk_fire_country
+		}
+		if = {
+			limit = { exists = scope:chk_fire_country }
+			scope:chk_fire_country = {
+				ordered_scope_state = {
+					limit = { boi_hev_state_wood_fire = yes }
+					order_by = boi_cm_state_low_tier_levels
+					position = 0
+					check_range_bounds = no
+					save_scope_as = chk_fire_state
+				}
+				set_global_variable = { name = boitm_chk_fire_state value = scope:chk_fire_state }
+				scope:chk_fire_state = {
+					set_variable = { name = boitm_chk_ind_before value = boitm_chk_industry_levels }
+					debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fire_before|info|tag=[THIS.GetState.GetOwner.GetTagName];state=[THIS.GetState.GetStateRegion.GetName];low_tier=[THIS.ScriptValue('boi_cm_state_low_tier_levels')|0];wood=[THIS.ScriptValue('boitm_chk_wood_levels')|0];industry=[THIS.ScriptValue('boitm_chk_industry_levels')|0]"
+				}
+				trigger_event = { id = boi_housing_events.24 }
+			}
+		}
+	}
+}
+
+boitm_chk.8 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		game_date >= 1837.5.1
+		has_global_variable = boitm_chk_fire_state
+		NOT = { has_global_variable = boitm_chk_8 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_8
+		global_var:boitm_chk_fire_state = {
+			if = {
+				limit = {
+					boi_cm_state_low_tier_levels = 0
+					boitm_chk_industry_levels >= var:boitm_chk_ind_before
+					boitm_chk_scorched = 1
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fire_bounded|pass|tag=[THIS.GetState.GetOwner.GetTagName];low_tier=[THIS.ScriptValue('boi_cm_state_low_tier_levels')|0];wood=[THIS.ScriptValue('boitm_chk_wood_levels')|0];industry=[THIS.ScriptValue('boitm_chk_industry_levels')|0];scorched=[THIS.ScriptValue('boitm_chk_scorched')|0]"
+			}
+			else = {
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fire_bounded|warn|tag=[THIS.GetState.GetOwner.GetTagName];low_tier=[THIS.ScriptValue('boi_cm_state_low_tier_levels')|0];wood=[THIS.ScriptValue('boitm_chk_wood_levels')|0];industry=[THIS.ScriptValue('boitm_chk_industry_levels')|0];scorched=[THIS.ScriptValue('boitm_chk_scorched')|0]"
+			}
+		}
+	}
+}

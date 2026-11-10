@@ -2,14 +2,80 @@
 
 Burden of Infrastructure has not had a public release yet. This log starts with the feature-complete work of 8 November 2026. Earlier history is in git and in [docs/OVERVIEW.md](docs/OVERVIEW.md). All balance numbers are test values.
 
-## Unreleased: feature complete (branch `feature-complete`, 2026-11-08)
+## Unreleased: review fixes and "Ahead of the Traffic" (2026-11-09)
+
+From the 8 November review ([plan 6](docs/plans/06_FEATURE_COMPLETE_PLAN.md), Part C) and item D1.
+
+### Fixes
+
+- **The Great Fire is bounded** (C4).
+  - It burns Slum Districts and Workers' Rows. Only where neither stands does it burn the *smallest* wood-heated housing, where it used to burn the largest.
+  - It no longer destroys an industry building. Instead the state's industry takes −15% throughput for 3 years ("Scorched Works").
+  - "Rebuild on a plan" bans new Slums and Rows in the state only once the country can build Regulated Terraces (`urban_planning`).
+- **Rehousing pledges are tracked state by state** (C5).
+  - Each pledged state records which country made the pledge, and has its own target.
+  - Building in one state no longer makes up for another.
+  - A state that changes hands leaves the pledge, and the target shrinks with it. Stale markers from a previous owner are cleared.
+- **The AI's Municipal Estates event asks what the building asks** (C3): the Socialism tech and a socialist-type government, through one shared trigger.
+- **Electrified Quays need electricity in the state** (C9, `required_input_goods = electricity`).
+- **Rebecca Riots and the road-duty defaulters now pick the most restless state** (C12). They had picked the least restless.
+- **No more `owner` errors from the plantations' AI scores.** BOI's housing shadows copy vanilla's "British dictates" `ai_value` blocks, which read `owner` while a state may have none for a moment as it changes hands. They now use `owner ?=`, with the same result.
+- **The pledge's status line no longer floods error.log** (about 800 lines in 10 months while a pledge ran).
+- **Rostov gets 1 Harbour Works** for its vanilla port, which the 1836 seed had missed: 140 Harbour Works (142 levels).
+
+### Balance, from the 40-year test games ([balance log](docs/reports/phase6_9_Nov_2026/BALANCE_LOG.md))
+
+- **Housing harms are no longer mortality** (2026-11-10, untested).
+  - Slum Districts: no mortality (was +10% per state plus +2% per staffed level); pollution +75 per staffed level (was +50). Migration −0.2% per level, unchanged.
+  - Tenement Blocks: no mortality (was +0.1% per level). Migration unchanged.
+  - Work Camp: no flat +15% mortality on its workers; it now lowers the state's migration attraction by 0.2% per staffed level. Work Town: no flat +7.5% mortality, and no other penalty.
+  - Emergency Accommodation decree: no +10% mortality; +10% radicals from political movements instead.
+- **Statute Labour's human cost and estate bonus are on the law, country-wide** (C8, revised 2026-11-10).
+  - The law gives every state +5% farm and ranch throughput. In place of mortality, peasants and laborers keep fewer working adults: −0.02 to their working-adult ratio (base 0.25, so about 8% fewer workers and more dependents). Days owed on the roads are days not worked at home. **The per-pop-type keys (`state_peasants_working_adult_ratio_add`, `state_laborers_working_adult_ratio_add`) are unverified:** vanilla defines only the all-pops `state_working_adult_ratio_add`. Untested.
+  - The works keep only their per-level costs: 30% fewer goods bought, and −2 (Road), −6.25 (Rail) and −1.5 (Harbour) infrastructure per staffed level.
+  - Before, the works carried the mortality per staffed level: Road and Rail +3%, Harbour +1%, with +1% farm and ranch throughput. In the first games, states with 8 or more Road Works lost population while states without grew. A taper (+2% per state plus +1% per level) fixed that in iteration 2. It was replaced by the flat law modifier so the cost no longer depends on which works a state has, and can't stack across the three works buildings.
+- **The AI builds the housing it pledges.** Each month an AI country with a rehousing pledge queues one level of Regulated Terraces in the pledge state furthest short, never more in a state than that state's target. In the first games, Britain's AI never built its pledged housing.
+- **A broken pledge radicalises only the states that fell short,** in proportion to how short each fell. It used to radicalise 20% of the poor in every pledge state. In both first games this preceded a revolution in Britain.
+- **The AI no longer tries to queue Rail Works over the cap.** A level still in the queue now counts against it, including a state's first level while it is still being built. The AI event also asks the engine (`can_construct_building`) and waits for its last queued level to be built before queueing another.
+- **Railways get some of their pull back.** BOI railways give no infrastructure, so the AI lost vanilla's reason to build them in a state short of infrastructure. In every BOI test game railways ran 23–40% below vanilla, and heavy industry with them.
+  - A railway now expands on its own when transportation is 25% dear; vanilla's line is 50%. World transportation sits at about +50%.
+  - The AI's railway priority now scales from 0.9 to 1.4 with the transportation price, 1.15 at normal prices. It was 0.8 to 1.2, 1 at normal prices.
+  - Railways still give no infrastructure.
+
+### New
+
+- **"Ahead of the Traffic"** (D1, `events/boi_infrastructure_surplus_events.txt`).
+  - It fires for a state with at least 30 spare infrastructure, at least 1.5 times its usage, and a works building.
+  - The odds are a 10% yearly roll, with a 15-year cooldown per country and 10 years per state.
+  - **The town version** (industry in the state):
+    - +10% manufacturing throughput (Industrialists);
+    - a market-town charter (Petty Bourgeoisie);
+    - +3 legitimacy for each step of press control (+3 to +12).
+  - **The country version** (farms, plus a mine or logging camp):
+    - +10% mining and logging throughput (Industrialists);
+    - +10% farm, ranch and plantation throughput (Landowners);
+    - −5% mortality (Rural Folk).
+  - Every option lasts 5 years.
+
+### Tooling
+
+- **Regenerating the seed keeps the balance work** (C1). The works plan is now built from `tools/infrastructure_seed_baseline.tsv` (vanilla replacement, regenerated) plus `tools/infrastructure_seed_adjustments.tsv` (hand-made changes, never regenerated), by `tools/Merge-InfrastructurePlan.ps1`. `Test-Seed.ps1` checks the plan against both, and checks the baseline against vanilla.
+- **Regeneration works again on 1.15.** `tools/horse_seed_baseline.txt` still named two 1.13 states (Galich, Tartaria) and lacked Kostroma and Oryol.
+- **`Test-Housing.ps1` uses a manifest** in place of a file count (C2). It names the keys each housing file must define, and fails on any housing file not in the manifest. It also checks the pledge, the twelve housing events, and that `Build-HousingEvents.py` reproduces the committed files.
+- **Telemetry:**
+  - a `checks` module (`Test-Headless.ps1 -Checks`) for one-off checks;
+  - `sp_counts` and `pledge` lines in the rail-survey module, with the levels the AI pledge builder queued and the countries under a broken pledge;
+  - world subsistence, farm and ranching levels in `Compare-Headline.py`, and `--include-failed` to count crashed runs up to their last whole snapshot. `Build-EnsembleDb.py` now keeps the last snapshot of a run that exited on its own but failed on an error line;
+  - the road-law code logs the Dedicated Road Fund as 3; it logged as 0 (Statute Labour) before.
+
+## Feature complete (branch `feature-complete`, 2026-11-08)
 
 ### Housing
 
 - **Twelve housing events** (`events/boi_housing_events.txt`, generated by `tools/Build-HousingEvents.py`). Each gets a yearly 3% roll per country, with its own cooldown:
   - Employer housing: The Company Store, Tied Cottage Evictions, Disaster at the Camp, A Model Village, and The Company Town Strikes (after Pullman).
   - Residential housing: A Tenement Collapses, The Rent Strike, A Philanthropist's Offer (a grant tied to a rehousing pledge), A Royal Commission on Housing, A Suburban Building Bubble, and Red Vienna (once, for socialist governments with many Municipal Estates).
-  - The Great Fire: possible wherever any housing is heated by wood. It burns the state's Slum Districts, Workers' Rows and largest other wood-heated housing, plus its smallest urban industry, and it can't recur for 20 years.
+  - The Great Fire: possible wherever any housing is heated by wood, and it can't recur for 20 years. (Bounded on 2026-11-09; see above.)
 
 - **Low housing costs prestige.** Each staffed level costs a share of the country's prestige:
   - Slum Districts −0.5%;

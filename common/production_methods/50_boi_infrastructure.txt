@@ -350,9 +350,9 @@ pm_boi_turnpike_tolls = {
 
 
 # Peasants owe road days and bring their own teams: 30% fewer goods
-# bought, 2 less infrastructure per level, more peasant deaths (no SoL
-# penalty; see docs/plans/04_SOL_TO_MORTALITY_PROPOSAL.md). The squire
-# decides where the duty goes, so estate farms and ranches run better.
+# bought and 2 less infrastructure per level. The law itself carries the
+# human cost (fewer working adults among peasants and laborers) and the
+# estate bonus, since the squire decides where the duty goes.
 pm_boi_statute_labour = {
 	texture = "gfx/interface/icons/production_method_icons/corvee_labor.dds"
 
@@ -366,12 +366,16 @@ pm_boi_statute_labour = {
 		}
 	}
 
+	# The human cost and the estate bonus are on the law, country-wide
+	# (2026-11-10: -0.02 working-adult ratio for peasants and laborers,
+	# +5% farm and ranch throughput). Peasant mortality and the bonus were
+	# here, per level (+3% mortality, +1% throughput) until 2026-11-09, then
+	# a taper (review C8), because in p6_iter1 states with 8+ Road Works lost
+	# population. The infrastructure cut stays per level: it is the output
+	# reduction itself.
 	state_modifiers = {
 		workforce_scaled = {
 			state_infrastructure_add = -2
-			state_peasants_mortality_mult = 0.03
-			building_group_bg_agriculture_throughput_add = 0.01
-			building_group_bg_ranching_throughput_add = 0.01
 		}
 	}
 }

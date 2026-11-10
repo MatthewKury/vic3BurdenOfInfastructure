@@ -6,7 +6,9 @@ Usage:
 Means over members from world_obs (one value per member per snapshot),
 using each member's snapshot on 1 January of the year. The first ensemble
 is the reference; later ones show the % change against it. Members that
-don't reach a year are left out of that year.
+don't reach a year are left out of that year. Only runs that passed count,
+unless --include-failed (crashed runs salvaged by Build-EnsembleDb.py
+--include-failed, up to their last whole snapshot).
 """
 import argparse
 import pathlib
@@ -16,17 +18,32 @@ import statistics
 HERE = pathlib.Path(__file__).resolve().parent
 METRICS = ["gdp", "population", "sol", "radicals", "turmoil", "unemployed", "deficit_states",
            "infrastructure", "infrastructure_usage", "railway_levels", "construction_levels",
-           "countries_at_war", "goods:transportation:price"]
+           "countries_at_war", "goods:transportation:price",
+           # World sums of country_obs columns (2026-11-09: subsistence against vanilla).
+           "sum:bg_subsistence_levels", "sum:bg_agriculture_levels", "sum:bg_ranching_levels"]
+COUNTRY_COLUMNS = {"bg_subsistence_levels", "bg_agriculture_levels", "bg_ranching_levels"}
 
 
-def values(db, ensemble, metric, year):
+def values(db, ensemble, metric, year, include_failed=False):
+    if metric.startswith("sum:"):
+        column = metric[4:]
+        assert column in COUNTRY_COLUMNS
+        rows = db.execute(
+            f"""select sum(c.{column}) from country_obs c
+               join run r on r.run_id = c.run_id
+               join ensemble e on e.ensemble_id = r.ensemble_id
+               join snapshot s on s.run_id = c.run_id and s.t = c.t
+               where e.name = ? and s.date = ? and (r.result = 'PASS' or ?)
+               group by c.run_id""",
+            (ensemble, f"{year}-01-01", include_failed)).fetchall()
+        return [r[0] for r in rows if r[0] is not None]
     rows = db.execute(
         """select o.value from world_obs o
            join run r on r.run_id = o.run_id
            join ensemble e on e.ensemble_id = r.ensemble_id
            join snapshot s on s.run_id = o.run_id and s.t = o.t
-           where e.name = ? and o.metric = ? and s.date = ? and r.result = 'PASS'""",
-        (ensemble, metric, f"{year}-01-01")).fetchall()
+           where e.name = ? and o.metric = ? and s.date = ? and (r.result = 'PASS' or ?)""",
+        (ensemble, metric, f"{year}-01-01", include_failed)).fetchall()
     return [r[0] for r in rows if r[0] is not None]
 
 
@@ -35,6 +52,8 @@ def main():
     ap.add_argument("ensembles", nargs="+")
     ap.add_argument("--years", nargs="+", type=int, default=[1846, 1851])
     ap.add_argument("--db", default=str(HERE / "ensembles.sqlite"))
+    ap.add_argument("--include-failed", action="store_true",
+                    help="also count runs that did not pass (crashed runs salvaged to their last snapshot)")
     args = ap.parse_args()
     db = sqlite3.connect(args.db)
     for year in args.years:
@@ -46,7 +65,7 @@ def main():
             cells = []
             ref = None
             for i, e in enumerate(args.ensembles):
-                v = values(db, e, m, year)
+                v = values(db, e, m, year, args.include_failed)
                 if not v:
                     cells.append("–")
                     continue

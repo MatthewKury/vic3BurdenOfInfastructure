@@ -85,7 +85,14 @@ foreach ($key in ($buildings.Keys | Sort-Object)) {
     # [^\r\n]* keeps a trailing comment on the opening line (1.15 copper mine).
     $pattern = '(production_method_groups\s*=\s*\{[^\r\n]*)'
     if ([regex]::Matches($source, $pattern).Count -ne 1) { throw "Expected exactly one PM group list: $key" }
-    $shadows.Add([regex]::Replace($source, $pattern, ('$1' + "`n`t`t$pmg")))
+    $shadow = [regex]::Replace($source, $pattern, ('$1' + "`n`t`t$pmg"))
+    # Vanilla's "British dictates" ai_value blocks read owner = { } in a limit. While a
+    # state changes hands it has no owner for a moment, and the engine logs "Event target
+    # link 'owner' returned an invalid object" against this BOI file (once in a 1.15 BOI
+    # game, 2026-11-09; vanilla logs the same class of error from its own files). owner ?=
+    # is false there, the same result the failed link gives, without the error line.
+    $shadow = [regex]::Replace($shadow, '(# British dictates\s*limit\s*=\s*\{\s*)owner = \{', '$1owner ?= {')
+    $shadows.Add($shadow)
 }
 if ($companyTypes.Count -lt 20 -or $subsistenceTypes.Count -ne 6) { throw "Unexpected coverage: $($companyTypes.Count) rural / $($subsistenceTypes.Count) subsistence. Review game update." }
 # Match BOI's early 00_boi_* keyed-building override convention.
@@ -236,8 +243,8 @@ foreach ($row in (Import-Csv -LiteralPath (Join-Path $PSScriptRoot 'housing_seed
     # Basic housing is net of what subsistence and luxury buildings already supply.
     $existing = if ([int]$row.residential -eq 0) { [double]::Parse($row.housing_supply, $culture) } else { 0.0 }
     $basicTarget = ($seedCoverageBasic * $stateDemand) - $existing - ($outputLuxuryBasic * $luxuryLevels)
-    # Slums only in crowded industrial cities and great ports: each state with one
-    # takes the flat mortality penalty, so spreading them widely would be punishing.
+    # Slums only in crowded industrial cities and great ports. (They carried a flat
+    # per-state mortality penalty until 2026-11-10; the placement rule is unchanged.)
     $slums = 0
     $tenements = 0
     if ($basicTarget -gt 0) {

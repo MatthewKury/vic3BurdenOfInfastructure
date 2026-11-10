@@ -18,7 +18,7 @@
  law_boi_unregulated_residential_desc: "Slum districts, workers' rows and tenement blocks may be constructed."
  law_boi_residential_standards_desc: "New slum districts, workers' rows and tenement blocks are prohibited, including expansions. Existing buildings remain until acquired and demolished."
  decree_boi_emergency_accommodation: "Emergency Accommodation"
- decree_boi_emergency_accommodation_desc: "Permit crowding across basic accommodation providers, increasing Housing output at the cost of higher mortality. Does not create buildings or luxury accommodation."
+ decree_boi_emergency_accommodation_desc: "Permit crowding across basic accommodation providers, increasing Housing output at the cost of growing discontent. Does not create buildings or luxury accommodation."
  ideology_boi_housing_reform: "Housing Reform"
  ideology_boi_housing_reform_desc: "Supports minimum residential standards and protection from Work Camps."
  ideology_boi_housing_laissez_faire: "Unregulated Housing"

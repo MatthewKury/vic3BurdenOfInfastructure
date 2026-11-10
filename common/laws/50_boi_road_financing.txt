@@ -41,6 +41,21 @@ law_boi_statute_labour = {
 		building_group_bg_manor_houses_aristocrats_standard_of_living_add = 2
 		# The squire's local authority.
 		country_aristocrats_pol_str_mult = 0.10
+		# Road duty, country-wide (2026-11-10): days owed on the roads are
+		# days not worked at home, so poor households keep fewer working
+		# adults (more dependents) instead of losing people. Base ratio 0.25,
+		# so -0.02 is about 8% fewer workers. UNVERIFIED KEYS: vanilla
+		# defines only state_working_adult_ratio_add (every pop type); the
+		# per-pop-type form is a guess by analogy with
+		# state_peasants_mortality_mult. Test before relying on it, and fall
+		# back to state_peasants_mortality_mult = 0.05 if it doesn't load.
+		# Before: +3% peasant mortality per works level, then a taper (C8),
+		# then +5% here.
+		state_peasants_working_adult_ratio_add = -0.02
+		state_laborers_working_adult_ratio_add = -0.02
+		# The squire puts the duty where his estates need it.
+		building_group_bg_agriculture_throughput_add = 0.05
+		building_group_bg_ranching_throughput_add = 0.05
 	}
 
 	ai_enact_weight_modifier = { #Petitions

@@ -6,7 +6,10 @@ decree_boi_emergency_accommodation = {
  cost = 100
  modifier = {
   goods_output_boi_housing_mult = 0.15
-  state_mortality_mult = 0.1
+  # Crowding breeds discontent (2026-11-10; was +10% state mortality).
+  # Vanilla has no flat "radicals" key; this one is the closest, and is
+  # coloured bad. It only bites where political movements are active.
+  state_radicals_from_political_movements_mult = 0.1
  }
  ai_weight = { value = 0 }
 }

@@ -559,158 +559,96 @@ boi_housing_events.24 = {
 		}
 		scope:hev_state = {
 			if = {
-				limit = { has_building = building_boi_slums }
-				remove_building = building_boi_slums
-			}
-			if = {
-				limit = { has_building = building_boi_tenements }
-				remove_building = building_boi_tenements
-			}
-			# The largest other wood-heated housing goes with them.
-			ordered_scope_building = {
-				limit = { boi_hev_building_wood_fire = yes }
-				order_by = level
-				position = 0
-				check_range_bounds = no
-				save_scope_as = burned_housing
-			}
-			if = {
-				limit = { exists = scope:burned_housing }
+				limit = {
+					OR = {
+						has_building = building_boi_slums
+						has_building = building_boi_tenements
+					}
+				}
 				if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_slums } }
+					limit = { has_building = building_boi_slums }
 					remove_building = building_boi_slums
 				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_tenements } }
+				if = {
+					limit = { has_building = building_boi_tenements }
 					remove_building = building_boi_tenements
 				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_regulated_terraces } }
-					remove_building = building_boi_regulated_terraces
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_tenement_blocks } }
-					remove_building = building_boi_tenement_blocks
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_model_dwellings } }
-					remove_building = building_boi_model_dwellings
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_apartments } }
-					remove_building = building_boi_apartments
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_municipal_estates } }
-					remove_building = building_boi_municipal_estates
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_elevator_apartments } }
-					remove_building = building_boi_elevator_apartments
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_luxury_apartments } }
-					remove_building = building_boi_luxury_apartments
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_boulevard_apartments } }
-					remove_building = building_boi_boulevard_apartments
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_elevator_residences } }
-					remove_building = building_boi_elevator_residences
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_suburbs } }
-					remove_building = building_boi_suburbs
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_railway_suburbs } }
-					remove_building = building_boi_railway_suburbs
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_streetcar_suburbs } }
-					remove_building = building_boi_streetcar_suburbs
-				}
-				else_if = {
-					limit = { scope:burned_housing = { is_building_type = building_boi_motor_suburbs } }
-					remove_building = building_boi_motor_suburbs
-				}
 			}
-			# And the smallest urban industry nearby.
-			ordered_scope_building = {
-				limit = { boi_hev_building_urban_industry = yes }
-				order_by = boi_hev_building_smallness
-				position = 0
-				check_range_bounds = no
-				save_scope_as = burned_industry
+			else = {
+				ordered_scope_building = {
+					limit = { boi_hev_building_wood_fire = yes }
+					order_by = boi_hev_building_smallness
+					position = 0
+					check_range_bounds = no
+					save_scope_as = burned_housing
+				}
+				if = {
+					limit = { exists = scope:burned_housing }
+					if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_slums } }
+						remove_building = building_boi_slums
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_tenements } }
+						remove_building = building_boi_tenements
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_regulated_terraces } }
+						remove_building = building_boi_regulated_terraces
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_tenement_blocks } }
+						remove_building = building_boi_tenement_blocks
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_model_dwellings } }
+						remove_building = building_boi_model_dwellings
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_apartments } }
+						remove_building = building_boi_apartments
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_municipal_estates } }
+						remove_building = building_boi_municipal_estates
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_elevator_apartments } }
+						remove_building = building_boi_elevator_apartments
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_luxury_apartments } }
+						remove_building = building_boi_luxury_apartments
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_boulevard_apartments } }
+						remove_building = building_boi_boulevard_apartments
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_elevator_residences } }
+						remove_building = building_boi_elevator_residences
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_suburbs } }
+						remove_building = building_boi_suburbs
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_railway_suburbs } }
+						remove_building = building_boi_railway_suburbs
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_streetcar_suburbs } }
+						remove_building = building_boi_streetcar_suburbs
+					}
+					else_if = {
+						limit = { scope:burned_housing = { is_building_type = building_boi_motor_suburbs } }
+						remove_building = building_boi_motor_suburbs
+					}
+				}
 			}
 			if = {
-				limit = { exists = scope:burned_industry }
-				if = {
-					limit = { scope:burned_industry = { is_building_type = building_arms_industry } }
-					remove_building = building_arms_industry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_artillery_foundry } }
-					remove_building = building_artillery_foundry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_automotive_industry } }
-					remove_building = building_automotive_industry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_chemical_plant } }
-					remove_building = building_chemical_plant
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_electrics_industry } }
-					remove_building = building_electrics_industry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_explosives_factory } }
-					remove_building = building_explosives_factory
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_food_industry } }
-					remove_building = building_food_industry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_furniture_manufactory } }
-					remove_building = building_furniture_manufactory
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_glassworks } }
-					remove_building = building_glassworks
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_motor_industry } }
-					remove_building = building_motor_industry
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_munition_plant } }
-					remove_building = building_munition_plant
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_paper_mill } }
-					remove_building = building_paper_mill
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_steel_mill } }
-					remove_building = building_steel_mill
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_synthetics_plant } }
-					remove_building = building_synthetics_plant
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_textile_mill } }
-					remove_building = building_textile_mill
-				}
-				else_if = {
-					limit = { scope:burned_industry = { is_building_type = building_tooling_workshop } }
-					remove_building = building_tooling_workshop
-				}
+				limit = { any_scope_building = { boi_hev_building_urban_industry = yes } }
+				add_modifier = { name = boi_hev_great_fire_works years = 3 }
 			}
 			add_modifier = { name = boi_hev_great_fire years = 1 }
 		}
@@ -719,9 +657,15 @@ boi_housing_events.24 = {
 	option = {
 		name = boi_housing_events.24.a
 		add_treasury = boi_hev_payment_large
+		custom_tooltip = boi_housing_events.24.a.tt
 		scope:hev_state = {
-			set_variable = boi_modernised_city
 			add_modifier = { name = boi_cm_modernised_city years = 5 }
+			# The permanent ban on new Slums and Rows only once a working-class
+			# replacement can be built: Regulated Terraces need urban_planning (C4).
+			if = {
+				limit = { owner = { has_technology_researched = urban_planning } }
+				set_variable = boi_modernised_city
+			}
 		}
 		ai_chance = { base = 1 }
 	}

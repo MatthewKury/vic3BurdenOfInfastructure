@@ -186,12 +186,12 @@ pm_boi_conscripted_navvies = {
 		}
 	}
 
+	# The human cost and the estate bonus are on law_boi_statute_labour,
+	# country-wide (2026-11-10). Until then: +3% peasant mortality and +1%
+	# farm and ranch throughput per staffed level.
 	state_modifiers = {
 		workforce_scaled = {
 			state_infrastructure_add = -6.25 # 2.5x, keeps the share of output
-			state_peasants_mortality_mult = 0.03
-			building_group_bg_agriculture_throughput_add = 0.01
-			building_group_bg_ranching_throughput_add = 0.01
 		}
 	}
 }

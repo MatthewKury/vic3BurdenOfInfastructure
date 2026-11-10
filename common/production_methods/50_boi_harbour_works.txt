@@ -91,6 +91,11 @@ pm_boi_electrified_quays = {
 		concrete_dockyards
 	}
 
+	# Only where the state has power: electricity is local, and without this gate
+	# the AI could pick the method in a state with none and starve it (review
+	# finding C9, 2026-11-09). Vanilla's electric PMs use the same key.
+	required_input_goods = electricity
+
 	building_modifiers = {
 		workforce_scaled = {
 			goods_input_merchant_marine_add = 6 # 300
@@ -240,10 +245,11 @@ pm_boi_press_ganged_dock_labour = {
 		}
 	}
 
+	# The human cost is on law_boi_statute_labour, country-wide
+	# (2026-11-10). Until then: +1% peasant mortality per staffed level.
 	state_modifiers = {
 		workforce_scaled = {
 			state_infrastructure_add = -1.5
-			state_peasants_mortality_mult = 0.01
 		}
 	}
 }

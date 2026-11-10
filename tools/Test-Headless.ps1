@@ -38,6 +38,8 @@ param(
     [switch]$NoFixtures,
     [switch]$Ensemble,
     [switch]$Probes,
+    # One-off checks of the 2026-11-09 fixes (headless-telemetry/checks).
+    [switch]$Checks,
     [switch]$LongRun,
     [switch]$RailSurvey,
     [string[]]$ExtraGameArgs,
@@ -135,6 +137,7 @@ if (-not $NoTelemetry) {
     }
     if ($Ensemble) { $telemetryModules += 'ensemble' }
     if ($Probes) { $telemetryModules += 'probes' }
+    if ($Checks) { $telemetryModules += 'checks' }
     foreach ($module in $telemetryModules) {
         $source = Join-Path $PSScriptRoot "headless-telemetry\$module"
         Get-ChildItem -LiteralPath $source -Recurse -File | ForEach-Object {

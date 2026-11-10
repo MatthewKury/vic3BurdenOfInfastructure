@@ -49,6 +49,17 @@ boi_ai_infrastructure.1 = {
 			# Road Works.
 			if = {
 				limit = { boi_ai_state_prefers_rail_works = yes }
+				# The level count this queue order should reach; the trigger
+				# won't queue again here until it is built (or 5 years pass,
+				# in case the order was cancelled).
+				set_variable = {
+					name = boi_ai_rw_pending
+					value = {
+						value = boi_rail_works_levels_state
+						add = 1
+					}
+					days = 1825
+				}
 				start_building_construction = building_boi_rail_works
 			}
 			else_if = {
@@ -69,7 +80,10 @@ boi_ai_infrastructure.1 = {
 # Municipal Estates are government-funded housing, which the engine's AI ignores
 # like the works buildings. Queues one level at a time in the state where housing
 # is dearest, for solvent countries with the tech. The tech is checked here
-# because start_building_construction ignores unlocking_technologies.
+# because start_building_construction ignores unlocking_technologies. So is the
+# building's own possible (a socialist-type government), through the same scripted
+# trigger the building uses; without it the AI tried builds it wasn't allowed and
+# used up its cooldown (review finding C3, fixed 2026-11-09).
 boi_ai_infrastructure.2 = {
 	type = country_event
 	hidden = yes
@@ -77,6 +91,7 @@ boi_ai_infrastructure.2 = {
 	trigger = {
 		is_player = no
 		has_technology_researched = socialism
+		boi_hev_socialist_government = yes
 		in_default = no
 		scaled_debt < 0.5
 		NOT = { has_variable = boi_ai_municipal_cooldown }
@@ -88,6 +103,44 @@ boi_ai_infrastructure.2 = {
 		random_scope_state = {
 			limit = { boi_ai_state_wants_municipal_estates = yes }
 			start_building_construction = building_boi_municipal_estates
+		}
+	}
+}
+
+# Rehousing pledges (je_boi_rehousing_pledge). The AI takes the pledge in
+# events but never builds the housing by itself: in p6_iter1 (2026-11-09)
+# Britain's City Modernisation pledge ended 0 of 12 in both games once pledges
+# were counted per state (C5). This queues one level of Regulated Terraces a
+# month in the pledge state furthest short, never more levels in a state than
+# its own target. Regulated Terraces have no possible, and the pledge options
+# need urban_planning, the building's tech, which is checked again here
+# because start_building_construction ignores unlocking_technologies.
+boi_ai_infrastructure.3 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_player = no
+		in_default = no
+		has_journal_entry = je_boi_rehousing_pledge
+		has_technology_researched = urban_planning
+		any_scope_state = { boi_ai_state_wants_pledge_housing = yes }
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = { boi_ai_state_wants_pledge_housing = yes }
+			order_by = boi_pledge_state_shortfall
+			position = 0
+			check_range_bounds = no
+			if = {
+				limit = { has_variable = boi_pledge_state_queued }
+				change_variable = { name = boi_pledge_state_queued add = 1 }
+			}
+			else = {
+				set_variable = { name = boi_pledge_state_queued value = 1 }
+			}
+			start_building_construction = building_boi_regulated_terraces
 		}
 	}
 }

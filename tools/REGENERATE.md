@@ -117,17 +117,30 @@ is adapted.
 Expected output on 1.15.0 — the script prints these counts to stderr:
 
 ```
-generated: 36 Public Works (87 levels), 139 Harbour Works (141 levels), 223 Horse Ranches (525 levels)   # 1.15.0 balance pass 4; 216 / 492 on 1.13
+generated: 36 Public Works (87 levels), 140 Harbour Works (142 levels), 223 Horse Ranches (525 levels)   # 2026-11-09 (Rostov added); 216 / 492 ranches on 1.13
 ```
 
-`infrastructure_seed_plan.tsv` has no comment lines, because `Test-Seed.ps1`
-rejects them. Since 1.15 balance pass 2 (2026-11-06), its Public Works column is
-more than rail and port replacement. It also carries 47 levels in 26 states that
-the 1836 opening left short, mostly through the housing seed's own infrastructure
-use. They were sized at one level per 10 points of mean April 1836 shortfall
-across the 4 `boi115_pass1` games, in markets where horses can be bought. The
-reasoning is in `docs/reports/balance_6_Nov_2026_1.15/BALANCE_LOG.md`. If the
-housing seed changes, remeasure these.
+**The easy route is `tools/Regenerate-WorldSeed.ps1`**, which does all of this
+section in PowerShell (it needs awk from Git for Windows). Since 2026-11-09 the works
+plan comes from two files (review finding C1):
+
+- `infrastructure_seed_baseline.tsv`: vanilla rail and port replacement only. It's
+  rewritten by `Get-StartingInfrastructure.ps1` on every regeneration.
+- `infrastructure_seed_adjustments.tsv`: balance changes made by hand, as level deltas
+  (which may be negative), with `#` comments allowed. No script writes it. Since 1.15
+  balance pass 2 (2026-11-06) it holds 47 Road Works levels in 24 state-owners that the
+  1836 opening left short, mostly through the housing seed's own infrastructure use.
+  They were sized at one level per 10 points of mean April 1836 shortfall across the 4
+  `boi115_pass1` games, in markets where horses can be bought. The reasoning is in
+  `docs/reports/balance_6_Nov_2026_1.15/BALANCE_LOG.md`. If the housing seed changes,
+  remeasure these.
+
+`Merge-InfrastructurePlan.ps1` adds them up into `infrastructure_seed_plan.tsv`,
+which `gen_seed.awk` reads. That file has no comment lines, because `Test-Seed.ps1`
+rejects them. `Test-Seed.ps1` checks that the plan is exactly baseline plus
+adjustments, and that the baseline still matches vanilla, so a regeneration can't
+quietly drop the adjustments. Before 2026-11-09 the regeneration rewrote the plan
+from the baseline alone.
 
 To change how scarce horses are, edit a state's tier in `tools/horse_seed_tiers.tsv`
 or run `python tools/Set-HorseSeedTiers.py --retain T1 T2 T3 T4` (current defaults

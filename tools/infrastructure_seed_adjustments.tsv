@@ -1,0 +1,33 @@
+# Hand adjustments to the 1836 works seed, added to infrastructure_seed_baseline.tsv
+# by Merge-InfrastructurePlan.ps1 to give infrastructure_seed_plan.tsv. The baseline is
+# vanilla rail and port replacement only, rewritten by Get-StartingInfrastructure.ps1 on
+# every regeneration; these balance changes are kept here so a regeneration can't lose them.
+# Columns: state, owner, Road Works level change, Harbour Works level change (may be negative).
+# 1.15 balance pass 2 (2026-11-06): +47 Road Works levels in states the opening left short,
+# mostly through the housing seed's own usage; docs/reports/balance_6_Nov_2026_1.15/BALANCE_LOG.md.
+# Rostov (RUS) is not adjusted: the baseline gives it 1 Harbour Works for its vanilla port,
+# which the plan before 2026-11-09 had missed.
+STATE_BAHIA	BRZ	2	0
+STATE_CATALONIA	SPA	2	0
+STATE_FRENCH_LOW_COUNTRIES	FRA	1	0
+STATE_HOME_COUNTIES	GBR	8	0
+STATE_INGRIA	RUS	3	0
+STATE_JAMAICA	GBR	1	0
+STATE_LANCASHIRE	GBR	3	0
+STATE_LORRAINE	FRA	1	0
+STATE_MASSACHUSETTS	USA	1	0
+STATE_MIDLANDS	GBR	1	0
+STATE_MINAS_GERAIS	BRZ	2	0
+STATE_NEW_JERSEY	USA	1	0
+STATE_PENNSYLVANIA	USA	1	0
+STATE_PERNAMBUCO	BRZ	1	0
+STATE_RIO_DE_JANEIRO	BRZ	2	0
+STATE_SOUTH_CAROLINA	USA	2	0
+STATE_SVEALAND	SWE	1	0
+STATE_TENNESSEE	USA	2	0
+STATE_VIRGINIA	USA	2	0
+STATE_WALES	GBR	1	0
+STATE_WALLONIA	BEL	1	0
+STATE_WESTERN_CUBA	CUB	1	0
+STATE_WEST_COUNTRY	GBR	2	0
+STATE_YORKSHIRE	GBR	5	0

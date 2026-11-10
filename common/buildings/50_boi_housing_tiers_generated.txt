@@ -97,7 +97,7 @@ building_boi_municipal_estates = {
  ownership_type = no_ownership
  unlocking_technologies = { socialism }
  possible = {
-  owner = { OR = { has_law_or_variant = law_type:law_council_republic has_law_or_variant = law_type:law_command_economy has_law_or_variant = law_type:law_cooperative_ownership } }
+  owner = { boi_hev_socialist_government = yes }
  }
  background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
 }

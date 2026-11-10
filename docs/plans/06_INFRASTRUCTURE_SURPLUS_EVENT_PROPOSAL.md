@@ -1,6 +1,6 @@
 # Proposal: an event for a state with spare infrastructure
 
-Written 2026-11-09 and revised the same day with your answers. **Not built.** It is item D1 of [the feature-complete plan](06_FEATURE_COMPLETE_PLAN.md), and it gets built after the review fixes (phase 6). Numbers marked *test value* are first guesses, for headless runs to tune.
+Written 2026-11-09 and revised the same day with your answers. **Built 2026-11-09** (`events/boi_infrastructure_surplus_events.txt`); the differences from this proposal are listed under "As built" at the end. It is item D1 of [the feature-complete plan](06_FEATURE_COMPLETE_PLAN.md), and it gets built after the review fixes (phase 6). Numbers marked *test value* are first guesses, for headless runs to tune.
 
 ## The idea
 
@@ -146,3 +146,15 @@ Every new file needs a UTF-8 BOM, which the 8 Nov smoke run caught when it was m
 3. **"Retrench the works"** is replaced by **"Proclaim the government's works"**: legitimacy for 5 years, more under more press control.
 4. **Country cooldown:** 15 years.
 5. **Timing:** build after the review fixes, so it goes into the long ensemble.
+
+## As built (2026-11-09)
+
+- **Option D uses `building_group_bg_mining_throughput_add` and `building_group_bg_logging_throughput_add`** (+0.10 each), not the parent `bg_extraction` key, whose reach to its child groups was unverified. The country version therefore needs a mine or logging camp (`is_building_group = bg_mining` or `bg_logging`), not just any extraction building.
+- **Farms means commercial farms.** `bg_agriculture` and `bg_ranching` include their subsistence children (lessons file, §20), so the country version leaves out `bg_subsistence_agriculture` and `bg_subsistence_ranching`.
+- **Settled in check runs** `20261109-072458_mod` and `20261109-072912_mod`:
+  - **Eligible states:** 8–10 in January 1837 (6–8 fit the town version, 5 the country version). 14–17 states had a works building and 30 spare before the ratio and fit tests.
+  - **Forced events:** forced for three countries in each run, the event applied a modifier and set the cooldown every time. The AI picked different options: mills, charter, hinterland, and the government's works.
+  - **The yearly roll fires:** one country by the end of 1836.
+  - **The legitimacy multiplier works:** Moldavia, under Right of Assembly (×2), went from 28 to 34 legitimacy.
+  - **Throughput keys on a state modifier** are vanilla practice: `unincorporated_state` carries one.
+- **Telemetry:** the rail-survey module's yearly `sp_counts` line counts the countries in cooldown, the eligible states and each modifier in use.

@@ -1177,36 +1177,6 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_EASTERN_NORWAY = {
-		region_state:NOR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_EASTERN_THRACE = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_EAST_ANGLIA = {
 		region_state:GBR = {
 			create_building = {
@@ -1301,6 +1271,36 @@ BUILDINGS = {
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_EASTERN_NORWAY = {
+		region_state:NOR = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:NOR"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_EASTERN_THRACE = {
+		region_state:TUR = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:TUR"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -2396,6 +2396,21 @@ BUILDINGS = {
 			}
 		}
 	}
+	s:STATE_LA_PAMPA = {
+		region_state:ARG = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:ARG"
+						levels = 4
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
 	s:STATE_LANCASHIRE = {
 		region_state:GBR = {
 			create_building = {
@@ -2445,21 +2460,6 @@ BUILDINGS = {
 					country = {
 						country = "c:PAP"
 						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_LA_PAMPA = {
-		region_state:ARG = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:ARG"
-						levels = 4
 					}
 				}
 				reserves = 1
@@ -3376,66 +3376,6 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_NORTHERN_ANHUI = {
-		region_state:CHI = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NORTHERN_MANCHURIA = {
-		region_state:CHI = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 7
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NORTHERN_TERRITORY = {
-		region_state:NSW = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NSW"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_NORTHERN_TRANSYLVANIA = {
-		region_state:TRS = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:TRS"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
 	s:STATE_NORTH_ANGOLA = {
 		region_state:POR = {
 			create_building = {
@@ -3504,6 +3444,66 @@ BUILDINGS = {
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_NORTHERN_ANHUI = {
+		region_state:CHI = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:CHI"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_NORTHERN_MANCHURIA = {
+		region_state:CHI = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:CHI"
+						levels = 7
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_NORTHERN_TERRITORY = {
+		region_state:NSW = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:NSW"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_NORTHERN_TRANSYLVANIA = {
+		region_state:TRS = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:TRS"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -4075,6 +4075,17 @@ BUILDINGS = {
 	s:STATE_ROSTOV = {
 		region_state:RUS = {
 			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:RUS"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
@@ -4095,6 +4106,21 @@ BUILDINGS = {
 					country = {
 						country = "c:HUN"
 						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_SAN_SALVADOR = {
+		region_state:UCA = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:UCA"
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4155,21 +4181,6 @@ BUILDINGS = {
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_SAN_SALVADOR = {
-		region_state:UCA = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:UCA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -4476,36 +4487,6 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_SOUTHERN_MANCHURIA = {
-		region_state:CHI = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_SOUTHERN_TRANSYLVANIA = {
-		region_state:TRS = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:TRS"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
 	s:STATE_SOUTH_AUSTRALIA = {
 		region_state:SAS = {
 			create_building = {
@@ -4566,6 +4547,36 @@ BUILDINGS = {
 					country = {
 						country = "c:AUS"
 						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_SOUTHERN_MANCHURIA = {
+		region_state:CHI = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:CHI"
+						levels = 3
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_SOUTHERN_TRANSYLVANIA = {
+		region_state:TRS = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:TRS"
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4838,21 +4849,6 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_TRANSDANUBIA = {
-		region_state:HUN = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:HUN"
-						levels = 7
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
 	s:STATE_TRANS_BAIKAL = {
 		region_state:RUS = {
 			create_building = {
@@ -4861,6 +4857,21 @@ BUILDINGS = {
 					country = {
 						country = "c:RUS"
 						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_TRANSDANUBIA = {
+		region_state:HUN = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:HUN"
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -5320,77 +5331,6 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_WESTERN_AUSTRALIA = {
-		region_state:WAS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:WAS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WESTERN_CUBA = {
-		region_state:CUB = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WESTERN_NORWAY = {
-		region_state:NOR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WESTERN_THRACE = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_WEST_BENGAL = {
 		region_state:BIC = {
 			create_building = {
@@ -5526,6 +5466,77 @@ BUILDINGS = {
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_WESTERN_AUSTRALIA = {
+		region_state:WAS = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:WAS"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_WESTERN_CUBA = {
+		region_state:CUB = {
+			create_building = {
+				building = "building_boi_infrastructure"
+				add_ownership = {
+					country = {
+						country = "c:CUB"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_cart_roads" }
+			}
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:CUB"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_WESTERN_NORWAY = {
+		region_state:NOR = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:NOR"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
+			}
+		}
+	}
+	s:STATE_WESTERN_THRACE = {
+		region_state:TUR = {
+			create_building = {
+				building = "building_boi_harbour_works"
+				add_ownership = {
+					country = {
+						country = "c:TUR"
+						levels = 1
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}

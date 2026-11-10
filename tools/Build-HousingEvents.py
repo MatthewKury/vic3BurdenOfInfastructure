@@ -8,12 +8,21 @@ one), which a script can keep in step with the roster. Re-run when the
 housing roster or vanilla's industry buildings change:
 
     python tools/Build-HousingEvents.py
+
+--out-root DIR writes the two files under DIR instead of the mod, with the same
+relative paths; Test-Housing.ps1 uses it to check the committed files are current.
 """
+import argparse
 import os
 
 MOD = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_EVENTS = os.path.join(MOD, 'events', 'boi_housing_events.txt')
-OUT_TRIGGERS = os.path.join(MOD, 'common', 'scripted_triggers', '55_boi_housing_event_triggers.txt')
+_parser = argparse.ArgumentParser()
+_parser.add_argument('--out-root', default=MOD)
+_ROOT = _parser.parse_args().out_root
+OUT_EVENTS = os.path.join(_ROOT, 'events', 'boi_housing_events.txt')
+OUT_TRIGGERS = os.path.join(_ROOT, 'common', 'scripted_triggers', '55_boi_housing_event_triggers.txt')
+for _path in (OUT_EVENTS, OUT_TRIGGERS):
+    os.makedirs(os.path.dirname(_path), exist_ok=True)
 
 HOUSING = ['slums', 'tenements', 'regulated_terraces', 'tenement_blocks', 'model_dwellings',
            'apartments', 'municipal_estates', 'elevator_apartments', 'luxury_apartments',
@@ -145,45 +154,52 @@ EVENTS.append(event(23, 'unspecific_politicians_arguing', 'event_scales.dds',
     cooldown=('boi_hev_commission_cd', 15)))
 
 # The Great Fire: 20-year cooldown; needs a housing building heated by wood.
+# Bounded on 2026-11-09 (plan 6, review finding C4). Before, it also removed the
+# largest other wood-heated housing building and a whole urban industry building,
+# which could be a state's only large industry. Now:
+#  - Slums and Workers' Rows burn, as in a clearance;
+#  - only where neither stands, the smallest wood-heated housing building burns;
+#  - industry is scorched, not destroyed: a 3-year throughput penalty.
 fire_burn = '''scope:hev_state = {
 	if = {
-		limit = { has_building = building_boi_slums }
-		remove_building = building_boi_slums
+		limit = {
+			OR = {
+				has_building = building_boi_slums
+				has_building = building_boi_tenements
+			}
+		}
+		if = {
+			limit = { has_building = building_boi_slums }
+			remove_building = building_boi_slums
+		}
+		if = {
+			limit = { has_building = building_boi_tenements }
+			remove_building = building_boi_tenements
+		}
+	}
+	else = {
+		ordered_scope_building = {
+			limit = { boi_hev_building_wood_fire = yes }
+			order_by = boi_hev_building_smallness
+			position = 0
+			check_range_bounds = no
+			save_scope_as = burned_housing
+		}
+		if = {
+			limit = { exists = scope:burned_housing }
+''' + ind(chain('burned_housing', [f'building_boi_{k}' for k in HOUSING]), 3) + '''
+		}
 	}
 	if = {
-		limit = { has_building = building_boi_tenements }
-		remove_building = building_boi_tenements
-	}
-	# The largest other wood-heated housing goes with them.
-	ordered_scope_building = {
-		limit = { boi_hev_building_wood_fire = yes }
-		order_by = level
-		position = 0
-		check_range_bounds = no
-		save_scope_as = burned_housing
-	}
-	if = {
-		limit = { exists = scope:burned_housing }
-''' + ind(chain('burned_housing', [f'building_boi_{k}' for k in HOUSING]), 2) + '''
-	}
-	# And the smallest urban industry nearby.
-	ordered_scope_building = {
-		limit = { boi_hev_building_urban_industry = yes }
-		order_by = boi_hev_building_smallness
-		position = 0
-		check_range_bounds = no
-		save_scope_as = burned_industry
-	}
-	if = {
-		limit = { exists = scope:burned_industry }
-''' + ind(chain('burned_industry', INDUSTRY), 2) + '''
+		limit = { any_scope_building = { boi_hev_building_urban_industry = yes } }
+		add_modifier = { name = boi_hev_great_fire_works years = 3 }
 	}
 	add_modifier = { name = boi_hev_great_fire years = 1 }
 }'''
 EVENTS.append(event(24, 'unspecific_devastation', 'event_skull.dds',
     'any_scope_state = { boi_hev_state_wood_fire = yes }',
     pick('boi_hev_state_wood_fire = yes', 'boi_cm_state_low_tier_levels') + '\n' + fire_burn,
-    [('a', 'add_treasury = boi_hev_payment_large\nscope:hev_state = {\n\tset_variable = boi_modernised_city\n\tadd_modifier = { name = boi_cm_modernised_city years = 5 }\n}', 1, False),
+    [('a', 'add_treasury = boi_hev_payment_large\ncustom_tooltip = boi_housing_events.24.a.tt\nscope:hev_state = {\n\tadd_modifier = { name = boi_cm_modernised_city years = 5 }\n\t# The permanent ban on new Slums and Rows only once a working-class\n\t# replacement can be built: Regulated Terraces need urban_planning (C4).\n\tif = {\n\t\tlimit = { owner = { has_technology_researched = urban_planning } }\n\t\tset_variable = boi_modernised_city\n\t}\n}', 1, False),
      ('b', '', 2, True)],
     cooldown=('boi_hev_great_fire_cd', 20)))
 

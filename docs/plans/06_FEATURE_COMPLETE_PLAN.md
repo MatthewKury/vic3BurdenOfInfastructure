@@ -26,7 +26,7 @@ Changed from the plan while building:
 - B8: your hand playtest.
 - B13: the licence and Workshop page are yours to choose.
 - B3: Work Camp's role.
-- Part C: none of the review findings have been fixed yet.
+- Part C: **C1–C5, C9 and C12 fixed on 2026-11-09**, with D1 built (phase 6; see [the 9 Nov balance log](../reports/phase6_9_Nov_2026/BALANCE_LOG.md)). C8 fixed after the first 40-year games. After the second, railways got some of their AI pull back (auto-expansion at transportation +25%, and a higher price factor), still with no infrastructure from railways. Still open: C6 and C7 (decided by the long games), C10 and C11.
 
 ## Part A: your four items
 
@@ -217,26 +217,26 @@ From [the mod review of 2026-11-08](../reports/mod_review_8_Nov_2026/REVIEW.md).
 
 ### Fixes needed before the long ensemble
 
-- ✔ **C1. Regenerating the seed can undo balance work.**
+- ✔ **C1. Regenerating the seed can undo balance work.** **Fixed 2026-11-09.**
   - `tools/Regenerate-WorldSeed.ps1` calls `tools/Get-StartingInfrastructure.ps1`, which rewrites the committed infrastructure plan from vanilla's requirements. That drops the extra infrastructure added for housing demand (recorded in `tools/REGENERATE.md`).
   - The seed check then compares the seed with a plan the same run has just rewritten, so it can't catch the loss.
   - **Fix:** keep the calculated baseline and the hand adjustments in separate files, and combine them only when the seed is written. The check should confirm that the hand adjustments are still in the seed after a regeneration.
   - This comes first: a long ensemble isn't worth running on a seed that the next regeneration could change.
-- ✔ **C2. The housing test suite stops early.**
+- ✔ **C2. The housing test suite stops early.** **Fixed 2026-11-09.**
   - `tools/Validate-All.ps1` fails in `tools/Test-Housing.ps1` at "Expected 22 housing script files, found 28", so none of the deeper housing checks run. The structure, seed, horse-safety and shadow-source checks passed before it stopped.
   - **Fix:** replace the file count with a list of the definitions and links each housing feature needs, then run the whole suite. Changing 22 to 28 alone wouldn't prove the new mechanics are covered.
   - Also check that the suite covers what was added after the games: the pledge, the housing events and the Labour Rights conversion.
-- ✔ **C3. The AI check for Municipal Estates doesn't match the building.**
+- ✔ **C3. The AI check for Municipal Estates doesn't match the building.** **Fixed 2026-11-09.**
   - The construction event (`events/boi_ai_infrastructure_events.txt`, trigger in `common/scripted_triggers/51_boi_ai_construction_triggers.txt`) checks only the Socialism tech. The building's `possible` also needs a council republic, Command Economy or Cooperative Ownership (B16 as built). The AI can try a build it isn't allowed and use up its cooldown.
   - **Fix:** one shared scripted trigger, with the tech and the laws, used by both the building and the AI event. Ideally the housing generator writes it.
-- ✔ **C4. The Great Fire is too harsh.**
+- ✔ **C4. The Great Fire is too harsh.** **Fixed 2026-11-09.**
   - `boi_housing_events.24` removes whole building stacks. Picking the smallest industrial stack doesn't cap the damage in a state that has only one large industry.
   - Its "rebuild on a plan" choice sets the permanent `boi_modernised_city` ban. That can ban Slums and Workers' Rows before the country has any tech for something to replace them.
   - **Fix**, in `tools/Build-HousingEvents.py`:
     - cap the damage, or replace the removal with a timed state modifier that can be recovered from;
     - set the permanent ban only when the country can already build a working-class tier above Workers' Rows.
   - How severe it is economically needs playtesting.
-- ✔ **C5. Rehousing pledges are tracked loosely** (`common/scripted_effects/54_boi_displacement_effects.txt`, `common/script_values/54_boi_displacement_values.txt`, `common/journal_entries/52_boi_rehousing_pledge.txt`):
+- ✔ **C5. Rehousing pledges are tracked loosely** **Fixed 2026-11-09.** (`common/scripted_effects/54_boi_displacement_effects.txt`, `common/script_values/54_boi_displacement_values.txt`, `common/journal_entries/52_boi_rehousing_pledge.txt`):
   - The state markers don't record which country made the pledge.
   - Cleanup misses states lost by conquest or revolution, so stale markers can block a later owner's pledge.
   - If some states are lost, the baseline and target stay unchanged.
@@ -245,25 +245,19 @@ From [the mod review of 2026-11-08](../reports/mod_review_8_Nov_2026/REVIEW.md).
     - store the pledging country on each marker;
     - decide what happens to the pledge when a state changes hands: the target shrinks, or the pledge lapses;
     - consider measuring replacement capacity state by state.
-- ✔ **C12. Events may place themselves on the wrong state** (found 2026-11-09, not from the review; unverified).
-  - 18 `ordered_scope_state` blocks in BOI's events pick their state with `save_scope_as` but have no `max = 1`:
-    - the housing events;
-    - Rebecca Riots and the road-duty defaulters;
-    - City Modernisation's stage events;
-    - the rail survey;
-    - the AI construction event.
-  - Without `max`, the block runs on every matching state, in order (lessons file, §13). The saved scope is then probably the *last* match, so the least crowded or least restless state, not the most.
-  - **Check:** one run that logs the chosen state against the best candidate. If confirmed, add `max = 1` to each and record the result in the lessons file.
+- ✔ **C12. Two events placed themselves on the wrong state** (found 2026-11-09, not from the review). **Fixed and verified 2026-11-09.**
+  - An `ordered_scope_state` without `position` or `max` runs on every match, so its `save_scope_as` keeps the *last* one. Check run `20261109-072912_mod` saved Guyana (23,545 people) where Normandy (2.7 million) was meant.
+  - The note first counted 18 blocks. On a closer look, 16 already had `position = 0` (the housing events, City Modernisation, the rail survey and the AI construction event). Only **Rebecca Riots and the road-duty defaulters** lacked it, so they picked the least restless state. Both now have `position = 0`.
 
 ### Gameplay risks to test, and fix if the runs show them
 
 - ○ **C6. Colonies can be left without infrastructure.** The scripted AI recovery skips unincorporated states, but it's the only reliable way the AI builds the government-funded works. Consider a route for important colonies, ranked by resource output, population and how short they are, not by incorporation alone.
 - ○ **C7. Public works can't be scaled back.** **`downsizeable = no` stays.** It protects against the AI demolishing infrastructure it needs. A *mothball* production method could be added alongside it: fewer staff, fewer inputs and less output, with the building kept. Whether the AI picks it, and switches back, needs testing.
-- ○ **C8. Statute Labour scales oddly.**
+- ✔ **C8. Statute Labour scales oddly.** **Fixed 2026-11-09 after iteration 1 of the 40-year games** ([balance log](../reports/phase6_9_Nov_2026/BALANCE_LOG.md)): states with 8+ Road Works under Statute Labour lost population over 1855–75 while states without grew 7.5–8%. Road Works now give +2% peasant mortality per state plus +1% per staffed level (20 levels: +22%, was +60%), and the farm and ranch bonus +1% plus +0.5% per level (20 levels: +11%, was +20%). Rail Works' Conscripted Navvies are unchanged; their levels are capped. **Revised 2026-11-10 (your choice):** the mortality and the farm and ranch bonus moved off all three works PMs onto `law_boi_statute_labour`, flat and country-wide: +5% farm and +5% ranch throughput, and, in place of mortality (your choice), −0.02 working-adult ratio for peasants and laborers (`state_peasants_working_adult_ratio_add`, `state_laborers_working_adult_ratio_add`; guessed keys, unverified). The works keep only the goods cut and their per-level infrastructure cut. Not yet tested: first check error.log and the law tooltip for the two keys; if they don't exist, fall back to `state_peasants_mortality_mult = 0.05`.
   - Twenty staffed Road Works levels give the state +20% farm and ranch throughput and +60% peasant mortality. A state with few peasants left pays little of the cost and keeps the bonus.
   - This is a scaling risk, not a proven exploit; wages, inputs and the market still count. Consider a cap, a taper, or tying the bonus to the peasant workforce.
   - Test commercial-farming states as well as peasant-heavy ones. The financing PMs are in `common/production_methods/50_boi_infrastructure.txt` and `50_boi_rail_works.txt`.
-- ✔ **C9. Electrified Quays doesn't require local electricity.** The PM uses electricity but has no `required_input_goods = electricity`. Add it (`common/production_methods/50_boi_harbour_works.txt`), and check a coastal state with power against one without. This is a one-line fix.
+- ✔ **C9. Electrified Quays doesn't require local electricity.** **Fixed 2026-11-09.** The PM uses electricity but has no `required_input_goods = electricity`. Add it (`common/production_methods/50_boi_harbour_works.txt`), and check a coastal state with power against one without. This is a one-line fix.
 
 ### Documentation
 
@@ -288,7 +282,7 @@ The newest long tests end in 1856, and the features added since have had only sh
 
 D1 is agreed and scheduled. D2 and D3 are notes for now. Each needs its own proposal, and neither is scheduled.
 
-- ○ **D1. "Ahead of the Traffic", an event for a state with spare infrastructure** (proposed 2026-11-09; your request). It fires on a state with at least 30 spare infrastructure, at least 1.5 times its usage, and at least one works building. Two versions, town and country, with three options each and one Industrialist option per version. The country version has a Rural Folk option. The town version's third option gives legitimacy scaled by press control. Country cooldown 15 years. Agreed on 2026-11-09; build after the review fixes. The full proposal is in [06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md](06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md).
+- ✔ **D1. "Ahead of the Traffic", an event for a state with spare infrastructure** (proposed 2026-11-09; your request; **built 2026-11-09**, `events/boi_infrastructure_surplus_events.txt`). It fires on a state with at least 30 spare infrastructure, at least 1.5 times its usage, and at least one works building. Two versions, town and country, with three options each and one Industrialist option per version. The country version has a Rural Folk option. The town version's third option gives legitimacy scaled by press control. Country cooldown 15 years. Agreed on 2026-11-09; build after the review fixes. The full proposal is in [06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md](06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md).
 
 - ○ **D2. Companies for the new goods** (note added 2026-11-09; your request; not yet proposed in detail).
   - **The goods:** BOI adds three: `horses` (`common/goods/50_boi_goods.txt`), and `boi_housing` and `boi_luxury_housing` (`50_boi_housing.txt`). No vanilla company builds the Horse Ranch or a housing tier.
@@ -344,7 +338,7 @@ Each phase ends with a short smoke run (0 BOI errors) and one 15-year game, as i
 3. ~~**City Modernisation:** A4, with its fixture. A 15-year game with the Paris fixture.~~ Done 2026-11-08.
 4. ~~**Cheaper works:** B6. One 15-year game against rs_pass4.~~ Done 2026-11-08.
 5. ~~**Optional items you chose:** B10, B11, the horse events and B15.~~ Done 2026-11-08.
-6. **Review fixes:** C1, then C2, then C3, C4, C5, C9 and C12. Then D1, if you approve it, so that it goes into the long ensemble. Pass: the full `Validate-All.ps1` suite and a smoke run with 0 BOI errors. Then one 15-year game against fc_game2.
+6. ~~**Review fixes:** C1, then C2, then C3, C4, C5, C9 and C12. Then D1, if you approve it, so that it goes into the long ensemble.~~ Done 2026-11-09, checked in two short runs. Instead of one 15-year game, up to four iterations of two 40-year games follow, at your request; see the 9 Nov balance log. The four iterations are done. Iteration 4 had 0 BOI errors in two games to 1876. Three decisions are open at the end of that log: Britain's housing burden (6 of 9 games changed Britain's tag), the population cost of mortality, and the crash rate. Pass: the full `Validate-All.ps1` suite and a smoke run with 0 BOI errors. Then one 15-year game against fc_game2.
 7. **Documentation:** C10, and B5 (the housing concept text).
 8. **Release gate:**
    - B12, with the coverage above; its results decide whether C6–C8 need fixing;

@@ -1,0 +1,68 @@
+﻿# ================================================================
+#  Burden of Infrastructure — "Ahead of the Traffic" triggers (D1, 2026-11-09)
+#  Used by events/boi_infrastructure_surplus_events.txt. Design and numbers:
+#  docs/plans/06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md.
+# ================================================================
+
+# State scope. At least one built level of Road, Rail or Harbour Works.
+boi_surplus_state_has_works = {
+	any_scope_building = {
+		OR = {
+			is_building_type = building_boi_infrastructure
+			is_building_type = building_boi_rail_works
+			is_building_type = building_boi_harbour_works
+		}
+		level >= 1
+	}
+}
+
+# State scope. The town version fits: industry here. is_building_group matches
+# ancestor groups, so bg_manufacturing covers light, heavy and military industry.
+boi_surplus_town_fits = {
+	any_scope_building = {
+		is_building_group = bg_manufacturing
+		level >= 1
+	}
+}
+
+# State scope. The country version fits: commercial farms, ranches or plantations
+# (bg_agriculture and bg_ranching include their subsistence children, so those
+# are left out), and a mine or logging camp.
+boi_surplus_country_fits = {
+	any_scope_building = {
+		OR = {
+			is_building_group = bg_agriculture
+			is_building_group = bg_ranching
+			is_building_group = bg_plantations
+		}
+		NOT = { is_building_group = bg_subsistence_agriculture }
+		NOT = { is_building_group = bg_subsistence_ranching }
+		level >= 1
+	}
+	any_scope_building = {
+		OR = {
+			is_building_group = bg_mining
+			is_building_group = bg_logging
+		}
+		level >= 1
+	}
+}
+
+# State scope. Well ahead of its traffic: at least 30 spare and at least 1.5
+# times usage (agreed 2026-11-09), with a works building, and one version fits.
+boi_surplus_state_eligible = {
+	is_incorporated = yes
+	boi_ai_spare_infrastructure >= 30
+	boi_surplus_infrastructure_ratio >= 1.5
+	boi_surplus_state_has_works = yes
+	OR = {
+		boi_surplus_town_fits = yes
+		boi_surplus_country_fits = yes
+	}
+	NOT = { has_variable = boi_surplus_state_cooldown }
+	NOT = { has_modifier = boi_surplus_mills }
+	NOT = { has_modifier = boi_surplus_charter }
+	NOT = { has_modifier = boi_surplus_hinterland }
+	NOT = { has_modifier = boi_surplus_harvest }
+	NOT = { has_modifier = boi_surplus_villages }
+}

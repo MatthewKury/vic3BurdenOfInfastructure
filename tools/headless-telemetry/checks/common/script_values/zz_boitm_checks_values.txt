@@ -1,0 +1,134 @@
+﻿# Headless telemetry (checks module). 2026-11-09.
+
+# Country scope: how many states the no-position ordered_scope_state ran on.
+boitm_chk_iterations = {
+	value = 0
+	if = {
+		limit = { has_variable = boitm_chk_iter }
+		value = var:boitm_chk_iter
+	}
+}
+
+# World: states that qualify for "Ahead of the Traffic", and by version.
+boitm_chk_sp_eligible = {
+	value = 0
+	every_country = { every_scope_state = { limit = { boi_surplus_state_eligible = yes } add = 1 } }
+}
+boitm_chk_sp_town = {
+	value = 0
+	every_country = { every_scope_state = { limit = { boi_surplus_state_eligible = yes boi_surplus_town_fits = yes } add = 1 } }
+}
+boitm_chk_sp_country = {
+	value = 0
+	every_country = { every_scope_state = { limit = { boi_surplus_state_eligible = yes boi_surplus_country_fits = yes } add = 1 } }
+}
+# World: states with a works building and 30 spare, before the ratio and the fit.
+boitm_chk_sp_spare30 = {
+	value = 0
+	every_country = { every_scope_state = { limit = { is_incorporated = yes boi_surplus_state_has_works = yes boi_ai_spare_infrastructure >= 30 } add = 1 } }
+}
+
+# Country scope: the D1 modifiers on our states, and our country modifier.
+boitm_chk_sp_state_mods = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			OR = {
+				has_modifier = boi_surplus_mills
+				has_modifier = boi_surplus_charter
+				has_modifier = boi_surplus_hinterland
+				has_modifier = boi_surplus_harvest
+				has_modifier = boi_surplus_villages
+			}
+		}
+		add = 1
+	}
+}
+boitm_chk_sp_gov = {
+	value = 0
+	if = { limit = { has_modifier = boi_surplus_government_works } value = 1 }
+}
+boitm_chk_sp_cooldown = {
+	value = 0
+	if = { limit = { has_variable = boi_surplus_cooldown } value = 1 }
+}
+boitm_chk_legitimacy = { value = legitimacy }
+boitm_chk_press = { value = boi_surplus_press_control }
+
+# Country scope: the pledge.
+boitm_chk_pl_target = {
+	value = 0
+	if = { limit = { has_variable = boi_pledge_target } value = var:boi_pledge_target }
+}
+boitm_chk_pl_built = {
+	value = 0
+	if = { limit = { has_variable = boi_pledge_built } value = var:boi_pledge_built }
+}
+boitm_chk_pl_states = {
+	value = 0
+	every_scope_state = { limit = { var:boi_pledge_state ?= root } add = 1 }
+}
+boitm_chk_pl_has_je = {
+	value = 0
+	if = { limit = { has_journal_entry = je_boi_rehousing_pledge } value = 1 }
+}
+
+# State scope: industry levels and Slum + Workers' Rows levels, for the Great Fire.
+boitm_chk_industry_levels = {
+	value = 0
+	every_scope_building = { limit = { is_building_group = bg_manufacturing } add = level }
+}
+boitm_chk_scorched = {
+	value = 0
+	if = { limit = { has_modifier = boi_hev_great_fire_works } value = 1 }
+}
+boitm_chk_wood_levels = {
+	value = 0
+	every_scope_building = { limit = { boi_hev_building_wood_fire = yes } add = level }
+}
+boitm_chk_neg_legitimacy = {
+	value = 0
+	subtract = legitimacy
+}
+boitm_chk_state_pop = { value = state_population }
+
+# 2026-11-09, iteration 2 (boitm_chk.6 and .9). State scope unless noted.
+boitm_chk_state_queued = {
+	value = 0
+	if = { limit = { has_variable = boi_pledge_state_queued } value = var:boi_pledge_state_queued }
+}
+boitm_chk_state_target = {
+	value = 0
+	if = { limit = { has_variable = boi_pledge_state_target } value = var:boi_pledge_state_target }
+}
+boitm_chk_state_terraces = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boi_regulated_terraces } add = level }
+}
+# 1 when the state's count is at most the 1 created level plus what the AI queued.
+boitm_chk_state_excess = {
+	value = boi_pledge_state_built
+	subtract = boitm_chk_state_queued
+	subtract = 1
+}
+boitm_chk_state_built_ok = {
+	value = 0
+	if = {
+		limit = { boitm_chk_state_excess <= 0 }
+		value = 1
+	}
+}
+# Country scope.
+boitm_chk_has_urban_planning = {
+	value = 0
+	if = { limit = { has_technology_researched = urban_planning } value = 1 }
+}
+# Country scope (any country): states in the world.
+boitm_chk_rw_prefers = {
+	value = 0
+	every_state = { limit = { boi_ai_state_prefers_rail_works = yes } add = 1 }
+}
+boitm_chk_rw_states = {
+	value = 0
+	every_state = { limit = { has_building = building_boi_rail_works } add = 1 }
+}

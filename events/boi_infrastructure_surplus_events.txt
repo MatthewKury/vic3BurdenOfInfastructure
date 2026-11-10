@@ -1,0 +1,269 @@
+﻿namespace = boi_surplus
+
+# ================================================================
+#  Burden of Infrastructure — "Ahead of the Traffic" (D1, 2026-11-09)
+#
+#  A state whose infrastructure is well ahead of its traffic (at least 30
+#  spare and 1.5 times usage) and that has a works building: someone wants
+#  the spare capacity. Design agreed 2026-11-09 in
+#  docs/plans/06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md.
+#
+#   .1    hidden yearly dispatcher: 10% roll, 15-year country cooldown
+#   .10   the town version (industry in the state): mills, charter, legitimacy
+#   .11   the country version (farms and a mine or logging camp): hinterland,
+#         harvest, villages
+#  One Industrialist option per version. The state cools down for 10 years.
+#  Each popup picks its own state again (the best-placed that fits it), so it
+#  doesn't depend on a saved scope crossing trigger_event.
+# ================================================================
+
+boi_surplus.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		NOT = { is_country_type = decentralized }
+		NOT = { has_variable = boi_surplus_cooldown }
+		any_scope_state = { boi_surplus_state_eligible = yes }
+	}
+
+	immediate = {
+		random_list = {
+			10 = {
+				ordered_scope_state = {
+					limit = { boi_surplus_state_eligible = yes }
+					order_by = boi_ai_spare_infrastructure
+					position = 0
+					check_range_bounds = no
+					save_scope_as = surplus_best
+				}
+				# Whichever versions fit the best-placed state, at even odds.
+				random_list = {
+					1 = {
+						trigger = { scope:surplus_best = { boi_surplus_town_fits = yes } }
+						trigger_event = { id = boi_surplus.10 popup = yes }
+					}
+					1 = {
+						trigger = { scope:surplus_best = { boi_surplus_country_fits = yes } }
+						trigger_event = { id = boi_surplus.11 popup = yes }
+					}
+				}
+			}
+			90 = {}
+		}
+	}
+}
+
+# ── The town ────────────────────────────────────────────────────
+
+boi_surplus.10 = {
+	type = country_event
+	placement = scope:surplus_state
+	title = boi_surplus.10.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:surplus_state = { has_building = building_boi_rail_works } }
+				desc = boi_surplus.10.d_rail
+			}
+			triggered_desc = {
+				trigger = { scope:surplus_state = { has_building = building_boi_harbour_works } }
+				desc = boi_surplus.10.d_harbour
+			}
+			triggered_desc = {
+				trigger = { always = yes }
+				desc = boi_surplus.10.d_road
+			}
+		}
+	}
+	flavor = boi_surplus.10.f
+	event_image = { video = "europenorthamerica_london_center" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = {
+		NOT = { has_variable = boi_surplus_cooldown }
+		any_scope_state = {
+			boi_surplus_state_eligible = yes
+			boi_surplus_town_fits = yes
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				boi_surplus_state_eligible = yes
+				boi_surplus_town_fits = yes
+			}
+			order_by = boi_ai_spare_infrastructure
+			position = 0
+			check_range_bounds = no
+			save_scope_as = surplus_state
+		}
+		set_variable = { name = boi_surplus_cooldown value = yes years = 15 }
+		scope:surplus_state = {
+			set_variable = { name = boi_surplus_state_cooldown value = yes years = 10 }
+		}
+	}
+
+	option = {
+		name = boi_surplus.10.a
+		scope:surplus_state = {
+			add_modifier = { name = boi_surplus_mills years = 5 }
+		}
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_surplus_ig_pleased days = 1825 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { ig:ig_industrialists ?= { is_in_government = yes } }
+				add = 1
+			}
+		}
+	}
+	option = {
+		name = boi_surplus.10.b
+		default_option = yes
+		scope:surplus_state = {
+			add_modifier = { name = boi_surplus_charter years = 5 }
+		}
+		ig:ig_petty_bourgeoisie ?= {
+			add_modifier = { name = boi_surplus_ig_pleased days = 1825 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { ig:ig_petty_bourgeoisie ?= { is_in_government = yes } }
+				add = 1
+			}
+		}
+	}
+
+	# Proclaim the government's works: legitimacy, more under more press control.
+	option = {
+		name = boi_surplus.10.c
+		add_modifier = {
+			name = boi_surplus_government_works
+			years = 5
+			multiplier = boi_surplus_press_control
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = {
+					OR = {
+						has_law = law_type:law_censorship
+						has_law = law_type:law_outlawed_dissent
+					}
+				}
+				add = 1
+			}
+		}
+	}
+}
+
+# ── The country ─────────────────────────────────────────────────
+
+boi_surplus.11 = {
+	type = country_event
+	placement = scope:surplus_state
+	title = boi_surplus.11.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:surplus_state = { has_building = building_boi_rail_works } }
+				desc = boi_surplus.11.d_rail
+			}
+			triggered_desc = {
+				trigger = { scope:surplus_state = { has_building = building_boi_harbour_works } }
+				desc = boi_surplus.11.d_harbour
+			}
+			triggered_desc = {
+				trigger = { always = yes }
+				desc = boi_surplus.11.d_road
+			}
+		}
+	}
+	flavor = boi_surplus.11.f
+	event_image = { video = "unspecific_trains" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_industry.dds"
+	duration = 3
+
+	trigger = {
+		NOT = { has_variable = boi_surplus_cooldown }
+		any_scope_state = {
+			boi_surplus_state_eligible = yes
+			boi_surplus_country_fits = yes
+		}
+	}
+
+	immediate = {
+		ordered_scope_state = {
+			limit = {
+				boi_surplus_state_eligible = yes
+				boi_surplus_country_fits = yes
+			}
+			order_by = boi_ai_spare_infrastructure
+			position = 0
+			check_range_bounds = no
+			save_scope_as = surplus_state
+		}
+		set_variable = { name = boi_surplus_cooldown value = yes years = 15 }
+		scope:surplus_state = {
+			set_variable = { name = boi_surplus_state_cooldown value = yes years = 10 }
+		}
+	}
+
+	option = {
+		name = boi_surplus.11.a
+		scope:surplus_state = {
+			add_modifier = { name = boi_surplus_hinterland years = 5 }
+		}
+		ig:ig_industrialists ?= {
+			add_modifier = { name = boi_surplus_ig_pleased days = 1825 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { ig:ig_industrialists ?= { is_in_government = yes } }
+				add = 1
+			}
+		}
+	}
+	option = {
+		name = boi_surplus.11.b
+		default_option = yes
+		scope:surplus_state = {
+			add_modifier = { name = boi_surplus_harvest years = 5 }
+		}
+		ig:ig_landowners ?= {
+			add_modifier = { name = boi_surplus_ig_pleased days = 1825 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { ig:ig_landowners ?= { is_in_government = yes } }
+				add = 1
+			}
+		}
+	}
+	option = {
+		name = boi_surplus.11.c
+		scope:surplus_state = {
+			add_modifier = { name = boi_surplus_villages years = 5 }
+		}
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_surplus_ig_pleased days = 1825 is_decaying = yes }
+		}
+		ai_chance = {
+			base = 1
+			modifier = {
+				trigger = { ig:ig_rural_folk ?= { is_in_government = yes } }
+				add = 1
+			}
+		}
+	}
+}

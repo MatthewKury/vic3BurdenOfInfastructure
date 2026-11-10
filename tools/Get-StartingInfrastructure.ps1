@@ -12,7 +12,9 @@ param(
 $ErrorActionPreference = 'Stop'
 if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
 if (-not $OutputPath) { $OutputPath = Join-Path $PSScriptRoot 'starting_infrastructure_by_state.csv' }
-if (-not $PlanPath) { $PlanPath = Join-Path $PSScriptRoot 'infrastructure_seed_plan.tsv' }
+# The baseline only: Merge-InfrastructurePlan.ps1 adds infrastructure_seed_adjustments.tsv to it
+# to build infrastructure_seed_plan.tsv (split 2026-11-09, review finding C1).
+if (-not $PlanPath) { $PlanPath = Join-Path $PSScriptRoot 'infrastructure_seed_baseline.tsv' }
 
 function Read-Data([string]$path) {
     $data = [IO.File]::ReadAllText($path).TrimStart([char]0xFEFF)

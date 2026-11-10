@@ -243,3 +243,89 @@ boitm_ev_pledges = {
 	value = 0
 	every_country = { limit = { has_journal_entry = je_boi_rehousing_pledge } add = 1 }
 }
+
+# ── 2026-11-09: "Ahead of the Traffic" (D1), the Epizootic, and pledges ──
+boitm_sp_fired = {
+	value = 0
+	every_country = { limit = { has_variable = boi_surplus_cooldown } add = 1 }
+}
+boitm_sp_eligible_states = {
+	value = 0
+	every_country = {
+		every_scope_state = { limit = { boi_surplus_state_eligible = yes } add = 1 }
+	}
+}
+boitm_sp_mills = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_surplus_mills } add = 1 }
+}
+boitm_sp_charter = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_surplus_charter } add = 1 }
+}
+boitm_sp_government = {
+	value = 0
+	every_country = { limit = { has_modifier = boi_surplus_government_works } add = 1 }
+}
+boitm_sp_hinterland = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_surplus_hinterland } add = 1 }
+}
+boitm_sp_harvest = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_surplus_harvest } add = 1 }
+}
+boitm_sp_villages = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_surplus_villages } add = 1 }
+}
+boitm_ev_epizootic = {
+	value = 0
+	every_country = { limit = { has_modifier = boi_great_epizootic } add = 1 }
+}
+boitm_ev_scorched_works = {
+	value = 0
+	every_state = { limit = { has_modifier = boi_hev_great_fire_works } add = 1 }
+}
+# Country scope: the pledge's states still ours.
+boitm_pl_states = {
+	value = 0
+	every_scope_state = { limit = { var:boi_pledge_state ?= root } add = 1 }
+}
+boitm_pl_kind = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_pledge_kind }
+		value = var:boi_pledge_kind
+	}
+}
+boitm_pl_target = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_pledge_target }
+		value = var:boi_pledge_target
+	}
+}
+boitm_pl_built = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_pledge_built }
+		value = var:boi_pledge_built
+	}
+}
+# 2026-11-09: levels the AI pledge builder (boi_ai_infrastructure.3) queued
+# in the pledge's states, and countries under a broken pledge's modifier.
+boitm_pl_queued = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			var:boi_pledge_state ?= root
+			has_variable = boi_pledge_state_queued
+		}
+		add = var:boi_pledge_state_queued
+	}
+}
+boitm_pl_broken_countries = {
+	value = 0
+	every_country = { limit = { has_modifier = boi_pledge_broken } add = 1 }
+}

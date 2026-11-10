@@ -25,18 +25,14 @@ pm_boi_work_camp = {
    goods_input_fabric_add = 0.075
    goods_output_boi_housing_add = 0.45
   }
-  # Mortality applies to employed professions, never per level. It replaces -1 SoL.
-  unscaled = {
-   building_laborers_mortality_mult = 0.15
-   building_farmers_mortality_mult = 0.15
-   building_machinists_mortality_mult = 0.15
-   building_engineers_mortality_mult = 0.15
-   building_clerks_mortality_mult = 0.15
-   building_shopkeepers_mortality_mult = 0.15
-   building_clergymen_mortality_mult = 0.15
-   building_aristocrats_mortality_mult = 0.15
-   building_capitalists_mortality_mult = 0.15
-   building_slaves_mortality_mult = 0.15
+  # The flat +15% mortality on employed professions was removed 2026-11-10.
+  # Camps put people off instead: -0.2% migration attraction per staffed
+  # level (as Slums). A cold-scaled cost (1.15 Cold, cold_effect) was
+  # considered and shelved the same day.
+ }
+ state_modifiers = {
+  workforce_scaled = {
+   state_migration_pull_mult = -0.002
   }
  }
 }
@@ -50,20 +46,10 @@ pm_boi_work_town = {
    goods_input_fabric_add = 0.075
    goods_output_boi_housing_add = 0.45
   }
-  # Same housing as a Work Camp at half its penalties. Each employer housing
-  # law permits No Housing plus exactly one tier; this one is Regulatory Bodies'.
-  unscaled = {
-   building_laborers_mortality_mult = 0.075
-   building_farmers_mortality_mult = 0.075
-   building_machinists_mortality_mult = 0.075
-   building_engineers_mortality_mult = 0.075
-   building_clerks_mortality_mult = 0.075
-   building_shopkeepers_mortality_mult = 0.075
-   building_clergymen_mortality_mult = 0.075
-   building_aristocrats_mortality_mult = 0.075
-   building_capitalists_mortality_mult = 0.075
-   building_slaves_mortality_mult = 0.075
-  }
+  # Same housing as a Work Camp. Each employer housing law permits No Housing
+  # plus exactly one tier; this one is Regulatory Bodies'. The flat +7.5%
+  # mortality was removed 2026-11-10, and it has no other penalty. A
+  # cold-scaled cost was considered and shelved the same day.
  }
 }
 

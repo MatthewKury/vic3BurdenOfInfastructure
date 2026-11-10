@@ -71,7 +71,8 @@ je_boi_rehousing_pledge = {
 		}
 	}
 
-	# The states passed out of our hands: the promise lapses.
+	# The states passed out of our hands: the promise lapses. Lost states leave the
+	# pledge one by one each month (boi_pledge_monthly); this ends it when none is left.
 	outcome = {
 		header = je_standard_failure_header
 		effect_header = je_standard_on_failure_header
@@ -80,7 +81,7 @@ je_boi_rehousing_pledge = {
 		trigger = {
 			custom_tooltip = {
 				text = boi_pledge_lost_tt
-				NOT = { any_scope_state = { has_variable = boi_pledge_state } }
+				NOT = { any_scope_state = { var:boi_pledge_state ?= root } }
 			}
 		}
 		effect = {

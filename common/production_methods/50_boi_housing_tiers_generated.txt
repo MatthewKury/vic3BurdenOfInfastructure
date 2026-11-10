@@ -8,12 +8,8 @@ pm_boi_slums = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  state_modifiers = {
   workforce_scaled = {
-   state_mortality_mult = 0.02
    state_migration_pull_mult = -0.002
-   state_pollution_generation_add = 50
-  }
-  unscaled = {
-   state_mortality_mult = 0.1
+   state_pollution_generation_add = 75
   }
  }
  country_modifiers = {
@@ -152,7 +148,6 @@ pm_boi_tenement_blocks = {
  texture = "gfx/interface/icons/production_method_icons/wooden_buildings.dds"
  state_modifiers = {
   workforce_scaled = {
-   state_mortality_mult = 0.001
    state_migration_pull_mult = -0.001
   }
  }

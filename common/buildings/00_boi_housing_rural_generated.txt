@@ -164,7 +164,7 @@ building_cotton_plantation = {
 
 		if = { # British dictates
 			limit = {
-				owner = {
+				owner ?= {
 					has_journal_entry = je_british_dictate_plantations
 					var:dictate_plantation_type ?= 4
 				}
@@ -212,7 +212,7 @@ building_dye_plantation = {
 
 		if = { # British dictates
 			limit = {
-				owner = {
+				owner ?= {
 					has_journal_entry = je_british_dictate_plantations
 					var:dictate_plantation_type ?= 3
 				}
@@ -537,7 +537,7 @@ building_opium_plantation = {
 
 		if = { # British dictates
 			limit = {
-				owner = {
+				owner ?= {
 					has_journal_entry = je_british_dictate_plantations
 					var:dictate_plantation_type ?= 1
 				}
@@ -912,7 +912,7 @@ building_tea_plantation = {
 
 		if = { # British dictates
 			limit = {
-				owner = {
+				owner ?= {
 					has_journal_entry = je_british_dictate_plantations
 					var:dictate_plantation_type ?= 2
 				}
@@ -961,7 +961,7 @@ building_tobacco_plantation = {
 
 		if = { # British dictates
 			limit = {
-				owner = {
+				owner ?= {
 					has_journal_entry = je_british_dictate_plantations
 					var:dictate_plantation_type ?= 5
 				}

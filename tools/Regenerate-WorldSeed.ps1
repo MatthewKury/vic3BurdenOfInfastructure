@@ -25,6 +25,8 @@ function Write-Utf8NoBom([string]$path, [string[]]$lines) {
 }
 
 & (Join-Path $PSScriptRoot 'Get-StartingInfrastructure.ps1') -GamePath $GamePath -ModPath $ModPath
+# The baseline above is vanilla replacement only; the hand-made balance changes are added back here.
+& (Join-Path $PSScriptRoot 'Merge-InfrastructurePlan.ps1') -ModPath $ModPath
 $temporary = Join-Path $env:TEMP ('boi-seed-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $temporary | Out-Null
 try {

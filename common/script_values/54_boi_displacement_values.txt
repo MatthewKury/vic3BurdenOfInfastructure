@@ -27,30 +27,83 @@ boi_pledge_state_good_levels = {
 	}
 }
 
-# Country scope. Good housing in the pledge's states.
-boi_pledge_good_levels = {
+# State scope. Good housing built here since the pledge, up to this state's
+# own target (per-state since 2026-11-09, review finding C5).
+boi_pledge_state_built = {
 	value = 0
-	every_scope_state = {
-		limit = { has_variable = boi_pledge_state }
-		add = boi_pledge_state_good_levels
+	if = {
+		limit = {
+			has_variable = boi_pledge_state_base
+			has_variable = boi_pledge_state_target
+		}
+		value = boi_pledge_state_good_levels
+		subtract = var:boi_pledge_state_base
+		min = 0
+		if = {
+			limit = { boi_pledge_state_good_levels > boi_pledge_state_cap }
+			value = var:boi_pledge_state_target
+		}
 	}
 }
 
-# Country scope. City Modernisation: half a good level for every level of
-# Slums and Workers' Rows the works pull down (cleared so far plus what is
-# left in the works' states), at least 1.
-boi_pledge_target_city = {
+# State scope. The level count at which this state reaches its target.
+boi_pledge_state_cap = {
 	value = 0
 	if = {
-		limit = { has_variable = boi_cm_levels_cleared }
-		add = var:boi_cm_levels_cleared
+		limit = {
+			has_variable = boi_pledge_state_base
+			has_variable = boi_pledge_state_target
+		}
+		value = var:boi_pledge_state_base
+		add = var:boi_pledge_state_target
 	}
+}
+
+# Country scope. Progress: every pledge state still ours, each up to its target.
+boi_pledge_built_total = {
+	value = 0
 	every_scope_state = {
-		limit = { has_variable = boi_in_modernisation }
-		add = boi_cm_state_low_tier_levels
+		limit = { var:boi_pledge_state ?= root }
+		add = boi_pledge_state_built
+	}
+}
+
+# Country scope. The promise: the targets of the pledge states still ours.
+# Shrinks when a pledge state is lost.
+boi_pledge_target_total = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			var:boi_pledge_state ?= root
+			has_variable = boi_pledge_state_target
+		}
+		add = var:boi_pledge_state_target
+	}
+	min = 1
+}
+
+# State scope. City Modernisation: half a good level for every level of
+# Slums and Workers' Rows the works pull down here (cleared so far plus what
+# is left), at least 1.
+boi_pledge_state_target_city = {
+	value = boi_cm_state_low_tier_levels
+	if = {
+		limit = { has_variable = boi_cm_levels_cleared_here }
+		add = var:boi_cm_levels_cleared_here
 	}
 	divide = 2
 	ceiling = yes
+	min = 1
+}
+
+# Country scope. City Modernisation, for the option's tooltip: the sum of the
+# works' states' targets.
+boi_pledge_target_city = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		add = boi_pledge_state_target_city
+	}
 	min = 1
 }
 
@@ -86,4 +139,35 @@ boi_pledge_progress_pct = {
 boi_pledge_broken_radicals = {
 	value = large_radicals
 	multiply = 2
+}
+
+# State scope. Radicals in one pledge state when the pledge is broken: the
+# full amount times the share of this state's target left unbuilt, so a state
+# that kept its share gets none (2026-11-09, p6_iter1: Britain's broken City
+# Modernisation pledge put 20% of the poor in all ten home states into the
+# radicals, from 5.7% to 16.6% of the country, before a revolution in both games).
+boi_pledge_state_broken_radicals = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_pledge_state_target }
+		value = var:boi_pledge_state_target
+		subtract = boi_pledge_state_built
+		min = 0
+		divide = {
+			value = var:boi_pledge_state_target
+			min = 1
+		}
+		multiply = boi_pledge_broken_radicals
+	}
+}
+
+# State scope. Levels this state still owes its pledge.
+boi_pledge_state_shortfall = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_pledge_state_target }
+		value = var:boi_pledge_state_target
+		subtract = boi_pledge_state_built
+		min = 0
+	}
 }

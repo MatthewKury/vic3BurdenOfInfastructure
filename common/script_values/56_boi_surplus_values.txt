@@ -1,0 +1,30 @@
+﻿# ================================================================
+#  Burden of Infrastructure — "Ahead of the Traffic" values (D1, 2026-11-09)
+# ================================================================
+
+# State scope. Infrastructure over usage, usage floored at 1.
+boi_surplus_infrastructure_ratio = {
+	value = infrastructure
+	divide = {
+		value = infrastructure_usage
+		min = 1
+	}
+}
+
+# Country scope. Press control, 1 to 4, from the Free Speech law: the
+# legitimacy option is multiplied by it (your answer, 2026-11-09).
+boi_surplus_press_control = {
+	value = 1
+	if = {
+		limit = { has_law = law_type:law_outlawed_dissent }
+		value = 4
+	}
+	else_if = {
+		limit = { has_law = law_type:law_censorship }
+		value = 3
+	}
+	else_if = {
+		limit = { has_law = law_type:law_right_of_assembly }
+		value = 2
+	}
+}

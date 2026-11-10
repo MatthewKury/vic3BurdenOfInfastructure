@@ -194,6 +194,10 @@ boitm_law_road = {
 		limit = { has_law = law_type:law_boi_public_highways }
 		value = 2
 	}
+	else_if = {
+		limit = { has_law = law_type:law_boi_road_fund }
+		value = 3 # 3 = Dedicated Road Fund (2026-11-09; logged as 0 before)
+	}
 }
 
 boitm_igs_total = {

@@ -76,6 +76,8 @@ boi_cm_clear_state = {
 	}
 	set_variable = boi_cm_cleared
 	set_variable = boi_modernised_city
+	# Read by a rehousing pledge's per-state target (boi_pledge_state_target_city).
+	set_variable = { name = boi_cm_levels_cleared_here value = local_var:boi_cm_levels_here }
 }
 
 # Country scope. Clears states, most crowded first, until the stage's

@@ -538,9 +538,12 @@ class Builder:
                 print(f"  skip {run_dir.name}: result {info.get('result')} ({'; '.join(info.get('failures') or [])})")
                 continue
             countries, states, markets, snapshots, skipped, bad, identities = self.parse_run(run_dir)
-            if info.get("result") != "PASS" and snapshots and (not bad or max(snapshots) > max(bad)):
+            if (info.get("result") != "PASS" and info.get("exit_reason") != "exited on its own"
+                    and snapshots and (not bad or max(snapshots) > max(bad))):
                 # A crash usually lands inside a snapshot, and a cut between two
                 # whole lines passes every count check, so never trust the last one.
+                # A game that exited on its own (failed on a BOI error line, say)
+                # wrote its log to the end, so its last snapshot is kept.
                 last = max(snapshots)
                 bad.setdefault(last, "last snapshot of a run that did not pass")
                 snapshots.pop(last)

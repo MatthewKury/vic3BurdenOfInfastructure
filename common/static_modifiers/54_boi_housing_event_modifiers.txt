@@ -37,6 +37,13 @@ boi_hev_great_fire = {
 	state_mortality_mult = 0.05
 }
 
+# State, 3 years. The fire scorched the works nearby. Replaces burning a whole
+# industry building, which could be a state's only one (review finding C4, 2026-11-09).
+boi_hev_great_fire_works = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	building_group_bg_manufacturing_throughput_add = -0.15
+}
+
 # Country, 1 year. The building societies fail.
 boi_hev_building_crash = {
 	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
