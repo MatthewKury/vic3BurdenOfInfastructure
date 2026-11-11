@@ -1,0 +1,24 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Road Financing exceptions at game start
+#
+#  The four historical exceptions to Statute Labour. They used to be
+#  set in history/global/zz_boi_road_financing.txt, but global history
+#  runs after the pops' working-adult ratio is set, so these four
+#  started under Statute Labour's -0.02 (the first law in the group,
+#  which every country holds by default) and recovered only about
+#  0.0013 a year (check run 20261110-075313_mod, 2026-11-10). Laws set
+#  in country history, like vanilla's own, are in place by then.
+#  Everyone else keeps Statute Labour; the global file still attaches
+#  the road ideologies.
+# ================================================================
+
+COUNTRIES = {
+	# The turnpike era at its peak. Britain had also just abolished
+	# statute labour in the Highway Act 1835.
+	c:GBR ?= { activate_law = law_type:law_boi_turnpike_trusts }
+	c:USA ?= { activate_law = law_type:law_boi_turnpike_trusts }
+
+	# Ponts et Chaussees; Chausseebau.
+	c:FRA ?= { activate_law = law_type:law_boi_public_highways }
+	c:PRU ?= { activate_law = law_type:law_boi_public_highways }
+}

@@ -1,21 +1,27 @@
 ﻿# ================================================================
 #  Burden of Infrastructure — Harbour Works PMs
 #
-#  Coastal-only second infrastructure avenue, paid for in merchant
-#  marine. Same two-group structure as the Infrastructure building:
+#  Coastal-only second infrastructure avenue, paid for in boats:
+#  clippers, then steamers and steel. Same two-group structure as the Infrastructure building:
 #  375 technical (follows tech) + 125 administrative (follows the
 #  Bureaucracy law).
 #
 #  Priced at the SAME £/infra as the Infrastructure building on
 #  purpose. Coastal states do not get cheaper infrastructure, they
-#  get MORE TOTAL CAPACITY - and they pay in merchant marine, which
-#  carries its own opportunity cost in prestige and trade.
+#  get MORE TOTAL CAPACITY - and they pay in lighters, tugs and
+#  cranes bought from the shipyards.
 #
 #  Technology gates deliberately match vanilla's own port ladder
 #  (gantry_cranes -> pm_industrial_port, concrete_dockyards ->
 #  pm_modern_port) so harbour modernisation stays in step with it.
 #
-#  Prices: merchant_marine 50, coal 30, electricity 30.
+#  Prices: clippers 60, steamers 70, steel 50, coal 30, electricity 30.
+#
+#  2026-11-10 (steel demand): merchant marine removed from every tier.
+#  It was dearer than in vanilla (53-65 against 44-57 in the phase 6
+#  games). Coastal Lighters buy clippers (no steamers exist in 1836);
+#  from gantry_cranes, which also unlocks vanilla's metal shipbuilding,
+#  the works buy steamers and steel.
 # ================================================================
 
 
@@ -32,7 +38,7 @@ pm_boi_coastal_lighters = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_merchant_marine_add = 4 # 200
+			goods_input_clippers_add = 3 # 180, lighters and barges (merchant marine 4 until 2026-11-10)
 		}
 
 		level_scaled = {
@@ -60,8 +66,9 @@ pm_boi_steam_lighters = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_merchant_marine_add = 5 # 250
-			goods_input_coal_add = 3            # 90
+			goods_input_steamers_add = 3 # 210, steam tugs and dredgers (merchant marine 5 until 2026-11-10)
+			goods_input_steel_add = 2    # 100, cranes
+			goods_input_coal_add = 3     # 90
 		}
 
 		level_scaled = {
@@ -98,8 +105,9 @@ pm_boi_electrified_quays = {
 
 	building_modifiers = {
 		workforce_scaled = {
-			goods_input_merchant_marine_add = 6 # 300
-			goods_input_electricity_add = 4     # 120
+			goods_input_steamers_add = 3    # 210 (merchant marine 6 until 2026-11-10)
+			goods_input_steel_add = 3       # 150, cranes and quay frames
+			goods_input_electricity_add = 4 # 120
 		}
 
 		level_scaled = {
@@ -220,14 +228,17 @@ pm_boi_harbour_tolls = {
 
 	building_modifiers = {
 		unscaled = {
-			building_goods_input_mult = -0.35
+			building_goods_input_mult = -0.5 # -0.35 until 2026-11-10
 			building_shopkeepers_standard_of_living_add = 2
 		}
 
+		# Wage-neutral (2026-11-10): 60 laborers (wage weight 1) for 15
+		# shopkeepers (3) and 3 capitalists (5). Was 50 and 10, which tripled
+		# the state's wage bill for those posts. See pm_boi_turnpike_tolls.
 		level_scaled = {
 			building_employment_laborers_add = -60
-			building_employment_shopkeepers_add = 50
-			building_employment_capitalists_add = 10
+			building_employment_shopkeepers_add = 15
+			building_employment_capitalists_add = 3
 		}
 	}
 }

@@ -261,9 +261,14 @@ Two consequences worth knowing:
 |---|---|---|---|---|---|
 | pm_cart_roads | start | horses 10 | 300 | 10 | 30 |
 | pm_macadam_roads | 2 | horses 12, tools 3 | 480 | 15 | 32 |
-| pm_steam_rolled_roads | 3 | horses 12, tools 3, coal 3 | 570 | 19 | 30 |
-| pm_motor_roads | 4 | horses 3, automobiles 3, oil 3 | 510 | 24 | 21 |
-| pm_modern_highways | 5 | automobiles 5, oil 5 | 700 | 32 | 22 |
+| pm_steam_rolled_roads | 3 | horses 9, tools 3, coal 3, **engines 2** | 600 | 19 | 32 |
+| pm_motor_roads | 4 | horses 3, automobiles 3, oil 3, **engines 2** | 630 | 24 | 26 |
+| pm_modern_highways | 5 | automobiles 5, oil 5, **engines 2** | 820 | 32 | 26 |
+
+**Engines from Steam-Rolled Roads on (2026-11-10).** Steam rollers, then motor plant: 2
+engines a level (Steam-Rolled gave up 3 horses for them). BOI railways give no
+infrastructure, so fewer were built and engine and steel demand fell with them
+(steel −34% and engines −37% against vanilla at 1876, iteration 4 of 9 Nov).
 
 Zero salable output — this building only produces a state modifier. A shortage of
 inputs cuts the infrastructure too: in a 2026-11-03 probe, +100 fell to +65 with the
@@ -287,10 +292,16 @@ one year in four, to up to 5 states at the cap and short of infrastructure. Test
 
 | PM | Unlock | Input | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_permanent_way | `railways` | transportation 8 | 240 | 32.5 (13 before) | 7.4 |
-| pm_steel_track | `steel_railway_cars` | transportation 10 | 300 | 50 (20) | 6.0 |
-| pm_electric_signalling | `electric_railway` | transportation 12 | 360 | 67.5 (27) | 5.3 |
-| pm_national_rail_grid | `compression_ignition` | transportation 15 | 450 | 82.5 (33) | 5.5 |
+| pm_permanent_way | `railways` | transportation 30, iron 3 | 1,020 | 32.5 (13 before) | 31 |
+| pm_steel_track | `steel_railway_cars` | transportation 38, steel 4 | 1,340 | 50 (20) | 27 |
+| pm_electric_signalling | `electric_railway` | transportation 53, steel 5 | 1,840 | 67.5 (27) | 27 |
+| pm_national_rail_grid | `compression_ignition` | transportation 68, steel 6 | 2,340 | 82.5 (33) | 28 |
+
+**Since 2026-11-10** each tier buys the transportation one same-era vanilla railway
+level makes (early 20, steam 25, electric 35, diesel 45; was 8/10/12/15), and its own
+track: iron, then steel. Later the same day (steel log, iteration 2) the transportation
+went to 1.5 railway levels (30/38/53/68). So a Rail Works level needs one and a half
+railway levels' output beside it, which is the pull on railways (and their engines and steel).
 
 Rail Network Survey, per survey: goal = the states' shares (6 each, plus 0.15 per urban
 centre level up to 18, plus 20% for each earlier survey of that state; 50% until 2026-11-08), divided by
@@ -304,12 +315,12 @@ Each building has its own group on the same three laws:
 
 | | Statute Labour | Tolls and Dues | State Funding |
 |---|---|---|---|
-| Goods input | -30% | -35% | Baseline |
-| Staff | Unchanged | -60 laborers, +50 shopkeepers, +10 capitalists | Baseline |
+| Goods input | -30% | -50% (-35% until 2026-11-10) | Baseline |
+| Staff | Unchanged | -60 laborers, +15 shopkeepers, +3 capitalists: wage-neutral (+50 and +10 until 2026-11-10, which tripled the wage weight of those posts) | Baseline |
 | Infra per level | Road -2, Rail -6.25 (-2.5 before the 2.5× change), Harbour -1.5 | Unchanged | Baseline |
 | +15% of state infrastructure | No | Road Works only | No |
-| Peasant mortality per level | Road and Rail +3%, Harbour +1% | No | No |
-| Farm and ranch throughput per level | Road and Rail +1% | No | No |
+| Working-adult ratio, country-wide (on the law) | -0.02, every pop type (per-level peasant mortality until 2026-11-09) | No | No |
+| Farm and ranch throughput, country-wide (on the law) | +5% (+1% per level until 2026-11-09) | No | No |
 
 ### Housing roster
 
@@ -368,14 +379,17 @@ Infrastructure building throughout.
 
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_coastal_lighters | start | merchant_marine 4 | 200 | 7 | 28.6 |
-| pm_steam_lighters | 3 (`gantry_cranes`) | merchant_marine 5, coal 3 | 340 | 12 | 28.3 |
-| pm_electrified_quays | 4 (`concrete_dockyards`) | merchant_marine 6, electricity 4 | 420 | 17 | 24.7 |
+| pm_coastal_lighters | start | clippers 3 | 180 | 7 | 25.7 |
+| pm_steam_lighters | 3 (`gantry_cranes`) | steamers 3, steel 2, coal 3 | 400 | 12 | 33.3 |
+| pm_electrified_quays | 4 (`concrete_dockyards`) | steamers 3, steel 3, electricity 4 | 480 | 17 | 28.2 |
 
 Priced at **about the same £/infra as Road Works on purpose**. Coastal states
 do not get *cheaper* infrastructure, they get *more total capacity* — and they
-pay for it in merchant marine, which has its own opportunity cost in prestige
-and trade. That keeps the coastal advantage real without making inland
+pay for it in boats and cranes bought from the shipyards: clippers, then
+steamers and steel. Until 2026-11-10 it was merchant marine (4/5/6), which ran
+dearer than in vanilla (53–65 against 44–57 in the 9 Nov games). `gantry_cranes`
+unlocks both Steam Lighters and vanilla's metal shipbuilding, so steamers arrive
+with the tier that needs them. That keeps the coastal advantage real without making inland
 development feel punitive.
 
 ### Haulage PMs — horses on the base tier, tapering into rail

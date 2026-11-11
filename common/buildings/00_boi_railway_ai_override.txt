@@ -4,7 +4,8 @@
 # only railway is shadowed. Re-diff after game updates with
 # tools/Compare-ShadowBodies.py. Changes, tagged # BOI: price-sensitive base
 # ai_value, and infrastructure-deficit auto-expansion replaced by a lower
-# transportation price threshold (25%, vanilla 50%; 2026-11-09). Staffing,
+# transportation price threshold (25%, vanilla 50%; 2026-11-09); dear horses
+# raise the ai_value and also trigger auto-expansion (2026-11-10). Staffing,
 # reserves, subsidies, construction guard, journal bonuses and all other fields
 # are vanilla's.
 
@@ -29,6 +30,8 @@ building_railway = {
 		value = 2000 # Railways are important
 		# BOI: scale the economic base only; preserve journal bonuses.
 		multiply = boi_ai_railway_output_price
+		# BOI: dear horses raise it too (2026-11-10).
+		multiply = boi_ai_railway_horse_price
 
 		if = { # Trans-Siberian Railway
 			limit = {
@@ -285,9 +288,16 @@ building_railway = {
 		# vanilla's 50% (2026-11-09, plan 6 iteration 3: world transportation
 		# sat at about +50%, right on vanilla's line, and railways ran 23-40%
 		# below vanilla in every BOI test game).
+		# BOI (2026-11-10): or when horses are 50% dear, the railway
+		# standing in for the horse.
 		state = {
-			sg:transportation = {
-				state_goods_pricier > 0.25
+			OR = {
+				sg:transportation = {
+					state_goods_pricier > 0.25
+				}
+				sg:horses = {
+					state_goods_pricier > 0.5
+				}
 			}
 		}
 		NOT = { is_under_construction = yes }

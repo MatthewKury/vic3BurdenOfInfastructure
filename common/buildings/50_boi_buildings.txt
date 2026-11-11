@@ -304,7 +304,7 @@ building_boi_harbour_works = {
 	ai_value = {
 		value = 1500
 		multiply = boi_ai_infrastructure_urgency
-		multiply = boi_ai_merchant_marine_input_price
+		multiply = boi_ai_harbour_input_price
 	}
 
 	# Same safeguard as Road Works, evaluated separately so either source can

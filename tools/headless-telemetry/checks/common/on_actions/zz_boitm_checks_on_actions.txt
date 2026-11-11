@@ -12,5 +12,8 @@ on_monthly_pulse_country = {
 		boitm_chk.7
 		boitm_chk.8
 		boitm_chk.9
+		boitm_chk.10
+		boitm_chk.11
+		boitm_chk.12
 	}
 }

@@ -8,6 +8,14 @@
 #          multiplier test of the legitimacy modifier on Russia
 #   .4/.5/.6  C5: a pledge in one British state; build in it and in another
 #   .7/.8  C4: force the Great Fire, compare the state before and after
+#   .10  2026-11-10: Statute Labour's working-adult keys. Every 3 months to
+#        1838, peasant/laborer/farmer pops' workforce and dependents in the
+#        largest state of the 2 biggest Statute Labour countries and the 2
+#        biggest others
+#   .11/.12  2026-11-10, steel demand: give Britain gantry_cranes and
+#        steam_donkey, switch its Harbour Works to Steam Lighters and its
+#        Road Works to Steam-Rolled Roads, and log its market's buy orders
+#        for the new inputs before and 3 months after
 
 # ── C12 ─────────────────────────────────────────────────────────
 boitm_chk.1 = {
@@ -198,8 +206,23 @@ boitm_chk.6 = {
 				}
 				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|pass|built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0]"
 			}
+			# 2026-11-10: with the AI pledge builder (added after this check was
+			# written) the AI builds the second level and the pledge is kept
+			# before July, which clears the state's variables. Keeping it gives
+			# the trade unions boi_cm_ig_pleased; 2 levels here means the 3
+			# built elsewhere didn't count.
+			else_if = {
+				limit = {
+					root = {
+						NOT = { has_journal_entry = je_boi_rehousing_pledge }
+						ig:ig_trade_unions ?= { has_modifier = boi_cm_ig_pleased }
+					}
+					boitm_chk_state_terraces >= 2
+				}
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|pass|kept_early=1;terraces=[THIS.ScriptValue('boitm_chk_state_terraces')|0]"
+			}
 			else = {
-				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|fail|built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0]"
+				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_per_state|fail|terraces=[THIS.ScriptValue('boitm_chk_state_terraces')|0];built=[THIS.ScriptValue('boi_pledge_state_built')|0];queued=[THIS.ScriptValue('boitm_chk_state_queued')|0];target=[THIS.ScriptValue('boitm_chk_state_target')|0]"
 			}
 		}
 		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|pledge_country|info|je=[THIS.ScriptValue('boitm_chk_pl_has_je')|0];target=[THIS.ScriptValue('boitm_chk_pl_target')|0];built=[THIS.ScriptValue('boitm_chk_pl_built')|0];states=[THIS.ScriptValue('boitm_chk_pl_states')|0];urban_planning=[THIS.ScriptValue('boitm_chk_has_urban_planning')|0]"
@@ -295,5 +318,89 @@ boitm_chk.8 = {
 				debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|fire_bounded|warn|tag=[THIS.GetState.GetOwner.GetTagName];low_tier=[THIS.ScriptValue('boi_cm_state_low_tier_levels')|0];wood=[THIS.ScriptValue('boitm_chk_wood_levels')|0];industry=[THIS.ScriptValue('boitm_chk_industry_levels')|0];scorched=[THIS.ScriptValue('boitm_chk_scorched')|0]"
 			}
 		}
+	}
+}
+
+# ── 2026-11-10: Statute Labour dependents ───────────────────────
+boitm_chk.10 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		game_date >= 1836.2.1
+		game_date < 1838.2.1
+		NOT = { has_global_variable = boitm_chk_10_lock }
+	}
+	immediate = {
+		set_global_variable = { name = boitm_chk_10_lock value = yes days = 85 }
+		ordered_country = {
+			limit = {
+				NOT = { is_country_type = decentralized }
+				has_law = law_type:law_boi_statute_labour
+			}
+			order_by = gdp
+			max = 2
+			check_range_bounds = no
+			ordered_scope_state = {
+				order_by = state_population
+				position = 0
+				check_range_bounds = no
+				boitm_chk_log_dependents = { LAW = statute }
+			}
+		}
+		ordered_country = {
+			limit = {
+				NOT = { is_country_type = decentralized }
+				NOT = { has_law = law_type:law_boi_statute_labour }
+			}
+			order_by = gdp
+			max = 2
+			check_range_bounds = no
+			ordered_scope_state = {
+				order_by = state_population
+				position = 0
+				check_range_bounds = no
+				boitm_chk_log_dependents = { LAW = other }
+			}
+		}
+	}
+}
+
+# ── 2026-11-10: new Harbour and Road Works inputs ───────────────
+boitm_chk.11 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1836.3.1
+		NOT = { has_global_variable = boitm_chk_11 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_11
+		boitm_chk_log_steel_inputs = { WHEN = before }
+		add_technology_researched = gantry_cranes
+		add_technology_researched = steam_donkey
+		every_scope_state = {
+			limit = { has_building = building_boi_harbour_works }
+			activate_production_method = { building_type = building_boi_harbour_works production_method = pm_boi_steam_lighters }
+		}
+		every_scope_state = {
+			limit = { has_building = building_boi_infrastructure }
+			activate_production_method = { building_type = building_boi_infrastructure production_method = pm_boi_steam_rolled_roads }
+		}
+	}
+}
+
+boitm_chk.12 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:GBR ?= this
+		game_date >= 1836.6.1
+		has_global_variable = boitm_chk_11
+		NOT = { has_global_variable = boitm_chk_12 }
+	}
+	immediate = {
+		set_global_variable = boitm_chk_12
+		boitm_chk_log_steel_inputs = { WHEN = after }
 	}
 }

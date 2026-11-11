@@ -1,0 +1,26 @@
+﻿# Headless telemetry (checks module), 2026-11-10.
+
+# State scope. One line per peasant, laborer and farmer pop: its workforce and
+# dependents. Farmers are the control for the per-pop-type keys: Statute
+# Labour's keys name only peasants and laborers.
+boitm_chk_log_dependents = {
+	debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|dep_state|info|law=$LAW$;tag=[THIS.GetState.GetOwner.GetTagName];state=[THIS.GetState.GetStateRegion.GetName]"
+	every_scope_pop = {
+		limit = { is_pop_type = peasants }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|dep_pop|info|law=$LAW$;type=peasants;workforce=[THIS.GetPop.GetNumWorkforce];dependents=[THIS.GetPop.GetDependentsSize]"
+	}
+	every_scope_pop = {
+		limit = { is_pop_type = laborers }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|dep_pop|info|law=$LAW$;type=laborers;workforce=[THIS.GetPop.GetNumWorkforce];dependents=[THIS.GetPop.GetDependentsSize]"
+	}
+	every_scope_pop = {
+		limit = { is_pop_type = farmers }
+		debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|dep_pop|info|law=$LAW$;type=farmers;workforce=[THIS.GetPop.GetNumWorkforce];dependents=[THIS.GetPop.GetDependentsSize]"
+	}
+}
+
+# Country scope. Buy and sell orders in the country's market for the goods the
+# steel-demand change added or removed, and how many states run the new PMs.
+boitm_chk_log_steel_inputs = {
+	debug_log = "BOIFIX|[TimeKeeper.GetCurrentDate.GetString]|steel_inputs|info|when=$WHEN$;tag=[THIS.GetCountry.GetTagName];steam_lighters=[THIS.ScriptValue('boitm_chk_steam_lighter_states')|0];steam_rolled=[THIS.ScriptValue('boitm_chk_steam_rolled_states')|0];steamers_buy=[GetGoods('steamers').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];steel_buy=[GetGoods('steel').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];engines_buy=[GetGoods('engines').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];clippers_buy=[GetGoods('clippers').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];mm_buy=[GetGoods('merchant_marine').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];iron_buy=[GetGoods('iron').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];transport_buy=[GetGoods('transportation').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0];horses_buy=[GetGoods('horses').WithMarketContext(THIS.GetCountry.GetMarket.Self).GetMarketBuyOrders|0]"
+}

@@ -132,3 +132,28 @@ boitm_chk_rw_states = {
 	value = 0
 	every_state = { limit = { has_building = building_boi_rail_works } add = 1 }
 }
+# Country scope (2026-11-10): states whose works run the new tiers.
+boitm_chk_steam_lighter_states = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_building = {
+				is_building_type = building_boi_harbour_works
+				has_active_production_method = pm_boi_steam_lighters
+			}
+		}
+		add = 1
+	}
+}
+boitm_chk_steam_rolled_states = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			any_scope_building = {
+				is_building_type = building_boi_infrastructure
+				has_active_production_method = pm_boi_steam_rolled_roads
+			}
+		}
+		add = 1
+	}
+}

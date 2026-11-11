@@ -45,7 +45,7 @@ boi_ai_infrastructure.1 = {
 			set_variable = { name = boi_ai_works_recent value = yes days = 180 }
 
 			# Rail Works where it suits; Harbour Works where it is the
-			# cheaper input (horses dear, merchant marine not); otherwise
+			# cheaper input (horses dear, its boats not); otherwise
 			# Road Works.
 			if = {
 				limit = { boi_ai_state_prefers_rail_works = yes }
@@ -66,7 +66,9 @@ boi_ai_infrastructure.1 = {
 				limit = {
 					is_coastal = yes
 					sg:horses = { state_goods_pricier >= 0.25 }
-					NOT = { sg:merchant_marine = { state_goods_pricier >= 0.25 } }
+					# Its boats: clippers, steamers from gantry_cranes (2026-11-10;
+					# merchant marine before that).
+					boi_ai_harbour_input_price >= 1
 				}
 				start_building_construction = building_boi_harbour_works
 			}
