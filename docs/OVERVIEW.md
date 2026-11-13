@@ -174,6 +174,15 @@ Raised by you on 2026-11-07, after the Rail Network Survey passes. None is desig
 
 Also open, from the same day: the Rail Network Survey's next steps in its [balance log](reports/rail_survey_7_Nov_2026/BALANCE_LOG.md), starting with the AI pass's money check.
 
+**Added 2026-11-13, from the Public Works hub design** ([plan 11](plans/11_PUBLIC_WORKS_HUB_DESIGN.md), part 14):
+
+4. **Government wage slider and Public Works.** At first only the hub's wages follow the slider, which needs no script. Revisit whether the slider should also scale the hub's goods consumption and the share of the decay penalty it cancels, as a "maintenance standard". That would stand in for the Standard PM group that was dropped.
+5. **Extend the road-financing laws.** They carry over to the hub with their current effects first. Later, consider:
+   - an infrastructure levy (`tax_dividends_add` / `tax_land_add` recovering part of the hub's bill from owners);
+   - railway-ownership options: State Railways (`unset_available_for_autonomous_investment` for railways) and Concessions (`start_privately_funded_building_construction`).
+
+   Ideas from [plan 09](plans/09_INFRASTRUCTURE_FUNDING_AND_RAIL_ECONOMICS_IDEAS.md), part 4.
+
 ## 7. Where the archived documents are out of date
 
 The current plans, `BALANCE.md`, `PATCHING.md` and the metadata were

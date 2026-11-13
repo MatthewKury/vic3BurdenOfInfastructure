@@ -1,5 +1,14 @@
 # Steel and construction: larger-scale ideas (for discussion)
 
+> **Status (end of 2026-11-13):** the chosen direction is
+> [11_PUBLIC_WORKS_HUB_DESIGN.md](11_PUBLIC_WORKS_HUB_DESIGN.md).
+> - Railways get their infrastructure back (idea D, without Rail Works).
+> - No works in the construction queue (idea H).
+> - Running costs follow use, and the population floor is discounted from the bill, which does
+>   most of idea F's job.
+> - Steel demand is expected to come back with vanilla railways. Measure it in plan 11's
+>   40-year ensemble.
+
 Written 2026-11-10, after the steel-demand iterations in
 `docs/reports/steel_10_Nov_2026/BALANCE_LOG.md`. **Nothing here is decided or
 implemented.** It is a menu to discuss in a later session. A plan goes in
@@ -115,3 +124,69 @@ Keys marked ✓ exist in the 1.15 `modifier_type_definitions` or vanilla events 
   each quarter through 1836 before blaming later mechanics (see the lessons file, section 13).
 - **The telemetry crash.** It hit 3 of 6 forty-year games. A `-NoHousing` harness switch
   might lower the crash rate, but it would also drop the works counts.
+
+## More ideas (added 2026-11-11)
+
+Asked for on 2026-11-11, open to larger changes. Same status: nothing decided or tested.
+Keys marked ✓ exist in the 1.15 `modifier_type_definitions` (checked 2026-11-11).
+
+**I. Railways multiply infrastructure instead of adding it.**
+- Railway PMs carry `state_infrastructure_mult` ✓ (vanilla's decree uses +0.1, some
+  companies +0.05), scaled by workforce like the old `state_infrastructure_add`.
+- Works make the base; railways make it go further. Infrastructure still isn't free: a state
+  with no works gets almost nothing from a railway, so the bonus gates itself without script.
+- Does C's job with a native key, with no monthly pulse and no scripted cap.
+- Unknown: whether the multiplier also scales the population floor. Test that first.
+
+**J. Railways make the works cheaper.**
+- Railway PMs carry `building_group_bg_infrastructure_throughput_add` ✓ as a state modifier.
+  Group throughput keys do work on state modifiers (vanilla `unincorporated_state`).
+- `bg_boi_public_works` sits under `bg_public_infrastructure`, so the works get more
+  infrastructure from the same goods. Railways relieve the burden rather than replace it.
+- Side effect: the bonus also hits the railway itself and ports.
+
+**K. Railways raise the output of the industries they serve.**
+- Railway PMs carry `building_group_bg_mining_throughput_add` ✓ and
+  `building_group_bg_manufacturing_throughput_add` ✓.
+- Railways become an economic engine again, and that goes at the GDP gap directly.
+- It is a buff, not a burden, so it needs sizing against vanilla GDP. The AI won't count it
+  unless the railway `ai_value` gets a factor for mining and manufacturing levels in the state.
+
+**L. Give railways part of their infrastructure back.**
+- For example 25% of vanilla's figure on the first railway PM, rising to 60% by the last.
+- A single dial between today's design and D. The cheapest thing here to test.
+
+**M. State railways (Rail Works merged into the railway).**
+- The railway becomes government-funded and gives infrastructure again; Rail Works goes away.
+  The engine requires `ownership_type = no_ownership` on government-funded buildings.
+- The AI builds railways through its own logic, and the burden stays with the state.
+- If sales of the railway's transportation reach the treasury, this is E (toll income) for
+  free. Unverified: check where a government building's sales revenue goes before planning.
+- The largest change: loses private railway investment and railway companies, and needs
+  `downsizeable = no` like the works.
+
+**N. Heavy industry needs a railway.**
+- After some technology, states with mines or factories but no railway take a throughput
+  penalty (static modifier), and the railway `ai_value` gets a factor for those states.
+- The stick version of K. Less fun, and it hurts the AI before it hurts the player.
+
+**Supporting change for I, J and L: give the AI back its infrastructure trigger.**
+- `00_boi_railway_ai_override.txt` swapped vanilla's infrastructure-deficit auto-expansion
+  for a transportation-price threshold.
+- The lessons file (§13) says transportation sits at its price ceiling across most of the
+  world, so price can't signal where railways are needed. Once railways help infrastructure
+  again, vanilla's deficit trigger can come back.
+
+**Not pursued: more transportation demand.** Railways live on transportation sales, but
+the price is already at its ceiling almost everywhere, so more demand wouldn't make them more
+attractive to build.
+
+**Follow-up (2026-11-13):** [09_INFRASTRUCTURE_FUNDING_AND_RAIL_ECONOMICS_IDEAS.md](09_INFRASTRUCTURE_FUNDING_AND_RAIL_ECONOMICS_IDEAS.md)
+revisits ideas A, D, E and L from the angle of railway profitability:
+- a traffic throughput bonus;
+- market access per locomotive tier, as a workshop mod does;
+- ownership as the public/private split.
+
+**Updated recommendation (2026-11-11):** I with F, plus the AI trigger restored. I replaces
+B or C as the favourite because it uses a native key and needs no script. L is the simplest
+fallback. M is the option if a big redesign is on the table. G stays in reserve.
