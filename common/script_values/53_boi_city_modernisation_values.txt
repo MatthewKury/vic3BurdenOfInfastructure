@@ -1,0 +1,107 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation values
+#  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4. All numbers are
+#  test values (2026-11-08).
+# ================================================================
+
+# Country scope. States in the current modernisation.
+boi_cm_state_count = {
+	value = 0
+	every_scope_state = {
+		limit = { has_variable = boi_in_modernisation }
+		add = 1
+	}
+}
+
+# Country scope. States of the current modernisation already cleared.
+boi_cm_cleared_count = {
+	value = 0
+	every_scope_state = {
+		limit = {
+			has_variable = boi_in_modernisation
+			has_variable = boi_cm_cleared
+		}
+		add = 1
+	}
+}
+
+# Country scope. How many states should be cleared by the current stage:
+# a quarter of the region per stage, rounded up, so a one-state region is
+# cleared at the first stage.
+boi_cm_clear_target = {
+	value = var:boi_cm_states
+	multiply = var:boi_cm_stage
+	divide = 4
+	ceiling = yes
+}
+
+# State scope. Slum and Workers' Rows levels, used to clear the most
+# crowded states first and for the AI.
+boi_cm_state_low_tier_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+			}
+		}
+		add = level
+	}
+}
+
+# Country scope. Months at the base rate: 3 years, plus 3 months per extra
+# state, at most 5 years.
+boi_cm_goal_total = {
+	value = boi_cm_state_count
+	subtract = 1
+	multiply = 3
+	add = 36
+	max = 60
+}
+
+# Country scope. Progress per month, in percent. Surplus bureaucracy speeds
+# it up as it does the rail survey.
+boi_cm_monthly_pct = {
+	value = 1
+	add = boi_rs_bureaucracy_bonus
+	multiply = 100
+	divide = {
+		value = var:boi_cm_goal
+		min = 1
+	}
+}
+
+# Country scope. Weekly expenses while it runs: GDP / 40,000 plus £80 per
+# state (compensation, demolition and new streets). Aim: 1-2% of spending.
+boi_cm_weekly_cost = {
+	value = gdp
+	divide = 40000
+	add = {
+		value = boi_cm_state_count
+		multiply = 80
+	}
+}
+
+# Country scope. One-off payments in the stage events (negative).
+boi_cm_payment = {
+	value = gdp
+	multiply = -0.004
+	max = -4000
+}
+
+boi_cm_loan_payment = {
+	value = gdp
+	multiply = -0.008
+	max = -8000
+}
+
+# Country scope. AI interest: Slum and Workers' Rows levels across the
+# country's eligible states.
+boi_cm_ai_low_tier_levels = {
+	value = 0
+	every_scope_state = {
+		limit = { boi_cm_state_eligible = yes }
+		add = boi_cm_state_low_tier_levels
+	}
+}

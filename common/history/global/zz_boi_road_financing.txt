@@ -12,15 +12,10 @@
 # ================================================================
 
 GLOBAL = {
-	# ── Historical exceptions, set unconditionally ──
-	# The turnpike era at its peak. Britain had also just abolished
-	# statute labour in the Highway Act 1835.
-	c:GBR ?= { activate_law = law_type:law_boi_turnpike_trusts }
-	c:USA ?= { activate_law = law_type:law_boi_turnpike_trusts }
-
-	# Ponts et Chaussees; Chausseebau.
-	c:FRA ?= { activate_law = law_type:law_boi_public_highways }
-	c:PRU ?= { activate_law = law_type:law_boi_public_highways }
+	# ── Historical exceptions ──
+	# Britain, the USA, France and Prussia are set in
+	# history/countries/zz_boi_road_financing.txt (2026-11-10), because
+	# country history runs before the pops' working-adult ratio is set.
 
 	# ── Everyone: Statute Labour if no law yet, plus ideologies ──
 	every_country = {

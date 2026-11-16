@@ -1,0 +1,18 @@
+﻿# ================================================================
+#  Burden of Infrastructure — network decay penalty (plan 12)
+#
+#  Added to vanilla's engine-applied state modifiers with INJECT, so
+#  every state carries it from the first day (verified 1.15.1). A
+#  staffed, supplied Public Works cancels it (boi_network_upkeep).
+#  User's figures (2026-11-13): -30% incorporated, -10% unincorporated,
+#  on all infrastructure, so both keys, one of which reaches the
+#  population floor.
+# ================================================================
+INJECT:incorporated_state = {
+	state_infrastructure_mult = -0.3
+	state_infrastructure_from_population_mult = -0.3
+}
+INJECT:unincorporated_state = {
+	state_infrastructure_mult = -0.1
+	state_infrastructure_from_population_mult = -0.1
+}

@@ -1,0 +1,85 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Public Works hub monthly update (plan 12)
+#
+#  State scope. Run for every state of every country once a month by
+#  boi_public_works.1. Steps:
+#   1. place a hub where there is none (states that appear after 1836);
+#   2. raise its level to the chargeable use (it never falls: no effect
+#      removes a single level, lessons file);
+#   3. trim its inputs to the actual use, with the law and survey discounts;
+#   4. cancel the decay penalty in proportion to occupancy and supply,
+#      and add the Mode and Harbour bonus.
+# ================================================================
+
+boi_pw_update_state = {
+	# 1. Place. Script-created levels start unstaffed and hire over weeks.
+	if = {
+		limit = {
+			NOR = {
+				has_building = building_boi_public_works
+				has_building = building_boi_coastal_public_works
+			}
+		}
+		if = {
+			limit = { is_coastal = yes }
+			create_building = { building = building_boi_coastal_public_works level = 1 }
+		}
+		else = {
+			create_building = { building = building_boi_public_works level = 1 }
+		}
+	}
+
+	# 2. Grow. create_building raises an existing building to the given level.
+	set_local_variable = { name = boi_pw_target value = boi_pw_target_levels }
+	if = {
+		limit = { boi_pw_target_levels > boi_pw_levels }
+		if = {
+			limit = { has_building = building_boi_coastal_public_works }
+			create_building = { building = building_boi_coastal_public_works level = local_var:boi_pw_target }
+		}
+		else = {
+			create_building = { building = building_boi_public_works level = local_var:boi_pw_target }
+		}
+	}
+
+	# 3. Trim inputs to use.
+	set_local_variable = { name = boi_pw_trim value = boi_pw_trim_multiplier }
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+		}
+		remove_modifier = boi_pw_goods_trim
+		if = {
+			limit = { local_var:boi_pw_trim > 0 }
+			add_modifier = { name = boi_pw_goods_trim multiplier = local_var:boi_pw_trim }
+		}
+	}
+
+	# 4. Cancel the penalty, add the bonus.
+	set_local_variable = { name = boi_pw_share value = boi_pw_upkeep_share }
+	set_local_variable = {
+		name = boi_pw_bonus
+		value = { value = boi_pw_bonus_pct multiply = local_var:boi_pw_share }
+	}
+	remove_modifier = boi_network_upkeep
+	remove_modifier = boi_network_upkeep_uninc
+	remove_modifier = boi_network_mode_bonus
+	if = {
+		limit = { local_var:boi_pw_share > 0 }
+		if = {
+			limit = { is_incorporated = yes }
+			add_modifier = { name = boi_network_upkeep multiplier = local_var:boi_pw_share }
+		}
+		else = {
+			add_modifier = { name = boi_network_upkeep_uninc multiplier = local_var:boi_pw_share }
+		}
+	}
+	if = {
+		limit = { local_var:boi_pw_bonus > 0 }
+		add_modifier = { name = boi_network_mode_bonus multiplier = local_var:boi_pw_bonus }
+	}
+	set_variable = { name = boi_pw_m value = local_var:boi_pw_share }
+}

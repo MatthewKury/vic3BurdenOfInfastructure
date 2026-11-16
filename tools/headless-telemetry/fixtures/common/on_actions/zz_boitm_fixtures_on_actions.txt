@@ -5,5 +5,6 @@
 on_monthly_pulse_country = {
 	events = {
 		boitm_fixture.1
+		boitm_fixture.20
 	}
 }

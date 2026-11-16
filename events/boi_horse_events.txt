@@ -1,0 +1,190 @@
+﻿namespace = boi_horses
+
+# ================================================================
+#  Burden of Infrastructure — horse events
+#
+#  Overview §6, idea 1; built 2026-11-08 (docs/plans/06_FEATURE_COMPLETE_PLAN.md).
+#  All numbers are test values.
+#
+#   .1    hidden yearly dispatcher: one roll for glanders (.10)
+#   .2    hidden monthly: the Great Epizootic reaches North America (1872)
+#   .3    the Great Epizootic
+#   .10   glanders in a horse-breeding state
+#   .20   hidden yearly: remounts in wartime (large armies, 50% a year)
+#   .21   remount requisitioning
+# ================================================================
+
+boi_horses.1 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		NOT = { is_country_type = decentralized }
+	}
+
+	immediate = {
+		random_list = {
+			4 = { trigger_event = { id = boi_horses.10 popup = yes } }
+			96 = {}
+		}
+	}
+}
+
+# ── The Great Epizootic, 1872 ───────────────────────────────────
+# Equine influenza from Toronto stopped freight, streetcars and fire
+# engines across North America for months.
+
+boi_horses.2 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		game_date >= 1872.10.1
+		game_date < 1873.6.1
+		NOT = { has_variable = boi_epizootic_done }
+		exists = capital
+		capital = {
+			OR = {
+				region = sr:region_canada
+				region = sr:region_pacific_coast
+				region = sr:region_great_plains
+				region = sr:region_atlantic_coast
+				region = sr:region_central_america
+			}
+		}
+	}
+
+	immediate = {
+		set_variable = boi_epizootic_done
+		trigger_event = { id = boi_horses.3 popup = yes }
+	}
+}
+
+boi_horses.3 = {
+	type = country_event
+	title = boi_horses.3.t
+	desc = boi_horses.3.d
+	flavor = boi_horses.3.f
+	event_image = { video = "unspecific_sick_in_hospital" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+
+	# Men and oxen to the carts, at a price.
+	option = {
+		name = boi_horses.3.a
+		default_option = yes
+		add_treasury = boi_rs_payment_medium
+		add_modifier = { name = boi_great_epizootic months = 4 }
+		ai_chance = { base = 1 }
+	}
+
+	# Rest the horses and wait it out.
+	option = {
+		name = boi_horses.3.b
+		add_modifier = { name = boi_great_epizootic months = 8 }
+		ai_chance = { base = 1 }
+	}
+}
+
+# ── Glanders ────────────────────────────────────────────────────
+
+boi_horses.10 = {
+	type = country_event
+	placement = scope:horse_state
+	title = boi_horses.10.t
+	desc = boi_horses.10.d
+	flavor = boi_horses.10.f
+	event_image = { video = "unspecific_sick_in_hospital" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_skull.dds"
+	duration = 3
+
+	trigger = {
+		NOT = { has_variable = boi_glanders_cooldown }
+		any_scope_state = { has_building = building_boi_horse_ranch }
+	}
+
+	immediate = {
+		set_variable = { name = boi_glanders_cooldown value = yes years = 5 }
+		random_scope_state = {
+			limit = { has_building = building_boi_horse_ranch }
+			save_scope_as = horse_state
+		}
+	}
+
+	# Cull every horse that shows it.
+	option = {
+		name = boi_horses.10.a
+		default_option = yes
+		scope:horse_state = {
+			add_modifier = { name = boi_glanders_cull years = 1 }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Quarantine the stables and hope.
+	option = {
+		name = boi_horses.10.b
+		scope:horse_state = {
+			add_modifier = { name = boi_glanders_quarantine years = 2 }
+		}
+		ai_chance = { base = 1 }
+	}
+}
+
+# ── Remounts ────────────────────────────────────────────────────
+
+# Only a country at war with a large army (20+ battalions, raised conscripts
+# included), and half the years it qualifies. In the 20-year games, at war
+# was the only condition, and 30-49 countries had the event running at any
+# time (2026-11-08). The 4-year cooldown starts only when it fires.
+boi_horses.20 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_at_war = yes
+		army_size_including_raised_conscripts >= 20
+		NOT = { has_variable = boi_remount_cooldown }
+	}
+
+	immediate = {
+		random_list = {
+			1 = {
+				set_variable = { name = boi_remount_cooldown value = yes years = 4 }
+				trigger_event = { id = boi_horses.21 popup = yes }
+			}
+			1 = {}
+		}
+	}
+}
+
+boi_horses.21 = {
+	type = country_event
+	title = boi_horses.21.t
+	desc = boi_horses.21.d
+	flavor = boi_horses.21.f
+	event_image = { video = "europenorthamerica_before_the_battle" }
+	on_created_soundeffect = "event:/SFX/UI/Alerts/event_appear"
+	icon = "gfx/interface/icons/event_icons/event_military.dds"
+	duration = 3
+
+	# Take them from the farms.
+	option = {
+		name = boi_horses.21.a
+		default_option = yes
+		add_modifier = { name = boi_remount_requisition years = 1 }
+		ig:ig_rural_folk ?= {
+			add_modifier = { name = boi_rf_ig_angered days = 730 is_decaying = yes }
+		}
+		ai_chance = { base = 2 }
+	}
+
+	# Buy them on the market.
+	option = {
+		name = boi_horses.21.b
+		add_treasury = boi_rs_payment_medium
+		ai_chance = { base = 1 }
+	}
+}

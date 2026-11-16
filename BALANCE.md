@@ -57,6 +57,10 @@ comfortably exceed that without distorting anything.
 
 Employment 5000/level (4000 laborers, 1000 farmers). Construction `low` (200).
 
+Its other groups: `pmg_sheep_ranch` (wool: +100, then grain 10 → wool 15 + fertilizer 2.5
+for +175, then +350), `pmg_fencing` (iron in, fewer laborers) and refrigeration
+(electricity in, fewer laborers).
+
 ### Infrastructure demand (`infrastructure_usage_per_level`)
 
 | Group | Usage | | Group | Usage |
@@ -66,7 +70,7 @@ Employment 5000/level (4000 laborers, 1000 farmers). Construction `low` (200).
 | light_industry | 1.5 | | arts, trade | 0.5 |
 | military | 0.2 | | owner_buildings, logistics | 0.1 |
 
-### The population floor (our safety net — left untouched)
+### The population floor (our safety net — divisor 125,000 since 2026-11-03)
 
 `state_infrastructure_from_population_add` comes from **technology**, not by
 default:
@@ -145,9 +149,21 @@ arable land.
 Tracks livestock's +300 → +390 → +550 progression closely. **No unlocking
 technology on the base PM** — it must work in 1836.
 
+**Since 2026-11-08 it also has the Livestock Ranch's by-product and fencing groups**,
+so the comparison above holds for the whole building, not just the base group:
+
+| `pmg_boi_horse_ranch_byproduct` | Unlock | Inputs | Output | Net | Livestock's wool PM |
+|---|---|---|---|---|---|
+| pm_boi_stable_manure (was Knacker's Yard, meat 3, until 2026-11-08) | start | — | fertilizer 3 | +90 | +100 |
+| pm_boi_manure_trade | `intensive_agriculture` | 3 fewer horses (was grain 5 until 2026-11-08) | meat 4, fertilizer 5 | +180 | +175 |
+| pm_boi_mixed_grazing | `mechanized_farming` | 6 fewer horses (was grain 10 until 2026-11-08) | meat 6, fertilizer 12 | +360 | +350 |
+
+`pmg_fencing` is vanilla's own group, shared with the Livestock Ranch. Refrigeration
+is left out, since horses are sold live.
+
 ### How these buildings work economically — pure cost centres
 
-**The Infrastructure and Harbour Works buildings run at a permanent net loss by
+**Road, Rail and Harbour Works run at a permanent net loss by
 design.** They are structurally identical to Government Administration, not to a
 railway.
 
@@ -185,7 +201,7 @@ One contrast worth noting: Government Administration's *base* PMs
 paper arriving only at later PMs. Our design front-loads horses from the first
 PM instead, because paying for infrastructure in goods is the mod's whole point.
 
-### Infrastructure Building — `construction_cost_medium` (400), employment 500/level
+### Road Works (`building_boi_infrastructure`) — `construction_cost_low` (200 since 2026-11-08; was medium, 400), employment 500/level
 
 Government-funded, so employment is a permanent budget line. **500 per level**,
 matching Government Administration's own scale (500 clerks/level).
@@ -204,7 +220,7 @@ The 500 splits into **400 technical** (set by the method PM group) and
 |---|---|---|---|
 | pm_cart_roads | **400** | — | — |
 | pm_macadam_roads | 350 | 50 | — |
-| pm_rail_network | 275 | 100 | 25 |
+| pm_steam_rolled_roads | 275 | 100 | 25 |
 | pm_motor_roads | 200 | 150 | 50 |
 | pm_modern_highways | **125** | **175** | **100** |
 
@@ -243,20 +259,94 @@ Two consequences worth knowing:
 
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_cart_roads | start | horses 10 | 300 | 15 | 20 |
-| pm_macadam_roads | 2 | horses 12, tools 3 | 480 | 22 | 22 |
-| pm_rail_network | 3 | horses 8, transportation 10 | 540 | 30 | 18 |
-| pm_motor_roads | 4 | transportation 12, oil 5 | 560 | 38 | 15 |
-| pm_modern_highways | 5 | transportation 15, automobiles 3 | 750 | 48 | 16 |
+| pm_cart_roads | start | horses 10 | 300 | 10 | 30 |
+| pm_macadam_roads | 2 | horses 12, tools 3 | 480 | 15 | 32 |
+| pm_steam_rolled_roads | 3 | horses 9, tools 3, coal 3, **engines 2** | 600 | 19 | 32 |
+| pm_motor_roads | 4 | horses 3, automobiles 3, oil 3, **engines 2** | 630 | 24 | 26 |
+| pm_modern_highways | 5 | automobiles 5, oil 5, **engines 2** | 820 | 32 | 26 |
 
-Zero salable output — this building only produces a state modifier.
+**Engines from Steam-Rolled Roads on (2026-11-10).** Steam rollers, then motor plant: 2
+engines a level (Steam-Rolled gave up 3 horses for them). BOI railways give no
+infrastructure, so fewer were built and engine and steel demand fell with them
+(steel −34% and engines −37% against vanilla at 1876, iteration 4 of 9 Nov).
 
-**The swing:** in 1836 a railway level *earned* £240 and gave 20 infrastructure.
-An Infrastructure level *costs* £300 and gives 15. That is a ~£540 per-level
-turnaround, plus wages. Efficiency improves with era (£20 → £15 per infra), so
-modernisation is rewarded.
+Zero salable output — this building only produces a state modifier. A shortage of
+inputs cuts the infrastructure too: in a 2026-11-03 probe, +100 fell to +65 with the
+input at 1% of demand, and +48 with it absent.
 
-### Harbour Works — coastal only, `construction_cost_medium` (400), employment 500/level
+**The swing:** in 1836 a railway level *earned* £240 and gave 20 infrastructure. A
+Road Works level *costs* £300 and gives 10.
+
+### Rail Works — `construction_cost_high` (600), employment 500/level
+
+Needs a railway in the state (`possible`, which blocks new and further levels) and
+the `railways` technology. 400 technical staff plus 100 administrative, with its own
+`pmg_boi_rail_administration`.
+
+**Capped per state since 2026-11-07** (`has_max_level`; [Rail Network Survey
+proposal](docs/plans/01_RAIL_SURVEY_PROPOSAL.md)), and the infrastructure raised to
+match: 3× on 2026-11-07, 2.5× since 2026-11-08. The cap is 1 level, 2 in states of 70+
+provinces and 4 in states of 230+ (2/4/6 until 2026-11-08). A
+completed survey adds 1–5 levels per surveyed state, by quality. The AI pass adds 3,
+one year in four, to up to 5 states at the cap and short of infrastructure. Test values.
+
+| PM | Unlock | Input | £ in | Infra | £/infra |
+|---|---|---|---|---|---|
+| pm_permanent_way | `railways` | transportation 30, iron 3 | 1,020 | 32.5 (13 before) | 31 |
+| pm_steel_track | `steel_railway_cars` | transportation 38, steel 4 | 1,340 | 50 (20) | 27 |
+| pm_electric_signalling | `electric_railway` | transportation 53, steel 5 | 1,840 | 67.5 (27) | 27 |
+| pm_national_rail_grid | `compression_ignition` | transportation 68, steel 6 | 2,340 | 82.5 (33) | 28 |
+
+**Since 2026-11-10** each tier buys the transportation one same-era vanilla railway
+level makes (early 20, steam 25, electric 35, diesel 45; was 8/10/12/15), and its own
+track: iron, then steel. Later the same day (steel log, iteration 2) the transportation
+went to 1.5 railway levels (30/38/53/68). So a Rail Works level needs one and a half
+railway levels' output beside it, which is the pull on railways (and their engines and steel).
+
+Rail Network Survey, per survey: goal = the states' shares (6 each, plus 0.15 per urban
+centre level up to 18, plus 20% for each earlier survey of that state; 50% until 2026-11-08), divided by
+1 + 0.15 per state after the first. Progress is 1 a month, plus up to 0.5 from surplus
+bureaucracy. Cost is £60 per state plus GDP / 50,000 a week. Balance runs:
+`docs/reports/rail_survey_7_Nov_2026/BALANCE_LOG.md`.
+
+### Financing, per works building
+
+Each building has its own group on the same three laws:
+
+| | Statute Labour | Tolls and Dues | State Funding |
+|---|---|---|---|
+| Goods input | -30% | -50% (-35% until 2026-11-10) | Baseline |
+| Staff | Unchanged | -60 laborers, +15 shopkeepers, +3 capitalists: wage-neutral (+50 and +10 until 2026-11-10, which tripled the wage weight of those posts) | Baseline |
+| Infra per level | Road -2, Rail -6.25 (-2.5 before the 2.5× change), Harbour -1.5 | Unchanged | Baseline |
+| +15% of state infrastructure | No | Road Works only | No |
+| Working-adult ratio, country-wide (on the law) | -0.02, every pop type (per-level peasant mortality until 2026-11-09) | No | No |
+| Farm and ranch throughput, country-wide (on the law) | +5% (+1% per level until 2026-11-09) | No | No |
+
+### Housing roster
+
+**Changed 2026-11-08** (plan 6; all test values; the roster in `tools/Housing-Tiers.ps1` is the source):
+
+| Tier | Change |
+| --- | --- |
+| Slum Districts | −0.5% prestige per staffed level; +50 pollution per staffed level; can't be built in a modernised state |
+| Workers' Rows | −0.25% prestige per staffed level; can't be built in a modernised state |
+| Tenement Blocks | −0.125% prestige per staffed level |
+| Elevator Apartments | +0.3% migration pull per staffed level (new) |
+| Elevator Residences | migration pull +0.2% → +0.4% |
+| Motor Suburbs | migration pull +0.3% → +0.5% |
+| Municipal Estates | socialist governments only; 14 basic + 2 luxury on 1.25 infrastructure (was 10 + 0 on 1.5); low construction cost (was medium); +0.4% migration pull |
+| Serviced Town (company housing) | +0.05% migration pull per staffed level of the workplace |
+
+Company housing tiers now follow vanilla Labour Rights (Work Camp under No Workers' Rights, Work Town under Regulatory Bodies, Serviced Town under Worker Protections). City Modernisation: +20% state construction from the first clearance until 5 years after completion, weekly cost GDP/40,000 + £80 per state. Dedicated Road Fund: Road Works goods −25%, market access cost +2%.
+
+`tools/Housing-Tiers.ps1` is the single source of housing numbers; see
+[the proposal](docs/plans/04_HOUSING_TIERS_PROPOSAL.md) for why. Light and Heat gives
++10% (wood), +30% (oil, needs `pumpjacks`) or +60% (electricity, needs
+`electrical_generation` and local supply) of a building's own output, with fuel costing
+half that output's value at base price. Slums and Town Houses both cost 200
+construction points after the 2026-11-03 passes, and basic seed coverage is 0.92.
+
+### Harbour Works — coastal only, `construction_cost_low` (200 since 2026-11-08; was medium, 400), employment 500/level
 
 Dock labour is heavier on clerks than roadwork — manifests, customs, and
 harbour dues are paperwork a road never generates — so clerks sit at 75 rather
@@ -289,14 +379,17 @@ Infrastructure building throughout.
 
 | PM | Era | Inputs | £ in | Infra | £/infra |
 |---|---|---|---|---|---|
-| pm_coastal_lighters | start | merchant_marine 4 | 200 | 10 | 20 |
-| pm_steam_lighters | 3 (`gantry_cranes`) | merchant_marine 5, coal 3 | 340 | 18 | 19 |
-| pm_electrified_quays | 4 (`concrete_dockyards`) | merchant_marine 6, electricity 4 | 420 | 25 | 17 |
+| pm_coastal_lighters | start | clippers 3 | 180 | 7 | 25.7 |
+| pm_steam_lighters | 3 (`gantry_cranes`) | steamers 3, steel 2, coal 3 | 400 | 12 | 33.3 |
+| pm_electrified_quays | 4 (`concrete_dockyards`) | steamers 3, steel 3, electricity 4 | 480 | 17 | 28.2 |
 
-Priced at the **same £/infra as the main building on purpose**. Coastal states
+Priced at **about the same £/infra as Road Works on purpose**. Coastal states
 do not get *cheaper* infrastructure, they get *more total capacity* — and they
-pay for it in merchant marine, which has its own opportunity cost in prestige
-and trade. That keeps the coastal advantage real without making inland
+pay for it in boats and cranes bought from the shipyards: clippers, then
+steamers and steel. Until 2026-11-10 it was merchant marine (4/5/6), which ran
+dearer than in vanilla (53–65 against 44–57 in the 9 Nov games). `gantry_cranes`
+unlocks both Steam Lighters and vanilla's metal shipbuilding, so steamers arrive
+with the tier that needs them. That keeps the coastal advantage real without making inland
 development feel punitive.
 
 ### Haulage PMs — horses on the base tier, tapering into rail
@@ -345,17 +438,17 @@ permanent baseline output:
 
 | PM | + horses | Note |
 |---|---|---|
-| pm_home_workshops_no_building_subsistence_pasture | 0.25 | law_collectivized_agriculture |
-| pm_home_workshops_building_subsistence_pasture | 0.25 | everything else |
+| pm_home_workshops_no_building_subsistence_pasture | 0.15 | law_collectivized_agriculture |
+| pm_home_workshops_building_subsistence_pasture | 0.15 | everything else |
 
 These two are the halves of one PM group split on a law, so exactly one is
 always active — covering the trickle under every set of laws. The `pm_serfdom_*`
 variants sit in a separate additive group and are untouched.
 
-This is a small net buff to subsistence output (+£7.5 against the block's ~£20).
+This is a small net buff to subsistence output (+£4.5 against the block's ~£20).
 Deliberate: the alternative was cutting an existing output, which is far more
-invasive. If the floor proves too thin, extending to
-`pm_*_building_subsistence_farm` is the first thing to try.
+invasive. It was +0.25 until the 2026-11-01 horse scarcity pass, which cut it so
+that pastures prop up horse-poor regions less.
 
 ### Cavalry upkeep
 
@@ -388,7 +481,7 @@ self-curing horse shortage.
 |---|---|---|---|
 | Public Works | 1–6 | 20 | replaces starting Port and Railway infrastructure |
 | Harbour Works | 1–2 | 139 | replaces starting Port infrastructure where a port hub exists |
-| Horse Ranch | **1–8** | 225 | curated; 857 total levels — see below |
+| Horse Ranch | **1–7** | 216 | curated and tiered by horse history; 492 total levels — see below |
 
 **Infrastructure follows the actual state owner.** The generated plan covers
 each starting owner separately, including split state regions. It seeds 40
@@ -415,9 +508,15 @@ passing the core-culture proxy; their previously safe three levels are an upper
 bound. Baseline levels of 4/6/8 by declared arable land are reduced according
 to regional horse-breeding suitability; 25 candidate states lose their ranches.
 
+**Horses are deliberately scarce at the start (2026-11-01).** The earlier 857-level
+seed left the world at 102% of demand, with 41% of demand buying below base price.
+Each state now keeps a share of those levels by its horse history, set in
+`tools/horse_seed_tiers.tsv`: 85% in great horse country, 60% in established breeding
+regions, 35% in ordinary farming country, 25% in humid and tropical country. See
+[`tools/HORSE_SEED_1836.md`](tools/HORSE_SEED_1836.md) for the tiers and measured results.
+
 The trade-off is fewer seeded ranch states than the original 636-state plan.
-The subsistence pasture trickle is small relative to the opening horse demand;
-players and the AI still need to expand ranches. Public Works and Harbour Works are not rural,
+Players and the AI need to expand ranches. Public Works and Harbour Works are not rural,
 cost no arable land, and are seeded everywhere they apply.
 
 **Colonised states are deliberately not seeded.** History only covers states
@@ -445,7 +544,7 @@ only exists where the seeding script places ranches. If horses spike, every
 state's infrastructure gets expensive simultaneously. Mitigations, in order of
 preference:
 
-1. Seed generously — more horse ranch levels than look necessary.
+1. Raise the retained shares in `tools/Set-HorseSeedTiers.py`, tier 2 first.
 2. Drop `pm_cart_roads` to horses 8 (£240).
 3. Halve the transport-PM horse additions.
 
@@ -539,15 +638,15 @@ intended shape — horses are an early-game burden that industrialisation escape
 
 ### The caveat that matters: horses will not trade at par
 
-Seeded Horse Ranch supply is **10,284 horses/week before state modifiers**
-(857 levels × 12). Static known demand is **10,494/week**:
+Seeded Horse Ranch supply is **5,904 horses/week before state modifiers**
+(492 levels × 12). Static known demand is **10,494/week**:
 400 Public Works, 7,059 haulage, 2,257 farm draft animals, and 778 cavalry.
-The new ranch locations, level choices, and land audit are documented in
+The ranch locations, level choices, and land audit are documented in
 [`tools/HORSE_SEED_1836.md`](tools/HORSE_SEED_1836.md).
-Subsistence pastures add some supply, while dynamically created Urban Centers
-add demand. Ranch supply is **210/week below** this known demand before pasture
-output and state modifiers. Actual opening prices and shortages must be measured by market;
-the cost examples below scale with horse price:
+Subsistence pastures add supply, while dynamically created Urban Centers add
+demand. Measured across every state in 1836, supply is **8,352 against demand of
+12,801 (65%)**, on purpose. Both figures count traded horses, so the balance
+without trade is a little tighter. The cost examples below scale with horse price:
 
 | Building | Margin | @30 (par) | @45 (1.5×) | @52.5 (1.75×, price ceiling) |
 |---|---|---|---|---|
@@ -563,6 +662,6 @@ a quarter of its goods margin in 1836 is a real risk of unprofitable extraction
 and a stalled early economy. "Margin" here is goods revenue minus goods inputs,
 not profit after wages.
 
-**Levers, cheapest first:** drop `pm_road_carts` from 3 horses to 2 or 1; raise
-the subsistence pasture output above 0.25; loosen `curate.awk` to seed more
-ranches; or lower the `horses` base cost below 30.
+**Levers, cheapest first:** raise the retained shares in
+`tools/Set-HorseSeedTiers.py`; drop `pm_road_carts` from 3 horses to 2 or 1; raise
+the subsistence pasture output above 0.15; or lower the `horses` base cost below 30.

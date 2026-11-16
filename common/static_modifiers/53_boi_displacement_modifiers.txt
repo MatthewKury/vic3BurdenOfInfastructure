@@ -1,0 +1,42 @@
+﻿# ================================================================
+#  Burden of Infrastructure — displacement modifiers (2026-11-08)
+#  The lower classes bear the cost of the rail survey and City
+#  Modernisation. Deaths and migration, not standard of living (the mod's
+#  rule since 2026-11-01). All numbers are test values.
+# ================================================================
+
+# Country, 5 years. A rehousing pledge was broken.
+boi_pledge_broken = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	country_legitimacy_base_add = -10
+}
+
+# State, 1 year. Fever in the navvies' camps.
+boi_disp_navvy_fever = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_mortality_mult = 0.05
+}
+
+# State, 1 year. Cottagers turned off the land for the line.
+boi_disp_cottagers = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_negative.dds
+	state_migration_pull_mult = -0.1
+}
+
+# State, 2 years. The displaced crowd into what is left.
+boi_disp_overcrowding = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_mortality_mult = 0.05
+}
+
+# State, 2 years. Rent controls deter builders.
+boi_disp_rent_control = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_construction_mult = -0.05
+}
+
+# State, 1 year. Cholera in the crowded courts.
+boi_disp_cholera = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_mortality_mult = 0.1
+}

@@ -1,0 +1,5 @@
+﻿# Engine probe (not shipped). Own group so the level-removal probe has a known usage.
+bg_boitm_probe_usage = {
+	parent_group = bg_public_infrastructure
+	infrastructure_usage_per_level = 10
+}

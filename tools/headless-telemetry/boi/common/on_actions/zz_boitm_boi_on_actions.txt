@@ -6,3 +6,4 @@ on_yearly_pulse_country = {
 		boitm_boi.1
 	}
 }
+

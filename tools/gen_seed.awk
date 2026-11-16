@@ -7,7 +7,7 @@
 #   4 horse_seed_additions.tsv STATE \t levels (reviewed new ranches)
 #   5 horse_seed_holds.tsv STATE \t levels (keep proven-safe unincorporated seed)
 #   6 infrastructure_seed_plan.tsv STATE \t TAG \t Public Works \t Harbour Works
-#   7 horse_seed_reductions.tsv STATE \t final Horse Ranch levels (0 removes)
+#   7 horse_seed_reductions.tsv STATE \t final Horse Ranch levels (0 removes), from Set-HorseSeedTiers.py
 
 BEGIN { FS = "\t" }
 
@@ -25,7 +25,10 @@ FILENAME ~ /ranch\.txt$/ {
     next
 }
 FILENAME ~ /infrastructure_seed_plan\.tsv$/ {
-    if ($1 ~ /^STATE_/ && $2 ~ /^[A-Z0-9_]+$/ && $3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/ && ($3 + $4) > 0) {
+    # 2026-11-13 (plan 12): Road and Harbour Works are retired. The Public Works
+    # hub has its own seed (tools/Build-PublicWorksSeed.py), so this plan is no
+    # longer emitted; the file is still read so the input list stays the same.
+    if (0 && $1 ~ /^STATE_/ && $2 ~ /^[A-Z0-9_]+$/ && $3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/ && ($3 + $4) > 0) {
         key = $1 SUBSEP $2
         works[key] = $3 + 0
         harbour[key] = $4 + 0
@@ -94,7 +97,7 @@ END {
     }
     for (s in reduction) {
         if (!(s in states) || !((s in ranch) || (s in extra)) ||
-            reduction[s] >= base_ranch_level(s)) {
+            reduction[s] > base_ranch_level(s)) {
             printf "invalid Horse Ranch reduction: %s\n", s > "/dev/stderr"
             exit 1
         }
@@ -145,14 +148,21 @@ END {
     print "#  4 below 50, 6 from 50 to 99, and 8 at 100 or above. Fifteen"
     print "#  baseline states are explicitly unincorporated in game history;"
     print "#  their previously safe 3 levels are a cap (horse_seed_holds.tsv)."
-    print "#  Fourteen new core, sole-owner, incorporated states with safe"
-    print "#  land headroom are listed in horse_seed_additions.tsv."
-    print "#  Lower 1836 levels follow horse_seed_reductions.tsv. Zero removes"
-    print "#  a ranch; reductions favor less suitable breeding regions."
+    print "#  Twenty new sole-owner, incorporated states with safe land"
+    print "#  headroom are listed in horse_seed_additions.tsv. All are core"
+    print "#  except Bihar and East Java (company and colonial states, 1.15"
+    print "#  balance pass 3), so that British India and the Dutch East"
+    print "#  Indies open with some horse production."
+    print "#  Final 1836 levels follow horse_seed_reductions.tsv, which applies"
+    print "#  each state's historical tier in horse_seed_tiers.tsv. Zero removes"
+    print "#  a ranch; great horse country loses the least."
     print "#"
     print "#  Public Works and Harbour Works are NOT rural and cost no"
     print "#  arable land. Starting levels replace vanilla port and rail"
-    print "#  infrastructure with minimal unavoidable rounding surplus."
+    print "#  infrastructure with minimal unavoidable rounding surplus, plus"
+    print "#  47 Public Works levels (1.15 balance pass 2, 2026-11-06) in the"
+    print "#  26 states the opening left short, mostly through the housing"
+    print "#  seed's own infrastructure use, where horses are obtainable."
     print "#"
     print "#  Only the base method PM is forced. Administration PMs are left"
     print "#  unset so the engine resolves them from each country's"

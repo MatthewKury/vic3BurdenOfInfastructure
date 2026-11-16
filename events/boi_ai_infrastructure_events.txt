@@ -3,8 +3,8 @@
 # ================================================================
 #  Burden of Infrastructure — AI infrastructure construction
 #
-#  The engine's government-building AI does not count Public Works
-#  or Harbour Works as infrastructure spending. Headless runs showed
+#  The engine's government-building AI does not count the works
+#  buildings as infrastructure spending. Headless runs showed
 #  states 30 short of infrastructure for years, with ai_value 16000+
 #  and nothing ever queued (tools/AI_VALIDATION.md). This hidden
 #  monthly event fills that gap for AI countries only: it queues one
@@ -17,46 +17,74 @@
 #  Values: common/script_values/51_boi_ai_construction_values.txt.
 # ================================================================
 
-boi_ai_infrastructure.1 = {
+# boi_ai_infrastructure.1 (queue Road, Rail or Harbour Works for the AI) was retired
+# 2026-11-13 with the works themselves: the Public Works hub is placed and sized by
+# script (events/boi_public_works_events.txt), so the AI never has to build it.
+
+# Municipal Estates are government-funded housing, which the engine's AI ignores
+# like the works buildings. Queues one level at a time in the state where housing
+# is dearest, for solvent countries with the tech. The tech is checked here
+# because start_building_construction ignores unlocking_technologies. So is the
+# building's own possible (a socialist-type government), through the same scripted
+# trigger the building uses; without it the AI tried builds it wasn't allowed and
+# used up its cooldown (review finding C3, fixed 2026-11-09).
+boi_ai_infrastructure.2 = {
+	type = country_event
+	hidden = yes
+
+	trigger = {
+		is_player = no
+		has_technology_researched = socialism
+		boi_hev_socialist_government = yes
+		in_default = no
+		scaled_debt < 0.5
+		NOT = { has_variable = boi_ai_municipal_cooldown }
+		any_scope_state = { boi_ai_state_wants_municipal_estates = yes }
+	}
+
+	immediate = {
+		set_variable = { name = boi_ai_municipal_cooldown value = yes days = 180 }
+		random_scope_state = {
+			limit = { boi_ai_state_wants_municipal_estates = yes }
+			start_building_construction = building_boi_municipal_estates
+		}
+	}
+}
+
+# Rehousing pledges (je_boi_rehousing_pledge). The AI takes the pledge in
+# events but never builds the housing by itself: in p6_iter1 (2026-11-09)
+# Britain's City Modernisation pledge ended 0 of 12 in both games once pledges
+# were counted per state (C5). This queues one level of Regulated Terraces a
+# month in the pledge state furthest short, never more levels in a state than
+# its own target. Regulated Terraces have no possible, and the pledge options
+# need urban_planning, the building's tech, which is checked again here
+# because start_building_construction ignores unlocking_technologies.
+boi_ai_infrastructure.3 = {
 	type = country_event
 	hidden = yes
 
 	trigger = {
 		is_player = no
 		in_default = no
-		scaled_debt < 0.75
-		boi_ai_works_under_construction < boi_ai_works_construction_cap
-		any_scope_state = { boi_ai_state_wants_works = yes }
+		has_journal_entry = je_boi_rehousing_pledge
+		has_technology_researched = urban_planning
+		any_scope_state = { boi_ai_state_wants_pledge_housing = yes }
 	}
 
 	immediate = {
 		ordered_scope_state = {
-			limit = { boi_ai_state_wants_works = yes }
-			order_by = boi_ai_infrastructure_shortfall
+			limit = { boi_ai_state_wants_pledge_housing = yes }
+			order_by = boi_pledge_state_shortfall
 			position = 0
 			check_range_bounds = no
-
-			# is_under_construction misses a new level on an existing
-			# building, so without these the event re-queued the same
-			# state every month until the first level finished (4 levels
-			# for a 20-point shortfall). One level per state per year;
-			# _recent feeds the country cap while the level is built.
-			set_variable = { name = boi_ai_works_cooldown value = yes days = 365 }
-			set_variable = { name = boi_ai_works_recent value = yes days = 180 }
-
-			# Harbour Works only where it is the cheaper input: horses
-			# dear and merchant marine not. Otherwise Public Works.
 			if = {
-				limit = {
-					is_coastal = yes
-					sg:horses = { state_goods_pricier >= 0.25 }
-					NOT = { sg:merchant_marine = { state_goods_pricier >= 0.25 } }
-				}
-				start_building_construction = building_boi_harbour_works
+				limit = { has_variable = boi_pledge_state_queued }
+				change_variable = { name = boi_pledge_state_queued add = 1 }
 			}
 			else = {
-				start_building_construction = building_boi_infrastructure
+				set_variable = { name = boi_pledge_state_queued value = 1 }
 			}
+			start_building_construction = building_boi_regulated_terraces
 		}
 	}
 }

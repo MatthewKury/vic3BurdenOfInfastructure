@@ -1,0 +1,23 @@
+﻿namespace = boi_public_works
+
+# ================================================================
+#  Burden of Infrastructure — Public Works hub (plan 12)
+#
+#  Hidden monthly update of every state's hub: placement, level,
+#  input trim, and the decay-penalty cancellation. The work is in
+#  boi_pw_update_state (common/scripted_effects/57_boi_public_works_effects.txt).
+#  Hooked from common/on_actions/zz_boi_on_actions.txt.
+# ================================================================
+
+boi_public_works.1 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		any_scope_state = { count >= 1 }
+	}
+	immediate = {
+		every_scope_state = {
+			boi_pw_update_state = yes
+		}
+	}
+}

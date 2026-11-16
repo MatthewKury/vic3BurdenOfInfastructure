@@ -24,8 +24,16 @@ world totals long before they are in any single country.
 | Name | Members | Span | Setup |
 |---|---|---|---|
 | `vanilla_1836_1846` | 10 | 1836-01 to 1846-01, quarterly (41 snapshots) | Vanilla 1.13.11 with all installed DLC, no mods, `-handsoff` observer from the 1836 bookmark |
+| `vanilla115_1836_1936` | 8 that passed: 3 to 1846, 3 to 1856, 2 to 1886 | 1836-01 to 1886-01, quarterly | Vanilla 1.15.0 (Steam build 26453692), otherwise the same setup; telemetry modules core, parity and ensemble; five-yearly autosaves in the run folders. The planned two 100-year games never finished: four attempts crashed, and collection was stopped on 2026-11-05 |
+| `vanilla115_1836_1936_all` | 13: the 8 above plus 5 crashed games up to their last complete snapshot | 13 members at 1846, 10 at 1856, 5 at 1886, 2 at 1896, 1 to 1928-07 | Built with `--include-failed`. The crashes look unrelated to how the game develops, so the partial games are fair extra members. One (crashed in 1899) uses snapshot version 4 and starts in April 1836 |
 
-Run `SELECT * FROM ensemble` for the live list.
+Run `SELECT * FROM ensemble` for the live list. Compare a mod with the baseline of its own game
+version: 1.15 redrew the 1836 map, so a 1.13 baseline mixes the patch into the result.
+
+In a mixed-length ensemble, `world_stats.n` falls in later years and the statistics cover only
+the members still playing. For a report, read it at one year with
+`Make-EnsembleReport.py --horizon YEAR`: only members that reached January of that year, cut
+there. The 2026-11-05 reports are in `docs/reports/vanilla115_baseline_5_Nov_2026/`.
 
 ## Making or extending one
 
@@ -36,14 +44,24 @@ Run `SELECT * FROM ensemble` for the live list.
 .\tools\Invoke-HeadlessEnsemble.ps1 -Name boi_1836_1846 -Runs 10
 # Rebuild an ensemble's rows from its manifest without running the game
 .\tools\Invoke-HeadlessEnsemble.ps1 -Name vanilla_1836_1846 -Control -BuildOnly
+# Members of different lengths in one ensemble, shortest first, keeping autosaves
+.\tools\Invoke-HeadlessEnsemble.ps1 -Name vanilla115_1836_1936 -Control -Autosave five_year `
+    -Plan '1846.1.15=3','1856.1.15=3','1886.1.15=2','1936.1.15=2'
 ```
 
-The driver runs `Test-Headless.ps1 -Ensemble -NoSaves -NoFixtures` repeatedly.
-It records the run folders in `tools/headless-runs/ensembles/<name>.json`, then
+The driver runs `Test-Headless.ps1 -Ensemble -NoFixtures -LongRun` repeatedly
+(`-LongRun` leaves out the crash-linked `boi_states` module; `-NoSaves` is added
+unless `-Autosave` is set). With `-Plan`, it rebuilds the database after each
+length, so the data so far is usable while longer games play, and it builds what
+passed before stopping on repeated failures. Each game's time limit is 6 real
+minutes per game year, or `-TimeoutMinutes` if that is longer. It records the run folders in `tools/headless-runs/ensembles/<name>.json`, then
 calls `Build-EnsembleDb.py`. The builder drops any snapshot that is incomplete and
 says so. A snapshot is incomplete when it has no header line, the same
-country, state or market appears twice, or its line groups have different
-counts, which would mean the log mirror lost or repeated lines. Rerunning the
+country, state or market appears twice, its line groups have different
+counts (the log mirror lost or repeated lines), or it has no state or no
+market lines. With `--include-failed`, a crashed run's last snapshot is always
+dropped, because a cut that falls cleanly between two lines passes every count
+check. Rerunning the
 same command tops the ensemble up to
 `-Runs` passing members. Raising `-Runs` later adds members the same way. Runs
 that fail the harness's checks stay in the manifest but are left out of the
@@ -55,11 +73,17 @@ after 5 minutes without log output, and keeps the run when the final snapshot
 was already taken.
 
 The snapshots come from the `ensemble` telemetry module
-(`tools/headless-telemetry/ensemble/`). The first country whose monthly pulse
-lands in January, April, July or October logs every country, state and market
-on that day. So all values in one snapshot share a date: in practice the 1st or
-2nd of the month. The module only reads vanilla data, so BOI and vanilla
-ensembles are measured identically.
+(`tools/headless-telemetry/ensemble/`). From snapshot version 4 (2026-11-05), the global
+`on_monthly_pulse`, which has no root scope, calls the module's own on_action
+`boitm_ens_monthly`. In January, April, July and October that on_action logs every country,
+state and market on the 1st of the month. The first snapshot is April 1836, because the
+global pulse doesn't fire in the opening month. Up to version 3, the snapshot ran inside the
+first country's `on_monthly_pulse_country` and started on 2 January 1836. Three 1.15
+100-year attempts crashed at the same address inside that snapshot, so the hook was moved.
+The move **didn't stop the crash**: the next game crashed at the same address in 1899 (see
+the lessons file, "Unsolved"). The metrics didn't change. The header line
+records the version (`BOIENS|snapshot|<date>|…|version=N`). The module only reads vanilla data,
+so BOI and vanilla ensembles are measured identically.
 
 ## Reports
 
@@ -90,11 +114,11 @@ Members are numbered `1..n` within an ensemble.
 | `snapshot` | member × quarter | date of the snapshot |
 | `country` | country label | `country_id` ↔ `tag`. Tags are not unique in-game: civil-war revolutionaries share their parent's tag. Within each run, the first country seen under a tag keeps the plain tag (`GBR`), and later ones are labelled `GBR#2`, `GBR#3` |
 | `run_country` | member × country | the engine's numeric country id behind each label in that member, and the first quarter it appeared |
-| `state_region` | state region | engine region id ↔ English name |
+| `state_region` | state region | database id ↔ English name. Regions are matched by name, not by engine index, because a patch can renumber them (1.15 did, for 72). So the same id means the same region in every ensemble |
 | `goods` | goods | `goods_id` ↔ goods key, and `base_price` read from the game install at build time. `meta.price_range` holds the engine's `PRICE_RANGE`: market prices are clamped to base × (1 ± 0.75) |
 | `metric` | column | unit and description of every metric column, by table |
 | `country_obs` | member × quarter × country | ~70 country metrics, see below; `market_id` is the market the country trades in |
-| `state_obs` | member × quarter × state | 21 state metrics; a state region split between owners has one row per owner |
+| `state_obs` | member × quarter × state | 26 state metrics; a state region split between owners has one row per owner |
 | `market_obs` | member × quarter × market × goods | `price`, `buy` (demand), `sell` (supply) per market (`market_id` = owner's `country_id`). Goods with no buy and no sell orders in a market are left out |
 | `world_obs` | member × quarter × metric | world aggregates: sums, and population-weighted means for SoL, literacy, wage, market access and turmoil |
 | `world_goods` | member × quarter × goods | world supply and demand, demand-weighted average price |
@@ -112,7 +136,7 @@ tags, state names, goods names and dates.
 - **Budget** (weekly): `gold`, `debt` (scaled), `credit`, `income`, `expenses`, `fixed_income`, `fixed_expenses`, `investment_income`, `tax_level`, `gov_wage_level`, `mil_wage_level`
 - **Administration:** `bureaucracy`, `bureaucracy_usage`, `authority`, `authority_usage`, `influence`, `influence_usage`
 - **Infrastructure** (BOI's core concern): `infrastructure`, `infrastructure_usage`, `deficit_states`, `railway_levels`, `port_levels`, `construction_levels`, `urban_center_levels`, `trade_center_levels`
-- **Buildings:** `building_levels` (non-subsistence), `admin_levels`, `university_levels`, `livestock_ranch_levels`, `logging_levels`, `shipyard_levels`, `tooling_levels`, `steel_levels`, `coal_levels`, `iron_levels`, and building-group totals `bg_*_levels` (agriculture, subsistence, plantations, ranching, extraction, light, heavy and military industry, government, military, infrastructure)
+- **Buildings:** `building_levels` (non-subsistence), `admin_levels`, `university_levels`, `livestock_ranch_levels`, `logging_levels`, `shipyard_levels`, `tooling_levels`, `steel_levels`, `coal_levels`, `iron_levels`, `copper_levels` (from telemetry version 3), and building-group totals `bg_*_levels` (agriculture, subsistence, plantations, ranching, extraction, light, heavy and military industry, government, military, infrastructure)
 
 ### State metrics (`state_obs`)
 
@@ -120,7 +144,9 @@ tags, state names, goods names and dates.
 `unemployment_rate`, `incorporated`, `railway_levels`, `port_levels`,
 `urban_center_levels`, `construction_levels`, `building_levels`,
 `market_access`, `gdp`, `sol`, `wage`, `literacy`, `unemployed`, `radicals`,
-`loyalists`, `turmoil`, `migration`.
+`loyalists`, `turmoil`, `migration`. From telemetry version 3 (`vanilla115_1836_1936` onward;
+empty in older ensembles): `sol_poor`, `sol_middle`, `sol_rich`, `pollution_impact`,
+`pollution_generation`.
 
 ### Metrics with BOI in mind
 

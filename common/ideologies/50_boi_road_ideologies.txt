@@ -32,6 +32,7 @@ ideology_boi_manorial_roads = {
 		law_boi_statute_labour = strongly_approve
 		law_boi_turnpike_trusts = approve
 		law_boi_public_highways = disapprove
+		law_boi_road_fund = disapprove # BOI 2026-11-08
 	}
 }
 
@@ -43,6 +44,7 @@ ideology_boi_free_roads = {
 		law_boi_statute_labour = strongly_disapprove
 		law_boi_turnpike_trusts = disapprove
 		law_boi_public_highways = approve
+		law_boi_road_fund = approve # BOI 2026-11-08
 	}
 }
 
@@ -55,6 +57,7 @@ ideology_boi_turnpike_interest = {
 		law_boi_statute_labour = disapprove
 		law_boi_turnpike_trusts = strongly_approve
 		law_boi_public_highways = neutral
+		law_boi_road_fund = disapprove # BOI 2026-11-08
 	}
 }
 
@@ -69,6 +72,7 @@ ideology_boi_road_investors = {
 		law_boi_statute_labour = disapprove
 		law_boi_turnpike_trusts = approve
 		law_boi_public_highways = neutral
+		law_boi_road_fund = approve # BOI 2026-11-08
 	}
 }
 
@@ -80,5 +84,6 @@ ideology_boi_national_roads = {
 		law_boi_statute_labour = disapprove
 		law_boi_turnpike_trusts = disapprove
 		law_boi_public_highways = approve
+		law_boi_road_fund = strongly_approve # BOI 2026-11-08
 	}
 }

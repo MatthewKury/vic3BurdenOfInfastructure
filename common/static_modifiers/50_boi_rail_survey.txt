@@ -1,0 +1,37 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey modifiers
+#
+#  Design: docs/plans/01_RAIL_SURVEY_PROPOSAL.md. All numbers are
+#  test values.
+#
+#  The Rail Works cap modifiers were retired on 2026-11-13 with Rail
+#  Works (plan 12). A completed survey now sets the state variable
+#  boi_pw_survey_discount instead.
+# ================================================================
+
+# ── While a survey runs ─────────────────────────────────────────
+
+# Country. Scaled by the journal entry (scaling_modifiers_while_active)
+# with boi_rs_weekly_cost, so the cost follows GDP as it changes.
+boi_rail_survey_expenses = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	country_expenses_add = 1
+}
+
+# State. Marks the states under survey; no effect of its own.
+boi_rail_survey_underway = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_documents_positive.dds
+}
+
+# ── Event outcomes ──────────────────────────────────────────────
+
+# Interest groups. Two years, decaying.
+boi_rs_ig_angered = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fist_negative.dds
+	interest_group_approval_add = -2
+}
+
+boi_rs_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 2
+}

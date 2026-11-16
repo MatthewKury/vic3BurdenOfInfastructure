@@ -1,0 +1,53 @@
+﻿# ================================================================
+#  Burden of Infrastructure — "Ahead of the Traffic" modifiers (D1, 2026-11-09)
+#  Each lasts 5 years. All numbers are test values.
+# ================================================================
+
+# State. Town version, Industrialists: the spare roads serve the mills.
+boi_surplus_mills = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_group_bg_manufacturing_throughput_add = 0.1
+}
+
+# State. Town version, Petty Bourgeoisie: a market-town charter.
+boi_surplus_charter = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	state_migration_pull_mult = 0.15
+	state_construction_mult = 0.1
+}
+
+# Country. Town version: the government claims the works. Added with
+# multiplier = boi_surplus_press_control, so +3 to +12.
+boi_surplus_government_works = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	country_legitimacy_base_add = 3
+}
+
+# State. Country version, Industrialists: roads into the hinterland. Explicit
+# mining and logging keys rather than bg_extraction, whose reach to its child
+# groups is unverified.
+boi_surplus_hinterland = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds
+	building_group_bg_mining_throughput_add = 0.1
+	building_group_bg_logging_throughput_add = 0.1
+}
+
+# State. Country version, Landowners: the estates' harvest reaches market.
+boi_surplus_harvest = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds
+	building_group_bg_agriculture_throughput_add = 0.1
+	building_group_bg_ranching_throughput_add = 0.1
+	building_group_bg_plantations_throughput_add = 0.1
+}
+
+# State. Country version, Rural Folk: grain and doctors reach the villages.
+# Mortality, not SoL, as BOI's harms and helps are (2026-11-01).
+boi_surplus_villages = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	state_mortality_mult = -0.05
+}
+
+boi_surplus_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 3
+}

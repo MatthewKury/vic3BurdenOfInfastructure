@@ -73,3 +73,269 @@ boitm_luxury_housing_expensive_states = {
 		add = 1
 	}
 }
+
+# Levels on each company housing tier.
+boitm_no_housing_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_no_company_housing }
+		add = level
+	}
+}
+
+boitm_work_camp_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_work_camp }
+		add = level
+	}
+}
+
+boitm_work_town_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_work_town }
+		add = level
+	}
+}
+
+boitm_serviced_town_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_serviced_town }
+		add = level
+	}
+}
+
+# State scope: per-state housing log (boitm_housing.2).
+boitm_hs_population = { value = state_population }
+boitm_hs_infrastructure = { value = infrastructure }
+boitm_hs_usage = { value = infrastructure_usage }
+boitm_hs_urbanization = { value = total_urbanization }
+boitm_hs_incorporated = {
+	value = 0
+	if = {
+		limit = { is_incorporated = yes }
+		value = 1
+	}
+}
+boitm_hs_urban_center_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_urban_center }
+		add = level
+	}
+}
+boitm_hs_industry_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_group = bg_light_industry
+				is_building_group = bg_heavy_industry
+			}
+		}
+		add = level
+	}
+}
+boitm_hs_residential_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_group = bg_boi_residential
+				is_building_group = bg_boi_municipal_housing
+				is_building_group = bg_boi_temporary_housing
+			}
+		}
+		add = level
+	}
+}
+
+boitm_hs_horse_ranch_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_boi_horse_ranch }
+		add = level
+	}
+}
+
+# Yearly law state per country, read by tools/Get-CenturyDetail.py.
+# Company housing law, from vanilla Labour Rights since 2026-11-08:
+# 0 = No Workers' Rights (Work Camps), 1 = Regulatory Bodies (Work Towns), 2 = Worker Protections (Serviced Towns).
+boitm_law_employer_housing = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_regulatory_bodies }
+		value = 1
+	}
+	else_if = {
+		limit = { has_law = law_type:law_worker_protections }
+		value = 2
+	}
+}
+
+boitm_law_residential = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_boi_residential_standards }
+		value = 1
+	}
+}
+
+# 0 = Statute Labour, 1 = Turnpike Trusts, 2 = Public Highways.
+boitm_law_road = {
+	value = 0
+	if = {
+		limit = { has_law = law_type:law_boi_turnpike_trusts }
+		value = 1
+	}
+	else_if = {
+		limit = { has_law = law_type:law_boi_public_highways }
+		value = 2
+	}
+	else_if = {
+		limit = { has_law = law_type:law_boi_road_fund }
+		value = 3 # 3 = Dedicated Road Fund (2026-11-09; logged as 0 before)
+	}
+}
+
+boitm_igs_total = {
+	value = 0
+	every_interest_group = { add = 1 }
+}
+
+# Should equal boitm_igs_total: every group holds one housing stance.
+boitm_igs_with_housing_stance = {
+	value = 0
+	every_interest_group = {
+		limit = {
+			OR = {
+				has_ideology = ideology:ideology_boi_housing_reform
+				has_ideology = ideology:ideology_boi_housing_laissez_faire
+				has_ideology = ideology:ideology_boi_housing_moral_reform
+				has_ideology = ideology:ideology_boi_housing_recruit_fitness
+				has_ideology = ideology:ideology_boi_housing_tied_cottages
+				has_ideology = ideology:ideology_boi_housing_ratepayers
+			}
+		}
+		add = 1
+	}
+}
+
+# Ownership of private-type housing (all residential buildings except
+# Municipal Estates and shelters), added 2026-11-08 when the 1836 seed moved
+# from country to private owners. Whole-building buckets, since script
+# cannot sum owned levels: levels in buildings with any state share, and in
+# fully private ones. country_ownership_fraction and private_ownership_fraction
+# are vanilla building-scope triggers (06_portugal_politics.txt, achievements).
+boitm_res_private_type_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+		}
+		add = level
+	}
+}
+
+boitm_res_any_state_share_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0 # the fraction triggers error on unbuilt buildings
+			country_ownership_fraction > 0
+		}
+		add = level
+	}
+}
+
+boitm_res_fully_private_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0
+			private_ownership_fraction = 1
+		}
+		add = level
+	}
+}
+
+boitm_res_mostly_state_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_slums
+				is_building_type = building_boi_tenements
+				is_building_type = building_boi_regulated_terraces
+				is_building_type = building_boi_tenement_blocks
+				is_building_type = building_boi_model_dwellings
+				is_building_type = building_boi_apartments
+				is_building_type = building_boi_elevator_apartments
+				is_building_type = building_boi_luxury_apartments
+				is_building_type = building_boi_boulevard_apartments
+				is_building_type = building_boi_elevator_residences
+				is_building_type = building_boi_suburbs
+				is_building_type = building_boi_railway_suburbs
+				is_building_type = building_boi_streetcar_suburbs
+				is_building_type = building_boi_motor_suburbs
+			}
+			level > 0
+			country_ownership_fraction > 0.5
+		}
+		add = level
+	}
+}
+
+# Prestige, for the low-tier housing penalty (2026-11-08).
+boitm_prestige = {
+	value = prestige
+}

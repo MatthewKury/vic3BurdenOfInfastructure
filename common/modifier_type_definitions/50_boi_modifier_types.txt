@@ -57,3 +57,4 @@ goods_output_horses_mult={
 		ai_value=0
 	}
 }
+

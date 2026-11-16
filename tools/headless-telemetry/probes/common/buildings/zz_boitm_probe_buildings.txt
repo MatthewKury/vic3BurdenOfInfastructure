@@ -1,0 +1,60 @@
+﻿building_boitm_probe_free = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_free }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_probe_absent = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_absent }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_probe_short = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_short }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+}
+# possible false in a state with no railway.
+building_boitm_probe_gate = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_plain }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+	possible = { has_building = building_railway }
+}
+# A tech nobody has in 1836.
+building_boitm_probe_tech = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_plain }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+	unlocking_technologies = { paved_roads }
+}
+building_boitm_probe_req = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_plain pmg_boitm_req }
+	required_construction = construction_cost_low
+	downsizeable = no
+	ownership_type = no_ownership
+}
+# Uses 10 infrastructure per level, to see release on removal.
+building_boitm_probe_levels = {
+	building_group = bg_boitm_probe_usage
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	production_method_groups = { pmg_boitm_probe_plain }
+	required_construction = construction_cost_low
+	ownership_type = no_ownership
+}

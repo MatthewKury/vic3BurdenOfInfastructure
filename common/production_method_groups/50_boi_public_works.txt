@@ -1,0 +1,22 @@
+﻿# Public Works hub (plan 12). No ai_selection: the default, most_profitable,
+# moves a building that sells nothing to its cheapest PM (verified 1.15.1).
+pmg_boi_pw_mode = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	production_methods = {
+		pm_boi_pw_cart_roads
+		pm_boi_pw_macadam_roads
+		pm_boi_pw_rail_fed
+		pm_boi_pw_steel_rail
+		pm_boi_pw_motor_roads
+		pm_boi_pw_highways
+	}
+}
+
+pmg_boi_pw_harbour = {
+	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
+	production_methods = {
+		pm_boi_pw_coastal_lighters
+		pm_boi_pw_steam_lighters
+		pm_boi_pw_electrified_quays
+	}
+}

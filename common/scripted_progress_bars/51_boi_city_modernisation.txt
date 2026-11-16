@@ -1,0 +1,13 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation bar
+#  Mirrors var:boi_cm_progress through set_bar_progress in boi_cm_monthly.
+# ================================================================
+
+boi_cm_progress_bar = {
+	name = "boi_cm_progress_bar"
+	desc = "boi_cm_progress_bar_desc"
+	default_green = yes
+	start_value = 0
+	min_value = 0
+	max_value = 100
+}

@@ -1,0 +1,25 @@
+﻿# State scope. LABEL names the state and the step.
+boitm_st_log = {
+	debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|$LABEL$|k=[THIS.ScriptValue('boitm_st_k')|2];infra=[THIS.ScriptValue('boitm_st_infra')|2];usage=[THIS.ScriptValue('boitm_st_usage')|2];flat=[THIS.ScriptValue('boitm_st_flat')|2];mult=[THIS.ScriptValue('boitm_st_mult')|3];popadd=[THIS.ScriptValue('boitm_st_popadd')|3];popmax=[THIS.ScriptValue('boitm_st_popmax')|2];popmult=[THIS.ScriptValue('boitm_st_popmult')|3];pop=[THIS.ScriptValue('boitm_st_pop')|0]"
+	debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|$LABEL$_pm|cabs=[THIS.ScriptValue('boitm_st_has_cabs')|0];squares=[THIS.ScriptValue('boitm_st_has_squares')|0];levels=[THIS.ScriptValue('boitm_st_levels')|0];choice=[THIS.ScriptValue('boitm_st_choice_pm')|0];choice_mp=[THIS.ScriptValue('boitm_st_choice_mp_pm')|0];choice_same=[THIS.ScriptValue('boitm_st_choice_same_pm')|0];short=[THIS.ScriptValue('boitm_st_absent_short')|0];occ=[THIS.ScriptValue('boitm_st_occ')|1]"
+}
+
+# Country scope (France).
+boitm_st_log_all = {
+	random_scope_state = { limit = { state_region = s:STATE_ILE_DE_FRANCE } boitm_st_log = { LABEL = paris } }
+	random_scope_state = { limit = { state_region = s:STATE_LORRAINE } boitm_st_log = { LABEL = lorraine } }
+	random_scope_state = { limit = { state_region = s:STATE_CHAMPAGNE } boitm_st_log = { LABEL = champagne } }
+	random_scope_state = { limit = { state_region = s:STATE_PICARDY } boitm_st_log = { LABEL = picardy } }
+	random_scope_state = { limit = { state_region = s:STATE_NORMANDY } boitm_st_log = { LABEL = normandy } }
+	random_scope_state = { limit = { state_region = s:STATE_AQUITAINE } boitm_st_log = { LABEL = aquitaine } }
+	debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|fra_country|cabs=[THIS.ScriptValue('boitm_st_country_cabs')|0];uc_states=[THIS.ScriptValue('boitm_st_country_uc')|0]"
+	c:GBR ?= {
+		debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|gbr_country|cabs=[THIS.ScriptValue('boitm_st_country_cabs')|0];uc_states=[THIS.ScriptValue('boitm_st_country_uc')|0]"
+	}
+	c:PRU ?= {
+		debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|pru_country|cabs=[THIS.ScriptValue('boitm_st_country_cabs')|0];uc_states=[THIS.ScriptValue('boitm_st_country_uc')|0]"
+	}
+	c:RUS ?= {
+		debug_log = "BOISTT|[TimeKeeper.GetCurrentDate.GetString]|rus_country|cabs=[THIS.ScriptValue('boitm_st_country_cabs')|0];uc_states=[THIS.ScriptValue('boitm_st_country_uc')|0]"
+	}
+}

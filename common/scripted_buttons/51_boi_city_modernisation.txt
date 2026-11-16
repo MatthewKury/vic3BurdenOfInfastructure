@@ -1,0 +1,28 @@
+﻿# ================================================================
+#  Burden of Infrastructure — City Modernisation button
+# ================================================================
+
+# Abandons the works. Cleared states stay cleared; the bonus ends.
+boi_cm_cancel_button = {
+	name = "boi_cm_cancel_button"
+	desc = "boi_cm_cancel_button_desc"
+
+	visible = {
+		has_journal_entry = je_boi_city_modernisation
+	}
+
+	possible = {
+		NOT = { has_variable = boi_cm_cancelled }
+	}
+
+	effect = {
+		custom_tooltip = boi_cm_cancel_button_tt
+		hidden_effect = {
+			set_variable = boi_cm_cancelled
+		}
+	}
+
+	ai_chance = {
+		value = 0
+	}
+}

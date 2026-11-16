@@ -1,0 +1,60 @@
+﻿# ================================================================
+#  Burden of Infrastructure — event modifiers (2026-11-08)
+#  Public Works Financing phase 2 (events/boi_road_financing_phase2_events.txt)
+#  and horse events (events/boi_horse_events.txt). All numbers are test values.
+# ================================================================
+
+# ── Public Works Financing ──────────────────────────────────────
+
+# State, 3 years. Rebecca Riots: the tolls are lifted here, and the trusts
+# stop keeping the roads.
+boi_rf_tolls_abolished = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_infrastructure_mult = -0.1
+	state_market_access_price_impact = 0.05
+}
+
+# State, 3 years. Statute Labour commuted to a money rate: fewer days worked.
+boi_rf_duty_commuted = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_coins_negative.dds
+	state_infrastructure_mult = -0.05
+}
+
+boi_rf_ig_pleased = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_flag_positive.dds
+	interest_group_approval_add = 2
+}
+
+boi_rf_ig_angered = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fist_negative.dds
+	interest_group_approval_add = -2
+}
+
+# ── Horses ──────────────────────────────────────────────────────
+
+# Country, 4 or 8 months. The Great Epizootic: horses stand sick in their
+# stables, and freight stops.
+boi_great_epizootic = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	state_infrastructure_mult = -0.15
+	goods_output_horses_mult = -0.25
+}
+
+# State, 1 year. Glanders, culled.
+boi_glanders_cull = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	goods_output_horses_mult = -0.3
+}
+
+# State, 2 years. Glanders, quarantined: it lingers, and it spreads to people.
+boi_glanders_quarantine = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_fire_negative.dds
+	goods_output_horses_mult = -0.1
+	state_mortality_mult = 0.02
+}
+
+# Country, 1 year. Remounts taken from the farms.
+boi_remount_requisition = {
+	icon = gfx/interface/icons/timed_modifier_icons/modifier_rifle_negative.dds
+	building_group_bg_agriculture_throughput_add = -0.05
+}

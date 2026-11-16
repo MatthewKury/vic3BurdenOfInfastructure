@@ -76,6 +76,13 @@ goods_input_furniture_add = {
  game_data = { ai_value = 0 }
 }
 
+goods_input_luxury_furniture_add = {
+ decimals = 1
+ color = bad
+ 
+ game_data = { ai_value = 0 }
+}
+
 goods_output_boi_housing_add = {
  decimals = 1
  color = good

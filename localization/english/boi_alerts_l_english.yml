@@ -1,0 +1,15 @@
+﻿l_english:
+ # ── Top-bar alerts (common/alert_types/50_boi_alert_types.txt) ──
+ alert_boi_rs_survey_available_alert_name: "Rail Network Survey Possible"
+ alert_boi_rs_survey_available_alert_desc: "We can commission a Rail Network Survey. Charted railway routes make a region's #b $building_boi_public_works$#! cheaper to run."
+ alert_boi_rs_survey_available_alert_hint: "Take the Commission a Rail Network Survey decision in the Journal panel."
+ alert_boi_rs_survey_available_alert_action: "Journal panel"
+
+ alert_boi_cm_city_available_alert_name: "A City Can Be Modernised"
+ alert_boi_cm_city_available_alert_desc: "We can modernise a city. The #b $building_boi_slums$#! and #b $building_boi_tenements$#! of a region will be pulled down, and construction there will be faster for a time."
+ alert_boi_cm_city_available_alert_hint: "Take the Modernise a City decision in the Journal panel."
+ alert_boi_cm_city_available_alert_action: "Journal panel"
+
+ # Names in the alert settings, where the player can hide each alert.
+ boi_rs_survey_available_alert_setting_name: "Rail Network Survey Possible"
+ boi_cm_city_available_alert_setting_name: "City Modernisation Possible"

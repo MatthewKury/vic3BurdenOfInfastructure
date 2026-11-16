@@ -24,14 +24,29 @@ boi_housing_setup_effect = {
    add_ideology = ideology_boi_housing_laissez_faire
   }
  }
- if = {
-  limit = {
-   NOR = {
-    has_law = law_type:law_boi_unregulated_company_housing
-    has_law = law_type:law_boi_protected_company_housing
-   }
+ ig:ig_devout ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_moral_reform } }
+   add_ideology = ideology_boi_housing_moral_reform
   }
-  activate_law = law_type:law_boi_unregulated_company_housing
+ }
+ ig:ig_armed_forces ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_recruit_fitness } }
+   add_ideology = ideology_boi_housing_recruit_fitness
+  }
+ }
+ ig:ig_rural_folk ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_tied_cottages } }
+   add_ideology = ideology_boi_housing_tied_cottages
+  }
+ }
+ ig:ig_petty_bourgeoisie ?= {
+  if = {
+   limit = { NOT = { has_ideology = ideology:ideology_boi_housing_ratepayers } }
+   add_ideology = ideology_boi_housing_ratepayers
+  }
  }
  if = {
   limit = {
@@ -42,8 +57,53 @@ boi_housing_setup_effect = {
   }
   activate_law = law_type:law_boi_unregulated_residential
  }
+ # Company housing follows the vanilla Labour Rights law (2026-11-08).
+ boi_housing_labour_rights_sync_effect = yes
+}
+
+# Company housing follows the vanilla Labour Rights law (2026-11-08); BOI's own
+# Employer Housing law group is gone. No Workers' Rights permits Work Camps, Regulatory
+# Bodies Work Towns, Worker Protections Serviced Towns (each plus No Housing).
+# Vanilla's laws are not shadowed, so a monthly check (boi_housing.10) runs this and
+# converts buildings when the law has changed. boi_labour_rights_level records the
+# level last enforced: 1, 2 or 3.
+boi_housing_labour_rights_sync_effect = {
  if = {
-  limit = { has_law = law_type:law_boi_protected_company_housing }
-  boi_housing_remove_hostile_effect = yes
+  limit = { has_law_or_variant = law_type:law_worker_protections }
+  if = {
+   limit = {
+    OR = {
+     NOT = { has_variable = boi_labour_rights_level }
+     AND = { has_variable = boi_labour_rights_level NOT = { var:boi_labour_rights_level = 3 } }
+    }
+   }
+   boi_housing_enforce_serviced_towns_effect = yes
+   set_variable = { name = boi_labour_rights_level value = 3 }
+  }
+ }
+ else_if = {
+  limit = { has_law_or_variant = law_type:law_regulatory_bodies }
+  if = {
+   limit = {
+    OR = {
+     NOT = { has_variable = boi_labour_rights_level }
+     AND = { has_variable = boi_labour_rights_level NOT = { var:boi_labour_rights_level = 2 } }
+    }
+   }
+   boi_housing_enforce_work_towns_effect = yes
+   set_variable = { name = boi_labour_rights_level value = 2 }
+  }
+ }
+ else = {
+  if = {
+   limit = {
+    OR = {
+     NOT = { has_variable = boi_labour_rights_level }
+     AND = { has_variable = boi_labour_rights_level NOT = { var:boi_labour_rights_level = 1 } }
+    }
+   }
+   boi_housing_enforce_work_camps_effect = yes
+   set_variable = { name = boi_labour_rights_level value = 1 }
+  }
  }
 }

@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([switch]$BuildingReplacementsOnly)
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.Drawing
@@ -20,6 +20,13 @@ $assets = @(
     @{ Name = 'boi_suburbs'; Source = 'art/housing/buildings'; Folder = 'building_icons' },
     @{ Name = 'boi_temporary_shelter'; Source = 'art/housing/buildings'; Folder = 'building_icons' }
 )
+
+# Finished replacements supersede the old tint-and-label placeholders.
+$replacements = @(Get-ChildItem -LiteralPath (Join-Path $modRoot 'art/buildings') -Filter 'boi_*.png' | ForEach-Object {
+    @{ Name = $_.BaseName; Source = 'art/buildings'; Folder = 'building_icons' }
+})
+if ($BuildingReplacementsOnly) { $assets = $replacements }
+else { $assets += $replacements }
 
 foreach ($asset in $assets) {
     $name = $asset.Name

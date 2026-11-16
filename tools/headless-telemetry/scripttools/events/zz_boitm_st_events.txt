@@ -1,0 +1,130 @@
+﻿namespace = boitm_st
+
+# Script-tools probes, round 2 (2026-11-13), run as France from 1836.2.1.
+# Logs BOISTT|<date>|<label>|... ; read with grep in the run's debug.log.
+#
+#  A   Lorraine  create_building on an existing building: level 1, then +1 (day 30), then level 3 (day 34)
+#  B1  Champagne default ai_selection, starts on the dear PM (more infrastructure)
+#  B2  Picardy   most_productive, starts on the cheap PM
+#  B3  Normandy  default ai_selection, same benefit, starts on the dear PM
+#  D/G Aquitaine input absent: unscaled K 9 and workforce K 90; building_has_goods_shortage
+#  E   Paris etc. INJECT a new block on pm_market_squares: K +200 where squares are active
+#  F   Auvergne  both halves of the decay penalty (-30% mult, -30% population mult) on day 50
+#  U   cab PM adoption by the AI, France, Britain, Prussia, Russia
+
+boitm_st.1 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		c:FRA ?= this
+		game_date >= 1836.2.1
+		NOT = { has_global_variable = boitm_st_started }
+	}
+	immediate = {
+		set_global_variable = boitm_st_started
+		boitm_st_log_all = yes
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			create_building = { building = building_boitm_st_levels level = 1 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_CHAMPAGNE }
+			create_building = { building = building_boitm_st_choice level = 1 }
+			activate_production_method = { building_type = building_boitm_st_choice production_method = pm_boitm_st_dear }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_PICARDY }
+			create_building = { building = building_boitm_st_choice_mp level = 1 }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_NORMANDY }
+			create_building = { building = building_boitm_st_choice_same level = 1 }
+			activate_production_method = { building_type = building_boitm_st_choice_same production_method = pm_boitm_st_same_dear }
+		}
+		random_scope_state = {
+			limit = { state_region = s:STATE_AQUITAINE }
+			create_building = { building = building_boitm_st_absent level = 1 }
+		}
+		trigger_event = { id = boitm_st.2 days = 2 }
+		trigger_event = { id = boitm_st.3 days = 30 }
+		trigger_event = { id = boitm_st.8 days = 30 }
+		trigger_event = { id = boitm_st.9 days = 34 }
+		trigger_event = { id = boitm_st.4 days = 50 }
+	}
+}
+
+boitm_st.2 = {
+	type = country_event
+	hidden = yes
+	immediate = { boitm_st_log_all = yes }
+}
+
+# Monthly log for two years.
+boitm_st.3 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		boitm_st_log_all = yes
+		trigger_event = { id = boitm_st.3 days = 30 }
+	}
+}
+
+# A: create_building again on the existing level-1 building.
+boitm_st.8 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			boitm_st_log = { LABEL = lorraine_before_create1 }
+			create_building = { building = building_boitm_st_levels level = 1 }
+		}
+		trigger_event = { id = boitm_st.10 days = 2 }
+	}
+}
+boitm_st.10 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = { limit = { state_region = s:STATE_LORRAINE } boitm_st_log = { LABEL = lorraine_after_create1 } }
+	}
+}
+boitm_st.9 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_LORRAINE }
+			create_building = { building = building_boitm_st_levels level = 3 }
+		}
+		trigger_event = { id = boitm_st.11 days = 2 }
+	}
+}
+boitm_st.11 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = { limit = { state_region = s:STATE_LORRAINE } boitm_st_log = { LABEL = lorraine_after_create3 } }
+	}
+}
+
+# F: both halves of the decay penalty on Auvergne.
+boitm_st.4 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = {
+			limit = { state_region = s:STATE_AUVERGNE_LIMOUSIN }
+			boitm_st_log = { LABEL = auvergne_before_penalty }
+			add_modifier = { name = boitm_st_mult }
+		}
+		trigger_event = { id = boitm_st.6 days = 2 }
+	}
+}
+boitm_st.6 = {
+	type = country_event
+	hidden = yes
+	immediate = {
+		random_scope_state = { limit = { state_region = s:STATE_AUVERGNE_LIMOUSIN } boitm_st_log = { LABEL = auvergne_after_penalty } }
+	}
+}

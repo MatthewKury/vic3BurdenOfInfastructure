@@ -1,0 +1,28 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Rail Network Survey buttons
+# ================================================================
+
+# Abandons the survey. Money spent is gone and no levels are gained.
+boi_rs_cancel_button = {
+	name = "boi_rs_cancel_button"
+	desc = "boi_rs_cancel_button_desc"
+
+	visible = {
+		has_journal_entry = je_boi_rail_survey
+	}
+
+	possible = {
+		NOT = { has_variable = boi_rs_cancelled }
+	}
+
+	effect = {
+		custom_tooltip = boi_rs_cancel_button_tt
+		hidden_effect = {
+			set_variable = boi_rs_cancelled
+		}
+	}
+
+	ai_chance = {
+		value = 0
+	}
+}

@@ -9,18 +9,17 @@ boitm_horse_ranch_levels = {
 	}
 }
 
+# Public Works hub levels (plan 12, 2026-11-13). The keys predate the hub:
+# public_works_levels = both hub types, harbour_works_levels = coastal hubs.
 boitm_public_works_levels = {
 	value = 0
-	every_scope_building = {
-		limit = { is_building_type = building_boi_infrastructure }
-		add = level
-	}
+	every_scope_state = { add = boi_pw_levels }
 }
 
 boitm_harbour_works_levels = {
 	value = 0
 	every_scope_building = {
-		limit = { is_building_type = building_boi_harbour_works }
+		limit = { is_building_type = building_boi_coastal_public_works }
 		add = level
 	}
 }
@@ -38,6 +37,180 @@ boitm_horse_cheap_states = {
 	value = 0
 	every_scope_state = {
 		limit = { sg:horses = { state_goods_cheaper >= 0.25 } }
+		add = 1
+	}
+}
+
+# Hub levels on a rail Mode (Rail Works retired 2026-11-13).
+boitm_rail_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				has_active_production_method = pm_boi_pw_rail_fed
+				has_active_production_method = pm_boi_pw_steel_rail
+			}
+		}
+		add = level
+	}
+}
+
+boitm_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
+}
+
+# Hub Mode levels (plan 12). road_steam now counts Rail-Fed Network.
+boitm_road_cart = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_cart_roads }
+		add = level
+	}
+}
+
+boitm_road_macadam = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_macadam_roads }
+		add = level
+	}
+}
+
+boitm_road_steam = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_rail_fed }
+		add = level
+	}
+}
+
+boitm_road_steel = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_steel_rail }
+		add = level
+	}
+}
+
+boitm_road_motor = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_motor_roads }
+		add = level
+	}
+}
+
+boitm_road_highway = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_highways }
+		add = level
+	}
+}
+
+# Weekly goods bill of all hubs at base prices and full use, before the monthly
+# trim and law discounts. For comparing against total expenses.
+boitm_works_goods_base = {
+	value = 0
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_cart_roads }
+		add = { value = level multiply = 225 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_macadam_roads }
+		add = { value = level multiply = 300 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_rail_fed }
+		add = { value = level multiply = 285 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_steel_rail }
+		add = { value = level multiply = 345 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_motor_roads }
+		add = { value = level multiply = 315 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_highways }
+		add = { value = level multiply = 420 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_coastal_lighters }
+		add = { value = level multiply = 45 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_steam_lighters }
+		add = { value = level multiply = 98 }
+	}
+	every_scope_building = {
+		limit = { has_active_production_method = pm_boi_pw_electrified_quays }
+		add = { value = level multiply = 180 }
+	}
+}
+
+# Chargeable use (above the population floor), summed over states.
+boitm_pw_chargeable = {
+	value = 0
+	every_scope_state = { add = boi_pw_chargeable }
+}
+
+# Population-weighted upkeep share x 100 (100 = penalty fully cancelled).
+boitm_pw_share_pct = {
+	value = 0
+	every_scope_state = { add = { value = boi_pw_upkeep_share multiply = state_population } }
+	divide = { value = 0 every_scope_state = { add = state_population } min = 1 }
+	multiply = 100
+}
+
+# States whose hub cancels less than 90% of the penalty.
+boitm_pw_states_under = {
+	value = 0
+	every_scope_state = { limit = { boi_pw_upkeep_share < 0.9 } add = 1 }
+}
+
+# ── Rail Network Survey (docs/plans/01_RAIL_SURVEY_PROPOSAL.md) ──
+
+# Rail survey discount (plan 12): states with one, and their summed discount x 100.
+boitm_rail_cap_total = {
+	value = 0
+	every_scope_state = { limit = { has_variable = boi_pw_survey_discount } add = 1 }
+}
+boitm_rail_surveyed_levels = {
+	value = 0
+	every_scope_state = { limit = { has_variable = boi_pw_survey_discount } add = { value = var:boi_pw_survey_discount multiply = 100 } }
+}
+
+boitm_states = {
+	value = 0
+	every_scope_state = { add = 1 }
+}
+
+boitm_rail_ai_surveys = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_rs_ai_surveys }
+		value = var:boi_rs_ai_surveys
+	}
+}
+
+boitm_rail_surveys_completed = {
+	value = 0
+	if = {
+		limit = { has_variable = boi_rs_surveys_completed }
+		value = var:boi_rs_surveys_completed
+	}
+}
+
+boitm_infrastructure_shortfall_states = {
+	value = 0
+	every_scope_state = {
+		limit = { boi_ai_infrastructure_shortfall > 0 }
 		add = 1
 	}
 }

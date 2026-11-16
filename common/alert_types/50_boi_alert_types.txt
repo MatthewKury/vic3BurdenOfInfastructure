@@ -1,0 +1,41 @@
+﻿# ================================================================
+#  Burden of Infrastructure — top-bar alerts
+#
+#  One alert of its own for each repeatable BOI decision, so the player
+#  sees when it comes back off cooldown instead of finding it inside
+#  vanilla's grouped can_take_decisions entry. type = alert puts each on
+#  the top bar with its own icon (not inside the important-actions
+#  group). Clicking opens the journal, where decisions are taken.
+#
+#  The valid triggers repeat each decision's is_shown + possible; they
+#  live next to the decision's other triggers. Format: the header of
+#  vanilla common/alert_types/00_alert_types.txt. Added 2026-11-15.
+# ================================================================
+
+# Commission a Rail Network Survey (common/decisions/50_boi_rail_survey.txt).
+boi_rs_survey_available_alert = {
+	script_context = player_country
+	texture = "gfx/interface/icons/event_icons/event_map.dds"
+
+	valid = {
+		boi_rs_alert_valid = yes
+	}
+
+	open_panel = journal
+	type = alert
+	color = green
+}
+
+# Modernise a City (common/decisions/51_boi_city_modernisation.txt).
+boi_cm_city_available_alert = {
+	script_context = player_country
+	texture = "gfx/interface/icons/event_icons/event_industry.dds"
+
+	valid = {
+		boi_cm_alert_valid = yes
+	}
+
+	open_panel = journal
+	type = alert
+	color = green
+}

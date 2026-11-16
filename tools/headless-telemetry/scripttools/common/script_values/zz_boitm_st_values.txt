@@ -1,0 +1,91 @@
+﻿# State scope unless noted.
+boitm_st_k = { value = modifier:state_infrastructure_from_automobiles_consumption_add }
+boitm_st_infra = { value = infrastructure }
+boitm_st_usage = { value = infrastructure_usage }
+boitm_st_flat = { value = modifier:state_infrastructure_add }
+boitm_st_mult = { value = modifier:state_infrastructure_mult }
+boitm_st_popadd = { value = modifier:state_infrastructure_from_population_add }
+boitm_st_popmax = { value = modifier:state_infrastructure_from_population_max_add }
+boitm_st_popmult = { value = modifier:state_infrastructure_from_population_mult }
+boitm_st_pop = { value = state_population }
+
+boitm_st_has_cabs = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_urban_center has_active_production_method = pm_boitm_st_cabs } add = 1 }
+}
+boitm_st_has_squares = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_urban_center has_active_production_method = pm_market_squares } add = 1 }
+}
+boitm_st_levels = {
+	value = 0
+	every_scope_building = { limit = { is_building_type = building_boitm_st_levels } add = level }
+}
+# 1 cheap, 2 dear, 0 neither, -1 no building.
+boitm_st_choice_pm = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boitm_st_choice }
+		value = 0
+		if = { limit = { has_active_production_method = pm_boitm_st_cheap } value = 1 }
+		else_if = { limit = { has_active_production_method = pm_boitm_st_dear } value = 2 }
+	}
+}
+boitm_st_choice_mp_pm = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boitm_st_choice_mp }
+		value = 0
+		if = { limit = { has_active_production_method = pm_boitm_st_cheap } value = 1 }
+		else_if = { limit = { has_active_production_method = pm_boitm_st_dear } value = 2 }
+	}
+}
+boitm_st_choice_same_pm = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boitm_st_choice_same }
+		value = 0
+		if = { limit = { has_active_production_method = pm_boitm_st_same_cheap } value = 1 }
+		else_if = { limit = { has_active_production_method = pm_boitm_st_same_dear } value = 2 }
+	}
+}
+boitm_st_absent_short = {
+	value = -1
+	every_scope_building = {
+		limit = { is_building_type = building_boitm_st_absent }
+		value = 0
+		if = { limit = { building_has_goods_shortage = yes } value = 1 }
+	}
+}
+# Occupancy of the probe buildings in the state, lowest band (0.1 steps); -1 none.
+boitm_st_occ = {
+	value = -1
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boitm_st_choice
+				is_building_type = building_boitm_st_choice_mp
+				is_building_type = building_boitm_st_choice_same
+				is_building_type = building_boitm_st_absent
+				is_building_type = building_boitm_st_levels
+			}
+		}
+		value = 0
+		if = { limit = { occupancy >= 0.99 } value = 1 }
+		else_if = { limit = { occupancy >= 0.9 } value = 0.9 }
+		else_if = { limit = { occupancy >= 0.7 } value = 0.7 }
+		else_if = { limit = { occupancy >= 0.5 } value = 0.5 }
+		else_if = { limit = { occupancy >= 0.3 } value = 0.3 }
+		else_if = { limit = { occupancy >= 0.1 } value = 0.1 }
+	}
+}
+
+# Country scope.
+boitm_st_country_cabs = {
+	value = 0
+	every_scope_state = { add = boitm_st_has_cabs }
+}
+boitm_st_country_uc = {
+	value = 0
+	every_scope_state = { limit = { has_building = building_urban_center } add = 1 }
+}

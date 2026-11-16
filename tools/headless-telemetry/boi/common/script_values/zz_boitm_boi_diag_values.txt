@@ -1,10 +1,18 @@
-﻿# Headless telemetry (boi module): AI diagnostics for Public Works and
-# Harbour Works. Read by tools/Get-BoiDiagnostics.ps1, not the main report.
+﻿# Headless telemetry (boi module): diagnostics for the Public Works hub
+# (plan 12, 2026-11-13; Road and Harbour Works before). Read by tools/Get-BoiDiagnostics.ps1, not the main report.
 
 # Country scope. Each is printed on its own line, so one that the engine
 # rejects as a value blanks only that line.
 boitm_gold_reserves = { value = gold_reserves }
 boitm_scaled_debt = { value = scaled_debt }
+# 1.15.0 trigger, used as a value by vanilla's war_support_values.txt. Added
+# 2026-11-06 to study works orders that stall in indebted countries. What it
+# reads for a country that isn't borrowing is not yet known.
+boitm_weeks_until_bankruptcy = { value = weeks_until_bankruptcy }
+boitm_taking_loans = {
+	value = 0
+	if = { limit = { taking_loans = yes } value = 1 }
+}
 
 boitm_states_with_public_works = {
 	value = 0
@@ -15,57 +23,64 @@ boitm_states_with_public_works = {
 }
 
 # State scope.
-boitm_state_public_works_levels = {
-	value = 0
-	every_scope_building = {
-		limit = { is_building_type = building_boi_infrastructure }
-		add = level
-	}
-}
+boitm_state_public_works_levels = { value = boi_pw_levels }
 
 boitm_state_harbour_works_levels = {
 	value = 0
 	every_scope_building = {
-		limit = { is_building_type = building_boi_harbour_works }
+		limit = { is_building_type = building_boi_coastal_public_works }
 		add = level
 	}
 }
 
-# 1 when a Public Works / Harbour Works in the state is under construction.
-boitm_state_works_queued = {
+# Hub chargeable use and upkeep share (plan 12).
+boitm_state_works_queued = { value = boi_pw_chargeable }
+boitm_state_pw_share = { value = boi_pw_upkeep_share }
+
+boitm_state_public_works_occupancy = { value = boi_pw_occupancy }
+boitm_state_ai_value_public_works = { value = boi_pw_target_levels }
+
+boitm_state_infrastructure = { value = infrastructure }
+
+# Every-country and per-state market connection telemetry (boitm_boi.2 and .3).
+# Country scope.
+boitm_ct_at_war = {
 	value = 0
 	if = {
-		limit = {
-			any_scope_building = {
-				OR = {
-					is_building_type = building_boi_infrastructure
-					is_building_type = building_boi_harbour_works
-				}
-				is_under_construction = yes
-			}
-		}
+		limit = { is_at_war = yes }
 		value = 1
 	}
 }
+boitm_ct_turmoil = { value = country_turmoil }
+boitm_ct_income = { value = total_income }
+boitm_ct_expenses = { value = total_expenses }
 
-# Occupancy band of the state's Public Works: -1 none, else the lowest band
-# reached (0, 0.25, 0.5, 0.75, 0.9).
-boitm_state_public_works_occupancy = {
-	value = -1
+# State scope.
+boitm_st_population = { value = state_population }
+boitm_st_port_levels = {
+	value = 0
 	every_scope_building = {
-		limit = { is_building_type = building_boi_infrastructure }
-		value = 0
-		if = { limit = { occupancy >= 0.9 } value = 0.9 }
-		else_if = { limit = { occupancy >= 0.75 } value = 0.75 }
-		else_if = { limit = { occupancy >= 0.5 } value = 0.5 }
-		else_if = { limit = { occupancy >= 0.25 } value = 0.25 }
+		limit = { is_building_type = building_port }
+		add = level
 	}
 }
-
-boitm_state_ai_value_public_works = {
-	value = 3000
-	multiply = boi_ai_infrastructure_urgency
-	multiply = boi_ai_public_works_input_price
+boitm_st_railway_levels = {
+	value = 0
+	every_scope_building = {
+		limit = { is_building_type = building_railway }
+		add = level
+	}
 }
-
-boitm_state_infrastructure = { value = infrastructure }
+# Rail Works retired 2026-11-13: hub levels on a rail Mode instead.
+boitm_state_rail_works_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				has_active_production_method = pm_boi_pw_rail_fed
+				has_active_production_method = pm_boi_pw_steel_rail
+			}
+		}
+		add = level
+	}
+}

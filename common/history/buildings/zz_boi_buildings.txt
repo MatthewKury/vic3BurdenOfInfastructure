@@ -35,14 +35,21 @@
 #  4 below 50, 6 from 50 to 99, and 8 at 100 or above. Fifteen
 #  baseline states are explicitly unincorporated in game history;
 #  their previously safe 3 levels are a cap (horse_seed_holds.tsv).
-#  Fourteen new core, sole-owner, incorporated states with safe
-#  land headroom are listed in horse_seed_additions.tsv.
-#  Lower 1836 levels follow horse_seed_reductions.tsv. Zero removes
-#  a ranch; reductions favor less suitable breeding regions.
+#  Twenty new sole-owner, incorporated states with safe land
+#  headroom are listed in horse_seed_additions.tsv. All are core
+#  except Bihar and East Java (company and colonial states, 1.15
+#  balance pass 3), so that British India and the Dutch East
+#  Indies open with some horse production.
+#  Final 1836 levels follow horse_seed_reductions.tsv, which applies
+#  each state's historical tier in horse_seed_tiers.tsv. Zero removes
+#  a ranch; great horse country loses the least.
 #
 #  Public Works and Harbour Works are NOT rural and cost no
 #  arable land. Starting levels replace vanilla port and rail
-#  infrastructure with minimal unavoidable rounding surplus.
+#  infrastructure with minimal unavoidable rounding surplus, plus
+#  47 Public Works levels (1.15 balance pass 2, 2026-11-06) in the
+#  26 states the opening left short, mostly through the housing
+#  seed's own infrastructure use, where horses are obtainable.
 #
 #  Only the base method PM is forced. Administration PMs are left
 #  unset so the engine resolves them from each country's
@@ -57,200 +64,15 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SIC"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ADANA = {
-		region_state:EGY = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:EGY"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
 	s:STATE_ALABAMA = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 5
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ALBANIA = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ALENTEJO = {
-		region_state:POR = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:POR"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ALGIERS = {
-		region_state:MAS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:MAS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ANKARA = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ANTIOQUIA = {
-		region_state:CLM = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CLM"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ANTOFAGASTA = {
-		region_state:BOL = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BOL"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_APULIA = {
-		region_state:SIC = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:SIC"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_AQUITAINE = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ARKANSAS = {
 		region_state:USA = {
 			create_building = {
 				building = "building_boi_horse_ranch"
@@ -265,18 +87,78 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_ARKHANGELSK = {
-		region_state:RUS = {
+	s:STATE_ALENTEJO = {
+		region_state:POR = {
 			create_building = {
-				building = "building_boi_harbour_works"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
-						country = "c:RUS"
+						country = "c:POR"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_ANKARA = {
+		region_state:TUR = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:TUR"
+						levels = 3
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_APULIA = {
+		region_state:SIC = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:SIC"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_AQUITAINE = {
+		region_state:FRA = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:FRA"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_ARKANSAS = {
+		region_state:USA = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:USA"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -287,7 +169,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -295,40 +177,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_ASTURIAS = {
-		region_state:SPA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_ATTICA = {
 		region_state:GRE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GRE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GRE"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -343,26 +199,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_AYDIN = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -373,7 +214,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BAD"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -384,22 +225,11 @@ BUILDINGS = {
 	s:STATE_BAHIA = {
 		region_state:BRZ = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BRZ"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -414,7 +244,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -429,67 +259,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_BANGKOK = {
-		region_state:SIA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SIA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:SIA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_BASQUE_COUNTRY = {
-		region_state:SPC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_BASRA = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -500,6 +274,21 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BAV"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_BEIJING = {
+		region_state:CHI = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:CHI"
 						levels = 4
 					}
 				}
@@ -515,7 +304,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:POR"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -530,7 +319,22 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 6
+						levels = 5
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_BIHAR = {
+		region_state:BIC = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:BIC"
+						levels = 8
 					}
 				}
 				reserves = 1
@@ -545,26 +349,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:VNZ"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_BOMBAY = {
-		region_state:BIC = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
 			}
 		}
 	}
@@ -575,7 +364,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BOR"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
@@ -586,22 +375,11 @@ BUILDINGS = {
 	s:STATE_BRITTANY = {
 		region_state:FRA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -609,40 +387,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_BUENOS_AIRES = {
-		region_state:ARG = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:ARG"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_BULGARIA = {
 		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -657,7 +409,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -668,22 +420,11 @@ BUILDINGS = {
 	s:STATE_BUSAN = {
 		region_state:KOR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:KOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:KOR"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -694,86 +435,15 @@ BUILDINGS = {
 	s:STATE_CALABRIA = {
 		region_state:SIC = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SIC"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_CAMPANIA = {
-		region_state:SIC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_CANARY_ISLANDS = {
-		region_state:SPA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_CAPE_COLONY = {
-		region_state:SAF = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SAF"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_CATALONIA = {
-		region_state:SPA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -784,21 +454,6 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_CENTRAL_CUBA = {
-		region_state:CUB = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
 						levels = 1
 					}
 				}
@@ -814,26 +469,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_CEYLON = {
-		region_state:BCE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BCE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -844,7 +484,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -859,26 +499,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_CHERSON = {
-		region_state:RUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -889,7 +514,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CMI"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -919,7 +544,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -934,41 +559,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_CIRCARS = {
-		region_state:BIC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_CONNECTICUT = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -979,7 +574,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:ARG"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -987,34 +582,8 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_CORSICA = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_CRIMEA = {
 		region_state:RUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
@@ -1031,41 +600,15 @@ BUILDINGS = {
 	s:STATE_CROATIA = {
 		region_state:CRO = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CRO"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:CRO"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_DALMATIA = {
-		region_state:AUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:AUS"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -1076,26 +619,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_DISTRICT_OF_COLUMBIA = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -1106,26 +634,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_DOBRUDJA = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -1136,7 +649,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1147,41 +660,30 @@ BUILDINGS = {
 	s:STATE_EAST_ANGLIA = {
 		region_state:GBR = {
 			create_building = {
-				building = "building_boi_infrastructure"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 1
+						levels = 4
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
-	s:STATE_EAST_BENGAL = {
-		region_state:BIC = {
+	s:STATE_EAST_JAVA = {
+		region_state:DEI = {
 			create_building = {
-				building = "building_boi_harbour_works"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
-						country = "c:BIC"
-						levels = 1
+						country = "c:DEI"
+						levels = 4
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -1207,121 +709,22 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SWI"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_EASTERN_CUBA = {
-		region_state:CUB = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
 						levels = 1
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_EASTERN_NORWAY = {
-		region_state:NOR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_EASTERN_THRACE = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ECUADOR = {
-		region_state:ECU = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:ECU"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ELBE = {
-		region_state:BRE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BRE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-		region_state:HAM = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:HAM"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
 	s:STATE_ENTRE_DOURO_E_MINHO = {
 		region_state:POR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:POR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:POR"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1336,26 +739,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ESTREMADURA = {
-		region_state:POR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:POR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -1377,22 +765,11 @@ BUILDINGS = {
 	s:STATE_FARS = {
 		region_state:PER = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PER"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1407,7 +784,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KOK"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -1418,63 +795,11 @@ BUILDINGS = {
 	s:STATE_FEZ = {
 		region_state:MOR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:MOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:MOR"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_FLANDERS = {
-		region_state:BEL = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BEL"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_FORMOSA = {
-		region_state:CHI = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 1
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1489,56 +814,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_FRANCONIA = {
-		region_state:BAV = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BAV"
 						levels = 2
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_FRENCH_LOW_COUNTRIES = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_FRIESLAND = {
-		region_state:NET = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NET"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -1549,22 +829,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_GALICH = {
-		region_state:RUS = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1575,22 +840,11 @@ BUILDINGS = {
 	s:STATE_GALICIA = {
 		region_state:SPA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SPA"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1605,7 +859,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -1616,22 +870,11 @@ BUILDINGS = {
 	s:STATE_GEORGIA = {
 		region_state:USA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -1642,54 +885,15 @@ BUILDINGS = {
 	s:STATE_GOTALAND = {
 		region_state:SWE = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SWE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SWE"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_GUANGDONG = {
-		region_state:CHI = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-		region_state:POR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:POR"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -1700,7 +904,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1715,7 +919,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -1730,52 +934,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_HAITI = {
-		region_state:HAI = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:HAI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:HAI"
 						levels = 1
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_HANNOVER = {
-		region_state:HAN = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:HAN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -1786,7 +949,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -1801,7 +964,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HER"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1816,52 +979,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_HOLLAND = {
-		region_state:NET = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:NET"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_HOME_COUNTIES = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -1872,7 +994,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:UCA"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1883,22 +1005,11 @@ BUILDINGS = {
 	s:STATE_HUDAVENDIGAR = {
 		region_state:TUR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1913,7 +1024,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -1928,26 +1039,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HYD"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ILE_DE_FRANCE = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
 			}
 		}
 	}
@@ -1958,7 +1054,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -1973,26 +1069,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_INGRIA = {
-		region_state:RUS = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
 			}
 		}
 	}
@@ -2003,7 +1084,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2018,7 +1099,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2033,7 +1114,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2048,26 +1129,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ISTRIA = {
-		region_state:AUS = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:AUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
 			}
 		}
 	}
@@ -2078,7 +1144,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2093,7 +1159,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2108,7 +1174,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2119,37 +1185,11 @@ BUILDINGS = {
 	s:STATE_JUTLAND = {
 		region_state:DEN = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:DEN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:DEN"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_KACHIN = {
-		region_state:BUR = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:BUR"
-						levels = 1
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2164,26 +1204,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KAN"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_KANTO = {
-		region_state:JAP = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:JAP"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -2194,26 +1219,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_KAUNAS = {
-		region_state:RUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -2224,7 +1234,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2239,7 +1249,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -2254,7 +1264,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -2269,7 +1279,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2284,7 +1294,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:ARB"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2307,6 +1317,21 @@ BUILDINGS = {
 			}
 		}
 	}
+	s:STATE_KOSTROMA = {
+		region_state:RUS = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:RUS"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
 	s:STATE_KRASNOYARSK = {
 		region_state:RUS = {
 			create_building = {
@@ -2314,7 +1339,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2329,7 +1354,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FIN"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2344,7 +1369,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -2355,22 +1380,11 @@ BUILDINGS = {
 	s:STATE_KYUSHU = {
 		region_state:JAP = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:JAP"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:JAP"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2385,26 +1399,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:ARG"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_LANCASHIRE = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 5
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
 			}
 		}
 	}
@@ -2415,7 +1414,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2426,41 +1425,15 @@ BUILDINGS = {
 	s:STATE_LAZIO = {
 		region_state:PAP = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PAP"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PAP"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_LEINSTER = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -2471,7 +1444,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SPA"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2482,22 +1455,11 @@ BUILDINGS = {
 	s:STATE_LIMA = {
 		region_state:NPU = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NPU"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:NPU"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2512,7 +1474,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2527,7 +1489,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHL"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2538,22 +1500,11 @@ BUILDINGS = {
 	s:STATE_LOUISIANA = {
 		region_state:USA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2564,22 +1515,11 @@ BUILDINGS = {
 	s:STATE_LOWER_ANDALUSIA = {
 		region_state:SPA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SPA"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2590,22 +1530,11 @@ BUILDINGS = {
 	s:STATE_LOWER_EGYPT = {
 		region_state:EGY = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:EGY"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:EGY"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2620,7 +1549,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -2631,22 +1560,11 @@ BUILDINGS = {
 	s:STATE_LOWLANDS = {
 		region_state:GBR = {
 			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -2661,56 +1579,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_LUZON = {
-		region_state:PHI = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PHI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_MADRAS = {
-		region_state:BIC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_MAINE = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -2721,7 +1594,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -2729,70 +1602,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_MALAYA = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_MALTA = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_MANITOBA = {
-		region_state:HBC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:HBC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_MARRAKECH = {
 		region_state:MOR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:MOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:MOR"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2803,82 +1620,30 @@ BUILDINGS = {
 	s:STATE_MARYLAND = {
 		region_state:USA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_MASSACHUSETTS = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
 	s:STATE_MAZANDARAN = {
 		region_state:PER = {
 			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:PER"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_MECKLENBURG = {
-		region_state:MEC = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:MEC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -2889,7 +1654,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2904,7 +1669,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:EGY"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -2915,26 +1680,15 @@ BUILDINGS = {
 	s:STATE_MIDLANDS = {
 		region_state:GBR = {
 			create_building = {
-				building = "building_boi_infrastructure"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 2
+						levels = 6
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -2945,7 +1699,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -2953,40 +1707,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_MINDANAO = {
-		region_state:SUL = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SUL"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_MIRANDA = {
 		region_state:VNZ = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:VNZ"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:VNZ"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3001,7 +1729,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3016,7 +1744,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -3031,7 +1759,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3046,26 +1774,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MOL"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_MONTENEGRO = {
-		region_state:AUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:AUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3076,7 +1789,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:AUS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3091,41 +1804,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_MUNSTER = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_MURCIA = {
-		region_state:SPA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3136,39 +1819,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NEW_BRUNSWICK = {
-		region_state:NBS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NBS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-		region_state:NVS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NVS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3179,7 +1834,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SPA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3194,41 +1849,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NEW_SOUTH_WALES = {
-		region_state:NSW = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NSW"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_NEW_YORK = {
-		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3239,7 +1864,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -3254,7 +1879,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3265,22 +1890,11 @@ BUILDINGS = {
 	s:STATE_NORMANDY = {
 		region_state:FRA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -3288,40 +1902,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_NORTH_ANGOLA = {
-		region_state:POR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:POR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_NORTH_CAROLINA = {
 		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -3336,26 +1924,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NORTH_SUMATRA = {
-		region_state:DEI = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:DEI"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -3366,7 +1939,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3381,26 +1954,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_NORTHERN_TERRITORY = {
-		region_state:NSW = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NSW"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3411,7 +1969,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TRS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3426,7 +1984,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3441,7 +1999,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3456,7 +2014,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -3471,26 +2029,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SPA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_OMAN = {
-		region_state:OMA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:OMA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3501,7 +2044,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3516,7 +2059,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -3531,26 +2074,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_PARA = {
-		region_state:PRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PRA"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -3561,7 +2089,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3576,41 +2104,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_PEGU = {
-		region_state:BUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_PELOPONNESE = {
-		region_state:GRE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GRE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3621,7 +2119,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3632,22 +2130,11 @@ BUILDINGS = {
 	s:STATE_PERNAMBUCO = {
 		region_state:BRZ = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BRZ"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3662,7 +2149,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3677,7 +2164,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3692,7 +2179,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3700,40 +2187,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_PIEDMONT = {
-		region_state:SAR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SAR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_POITOU = {
 		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:FRA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3744,22 +2205,11 @@ BUILDINGS = {
 	s:STATE_POMERANIA = {
 		region_state:PRU = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PRU"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3774,26 +2224,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_PROVENCE = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -3804,7 +2239,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3819,71 +2254,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KOR"
-						levels = 5
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_QUEBEC = {
-		region_state:QUE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:QUE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_RHONE = {
-		region_state:FRA = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:FRA"
 						levels = 2
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_RIGA = {
-		region_state:UBD = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:UBD"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_RIO_DE_JANEIRO = {
-		region_state:BRZ = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BRZ"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -3909,7 +2284,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3920,22 +2295,11 @@ BUILDINGS = {
 	s:STATE_RIO_GRANDE_DO_SUL = {
 		region_state:PNI = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PNI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PNI"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
@@ -3950,7 +2314,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PAP"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -3965,7 +2329,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -3980,7 +2344,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -3995,7 +2359,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:UCA"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4010,7 +2374,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BRZ"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4021,22 +2385,11 @@ BUILDINGS = {
 	s:STATE_SANTIAGO = {
 		region_state:CHL = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CHL"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:CHL"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4044,33 +2397,18 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_SANTO_DOMINGO = {
-		region_state:HAI = {
+	s:STATE_SARATOV = {
+		region_state:RUS = {
 			create_building = {
-				building = "building_boi_harbour_works"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
-						country = "c:HAI"
-						levels = 1
+						country = "c:RUS"
+						levels = 2
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_SARDINIA = {
-		region_state:SAR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SAR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -4081,52 +2419,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KOR"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_SCANIA = {
-		region_state:SWE = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SWE"
 						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_SCHLESWIG_HOLSTEIN = {
-		region_state:LUB = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:LUB"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_SEMIRECHE = {
-		region_state:OZH = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:OZH"
-						levels = 4
 					}
 				}
 				reserves = 1
@@ -4141,7 +2434,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KOR"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4152,15 +2445,15 @@ BUILDINGS = {
 	s:STATE_SHANDONG = {
 		region_state:CHI = {
 			create_building = {
-				building = "building_boi_harbour_works"
+				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 1
+						levels = 4
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -4171,7 +2464,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -4182,22 +2475,11 @@ BUILDINGS = {
 	s:STATE_SHAOZHOU = {
 		region_state:CHI = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4212,22 +2494,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 4
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_SHIKOKU = {
-		region_state:JAP = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:JAP"
-						levels = 1
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4242,7 +2509,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4253,22 +2520,11 @@ BUILDINGS = {
 	s:STATE_SICILY = {
 		region_state:SIC = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SIC"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4283,7 +2539,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4298,7 +2554,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SIN"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4313,7 +2569,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4328,7 +2584,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -4343,7 +2599,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:AUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4366,40 +2622,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_SOUTH_AUSTRALIA = {
-		region_state:SAS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SAS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_SOUTH_CAROLINA = {
 		region_state:USA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4414,7 +2644,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:AUS"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4429,7 +2659,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -4444,7 +2674,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:TRS"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4474,7 +2704,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:AUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4485,22 +2715,11 @@ BUILDINGS = {
 	s:STATE_SUZHOU = {
 		region_state:CHI = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CHI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4511,22 +2730,11 @@ BUILDINGS = {
 	s:STATE_SVEALAND = {
 		region_state:SWE = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SWE"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:SWE"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4541,26 +2749,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_TALINN = {
-		region_state:UBD = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:UBD"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -4571,41 +2764,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_TARTARIA = {
-		region_state:RUS = {
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:RUS"
-						levels = 3
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_TARTU = {
-		region_state:UBD = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:UBD"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -4616,7 +2779,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -4631,7 +2794,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -4646,7 +2809,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4661,7 +2824,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:JAP"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -4676,7 +2839,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4687,22 +2850,11 @@ BUILDINGS = {
 	s:STATE_TRABZON = {
 		region_state:TUR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:TUR"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4717,7 +2869,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4732,7 +2884,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:HUN"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -4743,41 +2895,15 @@ BUILDINGS = {
 	s:STATE_TUNISIA = {
 		region_state:TUN = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:TUN"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_TUSCANY = {
-		region_state:TUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -4788,7 +2914,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4803,7 +2929,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:AUS"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4818,7 +2944,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -4829,41 +2955,15 @@ BUILDINGS = {
 	s:STATE_ULSTER = {
 		region_state:GBR = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_UPPER_ANDALUSIA = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
 						levels = 1
 					}
 				}
 				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
+				activate_production_methods = { "pm_boi_open_pasture" }
 			}
 		}
 	}
@@ -4874,7 +2974,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:EGY"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4889,7 +2989,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4919,7 +3019,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:PER"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -4934,7 +3034,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:URU"
-						levels = 8
+						levels = 7
 					}
 				}
 				reserves = 1
@@ -4945,22 +3045,11 @@ BUILDINGS = {
 	s:STATE_UUSIMAA = {
 		region_state:FIN = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FIN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:FIN"
-						levels = 3
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -4975,7 +3064,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:BUK"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -4983,55 +3072,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_VALENCIA = {
-		region_state:SPA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:SPA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_VENETIA = {
-		region_state:AUS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:AUS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_VERACRUZ = {
 		region_state:MEX = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:MEX"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -5046,48 +3094,22 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_VICTORIA = {
-		region_state:NSW = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NSW"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
 	s:STATE_VIRGINIA = {
 		region_state:USA = {
 			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:USA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 5
+						levels = 4
 					}
 				}
 				reserves = 1
@@ -5095,13 +3117,13 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_VISAYAS = {
-		region_state:PHI = {
+	s:STATE_VOLOGDA = {
+		region_state:RUS = {
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
-						country = "c:PHI"
+						country = "c:RUS"
 						levels = 1
 					}
 				}
@@ -5117,7 +3139,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -5132,7 +3154,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -5147,6 +3169,21 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:WAL"
+						levels = 2
+					}
+				}
+				reserves = 1
+				activate_production_methods = { "pm_boi_open_pasture" }
+			}
+		}
+	}
+	s:STATE_WEST_COUNTRY = {
+		region_state:GBR = {
+			create_building = {
+				building = "building_boi_horse_ranch"
+				add_ownership = {
+					country = {
+						country = "c:GBR"
 						levels = 4
 					}
 				}
@@ -5155,111 +3192,14 @@ BUILDINGS = {
 			}
 		}
 	}
-	s:STATE_WALLONIA = {
-		region_state:BEL = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BEL"
-						levels = 2
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_WEST_BENGAL = {
-		region_state:BIC = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:BIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:BIC"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WEST_COUNTRY = {
-		region_state:GBR = {
-			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-		}
-	}
-	s:STATE_WEST_JAVA = {
-		region_state:DEI = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:DEI"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WEST_KARELIA = {
-		region_state:FIN = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:FIN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
 	s:STATE_WEST_PRUSSIA = {
 		region_state:PRU = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:PRU"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
 			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:PRU"
-						levels = 3
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -5274,7 +3214,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:SWI"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -5289,82 +3229,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_WESTERN_AUSTRALIA = {
-		region_state:WAS = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:WAS"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WESTERN_CUBA = {
-		region_state:CUB = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-			create_building = {
-				building = "building_boi_horse_ranch"
-				add_ownership = {
-					country = {
-						country = "c:CUB"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_WESTERN_NORWAY = {
-		region_state:NOR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:NOR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_WESTERN_THRACE = {
-		region_state:TUR = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:TUR"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -5375,7 +3244,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:USA"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -5390,7 +3259,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -5405,7 +3274,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:KOR"
-						levels = 5
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -5420,7 +3289,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:RUS"
-						levels = 5
+						levels = 3
 					}
 				}
 				reserves = 1
@@ -5431,22 +3300,11 @@ BUILDINGS = {
 	s:STATE_YORKSHIRE = {
 		region_state:GBR = {
 			create_building = {
-				building = "building_boi_infrastructure"
-				add_ownership = {
-					country = {
-						country = "c:GBR"
-						levels = 6
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_cart_roads" }
-			}
-			create_building = {
 				building = "building_boi_horse_ranch"
 				add_ownership = {
 					country = {
 						country = "c:GBR"
-						levels = 6
+						levels = 5
 					}
 				}
 				reserves = 1
@@ -5461,7 +3319,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -5476,7 +3334,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -5491,41 +3349,11 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:MEX"
-						levels = 4
+						levels = 3
 					}
 				}
 				reserves = 1
 				activate_production_methods = { "pm_boi_open_pasture" }
-			}
-		}
-	}
-	s:STATE_ZANZIBAR = {
-		region_state:OMA = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:OMA"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
-			}
-		}
-	}
-	s:STATE_ZEALAND = {
-		region_state:DEN = {
-			create_building = {
-				building = "building_boi_harbour_works"
-				add_ownership = {
-					country = {
-						country = "c:DEN"
-						levels = 1
-					}
-				}
-				reserves = 1
-				activate_production_methods = { "pm_boi_coastal_lighters" }
 			}
 		}
 	}
@@ -5536,7 +3364,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 2
+						levels = 1
 					}
 				}
 				reserves = 1
@@ -5551,7 +3379,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:CHI"
-						levels = 4
+						levels = 2
 					}
 				}
 				reserves = 1
@@ -5566,7 +3394,7 @@ BUILDINGS = {
 				add_ownership = {
 					country = {
 						country = "c:VNZ"
-						levels = 4
+						levels = 1
 					}
 				}
 				reserves = 1

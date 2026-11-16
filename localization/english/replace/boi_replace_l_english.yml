@@ -1,0 +1,7 @@
+﻿l_english:
+ # Overrides of vanilla keys. Files under replace/ load after vanilla and win.
+ # BOI housing groups use lens = trade, so they show in this tab (see
+ # common/building_groups/50_boi_housing_tiers_generated.txt).
+ # Vanilla 1.15 text: "Urban" / "Build Urban Buildings ..."; re-check after game patches.
+ urban_lens_tab: "Urban and Housing"
+ urban_lens_tab_tooltip: "Build Urban Buildings and Housing\n$TOOLTIP_DELIMITER$\n#concept Urban [Concept('concept_building', '$concept_buildings|q$')] employ [Concept('concept_pop', '$concept_pops|q$')] to convert one or many types of [Concept('concept_good', '$concept_goods|q$')] into one or many other types of $concept_goods$. Housing provides homes for the [Concept('concept_pop', '$concept_pops|q$')] of a [concept_state].#!"

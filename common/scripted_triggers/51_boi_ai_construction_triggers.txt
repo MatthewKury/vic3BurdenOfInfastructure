@@ -4,20 +4,20 @@
 #  Used by events/boi_ai_infrastructure_events.txt.
 # ================================================================
 
-# State scope. An incorporated state short of infrastructure that has
-# not had a scripted level in the last year and has no Public Works or
-# Harbour Works newly under construction.
-boi_ai_state_wants_works = {
-	is_incorporated = yes
-	boi_ai_infrastructure_shortfall > 0
-	NOT = { has_variable = boi_ai_works_cooldown }
-	NOT = {
-		any_scope_building = {
-			OR = {
-				is_building_type = building_boi_infrastructure
-				is_building_type = building_boi_harbour_works
-			}
-			is_under_construction = yes
-		}
+# State scope. A state in our rehousing pledge that is still short of its
+# share, and where we have queued fewer levels than its share (so a level in
+# the queue isn't queued again every month).
+boi_ai_state_wants_pledge_housing = {
+	var:boi_pledge_state ?= owner
+	boi_pledge_state_shortfall > 0
+	OR = {
+		NOT = { has_variable = boi_pledge_state_queued }
+		var:boi_pledge_state_queued < var:boi_pledge_state_target
 	}
+}
+
+# State scope. Incorporated, with housing at least 50% above base price.
+boi_ai_state_wants_municipal_estates = {
+	is_incorporated = yes
+	sg:boi_housing = { state_goods_pricier >= 0.5 }
 }

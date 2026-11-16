@@ -27,24 +27,22 @@ pmg_boi_horse_ranch_method = {
 	}
 }
 
-
-# ── Infrastructure: technology ladder ───────────────────────────
-
-pmg_boi_infrastructure_method = {
+# Matches vanilla pmg_sheep_ranch on the Livestock Ranch (2026-11-08).
+pmg_boi_horse_ranch_byproduct = {
 	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
-	ai_selection = most_productive
+	ai_selection = most_profitable
 
 	production_methods = {
-		pm_boi_cart_roads
-		pm_boi_macadam_roads
-		pm_boi_rail_network
-		pm_boi_motor_roads
-		pm_boi_modern_highways
+		pm_boi_stable_manure
+		pm_boi_manure_trade
+		pm_boi_mixed_grazing
 	}
 }
 
 
-# ── Infrastructure: administration (Bureaucracy law) ────────────
+# ── Public Works: administration (Bureaucracy law) ──────────────
+# Used by both Public Works hubs since 2026-11-13 (plan 12); the keys
+# predate the hub. ────────────
 # Exactly one of these is ever valid at a time, since the three
 # law gates are mutually exclusive and the appointed variant
 # covers every case the other two do not.
@@ -74,33 +72,6 @@ pmg_boi_road_financing = {
 		pm_boi_public_highways
 		pm_boi_turnpike_tolls
 		pm_boi_statute_labour
-	}
-}
-
-
-# ── Harbour Works: technology ladder ────────────────────────────
-
-pmg_boi_harbour_method = {
-	texture = "gfx/interface/icons/generic_icons/mixed_icon_base.dds"
-	ai_selection = most_productive
-
-	production_methods = {
-		pm_boi_coastal_lighters
-		pm_boi_steam_lighters
-		pm_boi_electrified_quays
-	}
-}
-
-
-# ── Harbour Works: administration (Bureaucracy law) ─────────────
-
-pmg_boi_harbour_administration = {
-	texture = "gfx/interface/icons/generic_icons/mixed_icon_ownership.dds"
-	ai_selection = most_productive
-
-	production_methods = {
-		pm_boi_appointed_harbourmasters
-		pm_boi_manorial_harbour_dues
-		pm_boi_elected_harbour_trusts
+		pm_boi_road_fund
 	}
 }
