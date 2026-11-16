@@ -1,5 +1,5 @@
-﻿# Headless telemetry (boi module): AI diagnostics for Public Works and
-# Harbour Works. Read by tools/Get-BoiDiagnostics.ps1, not the main report.
+﻿# Headless telemetry (boi module): diagnostics for the Public Works hub
+# (plan 12, 2026-11-13; Road and Harbour Works before). Read by tools/Get-BoiDiagnostics.ps1, not the main report.
 
 # Country scope. Each is printed on its own line, so one that the engine
 # rejects as a value blanks only that line.
@@ -23,58 +23,22 @@ boitm_states_with_public_works = {
 }
 
 # State scope.
-boitm_state_public_works_levels = {
-	value = 0
-	every_scope_building = {
-		limit = { is_building_type = building_boi_infrastructure }
-		add = level
-	}
-}
+boitm_state_public_works_levels = { value = boi_pw_levels }
 
 boitm_state_harbour_works_levels = {
 	value = 0
 	every_scope_building = {
-		limit = { is_building_type = building_boi_harbour_works }
+		limit = { is_building_type = building_boi_coastal_public_works }
 		add = level
 	}
 }
 
-# 1 when a Public Works / Harbour Works in the state is under construction.
-boitm_state_works_queued = {
-	value = 0
-	if = {
-		limit = {
-			any_scope_building = {
-				OR = {
-					is_building_type = building_boi_infrastructure
-					is_building_type = building_boi_harbour_works
-				}
-				is_under_construction = yes
-			}
-		}
-		value = 1
-	}
-}
+# Hub chargeable use and upkeep share (plan 12).
+boitm_state_works_queued = { value = boi_pw_chargeable }
+boitm_state_pw_share = { value = boi_pw_upkeep_share }
 
-# Occupancy band of the state's Public Works: -1 none, else the lowest band
-# reached (0, 0.25, 0.5, 0.75, 0.9).
-boitm_state_public_works_occupancy = {
-	value = -1
-	every_scope_building = {
-		limit = { is_building_type = building_boi_infrastructure }
-		value = 0
-		if = { limit = { occupancy >= 0.9 } value = 0.9 }
-		else_if = { limit = { occupancy >= 0.75 } value = 0.75 }
-		else_if = { limit = { occupancy >= 0.5 } value = 0.5 }
-		else_if = { limit = { occupancy >= 0.25 } value = 0.25 }
-	}
-}
-
-boitm_state_ai_value_public_works = {
-	value = 3000
-	multiply = boi_ai_infrastructure_urgency
-	multiply = boi_ai_public_works_input_price
-}
+boitm_state_public_works_occupancy = { value = boi_pw_occupancy }
+boitm_state_ai_value_public_works = { value = boi_pw_target_levels }
 
 boitm_state_infrastructure = { value = infrastructure }
 
@@ -107,10 +71,16 @@ boitm_st_railway_levels = {
 		add = level
 	}
 }
+# Rail Works retired 2026-11-13: hub levels on a rail Mode instead.
 boitm_state_rail_works_levels = {
 	value = 0
 	every_scope_building = {
-		limit = { is_building_type = building_boi_rail_works }
+		limit = {
+			OR = {
+				has_active_production_method = pm_boi_pw_rail_fed
+				has_active_production_method = pm_boi_pw_steel_rail
+			}
+		}
 		add = level
 	}
 }

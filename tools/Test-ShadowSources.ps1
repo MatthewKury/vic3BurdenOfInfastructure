@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [Parameter(Mandatory)] [string]$GamePath,
     [string]$ModPath
@@ -12,16 +12,20 @@ $gameMobilization = Join-Path $GamePath 'common/mobilization_options'
 if (-not (Test-Path -LiteralPath $gameMethods)) { throw "Victoria 3 production methods not found under $GamePath" }
 if (-not (Test-Path -LiteralPath $gameMobilization)) { throw "Victoria 3 mobilization options not found under $GamePath" }
 
+# First-read-wins shadows (00_boi_*overrides), REPLACE: copies (*_replace) and
+# INJECT: additions (*_inject*) all need their vanilla key to exist (2026-11-13, plan 10).
 $shadowFiles = @(
-    Get-ChildItem -LiteralPath (Join-Path $ModPath 'common/production_methods') -Filter '00_boi_*overrides.txt'
-    Get-ChildItem -LiteralPath (Join-Path $ModPath 'common/combat_unit_types') -Filter '00_boi_*overrides.txt'
-    Get-ChildItem -LiteralPath (Join-Path $ModPath 'common/mobilization_options') -Filter '00_boi_*overrides.txt'
+    foreach ($folder in 'common/production_methods', 'common/combat_unit_types', 'common/mobilization_options') {
+        foreach ($filter in '00_boi_*overrides.txt', '50_boi_*replace.txt', '50_boi_*inject*.txt') {
+            Get-ChildItem -LiteralPath (Join-Path $ModPath $folder) -Filter $filter
+        }
+    }
 )
 $vanillaFiles = @(Get-ChildItem -LiteralPath $gameMethods, $gameCombat, $gameMobilization -Filter '*.txt' -File)
 $count = 0
 foreach ($file in $shadowFiles) {
     $source = Get-Content -LiteralPath $file.FullName -Raw
-    $keys = [regex]::Matches($source, '(?m)^([a-z][a-z0-9_]*)\s*=\s*\{') | ForEach-Object { $_.Groups[1].Value }
+    $keys = [regex]::Matches($source, '(?m)^﻿?(?:REPLACE:|INJECT:)?([a-z][a-z0-9_]*)\s*=\s*\{') | ForEach-Object { $_.Groups[1].Value }
     foreach ($key in $keys) {
         # Files with a line starting with the key; \W? skips the BOM vanilla files open with.
         $hits = @($vanillaFiles | Select-String -Pattern "^\W?$key\s*=\s*\{" -List | Select-Object -ExpandProperty Path -Unique)

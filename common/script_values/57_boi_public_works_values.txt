@@ -1,0 +1,193 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Public Works hub values (plan 12)
+#  State scope unless noted. Used by events/boi_public_works_events.txt.
+# ================================================================
+
+# Use each hub level maintains (chargeable infrastructure use). 20 in game 1
+# (2026-11-13): the hub bill came to about 1% of national spending, too light;
+# 10 doubles its jobs and its goods per unit of use. The seed is measured at this
+# value (tools/Build-PublicWorksSeed.py --cap 10).
+boi_pw_cap = 10
+
+# Population floor before BOI's own modifiers (the free base: population and
+# technology). Formula verified 1.15.1 (lessons file): pop / 125,000 (BOI's
+# INDIVIDUALS_PER_POP_INFRASTRUCTURE) x per-pop rate x (1 + population mult),
+# capped. BOI's penalty and upkeep also sit on the population mult, so they are
+# taken back out using last month's upkeep share (var:boi_pw_m).
+boi_pw_floor = {
+	value = state_population
+	divide = 125000
+	multiply = modifier:state_infrastructure_from_population_add
+	multiply = {
+		value = 1
+		add = modifier:state_infrastructure_from_population_mult
+		if = {
+			limit = { is_incorporated = yes }
+			add = 0.3
+			if = { limit = { has_variable = boi_pw_m } subtract = { value = var:boi_pw_m multiply = 0.3 } }
+		}
+		else = {
+			add = 0.1
+			if = { limit = { has_variable = boi_pw_m } subtract = { value = var:boi_pw_m multiply = 0.1 } }
+		}
+		min = 0
+	}
+	max = modifier:state_infrastructure_from_population_max_add
+}
+
+# Use above the free base.
+boi_pw_chargeable = {
+	value = infrastructure_usage
+	subtract = boi_pw_floor
+	min = 0
+}
+
+boi_pw_target_levels = {
+	value = boi_pw_chargeable
+	divide = boi_pw_cap
+	ceiling = yes
+	min = 1
+}
+
+boi_pw_levels = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+		}
+		add = level
+	}
+}
+
+# Hub occupancy in 0.05 bands (occupancy can only be compared, not read).
+boi_pw_occupancy = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+		}
+		if = { limit = { occupancy >= 0.975 } add = 1 }
+		else_if = { limit = { occupancy >= 0.925 } add = 0.95 }
+		else_if = { limit = { occupancy >= 0.875 } add = 0.9 }
+		else_if = { limit = { occupancy >= 0.825 } add = 0.85 }
+		else_if = { limit = { occupancy >= 0.775 } add = 0.8 }
+		else_if = { limit = { occupancy >= 0.725 } add = 0.75 }
+		else_if = { limit = { occupancy >= 0.675 } add = 0.7 }
+		else_if = { limit = { occupancy >= 0.625 } add = 0.65 }
+		else_if = { limit = { occupancy >= 0.575 } add = 0.6 }
+		else_if = { limit = { occupancy >= 0.525 } add = 0.55 }
+		else_if = { limit = { occupancy >= 0.475 } add = 0.5 }
+		else_if = { limit = { occupancy >= 0.425 } add = 0.45 }
+		else_if = { limit = { occupancy >= 0.375 } add = 0.4 }
+		else_if = { limit = { occupancy >= 0.325 } add = 0.35 }
+		else_if = { limit = { occupancy >= 0.275 } add = 0.3 }
+		else_if = { limit = { occupancy >= 0.225 } add = 0.25 }
+		else_if = { limit = { occupancy >= 0.175 } add = 0.2 }
+		else_if = { limit = { occupancy >= 0.125 } add = 0.15 }
+		else_if = { limit = { occupancy >= 0.075 } add = 0.1 }
+		else_if = { limit = { occupancy >= 0.025 } add = 0.05 }
+	}
+	max = 1
+}
+
+# 1 when the hub is short of an input.
+boi_pw_short = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+			building_has_goods_shortage = yes
+		}
+		add = 1
+	}
+	max = 1
+}
+
+# Share of the penalty cancelled: occupancy, cut to 80% when short of any input.
+# 0.6 before game 1 (2026-11-13): a sanity run found 20 of 22 British hubs short
+# of horses in April 1836, which left Britain 12% of the penalty from the start.
+boi_pw_upkeep_share = {
+	value = boi_pw_occupancy
+	if = { limit = { boi_pw_short > 0 } multiply = 0.8 }
+}
+
+# Goods discount from the active financing PM (its unscaled building_goods_input_mult).
+boi_pw_law_discount = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+		}
+		if = { limit = { has_active_production_method = pm_boi_turnpike_tolls } add = 0.5 }
+		else_if = { limit = { has_active_production_method = pm_boi_statute_labour } add = 0.3 }
+		else_if = { limit = { has_active_production_method = pm_boi_road_fund } add = 0.25 }
+	}
+}
+
+boi_pw_survey_discount = {
+	value = 0
+	if = { limit = { has_variable = boi_pw_survey_discount } add = var:boi_pw_survey_discount }
+	max = 0.3
+}
+
+# Wanted share of the per-level inputs: use over capacity, floored at 5%.
+boi_pw_use_share = {
+	value = boi_pw_chargeable
+	divide = {
+		value = boi_pw_levels
+		multiply = boi_pw_cap
+		min = 1
+	}
+	min = 0.05
+	max = 1
+}
+
+# Multiplier for boi_pw_goods_trim (-0.01 each), so that the building's input
+# factor 1 - law + trim equals use share x (1 - survey) x (1 - law).
+boi_pw_trim_multiplier = {
+	value = 1
+	subtract = boi_pw_law_discount
+	multiply = {
+		value = 1
+		subtract = {
+			value = boi_pw_use_share
+			multiply = { value = 1 subtract = boi_pw_survey_discount }
+		}
+	}
+	multiply = 100
+	min = 0
+	max = 100
+}
+
+# Mode and Harbour bonus, in percent.
+boi_pw_bonus_pct = {
+	value = 0
+	every_scope_building = {
+		limit = {
+			OR = {
+				is_building_type = building_boi_public_works
+				is_building_type = building_boi_coastal_public_works
+			}
+		}
+		if = { limit = { has_active_production_method = pm_boi_pw_macadam_roads } add = 3 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_rail_fed } add = 5 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_steel_rail } add = 8 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_motor_roads } add = 10 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_highways } add = 15 }
+		if = { limit = { has_active_production_method = pm_boi_pw_coastal_lighters } add = 2 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_steam_lighters } add = 4 }
+		else_if = { limit = { has_active_production_method = pm_boi_pw_electrified_quays } add = 6 }
+	}
+}

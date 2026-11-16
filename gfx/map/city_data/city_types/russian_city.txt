@@ -88,6 +88,5 @@ russian_city = {
 	building_victoria_terminus = {"wonder_chhatrapati_shivaji_terminus_mesh"}
 
 	# BOI: Burden of Infrastructure buildings, added by tools/Build-CityTypes.py
-	building_boi_infrastructure = {"russian_factory_construction_01_mesh"} # BOI: as building_construction_sector
-	building_boi_rail_works = {"russian_logisticscenter_01_mesh"} # BOI: as building_army_logistics_center
+	building_boi_public_works = {"russian_factory_construction_01_mesh"} # BOI: as building_construction_sector
 }

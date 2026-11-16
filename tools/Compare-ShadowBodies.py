@@ -21,21 +21,25 @@ import sys
 DEFAULT_GAME = r"C:/Program Files (x86)/Steam/steamapps/common/Victoria 3/game"
 MOD = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# BOI shadow file -> vanilla folder holding the originals.
+# BOI shadow or REPLACE file -> vanilla folder holding the originals. Since
+# 2026-11-13 (plans 10 and 12) no first-read-wins shadows remain: the rest are REPLACE: blocks (still full copies, still
+# diffed here) or INJECT: blocks (additions only, checked for existence below).
 SHADOWS = [
-    ("common/production_methods/00_boi_rail_port_overrides.txt", "common/production_methods"),
-    ("common/production_methods/00_boi_transport_overrides.txt", "common/production_methods"),
-    ("common/production_methods/00_boi_farm_overrides.txt", "common/production_methods"),
-    ("common/production_methods/00_boi_subsistence_overrides.txt", "common/production_methods"),
-    ("common/production_methods/00_boi_urban_transport_overrides.txt", "common/production_methods"),
-    ("common/combat_unit_types/00_boi_cavalry_overrides.txt", "common/combat_unit_types"),
-    ("common/mobilization_options/00_boi_supply_overrides.txt", "common/mobilization_options"),
-    ("common/mobilization_options/00_boi_transport_overrides.txt", "common/mobilization_options"),
-    ("common/buildings/00_boi_railway_ai_override.txt", "common/buildings"),
-    ("common/buildings/00_boi_housing_rural_generated.txt", "common/buildings"),
+    ("common/combat_unit_types/50_boi_cavalry_replace.txt", "common/combat_unit_types"),
+    ("common/mobilization_options/50_boi_supply_replace.txt", "common/mobilization_options"),
+    ("common/mobilization_options/50_boi_transport_replace.txt", "common/mobilization_options"),
 ]
 
-KEY_RE = re.compile(r"^([a-z][a-z0-9_]*)\s*=\s*\{")
+# INJECT: files -> vanilla folder. An INJECT on a key the game no longer has is an
+# error at load, so each injected key must still exist in vanilla.
+INJECTS = [
+    ("common/production_methods/50_boi_horse_pm_injects.txt", "common/production_methods"),
+    ("common/buildings/50_boi_housing_rural_inject_generated.txt", "common/buildings"),
+    ("common/buildings/50_boi_ownership_inject_generated.txt", "common/buildings"),
+]
+
+KEY_RE = re.compile(r"^(?:﻿)?(?:REPLACE:)?([a-z][a-z0-9_]*)\s*=\s*\{")
+INJECT_RE = re.compile(r"^(?:﻿)?INJECT:([a-z][a-z0-9_]*)\s*=\s*\{")
 
 
 def read(path):
@@ -53,6 +57,7 @@ def blocks(lines):
             if not m:
                 continue
             key, depth, buf = m.group(1), 0, []
+            line = line.lstrip("﻿").replace("REPLACE:", "", 1)
         buf.append(line)
         depth += code.count("{") - code.count("}")
         if depth <= 0:
@@ -125,7 +130,20 @@ def main():
             if not a.summary:
                 for d in diff:
                     print("    " + d)
-    print(f"\n{total} shadowed blocks checked, {changed} differ from installed vanilla.")
+    injected = missing = 0
+    for rel, folder in INJECTS:
+        if folder not in cache:
+            cache[folder] = vanilla_index(a.game, folder)
+        for line in read(os.path.join(MOD, rel)):
+            m = INJECT_RE.match(line)
+            if not m or (a.key and m.group(1) != a.key):
+                continue
+            injected += 1
+            if m.group(1) not in cache[folder]:
+                missing += 1
+                print(f"MISSING  INJECT:{m.group(1)}  ({rel}): no vanilla definition; the game will log an error")
+    print(f"\n{injected} INJECT keys checked, {missing} missing from installed vanilla.")
+    print(f"{total} shadowed or REPLACE blocks checked, {changed} differ from installed vanilla.")
     print("Every difference should be a documented BOI change. Anything else is vanilla drift to merge.")
 
 

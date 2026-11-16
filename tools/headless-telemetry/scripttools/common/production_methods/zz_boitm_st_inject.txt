@@ -1,0 +1,6 @@
+﻿# Script-tools probes, round 2 (2026-11-13). Round 1 results are in the lessons file.
+
+# E: INJECT a block a vanilla PM doesn't have, on a PM that is in use in 1836.
+INJECT:pm_market_squares = {
+	state_modifiers = { unscaled = { state_infrastructure_from_automobiles_consumption_add = 200 } }
+}

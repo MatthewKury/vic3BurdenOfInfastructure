@@ -9,30 +9,6 @@ boi_rs_state_eligible = {
 	NOT = { has_variable = boi_in_rail_survey }
 }
 
-# State scope. The cap modifiers don't match what the state should have:
-# a new state (split, release, civil war) starts with none, a state may
-# grow or shrink, and a transfer may drop modifiers.
-boi_rail_cap_needs_refresh = {
-	OR = {
-		AND = {
-			boi_rail_cap_size = 1
-			NOT = { has_modifier = boi_rail_cap_normal }
-		}
-		AND = {
-			boi_rail_cap_size = 2
-			NOT = { has_modifier = boi_rail_cap_large }
-		}
-		AND = {
-			boi_rail_cap_size = 4
-			NOT = { has_modifier = boi_rail_cap_very_large }
-		}
-		AND = {
-			has_variable = boi_rail_cap_surveyed
-			NOT = { has_modifier = boi_rail_cap_survey }
-		}
-	}
-}
-
 # Country scope: the survey can start somewhere on each continent.
 boi_rs_has_eligible_in_europe = {
 	any_scope_state = {
@@ -144,8 +120,29 @@ boi_rs_has_surveyed_state = {
 
 # State scope. The AI cap pass should raise this state: Rail Works at the
 # cap, a railway to use, and short of infrastructure.
+# State scope. The AI's stand-in survey (boi_rail_survey.60) targets states whose
+# Public Works bill is big enough to matter and not yet fully discounted. The key
+# predates plan 12, when it meant "wants more Rail Works slots".
 boi_rs_ai_state_wants_cap = {
-	has_building = building_railway
-	boi_rail_works_cap_room <= 0
-	boi_ai_infrastructure_shortfall > 0
+	is_incorporated = yes
+	boi_pw_levels >= 2
+	boi_pw_survey_discount < 0.3
+}
+
+# Country scope. What unlocks surveys (2026-11-15: Central Planning, was
+# Railways). Used by the decision's is_shown, the AI's yearly stand-in
+# (boi_rail_survey.60) and the top-bar alert, so all three move together.
+boi_rs_unlocked = {
+	has_technology_researched = central_planning
+}
+
+# Country scope. The top-bar alert boi_rs_survey_available_alert
+# (common/alert_types/50_boi_alert_types.txt). Repeats the decision's
+# is_shown and possible (common/decisions/50_boi_rail_survey.txt) without
+# the tooltips; change both together.
+boi_rs_alert_valid = {
+	is_ai = no
+	boi_rs_unlocked = yes
+	NOT = { has_journal_entry = je_boi_rail_survey }
+	boi_rs_has_any_eligible = yes
 }

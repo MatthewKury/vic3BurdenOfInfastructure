@@ -43,5 +43,5 @@ asian_port = {
 	building_naval_logistics_center = {"generic_logisticscenter_01_mesh"}
 
 	# BOI: Burden of Infrastructure buildings, added by tools/Build-CityTypes.py
-	building_boi_harbour_works = {"asian_lighthouse_01_mesh"} # BOI
+	building_boi_coastal_public_works = {"asian_lighthouse_01_mesh"} # BOI
 }

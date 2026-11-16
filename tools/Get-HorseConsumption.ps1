@@ -99,7 +99,7 @@ foreach ($file in $files) {
 }
 
 $cavalryRates = @{}
-foreach ($unit in (Get-Blocks (Read-Data (Join-Path $root 'common/combat_unit_types/00_boi_cavalry_overrides.txt')) 'combat_unit_type_[A-Za-z0-9_]+')) {
+foreach ($unit in (Get-Blocks (Read-Data (Join-Path $root 'common/combat_unit_types/50_boi_cavalry_replace.txt')) 'combat_unit_type_[A-Za-z0-9_]+')) {
     $m = [regex]::Match($unit.Body, '\bgoods_input_horses_add\s*=\s*([0-9.]+)')
     if ($m.Success) { $cavalryRates[$unit.Key] = [double]::Parse($m.Groups[1].Value, [cultureinfo]::InvariantCulture) }
 }

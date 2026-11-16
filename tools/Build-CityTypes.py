@@ -10,9 +10,9 @@ brace. Re-run after every game patch:
 
 Models (agreed 2026-11-08; no new meshes, only vanilla ones):
   Horse Ranch   (farm) - whatever the file uses for building_livestock_ranch
-  Road Works    (city) - whatever the file uses for building_construction_sector
-  Rail Works    (city) - whatever the file uses for building_army_logistics_center
-  Harbour Works (port) - the culture's lighthouse (vanilla ports have no model)
+  Public Works         (city) - whatever the file uses for building_construction_sector
+  Coastal Public Works (port) - the culture's lighthouse (vanilla ports have no model)
+  (Road, Rail and Harbour Works until their retirement on 2026-11-13, plan 12.)
 
 DLC files are copied too and keep their has_dlc_feature triggers, so a player
 without the DLC never gets that city type. Their mesh names still load; see the
@@ -30,8 +30,7 @@ OUT = os.path.join(MOD, REL)
 # building to add -> (hub type, vanilla building whose model it copies, fallback mesh)
 COPIES = {
     'farm': [('building_boi_horse_ranch', 'building_livestock_ranch', '"european_rural_ranch_01_mesh"')],
-    'city': [('building_boi_infrastructure', 'building_construction_sector', '"generic_manufactory_03_mesh"'),
-             ('building_boi_rail_works', 'building_army_logistics_center', '"generic_logisticscenter_01_mesh"')],
+    'city': [('building_boi_public_works', 'building_construction_sector', '"generic_manufactory_03_mesh"')],
 }
 # Port: the lighthouse by file prefix. South Asian and Indian use the Arabic one, as
 # vanilla's southasian files reuse arabic meshes; the rest of Europe uses European.
@@ -83,7 +82,7 @@ for folder in sources():
         lines = ['', '\t# BOI: Burden of Infrastructure buildings, added by tools/Build-CityTypes.py']
         if hub == 'port':
             prefix = name.split('_')[0]
-            lines.append(f'\tbuilding_boi_harbour_works = {{"{LIGHTHOUSE.get(prefix, "european")}_lighthouse_01_mesh"}} # BOI')
+            lines.append(f'\tbuilding_boi_coastal_public_works = {{"{LIGHTHOUSE.get(prefix, "european")}_lighthouse_01_mesh"}} # BOI')
         else:
             for building, model, fallback in COPIES[hub]:
                 lines.append(f'\t{building} = {{{mesh_list(text, model) or fallback}}} # BOI: as {model}')

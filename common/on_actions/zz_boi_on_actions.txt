@@ -26,11 +26,10 @@ on_yearly_pulse_country = {
 # Root = country
 on_monthly_pulse_country = {
 	events = {
-		boi_rail_survey.50
 		boi_housing.10
 		boi_road_financing.30
 		boi_horses.2
-		boi_ai_infrastructure.1
+		boi_public_works.1
 		boi_ai_infrastructure.2
 		boi_ai_infrastructure.3
 	}

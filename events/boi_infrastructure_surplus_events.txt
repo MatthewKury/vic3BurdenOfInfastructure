@@ -63,11 +63,11 @@ boi_surplus.10 = {
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { scope:surplus_state = { has_building = building_boi_rail_works } }
+				trigger = { scope:surplus_state = { has_building = building_railway } }
 				desc = boi_surplus.10.d_rail
 			}
 			triggered_desc = {
-				trigger = { scope:surplus_state = { has_building = building_boi_harbour_works } }
+				trigger = { scope:surplus_state = { has_building = building_boi_coastal_public_works } }
 				desc = boi_surplus.10.d_harbour
 			}
 			triggered_desc = {
@@ -173,11 +173,11 @@ boi_surplus.11 = {
 	desc = {
 		first_valid = {
 			triggered_desc = {
-				trigger = { scope:surplus_state = { has_building = building_boi_rail_works } }
+				trigger = { scope:surplus_state = { has_building = building_railway } }
 				desc = boi_surplus.11.d_rail
 			}
 			triggered_desc = {
-				trigger = { scope:surplus_state = { has_building = building_boi_harbour_works } }
+				trigger = { scope:surplus_state = { has_building = building_boi_coastal_public_works } }
 				desc = boi_surplus.11.d_harbour
 			}
 			triggered_desc = {

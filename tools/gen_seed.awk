@@ -25,7 +25,10 @@ FILENAME ~ /ranch\.txt$/ {
     next
 }
 FILENAME ~ /infrastructure_seed_plan\.tsv$/ {
-    if ($1 ~ /^STATE_/ && $2 ~ /^[A-Z0-9_]+$/ && $3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/ && ($3 + $4) > 0) {
+    # 2026-11-13 (plan 12): Road and Harbour Works are retired. The Public Works
+    # hub has its own seed (tools/Build-PublicWorksSeed.py), so this plan is no
+    # longer emitted; the file is still read so the input list stays the same.
+    if (0 && $1 ~ /^STATE_/ && $2 ~ /^[A-Z0-9_]+$/ && $3 ~ /^[0-9]+$/ && $4 ~ /^[0-9]+$/ && ($3 + $4) > 0) {
         key = $1 SUBSEP $2
         works[key] = $3 + 0
         harbour[key] = $4 + 0

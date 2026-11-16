@@ -1,0 +1,50 @@
+﻿building_boitm_st_levels = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+	production_method_groups = { pmg_boitm_st_plain }
+	required_construction = construction_cost_low
+	buildable = no
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_st_choice = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+	production_method_groups = { pmg_boitm_st_choice }
+	required_construction = construction_cost_low
+	buildable = no
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_st_choice_mp = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+	production_method_groups = { pmg_boitm_st_choice_mp }
+	required_construction = construction_cost_low
+	buildable = no
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_st_choice_same = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+	production_method_groups = { pmg_boitm_st_choice_same }
+	required_construction = construction_cost_low
+	buildable = no
+	downsizeable = no
+	ownership_type = no_ownership
+}
+building_boitm_st_absent = {
+	building_group = bg_boi_public_works
+	icon = "gfx/interface/icons/building_icons/boi_public_works.dds"
+	background = "gfx/interface/icons/building_icons/backgrounds/building_panel_bg_monuments.dds"
+	production_method_groups = { pmg_boitm_st_absent }
+	required_construction = construction_cost_low
+	buildable = no
+	downsizeable = no
+	ownership_type = no_ownership
+}

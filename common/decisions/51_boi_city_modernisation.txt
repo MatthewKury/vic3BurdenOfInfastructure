@@ -2,7 +2,8 @@
 #  Burden of Infrastructure — City Modernisation decision
 #
 #  After Haussmann's Paris. Needs Minimum Residential Standards (the
-#  slums are banned) and a state that still has Slums or Workers' Rows.
+#  slums are banned), the Central Planning technology (since
+#  2026-11-15) and a state that still has Slums or Workers' Rows.
 #  Opens the region picker (events/boi_city_modernisation_picker_generated.txt).
 #  Cools down for 5 years after a completed modernisation.
 #  Design: docs/plans/06_FEATURE_COMPLETE_PLAN.md, A4.
@@ -10,9 +11,11 @@
 
 boi_city_modernisation = {
 	is_shown = {
-		has_law = law_type:law_boi_residential_standards
+		boi_cm_unlocked = yes # the law + Central Planning (2026-11-15)
 	}
 
+	# Mirrored, without tooltips, by boi_cm_alert_valid (the top-bar alert).
+	# Change both together.
 	possible = {
 		NOT = { has_journal_entry = je_boi_city_modernisation }
 		NOT = { has_variable = boi_cm_cooldown }

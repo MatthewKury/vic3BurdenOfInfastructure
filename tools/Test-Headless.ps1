@@ -38,6 +38,10 @@ param(
     [switch]$NoFixtures,
     [switch]$Ensemble,
     [switch]$Probes,
+    # Database-keyword and engine probes for plans 10-11 (headless-telemetry/scripttools).
+    [switch]$ScriptTools,
+    # Logs each state's 1836 Public Works target level for tools/Build-PublicWorksSeed.py.
+    [switch]$PwSeed,
     # One-off checks of the 2026-11-09 fixes (headless-telemetry/checks).
     [switch]$Checks,
     [switch]$LongRun,
@@ -137,6 +141,8 @@ if (-not $NoTelemetry) {
     }
     if ($Ensemble) { $telemetryModules += 'ensemble' }
     if ($Probes) { $telemetryModules += 'probes' }
+    if ($ScriptTools) { $telemetryModules += 'scripttools' }
+    if ($PwSeed) { $telemetryModules += 'pwseed' }
     if ($Checks) { $telemetryModules += 'checks' }
     foreach ($module in $telemetryModules) {
         $source = Join-Path $PSScriptRoot "headless-telemetry\$module"

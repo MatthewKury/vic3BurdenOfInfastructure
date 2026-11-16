@@ -1,0 +1,5 @@
+﻿# Adds BOI's horse cab option to vanilla's urban-centre transport group (plan 12).
+# INJECT appends to the list; verified on 1.15.1 (lessons file, section 1).
+INJECT:pmg_public_transport = {
+	production_methods = { pm_boi_cab_ranks }
+}

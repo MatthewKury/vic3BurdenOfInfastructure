@@ -1262,22 +1262,6 @@ boi_rail_survey.26 = {
 	}
 }
 
-boi_rail_survey.50 = {
-	type = country_event
-	hidden = yes
-
-	trigger = {
-		any_scope_state = { boi_rail_cap_needs_refresh = yes }
-	}
-
-	immediate = {
-		every_scope_state = {
-			limit = { boi_rail_cap_needs_refresh = yes }
-			boi_rail_cap_refresh = yes
-		}
-	}
-}
-
 # Yearly, AI only: the stand-in for a survey. One year in four, the up to
 # five states most short of infrastructure with Rail Works at the cap gain
 # 3 levels (a mid-quality result), for a year of survey expenses paid at
@@ -1289,7 +1273,7 @@ boi_rail_survey.60 = {
 	trigger = {
 		is_ai = yes
 		in_default = no
-		has_technology_researched = railways
+		boi_rs_unlocked = yes # BOI 2026-11-15: Central Planning, was Railways
 		NOT = { has_journal_entry = je_boi_rail_survey }
 		any_scope_state = { boi_rs_ai_state_wants_cap = yes }
 	}
@@ -1301,7 +1285,7 @@ boi_rail_survey.60 = {
 				set_variable = { name = boi_rs_ai_state_count value = 0 }
 				ordered_scope_state = {
 					limit = { boi_rs_ai_state_wants_cap = yes }
-					order_by = boi_ai_infrastructure_shortfall
+					order_by = boi_pw_chargeable
 					max = 5
 					check_range_bounds = no
 					set_variable = boi_rs_ai_pick
@@ -1319,14 +1303,15 @@ boi_rail_survey.60 = {
 					}
 					every_scope_state = {
 						limit = { has_variable = boi_rs_ai_pick }
+						# Plan 12: a mid-quality survey's discount (7.5%), capped at 30%.
 						if = {
-							limit = { has_variable = boi_rail_cap_surveyed }
-							change_variable = { name = boi_rail_cap_surveyed add = 3 }
+							limit = { has_variable = boi_pw_survey_discount }
+							change_variable = { name = boi_pw_survey_discount add = 0.075 }
+							clamp_variable = { name = boi_pw_survey_discount max = 0.3 }
 						}
 						else = {
-							set_variable = { name = boi_rail_cap_surveyed value = 3 }
+							set_variable = { name = boi_pw_survey_discount value = 0.075 }
 						}
-						boi_rail_cap_refresh = yes
 					}
 					if = {
 						limit = { has_variable = boi_rs_ai_surveys }
@@ -1370,6 +1355,10 @@ boi_rail_survey.90 = {
 				var:boi_rs_last_months >= 0
 				var:boi_rs_last_quality >= 0
 				var:boi_rs_last_states >= 0
+				OR = {
+					NOT = { has_variable = boi_rs_last_discount }
+					var:boi_rs_last_discount >= 0
+				}
 			}
 		}
 	}

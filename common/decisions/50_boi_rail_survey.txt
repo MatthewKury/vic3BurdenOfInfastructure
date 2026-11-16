@@ -10,9 +10,11 @@
 boi_commission_rail_survey = {
 	is_shown = {
 		is_ai = no
-		has_technology_researched = railways
+		boi_rs_unlocked = yes # BOI 2026-11-15: Central Planning, was Railways
 	}
 
+	# Mirrored, without tooltips, by boi_rs_alert_valid (the top-bar alert).
+	# Change both together.
 	possible = {
 		NOT = { has_journal_entry = je_boi_rail_survey }
 		custom_tooltip = {

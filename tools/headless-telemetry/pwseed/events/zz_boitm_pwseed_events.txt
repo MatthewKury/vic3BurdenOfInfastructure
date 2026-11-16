@@ -1,0 +1,18 @@
+﻿namespace = boitm_pwseed
+
+# Logs every state's Public Works target level once, on the country's first
+# monthly pulse of 1836, for tools/Build-PublicWorksSeed.py (plan 12).
+# BOIPWSEED|<owner tag>|<state region name>|target=<n>;chargeable=<x>;usage=<x>;floor=<x>;levels=<n>
+boitm_pwseed.1 = {
+	type = country_event
+	hidden = yes
+	trigger = {
+		NOT = { has_variable = boitm_pwseed_done }
+	}
+	immediate = {
+		set_variable = boitm_pwseed_done
+		every_scope_state = {
+			debug_log = "BOIPWSEED|[THIS.GetState.GetOwner.GetTagName]|[THIS.GetState.GetStateRegion.GetName]|target=[THIS.ScriptValue('boi_pw_target_levels')|0];chargeable=[THIS.ScriptValue('boi_pw_chargeable')|1];usage=[THIS.ScriptValue('boitm_pwseed_usage')|1];floor=[THIS.ScriptValue('boi_pw_floor')|1];levels=[THIS.ScriptValue('boi_pw_levels')|0]"
+		}
+	}
+}

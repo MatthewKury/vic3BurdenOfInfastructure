@@ -1,0 +1,40 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Public Works hub modifiers (plan 12)
+#
+#  The decay penalty itself is injected into vanilla's engine-applied
+#  incorporated_state / unincorporated_state modifiers
+#  (common/static_modifiers/zz_boi_network_penalty_inject.txt).
+#  The modifiers here are applied by the monthly script in
+#  events/boi_public_works_events.txt, always with a multiplier.
+#
+#  Both infrastructure keys are needed: state_infrastructure_mult does
+#  not reach the population floor; state_infrastructure_from_population_mult
+#  does (verified 1.15.1, lessons file).
+# ================================================================
+
+# Cancels the incorporated penalty at multiplier 1 (staffed, supplied).
+boi_network_upkeep = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds"
+	state_infrastructure_mult = 0.3
+	state_infrastructure_from_population_mult = 0.3
+}
+
+# Cancels the unincorporated penalty at multiplier 1.
+boi_network_upkeep_uninc = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds"
+	state_infrastructure_mult = 0.1
+	state_infrastructure_from_population_mult = 0.1
+}
+
+# Mode and Harbour bonus: multiplier = bonus percent x upkeep share.
+boi_network_mode_bonus = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_gear_positive.dds"
+	state_infrastructure_mult = 0.01
+}
+
+# Building modifier on the hub: trims its per-level inputs to the actual use.
+# Multiplier = 100 x (1 + law discount - wanted input share).
+boi_pw_goods_trim = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_coins_positive.dds"
+	building_goods_input_mult = -0.01
+}

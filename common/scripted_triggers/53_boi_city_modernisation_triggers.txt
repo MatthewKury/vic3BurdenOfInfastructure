@@ -33,3 +33,25 @@ boi_cm_has_state_to_clear = {
 		NOT = { has_variable = boi_cm_cleared }
 	}
 }
+
+# Country scope. What unlocks the decision: the slums are banned, and
+# (since 2026-11-15) Central Planning. Used by the decision's is_shown and
+# the top-bar alert.
+boi_cm_unlocked = {
+	has_law = law_type:law_boi_residential_standards
+	has_technology_researched = central_planning
+}
+
+# Country scope. The top-bar alert boi_cm_city_available_alert
+# (common/alert_types/50_boi_alert_types.txt). Repeats the decision's
+# is_shown and possible (common/decisions/51_boi_city_modernisation.txt)
+# without the tooltips; change both together.
+boi_cm_alert_valid = {
+	is_ai = no
+	boi_cm_unlocked = yes
+	NOT = { has_journal_entry = je_boi_city_modernisation }
+	NOT = { has_variable = boi_cm_cooldown }
+	is_at_war = no
+	scaled_debt < 0.5
+	boi_cm_has_any_eligible = yes
+}

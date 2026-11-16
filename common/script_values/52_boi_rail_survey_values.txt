@@ -9,48 +9,6 @@
 #  (VIC3_MODDING_LESSONS.md §7).
 # ================================================================
 
-# ── Rail Works cap (state scope) ────────────────────────────────
-
-# Size thresholds: 70 provinces is the 80th percentile of BOI's state
-# regions, 230 the 95th (measured 2026-11-07 from map_data/state_regions).
-# Caps 1/2/4 since 2026-11-08 (were 2/4/6): at 2.5x, one Permanent Way
-# level gives 32.5 infrastructure, so an early survey matters.
-boi_rail_cap_size = {
-	value = 1
-	if = {
-		limit = { num_provinces >= 230 }
-		value = 4
-	}
-	else_if = {
-		limit = { num_provinces >= 70 }
-		value = 2
-	}
-}
-
-# The engine's cap, repeated: size modifier plus survey gains. Script
-# can't read a building's max level.
-boi_rail_cap = {
-	value = boi_rail_cap_size
-	if = {
-		limit = { has_variable = boi_rail_cap_surveyed }
-		add = var:boi_rail_cap_surveyed
-	}
-}
-
-boi_rail_works_levels_state = {
-	value = 0
-	every_scope_building = {
-		limit = { is_building_type = building_boi_rail_works }
-		add = level
-	}
-}
-
-boi_rail_works_cap_room = {
-	value = boi_rail_cap
-	subtract = boi_rail_works_levels_state
-	min = 0
-}
-
 # ── Survey goal (state scope) ───────────────────────────────────
 
 boi_rs_urban_levels = {
@@ -285,6 +243,16 @@ boi_rs_windfall_small = {
 # ── Result ──────────────────────────────────────────────────────
 
 # Rail Works levels each surveyed state gains, by final quality.
+# Since 2026-11-13 (plan 12) a survey no longer adds Rail Works slots (Rail Works
+# is retired). Each surveyed state's Public Works running cost falls by 5% (quality
+# under 20) to 10% (80 and over); repeated surveys stack to 30%
+# (boi_pw_survey_discount, read by the hub's monthly input trim).
+boi_rs_result_discount = {
+	value = boi_rs_result_levels
+	multiply = 0.0125
+	add = 0.0375
+}
+
 boi_rs_result_levels = {
 	value = 1
 	if = {

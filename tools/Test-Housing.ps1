@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
     [Parameter(Mandatory)][string]$GamePath,
     [string]$ModPath
@@ -59,7 +59,7 @@ Assert-Housing ($readerBlocks.Count -eq 2 -and $readerBlocks[1].Key -eq 'beta') 
 # count on 2026-11-09 (plan 6, review finding C2), which had stopped at 22-versus-28.
 $housingManifest = [ordered]@{
     'common/building_groups/50_boi_housing_tiers_generated.txt'       = @('bg_boi_residential', 'bg_boi_slum_housing')
-    'common/buildings/00_boi_housing_rural_generated.txt'             = @('building_coal_mine', 'building_copper_mine')
+    'common/buildings/50_boi_housing_rural_inject_generated.txt'      = @('INJECT:building_coal_mine', 'INJECT:building_copper_mine')
     'common/buildings/50_boi_housing_tiers_generated.txt'             = @('building_boi_slums', 'building_boi_tenements', 'building_boi_municipal_estates', 'building_boi_temporary_shelter')
     'common/buy_packages/00_buy_packages.txt'                         = @('wealth_1', 'wealth_99')
     'common/decrees/50_boi_housing.txt'                               = @('decree_boi_emergency_accommodation')
@@ -325,23 +325,21 @@ Assert-Housing ($servicedOutput -eq (Housing-Number (Child-HousingBlock $campBui
 Assert-Housing ($pm['pm_boi_slums'] -notmatch 'unlocking_laws') 'Residential law must not disable existing slum operation.'
 Assert-Housing ($buildings['building_boi_slums'] -match 'possible\s*=\s*\{\s*owner\s*=\s*\{\s*NOT\s*=\s*\{\s*has_law\s*=\s*law_type:law_boi_residential_standards') 'New slums must be blocked by residential standards.'
 
-# Each generated shadow must be its vanilla block plus the housing PM group.
-# BOI's own Horse Ranch lists company housing by hand instead: a generated
-# copy would sort first and replace BOI's definition.
+# Each generated INJECT must name a vanilla building and add exactly one housing
+# PM group (since 2026-11-13, plan 10; it was a full vanilla copy before). BOI's
+# own Horse Ranch lists company housing by hand instead.
 $originalBuildings = Read-HousingDomain $GamePath 'buildings'
-$generatedSource = [IO.File]::ReadAllText((Join-Path $ModPath 'common/buildings/00_boi_housing_rural_generated.txt'))
+$generatedSource = [IO.File]::ReadAllText((Join-Path $ModPath 'common/buildings/50_boi_housing_rural_inject_generated.txt'))
 $ruralCount = 0
 $subsistenceCount = 0
 foreach ($block in (Get-HousingScriptBlocks $generatedSource)) {
-    $key = $block.Key
-    Assert-Housing ($originalBuildings.ContainsKey($key)) "Generated shadow of a non-vanilla building: $key"
+    Assert-Housing ($block.Key -like 'INJECT:*') "Generated rural block is not an INJECT: $($block.Key)"
+    $key = $block.Key.Substring(7)
+    Assert-Housing ($originalBuildings.ContainsKey($key)) "Generated INJECT for a non-vanilla building: $key"
     $source = $block.Text
+    Assert-Housing ($source -match '^INJECT:\w+\s*=\s*\{\s*production_method_groups\s*=\s*\{\s*pmg_boi_(?:company|subsistence)_housing\s*\}\s*\}$') "Unexpected rural INJECT content: $key"
     $ruralCount += [int]($source -match '\bpmg_boi_company_housing\b')
     $subsistenceCount += [int]($source -match '\bpmg_boi_subsistence_housing\b')
-    $restored = [regex]::Replace($source, '(?m)^\s*pmg_boi_(?:company|subsistence)_housing\s*\r?\n', '')
-    # The generator's one other change: owner ?= in vanilla's "British dictates" limits.
-    $restored = [regex]::Replace($restored, '(# British dictates\s*limit\s*=\s*\{\s*)owner \?= \{', '$1owner = {')
-    Assert-Housing ((Normalize-HousingScript $restored) -eq (Normalize-HousingScript $originalBuildings[$key])) "Unexpected rural override change: $key"
 }
 $ranch = [regex]::Replace($buildings['building_boi_horse_ranch'], '(?m)#[^\r\n]*', '')
 Assert-Housing ($ranch -match 'production_method_groups\s*=\s*\{[^}]*\bpmg_boi_company_housing\b') 'The Horse Ranch must list pmg_boi_company_housing.'

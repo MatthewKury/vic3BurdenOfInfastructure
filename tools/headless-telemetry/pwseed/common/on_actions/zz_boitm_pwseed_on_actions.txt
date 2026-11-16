@@ -1,0 +1,6 @@
+﻿# Public Works seed measurement (plan 12). events = { } only.
+on_monthly_pulse_country = {
+	events = {
+		boitm_pwseed.1
+	}
+}

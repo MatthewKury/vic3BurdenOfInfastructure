@@ -1,0 +1,71 @@
+﻿# Script-tools probes (plan 10 / plan 11, 2026-11-13), round 2. Not shipped.
+# Marker key K = state_infrastructure_from_automobiles_consumption_add.
+
+# Urban option, first pass (plan 11, part 13), injected into pmg_public_transport.
+pm_boitm_st_cabs = {
+	texture = "gfx/interface/icons/production_method_icons/no_public_transport.dds"
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 3
+			goods_output_transportation_add = 5
+		}
+	}
+	state_modifiers = { workforce_scaled = { state_infrastructure_add = 3 } }
+}
+
+# A: plain building for the level test.
+pm_boitm_st_plain = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	building_modifiers = { level_scaled = { building_employment_laborers_add = 100 } }
+}
+
+# B1/B3: default ai_selection (most_profitable). B2: most_productive.
+pm_boitm_st_cheap = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	is_default = yes
+	building_modifiers = {
+		workforce_scaled = { goods_input_tools_add = 2 }
+		level_scaled = { building_employment_laborers_add = 200 }
+	}
+	state_modifiers = { workforce_scaled = { state_infrastructure_add = 10 } }
+}
+pm_boitm_st_dear = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	building_modifiers = {
+		workforce_scaled = { goods_input_tools_add = 20 }
+		level_scaled = { building_employment_laborers_add = 200 }
+	}
+	state_modifiers = { workforce_scaled = { state_infrastructure_add = 20 } }
+}
+# B3: same benefit, different cost.
+pm_boitm_st_same_cheap = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	is_default = yes
+	building_modifiers = {
+		workforce_scaled = { goods_input_tools_add = 2 }
+		level_scaled = { building_employment_laborers_add = 200 }
+	}
+	state_modifiers = { workforce_scaled = { state_infrastructure_add = 10 } }
+}
+pm_boitm_st_same_dear = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	building_modifiers = {
+		workforce_scaled = { goods_input_tools_add = 20 }
+		level_scaled = { building_employment_laborers_add = 200 }
+	}
+	state_modifiers = { workforce_scaled = { state_infrastructure_add = 10 } }
+}
+
+# D/G: an input no one makes in 1836 (electricity), with an unscaled and a
+# workforce-scaled marker. Read: is the unscaled K (9) also cut by the shortage?
+pm_boitm_st_absent = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	building_modifiers = {
+		workforce_scaled = { goods_input_electricity_add = 10 }
+		level_scaled = { building_employment_laborers_add = 200 }
+	}
+	state_modifiers = {
+		unscaled = { state_infrastructure_from_automobiles_consumption_add = 9 }
+		workforce_scaled = { state_infrastructure_from_automobiles_consumption_add = 90 }
+	}
+}

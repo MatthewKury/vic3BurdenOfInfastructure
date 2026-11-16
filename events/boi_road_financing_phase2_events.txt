@@ -132,7 +132,10 @@ boi_road_financing.20 = {
 		NOT = { has_variable = boi_rf_defaulters_cooldown }
 		any_scope_state = {
 			is_incorporated = yes
-			has_building = building_boi_infrastructure
+			OR = {
+				has_building = building_boi_public_works
+				has_building = building_boi_coastal_public_works
+			}
 		}
 	}
 
@@ -141,7 +144,10 @@ boi_road_financing.20 = {
 		ordered_scope_state = {
 			limit = {
 				is_incorporated = yes
-				has_building = building_boi_infrastructure
+				OR = {
+					has_building = building_boi_public_works
+					has_building = building_boi_coastal_public_works
+				}
 			}
 			order_by = turmoil
 			# Only the top state. Without position (or max), ordered_scope_state runs on

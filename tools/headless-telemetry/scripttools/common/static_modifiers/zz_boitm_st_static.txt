@@ -1,0 +1,6 @@
+﻿# F: the decay penalty's two halves, applied by script to one state each.
+boitm_st_mult = {
+	icon = "gfx/interface/icons/timed_modifier_icons/modifier_gear_negative.dds"
+	state_infrastructure_mult = -0.3
+	state_infrastructure_from_population_mult = -0.3
+}

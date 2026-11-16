@@ -1,0 +1,29 @@
+﻿# ================================================================
+#  Burden of Infrastructure — urban horse transport option (plan 12)
+#
+#  Added to vanilla's urban centre transport group by INJECT
+#  (common/production_method_groups/50_boi_urban_cabs_inject.txt). Cities
+#  run cab ranks, carriers and horse omnibuses for more horses, and sell
+#  the haulage. First pass, user-approved 2026-11-13: 3 horses in,
+#  5 transportation out, +3 infrastructure per level.
+#
+#  Urban centres pick PMs on profit. At base prices this earns £60 a level
+#  against the default PM's £30, so the AI takes it where horses are
+#  affordable (verified spreading in France, Russia and Prussia within two
+#  years in a 1.15.1 probe) and leaves it for trams once those pay more.
+#  No unlocking technology: available from 1836.
+# ================================================================
+pm_boi_cab_ranks = {
+	texture = "gfx/interface/icons/production_method_icons/no_public_transport.dds"
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 3
+			goods_output_transportation_add = 5
+		}
+	}
+	state_modifiers = {
+		workforce_scaled = {
+			state_infrastructure_add = 3
+		}
+	}
+}

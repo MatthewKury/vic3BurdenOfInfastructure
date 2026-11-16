@@ -17,67 +17,9 @@
 #  Values: common/script_values/51_boi_ai_construction_values.txt.
 # ================================================================
 
-boi_ai_infrastructure.1 = {
-	type = country_event
-	hidden = yes
-
-	trigger = {
-		is_player = no
-		in_default = no
-		scaled_debt < 0.75
-		boi_ai_works_under_construction < boi_ai_works_construction_cap
-		any_scope_state = { boi_ai_state_wants_works = yes }
-	}
-
-	immediate = {
-		ordered_scope_state = {
-			limit = { boi_ai_state_wants_works = yes }
-			order_by = boi_ai_infrastructure_shortfall
-			position = 0
-			check_range_bounds = no
-
-			# is_under_construction misses a new level on an existing
-			# building, so without these the event re-queued the same
-			# state every month until the first level finished (4 levels
-			# for a 20-point shortfall). One level per state per year;
-			# _recent feeds the country cap while the level is built.
-			set_variable = { name = boi_ai_works_cooldown value = yes days = 365 }
-			set_variable = { name = boi_ai_works_recent value = yes days = 180 }
-
-			# Rail Works where it suits; Harbour Works where it is the
-			# cheaper input (horses dear, its boats not); otherwise
-			# Road Works.
-			if = {
-				limit = { boi_ai_state_prefers_rail_works = yes }
-				# The level count this queue order should reach; the trigger
-				# won't queue again here until it is built (or 5 years pass,
-				# in case the order was cancelled).
-				set_variable = {
-					name = boi_ai_rw_pending
-					value = {
-						value = boi_rail_works_levels_state
-						add = 1
-					}
-					days = 1825
-				}
-				start_building_construction = building_boi_rail_works
-			}
-			else_if = {
-				limit = {
-					is_coastal = yes
-					sg:horses = { state_goods_pricier >= 0.25 }
-					# Its boats: clippers, steamers from gantry_cranes (2026-11-10;
-					# merchant marine before that).
-					boi_ai_harbour_input_price >= 1
-				}
-				start_building_construction = building_boi_harbour_works
-			}
-			else = {
-				start_building_construction = building_boi_infrastructure
-			}
-		}
-	}
-}
+# boi_ai_infrastructure.1 (queue Road, Rail or Harbour Works for the AI) was retired
+# 2026-11-13 with the works themselves: the Public Works hub is placed and sized by
+# script (events/boi_public_works_events.txt), so the AI never has to build it.
 
 # Municipal Estates are government-funded housing, which the engine's AI ignores
 # like the works buildings. Queues one level at a time in the state where housing

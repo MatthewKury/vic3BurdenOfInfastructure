@@ -6,6 +6,12 @@ Burden of Infrastructure has not had a public release yet. This log starts with 
 
 
 
+## Unreleased: survey unlock (2026-11-15)
+
+- **Rail Network Surveys now unlock with Central Planning instead of Railways.** This applies to the player's decision and to the AI's yearly stand-in survey. Central Planning is an era 4 society technology, so surveys arrive much later than before.
+- **Modernise a City now also needs Central Planning,** on top of Minimum Residential Standards. This covers the AI too, since the decision is the only way to start a modernisation.
+- **Both decisions have a top-bar alert of their own** (common/alert_types/50_boi_alert_types.txt), shown to the player whenever the decision can be taken, so it is noticed each time a survey ends or the modernisation cooldown runs out. Clicking it opens the journal. The alert conditions are scripted triggers beside each decision's other triggers (boi_rs_alert_valid, boi_cm_alert_valid).
+
 ## Unreleased: steel demand (2026-11-10)
 
 BOI railways give no infrastructure, so fewer were built than in vanilla, and engines and steel fell with them: at 1876 in the 9 November games, steel sold 34% below vanilla and engines 37%, at about vanilla's price. The works now buy iron, steel, engines and boats, and dear horses pull railways. Test values; the games are logged in [the balance log](docs/reports/steel_10_Nov_2026/BALANCE_LOG.md).

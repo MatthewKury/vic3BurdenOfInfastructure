@@ -49,20 +49,20 @@ Testing so far: a short Portugal debug-mode game, and automated 10-year observer
 
 ## Vanilla overrides and mod conflicts
 
-Every place where BOI replaces base-game content. Any other mod that changes the same thing conflicts with BOI: whichever loads first or last wins, depending on the file type, and the other mod's change, or BOI's, is lost. All of these must be re-checked after a Victoria 3 patch; [PATCHING.md](PATCHING.md) has the procedure. "Generated" means a script rebuilds it from the game files.
+Every place where BOI replaces or adds to base-game content. Any other mod that changes the same thing conflicts with BOI: whichever loads first or last wins, depending on the file type, and the other mod's change, or BOI's, is lost. Since 2026-11-13 (plan 10) most of BOI's changes to vanilla definitions use the `INJECT:` and `REPLACE:` database keywords instead of full first-read-wins copies. An `INJECT:` only adds lines, so it combines with other mods' injects; a `REPLACE:` still conflicts with any other change to the same key. All of these must be re-checked after a Victoria 3 patch; [PATCHING.md](PATCHING.md) has the procedure. "Generated" means a script rebuilds it from the game files.
 
 | What BOI replaces | Files | Conflicts with mods that… | Rebuild with |
 | --- | --- | --- | --- |
 | All 16 state-region files (Horse Ranch arable lists, Horse-Breeding Traditions trait) | `map_data/state_regions/*.txt` | edit state regions: map mods, resource mods, new-state mods | `tools/REGENERATE.md` §1 |
 | Household buy packages (housing demand) | `common/buy_packages/00_buy_packages.txt` | change pop needs or buy packages | `tools/Build-Housing.ps1` |
-| 33 rural and subsistence buildings (housing PM group) | `common/buildings/00_boi_housing_rural_generated.txt` | edit farms, mines, plantations, logging, fishing, subsistence buildings | `tools/Build-Housing.ps1` |
-| `building_railway` (AI value) | `common/buildings/00_boi_railway_ai_override.txt` | edit railways | by hand |
-| `building_manor_house`, `building_financial_district` (housing investment scores, 2026-11-08) | `common/buildings/00_boi_ownership_overrides.txt` | edit ownership buildings or investment: economy overhauls | `tools/Build-OwnershipOverrides.py` |
-| 34 map city-type files: Horse Ranch, Road, Rail and Harbour Works models (2026-11-08), 15 of them from DLCs | `gfx/map/city_data/city_types/*.txt` | change city graphics, or add buildings with models: graphics mods, building mods | `tools/Build-CityTypes.py` |
-| 22 production methods (rail and port infrastructure removed; horse inputs on haulage, farms, pasture, urban transport) | `common/production_methods/00_boi_*_overrides.txt` | edit railway, port, mine, plantation, farm, subsistence or urban-centre PMs | by hand |
-| 4 cavalry combat units (horse upkeep) | `common/combat_unit_types/00_boi_cavalry_overrides.txt` | edit land units: military overhauls | by hand |
-| 5 mobilization options | `common/mobilization_options/00_boi_*_overrides.txt` | edit mobilization options | by hand |
+| 33 rural and subsistence buildings (housing PM group added with `INJECT:`, 2026-11-13) | `common/buildings/50_boi_housing_rural_inject_generated.txt` | replace those buildings wholesale (a mod that also injects into them is compatible) | `tools/Build-Housing.ps1` |
+| `building_manor_house`, `building_financial_district` (housing investment scores, 2026-11-08; `INJECT:` since 2026-11-13) | `common/buildings/50_boi_ownership_inject_generated.txt` | replace those buildings wholesale: economy overhauls | `tools/Build-OwnershipOverrides.py` |
+| 34 map city-type files: Horse Ranch and Public Works / Coastal Public Works models (2026-11-08; hubs since 2026-11-13), 15 of them from DLCs | `gfx/map/city_data/city_types/*.txt` | change city graphics, or add buildings with models: graphics mods, building mods | `tools/Build-CityTypes.py` |
+| 12 production methods gain horse lines (haulage, farm tools, pasture, urban transport), added with `INJECT:` since 2026-11-13 | `common/production_methods/50_boi_horse_pm_injects.txt` | replace those PMs wholesale | by hand |
+| 4 cavalry combat units (horse upkeep; `REPLACE:` since 2026-11-13) | `common/combat_unit_types/50_boi_cavalry_replace.txt` | edit land units: military overhauls | by hand |
+| 4 mobilization options (`REPLACE:` since 2026-11-13) | `common/mobilization_options/50_boi_*_replace.txt` | edit mobilization options | by hand |
 | 3 GUI types (mobilization grid, formation panel, building details header) | `gui/01_boi_*.gui` | change those panels (Community Mod Framework is compatible) | by hand |
+| The engine's `incorporated_state` / `unincorporated_state` modifiers (network decay penalty, `INJECT:`, plan 12) and the urban-centre transport group (Cab Ranks and Carting, `INJECT:`) | `common/static_modifiers/zz_boi_network_penalty_inject.txt`, `common/production_method_groups/50_boi_urban_cabs_inject.txt` | replace those modifiers or that group | by hand |
 | One define, `INDIVIDUALS_PER_POP_INFRASTRUCTURE` | `common/defines/zz_boi_defines.txt` | change the same define | by hand |
 
 **Not overrides, but shared hooks:** BOI reads the vanilla Labour Rights laws (`law_no_workers_rights`, `law_regulatory_bodies`, `law_worker_protections`) to decide company housing, without changing them (2026-11-08). A mod that renames or replaces those laws leaves company housing on Work Camps. BOI's on-action hooks only add to `events = { }` lists, which merge with other mods'.

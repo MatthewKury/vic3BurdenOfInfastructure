@@ -1,15 +1,4 @@
 ﻿l_english:
- # ── Rail Works cap ──────────────────────────────────────────────
- state_building_boi_rail_works_max_level_add: "$building_boi_rail_works$ Max Level"
- state_building_boi_rail_works_max_level_add_desc: "A bonus or penalty to the maximum level of $building_boi_rail_works$ buildings."
- boi_rail_cap_normal: "Rail Corridors"
- boi_rail_cap_normal_desc: "The ground has room for only a few lines until it is properly surveyed."
- boi_rail_cap_large: "Wide Rail Corridors"
- boi_rail_cap_large_desc: "A large state, with room for more lines before a survey is needed."
- boi_rail_cap_very_large: "Open Rail Corridors"
- boi_rail_cap_very_large_desc: "A vast state, with room for many lines before a survey is needed."
- boi_rail_cap_survey: "Surveyed Rail Network"
- boi_rail_cap_survey_desc: "A Rail Network Survey has charted routes for more lines through this state."
  boi_rail_survey_expenses: "Rail Network Survey"
  boi_rail_survey_expenses_desc: "Surveyors, engineers and land agents in the field."
  boi_rail_survey_underway: "Rail Network Survey Underway"
@@ -21,7 +10,7 @@
 
  # ── Decision ────────────────────────────────────────────────────
  boi_commission_rail_survey: "Commission a Rail Network Survey"
- boi_commission_rail_survey_desc: "Each state has room for only a few #b $building_boi_rail_works$#! levels until its routes are surveyed. Choose a strategic region: every state we own there will be surveyed. While the survey runs we pay its expenses, and its choices decide how good the result is. At the end, every surveyed state gains 1 to 5 more levels of $building_boi_rail_works$."
+ boi_commission_rail_survey_desc: "Charted railway routes let #b $building_boi_public_works$#! keep a state's network running for less. Choose a strategic region: every state we own there will be surveyed. While the survey runs we pay its expenses, and its choices decide how good the result is. At the end, every surveyed state's $building_boi_public_works$ costs 5% to 10% less to run, and repeated surveys add up to 30%."
  boi_rs_needs_eligible_state_tt: "We own at least one state that is not already being surveyed"
 
  # ── Region picker ───────────────────────────────────────────────
@@ -85,7 +74,7 @@
  # ── Journal entry ───────────────────────────────────────────────
  je_boi_rail_survey: "Rail Network Survey"
  je_boi_rail_survey_activation_tt: "Take the decision #b $boi_commission_rail_survey$#! and choose a region"
- je_boi_rail_survey_reason: "Survey parties are charting railway routes through [JournalEntry.GetCountry.MakeScope.Var('boi_rs_states').GetValue|0] of our states. We pay for them every week until the work is done.\n\n#b Progress#! is the same each month, faster with surplus bureaucracy, and some choices set it forward or back. Events come at 25%, 50% and 75%.\n\n#b Quality#! decides the result. When the survey is finished, each surveyed state gains levels of $building_boi_rail_works$: 1 below 20 quality, 2 from 20, 3 from 40, 4 from 60 and 5 from 80."
+ je_boi_rail_survey_reason: "Survey parties are charting railway routes through [JournalEntry.GetCountry.MakeScope.Var('boi_rs_states').GetValue|0] of our states. We pay for them every week until the work is done.\n\n#b Progress#! is the same each month, faster with surplus bureaucracy, and some choices set it forward or back. Events come at 25%, 50% and 75%.\n\n#b Quality#! decides the result. When the survey is finished, each surveyed state's $building_boi_public_works$ costs less to run: 5% below 20 quality, rising by 1.25% at each of 20, 40, 60 and 80, to 10%."
  je_boi_rail_survey_completed_desc: "The survey is complete, and its routes are open to new lines."
  je_boi_rail_survey_cancelled_desc: "The survey was abandoned before it was finished."
  je_boi_rail_survey_lost_desc: "Every state under survey passed out of our hands, and the survey parties went home."
@@ -94,7 +83,7 @@
  boi_rs_quality_bar: "Survey quality"
  boi_rs_quality_bar_desc: "Quality: #v [JournalEntry.GetCurrentBarValue(ScriptedProgressBar.Self)|0]#!"
  boi_rs_complete_tt: "The survey reaches 100%"
- boi_rs_complete_effect_tt: "Every surveyed state we still own gains 1 to 5 more levels of $building_boi_rail_works$, by the survey's quality"
+ boi_rs_complete_effect_tt: "Every surveyed state we still own runs its $building_boi_public_works$ 5% to 10% more cheaply, by the survey's quality (up to 30% in all)"
  boi_rs_cancelled_header: "Abandon the survey"
  boi_rs_cancelled_tt: "We abandon the survey"
  boi_rs_cancelled_effect_tt: "The survey ends with no result. The money already spent is lost"
@@ -193,7 +182,7 @@
 
  # ── Completion ──────────────────────────────────────────────────
  boi_rail_survey.90.t: "The Survey Is Complete"
- boi_rail_survey.90.d: "After [ROOT.GetCountry.MakeScope.Var('boi_rs_last_months').GetValue|0] months in the field, the Rail Network Survey has finished its work in [ROOT.GetCountry.MakeScope.Var('boi_rs_last_states').GetValue|0] states, with a final quality of [ROOT.GetCountry.MakeScope.Var('boi_rs_last_quality').GetValue|0]. Each of them can now hold [ROOT.GetCountry.MakeScope.Var('boi_rs_last_levels').GetValue|0] more levels of $building_boi_rail_works$."
+ boi_rail_survey.90.d: "After [ROOT.GetCountry.MakeScope.Var('boi_rs_last_months').GetValue|0] months in the field, the Rail Network Survey has finished its work in [ROOT.GetCountry.MakeScope.Var('boi_rs_last_states').GetValue|0] states, with a final quality of [ROOT.GetCountry.MakeScope.Var('boi_rs_last_quality').GetValue|0]. In each of them, $building_boi_public_works$ now costs [ROOT.GetCountry.MakeScope.Var('boi_rs_last_discount').GetValue|%1] less to run."
  boi_rail_survey.90.f: "The maps go to the printers, and the engineers to the next commission."
  boi_rail_survey.90.a: "Lay the track"
- boi_rs_award_tt: "Every surveyed state can hold more levels of $building_boi_rail_works$"
+ boi_rs_award_tt: "Every surveyed state's $building_boi_public_works$ costs less to run"

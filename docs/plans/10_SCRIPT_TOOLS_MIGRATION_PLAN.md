@@ -1,7 +1,24 @@
 # Fewer vanilla shadows: migrate to the database override tools
 
-Written 2026-11-13. **This is the first thing to do next session**, at the user's request,
-before any more design work on plan 11.
+Written 2026-11-13. **Done 2026-11-13** (branch `script-update`). Results:
+- **Steps 1–2:** wiki read; two probe runs (`20261113-111013_mod`, `20261113-111539_mod`,
+  module `tools/headless-telemetry/scripttools`, switch `-ScriptTools`). Findings are in
+  `VIC3_MODDING_LESSONS.md` §1 and §13.
+- **Steps 3–4: 56 of 67 shadows converted.**
+  - `INJECT:`: 12 horse PM lines (`50_boi_horse_pm_injects.txt`), 33 rural housing groups,
+    2 ownership investment-score blocks (both generated).
+  - `REPLACE:`: 4 cavalry types, 4 mobilization options. Basic Supplies is no longer copied.
+  - Left as shadows: the 10 rail and port PMs and `building_railway`, which plan 12 deletes
+    outright.
+  - "Duplicated key" lines: 67 → 11.
+- **Step 5:** `Compare-ShadowBodies.py`, `Test-ShadowSources.ps1` and `Test-Housing.ps1`
+  understand the keywords. `Validate-All.ps1` passes.
+- **Step 6:** A/B half-year runs, old against converted (`20261113-112233_mod`,
+  `20261113-112404_mod`), plus a one-month horse-market A/B (see the commit). Not 10 years:
+  plan 12 replaces the works anyway.
+- **Step 7:** `12_PUBLIC_WORKS_HUB_IMPLEMENTATION.md` written.
+
+The original plan follows.
 
 ## Why
 

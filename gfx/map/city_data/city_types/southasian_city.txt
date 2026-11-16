@@ -84,6 +84,5 @@ southasian_city = {
 	building_army_logistics_center = {"generic_logisticscenter_01_mesh"}
 
 	# BOI: Burden of Infrastructure buildings, added by tools/Build-CityTypes.py
-	building_boi_infrastructure = {"arabic_factory_03_mesh"} # BOI: as building_construction_sector
-	building_boi_rail_works = {"generic_logisticscenter_01_mesh"} # BOI: as building_army_logistics_center
+	building_boi_public_works = {"arabic_factory_03_mesh"} # BOI: as building_construction_sector
 }

@@ -86,6 +86,5 @@ french_city = {
 	building_army_logistics_center = {"french_logisticscenter_01_mesh"}
 
 	# BOI: Burden of Infrastructure buildings, added by tools/Build-CityTypes.py
-	building_boi_infrastructure = {"french_city_factory_construction_01_mesh"} # BOI: as building_construction_sector
-	building_boi_rail_works = {"french_logisticscenter_01_mesh"} # BOI: as building_army_logistics_center
+	building_boi_public_works = {"french_city_factory_construction_01_mesh"} # BOI: as building_construction_sector
 }

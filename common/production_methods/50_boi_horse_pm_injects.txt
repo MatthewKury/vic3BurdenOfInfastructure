@@ -1,0 +1,63 @@
+﻿# ================================================================
+#  Burden of Infrastructure — horse lines on vanilla production methods
+#
+#  Replaces the four 00_boi_* full-copy shadows (transport, farm,
+#  subsistence and urban transport overrides) since 2026-11-13 (plan 10).
+#  Each INJECT appends one building_modifiers block holding only BOI's
+#  line. Verified on 1.15.1: an injected block applies alongside the
+#  vanilla one (VIC3_MODDING_LESSONS.md section 1). Nothing vanilla is
+#  copied, so a patch that changes these PMs needs no re-diff here.
+#
+#  Haulage ladder on mines, plantations, vineyards, logging camps and oil rigs:
+#      pm_road_carts            (no tech, empty in vanilla)  horses 3
+#        -> pm_rail_transport_* (railways)                   horses 1, last-mile cartage
+#        -> pm_log_carts etc.   (electric_railway)           untouched
+#  pm_log_carts is NOT a horse cart: it is the most advanced logging tier.
+#  Cold-chain PMs (refrigeration, flash freezing) are not haulage and are untouched.
+# ================================================================
+
+# ── Haulage (vanilla 03_mines, 04_plantations, 09_misc_resource) ──
+# pm_road_carts reaches 18 PM groups: every mine, plantation, vineyard,
+# logging camp and oil rig starts on it. The mod's main pre-rail pressure.
+INJECT:pm_road_carts = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 3 } } # 90
+}
+INJECT:pm_rail_transport_mine = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } } # last-mile cartage
+}
+INJECT:pm_steam_rail_transport = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+INJECT:pm_rail_transport_building_logging_camp = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+INJECT:pm_rail_transport_building_oil_rig = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+INJECT:pm_tanker_cars = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+
+# ── Farm draft animals (vanilla 02_agro) ──
+INJECT:pm_tools_disabled = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 2 } }
+}
+INJECT:pm_tools = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+INJECT:pm_tools_building_rice_farm = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}
+
+# ── Baseline horse supply from subsistence pasture (vanilla 12_subsistence) ──
+INJECT:pm_home_workshops_no_building_subsistence_pasture = {
+	building_modifiers = { workforce_scaled = { goods_output_horses_add = 0.15 } } # 4.5
+}
+INJECT:pm_home_workshops_building_subsistence_pasture = {
+	building_modifiers = { workforce_scaled = { goods_output_horses_add = 0.15 } }
+}
+
+# ── Horse-drawn urban transport (vanilla 06_urban_center) ──
+INJECT:pm_no_public_transport = {
+	building_modifiers = { workforce_scaled = { goods_input_horses_add = 1 } }
+}

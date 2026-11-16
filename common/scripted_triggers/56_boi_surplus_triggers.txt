@@ -4,15 +4,21 @@
 #  docs/plans/06_INFRASTRUCTURE_SURPLUS_EVENT_PROPOSAL.md.
 # ================================================================
 
-# State scope. At least one built level of Road, Rail or Harbour Works.
+# State scope. The state has invested in its network: a railway, or a Public
+# Works hub grown past its first level (every state has a level-1 hub since
+# 2026-11-13, plan 12; before then this checked for Road, Rail or Harbour Works).
 boi_surplus_state_has_works = {
 	any_scope_building = {
 		OR = {
-			is_building_type = building_boi_infrastructure
-			is_building_type = building_boi_rail_works
-			is_building_type = building_boi_harbour_works
+			AND = { is_building_type = building_railway level >= 1 }
+			AND = {
+				OR = {
+					is_building_type = building_boi_public_works
+					is_building_type = building_boi_coastal_public_works
+				}
+				level >= 2
+			}
 		}
-		level >= 1
 	}
 }
 

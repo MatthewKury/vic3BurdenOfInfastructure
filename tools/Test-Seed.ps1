@@ -9,65 +9,19 @@ param(
 $ErrorActionPreference = 'Stop'
 if (-not $ModPath) { $ModPath = Split-Path $PSScriptRoot -Parent }
 $seedPath = Join-Path $ModPath 'common/history/buildings/zz_boi_buildings.txt'
-$planPath = Join-Path $ModPath 'tools/infrastructure_seed_plan.tsv'
 $bytes = [IO.File]::ReadAllBytes($seedPath)
 if ($bytes.Length -lt 3 -or $bytes[0] -ne 0xEF -or $bytes[1] -ne 0xBB -or $bytes[2] -ne 0xBF) {
     throw "Seed is missing its UTF-8 BOM: $seedPath"
 }
 $seed = [IO.File]::ReadAllText($seedPath)
 
-# Review finding C1 (2026-11-09): the plan must still hold the hand-made adjustments, and the
-# baseline must still be what vanilla's rail and ports need, so a regeneration can't drop either.
-& (Join-Path $PSScriptRoot 'Merge-InfrastructurePlan.ps1') -ModPath $ModPath -Check
-if ($GamePath -and (Test-Path -LiteralPath $GamePath)) {
-    $freshBaseline = Join-Path $env:TEMP ('boi-baseline-' + [guid]::NewGuid().ToString('N') + '.tsv')
-    $freshCsv = [IO.Path]::ChangeExtension($freshBaseline, '.csv')
-    try {
-        & (Join-Path $PSScriptRoot 'Get-StartingInfrastructure.ps1') -GamePath $GamePath -ModPath $ModPath `
-            -PlanPath $freshBaseline -OutputPath $freshCsv | Out-Null
-        $committedBaseline = (Get-Content -LiteralPath (Join-Path $ModPath 'tools/infrastructure_seed_baseline.tsv')) -join "`n"
-        if (((Get-Content -LiteralPath $freshBaseline) -join "`n") -ne $committedBaseline) {
-            throw 'infrastructure_seed_baseline.tsv no longer matches vanilla rail and port replacement; run Regenerate-WorldSeed.ps1.'
-        }
-        Write-Host 'PASS: infrastructure_seed_baseline.tsv matches vanilla rail and port replacement.'
-    }
-    finally { Remove-Item -LiteralPath $freshBaseline, $freshCsv -Force -ErrorAction SilentlyContinue }
+# Road, Rail and Harbour Works were retired on 2026-11-13 (plan 12); none may be seeded.
+foreach ($retired in 'building_boi_infrastructure', 'building_boi_rail_works', 'building_boi_harbour_works') {
+    if ($seed -match $retired) { throw "Retired building still seeded: $retired" }
 }
-$plan = foreach ($line in Get-Content -LiteralPath $planPath) {
-    $parts = $line -split "`t"
-    if ($parts.Count -ne 4 -or $parts[0] -notmatch '^STATE_' -or $parts[1] -notmatch '^[A-Z0-9_]+$' -or
-        $parts[2] -notmatch '^\d+$' -or $parts[3] -notmatch '^\d+$' -or ([int]$parts[2] + [int]$parts[3]) -le 0) {
-        throw "Malformed infrastructure seed plan line: $line"
-    }
-    [pscustomobject]@{ PublicWorks = [int]$parts[2]; HarbourWorks = [int]$parts[3] }
-}
-$expectedPublicWorks = @($plan | Where-Object PublicWorks -gt 0).Count
-$expectedPublicWorksLevels = @($plan | Measure-Object PublicWorks -Sum).Sum
-$expectedHarbourWorks = @($plan | Where-Object HarbourWorks -gt 0).Count
-$expectedHarbourWorksLevels = @($plan | Measure-Object HarbourWorks -Sum).Sum
-$checks = @{
-    'Public Works' = @(([regex]::Matches($seed, 'building_boi_infrastructure')).Count, $expectedPublicWorks)
-    'Harbour Works' = @(([regex]::Matches($seed, 'building_boi_harbour_works')).Count, $expectedHarbourWorks)
-    'Horse Ranches' = @(([regex]::Matches($seed, 'building_boi_horse_ranch')).Count, $ExpectedHorseRanches)
-}
-$publicWorksLevels = 0
-foreach ($match in [regex]::Matches($seed, 'building\s*=\s*"building_boi_infrastructure"[\s\S]*?levels\s*=\s*(\d+)')) {
-    $publicWorksLevels += [int]$match.Groups[1].Value
-}
-if ($publicWorksLevels -ne $expectedPublicWorksLevels) {
-    throw "Unexpected Public Works levels: $publicWorksLevels (expected $expectedPublicWorksLevels)."
-}
-$harbourWorksLevels = 0
-foreach ($match in [regex]::Matches($seed, 'building\s*=\s*"building_boi_harbour_works"[\s\S]*?levels\s*=\s*(\d+)')) {
-    $harbourWorksLevels += [int]$match.Groups[1].Value
-}
-if ($harbourWorksLevels -ne $expectedHarbourWorksLevels) {
-    throw "Unexpected Harbour Works levels: $harbourWorksLevels (expected $expectedHarbourWorksLevels)."
-}
-foreach ($name in $checks.Keys) {
-    if ($checks[$name][0] -ne $checks[$name][1]) {
-        throw "Unexpected $name count: $($checks[$name][0]) (expected $($checks[$name][1]))"
-    }
+$horseRanches = ([regex]::Matches($seed, 'building_boi_horse_ranch')).Count
+if ($horseRanches -ne $ExpectedHorseRanches) {
+    throw "Unexpected Horse Ranch count: $horseRanches (expected $ExpectedHorseRanches)"
 }
 $horseLevels = 0
 foreach ($match in [regex]::Matches($seed, 'building\s*=\s*"building_boi_horse_ranch"[\s\S]*?levels\s*=\s*(\d+)')) {
@@ -76,4 +30,34 @@ foreach ($match in [regex]::Matches($seed, 'building\s*=\s*"building_boi_horse_r
 if ($horseLevels -ne $ExpectedHorseRanchLevels) {
     throw "Unexpected Horse Ranch levels: $horseLevels (expected $ExpectedHorseRanchLevels)."
 }
-Write-Host "PASS: seed counts are $expectedPublicWorks Public Works ($publicWorksLevels levels), $expectedHarbourWorks Harbour Works ($harbourWorksLevels levels), and $ExpectedHorseRanches Horse Ranches ($horseLevels levels)."
+
+# Public Works hub seed (plan 12, tools/Build-PublicWorksSeed.py): one staffed hub for
+# every state at the 1836 start, coastal only where vanilla seeds a port.
+$hubPath = Join-Path $ModPath 'common/history/buildings/zz_boi_public_works_seed_generated.txt'
+$hub = [IO.File]::ReadAllText($hubPath)
+$pairs = @{}
+$state = $null
+foreach ($line in ($hub -split "`n")) {
+    if ($line -match '^\s*s:(STATE_[A-Z0-9_]+)\s*=') { $state = $Matches[1] }
+    elseif ($line -match '^\s*region_state:([A-Z0-9_]+)\s*=') {
+        $key = "$state/$($Matches[1])"
+        if ($pairs.ContainsKey($key)) { throw "Public Works seeded twice: $key" }
+        $pairs[$key] = $true
+    }
+}
+$hubs = ([regex]::Matches($hub, 'building = "building_boi_(?:coastal_)?public_works"')).Count
+$coastal = ([regex]::Matches($hub, 'building = "building_boi_coastal_public_works"')).Count
+if ($hubs -ne $pairs.Count) { throw "Public Works seed: $hubs hubs for $($pairs.Count) state-owners." }
+if ($GamePath -and (Test-Path -LiteralPath $GamePath)) {
+    # Strip comments: vanilla comments out some create_state blocks (Kanto's second owner).
+    $states = [IO.File]::ReadAllText((Join-Path $GamePath 'common/history/states/00_states.txt')) -replace '#[^\r\n]*', ''
+    $vanillaPairs = @{}
+    foreach ($block in [regex]::Matches($states, 's:(STATE_[A-Z0-9_]+)\s*=\s*\{(?<body>(?:[^{}]|(?<o>\{)|(?<-o>\}))*)\}')) {
+        foreach ($cs in [regex]::Matches($block.Groups['body'].Value, 'country\s*=\s*c:([A-Z0-9_]+)')) {
+            $vanillaPairs["$($block.Groups[1].Value)/$($cs.Groups[1].Value)"] = $true
+        }
+    }
+    $missing = @($vanillaPairs.Keys | Where-Object { -not $pairs.ContainsKey($_) })
+    if ($missing.Count) { throw "Public Works seed misses $($missing.Count) starting states, e.g. $($missing[0]). Re-run tools/Build-PublicWorksSeed.py." }
+}
+Write-Host "PASS: seed has $horseRanches Horse Ranches ($horseLevels levels), no retired works, and $hubs Public Works hubs ($coastal coastal), one per starting state."

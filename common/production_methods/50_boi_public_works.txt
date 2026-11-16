@@ -1,0 +1,179 @@
+﻿# ================================================================
+#  Burden of Infrastructure — Public Works hub production methods
+#
+#  Plan 12 (docs/plans/12_PUBLIC_WORKS_HUB_IMPLEMENTATION.md), built
+#  2026-11-13. All numbers are first-pass test values.
+#
+#  One hub per state, sized by script: each level maintains up to
+#  BOI_PW_CAP (20) points of chargeable infrastructure use (use above
+#  the population floor). Inputs below are PER LEVEL at full use; a
+#  monthly script trims them to the actual use with a building
+#  modifier (boi_pw_goods_trim), so consumption follows use.
+#  Inputs x1.5 for game 3 (2026-11-13): the bill was ~1.5% of national
+#  spending in games 1-2, lighter than vanilla's railway subsidies.
+#
+#  The PMs carry no state modifiers on purpose. The hub's benefit is
+#  cancelling the decay penalty, and a PM modifier would scale with
+#  the level count. The monthly script applies the cancellation
+#  (boi_network_upkeep) from occupancy and goods shortage, and adds the
+#  Mode and Harbour bonuses listed here as comments.
+#
+#  AI choice: default ai_selection (most_profitable). A building that
+#  sells nothing moves to the CHEAPEST PM at local prices (verified
+#  1.15.1, lessons file), so a state with dear transportation and
+#  cheap horses keeps a horse mode longer.
+#
+#  Laborer counts stay at or above 125: the Turnpike Trusts financing
+#  PM removes 45 laborers per level.
+# ================================================================
+
+# ── Mode ─────────────────────────────────────────────────────────
+# Base prices: horses 30, tools 40, transportation 30, iron 40,
+# steel 50, automobiles 100, oil 40.
+
+# Bonus 0%. £225 a level.
+pm_boi_pw_cart_roads = {
+	texture = "gfx/interface/icons/production_method_icons/no_rail_transport.dds"
+	is_default = yes
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 7.5
+		}
+		level_scaled = {
+			building_employment_laborers_add = 250
+		}
+	}
+}
+
+# Bonus +3%. £300 a level.
+pm_boi_pw_macadam_roads = {
+	texture = "gfx/interface/icons/production_method_icons/log_carts.dds"
+	unlocking_technologies = { mechanical_tools }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_horses_add = 6
+			goods_input_tools_add = 3
+		}
+		level_scaled = {
+			building_employment_laborers_add = 200
+			building_employment_machinists_add = 25
+		}
+	}
+}
+
+# Bonus +5%. £285 a level. Buys railway haulage in proportion to use.
+pm_boi_pw_rail_fed = {
+	texture = "gfx/interface/icons/production_method_icons/trains_steam.dds"
+	unlocking_technologies = { railways }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 7.5
+			goods_input_iron_add = 1.5
+		}
+		level_scaled = {
+			building_employment_laborers_add = 175
+			building_employment_machinists_add = 50
+		}
+	}
+}
+
+# Bonus +8%. £345 a level.
+pm_boi_pw_steel_rail = {
+	texture = "gfx/interface/icons/production_method_icons/trains_electric.dds"
+	unlocking_technologies = { steel_railway_cars }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_transportation_add = 9
+			goods_input_steel_add = 1.5
+		}
+		level_scaled = {
+			building_employment_laborers_add = 150
+			building_employment_machinists_add = 75
+		}
+	}
+}
+
+# Bonus +10%. £315 a level. Motor lorries join the horse teams.
+pm_boi_pw_motor_roads = {
+	texture = "gfx/interface/icons/production_method_icons/public_motor_carriages.dds"
+	unlocking_technologies = { combustion_engine }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_automobiles_add = 1.5
+			goods_input_oil_add = 3
+			goods_input_horses_add = 1.5
+		}
+		level_scaled = {
+			building_employment_laborers_add = 150
+			building_employment_machinists_add = 75
+			building_employment_engineers_add = 25
+		}
+	}
+}
+
+# Bonus +15%. £420 a level.
+pm_boi_pw_highways = {
+	texture = "gfx/interface/icons/production_method_icons/motorised_logistics.dds"
+	unlocking_technologies = { paved_roads }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_automobiles_add = 3
+			goods_input_oil_add = 3
+		}
+		level_scaled = {
+			building_employment_laborers_add = 125
+			building_employment_machinists_add = 75
+			building_employment_engineers_add = 50
+		}
+	}
+}
+
+# ── Harbour (Coastal Public Works only) ─────────────────────────
+# Base prices: clippers 60, steamers 70, coal 30, electricity 30.
+
+# Bonus +2%. £45 a level.
+pm_boi_pw_coastal_lighters = {
+	texture = "gfx/interface/icons/production_method_icons/anchorage.dds"
+	is_default = yes
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_clippers_add = 0.75
+		}
+		level_scaled = {
+			building_employment_laborers_add = 25
+		}
+	}
+}
+
+# Bonus +4%. £98 a level.
+pm_boi_pw_steam_lighters = {
+	texture = "gfx/interface/icons/production_method_icons/industrial_port.dds"
+	unlocking_technologies = { gantry_cranes }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_steamers_add = 0.75
+			goods_input_coal_add = 1.5
+		}
+		level_scaled = {
+			building_employment_laborers_add = 15
+			building_employment_machinists_add = 10
+		}
+	}
+}
+
+# Bonus +6%. £180 a level.
+pm_boi_pw_electrified_quays = {
+	texture = "gfx/interface/icons/production_method_icons/modern_port.dds"
+	unlocking_technologies = { concrete_dockyards }
+	building_modifiers = {
+		workforce_scaled = {
+			goods_input_steamers_add = 0.75
+			goods_input_electricity_add = 3
+			goods_input_steel_add = 0.75
+		}
+		level_scaled = {
+			building_employment_laborers_add = 10
+			building_employment_engineers_add = 10
+		}
+	}
+}

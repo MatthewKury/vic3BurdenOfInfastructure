@@ -182,6 +182,7 @@ Also open, from the same day: the Rail Network Survey's next steps in its [balan
    - railway-ownership options: State Railways (`unset_available_for_autonomous_investment` for railways) and Concessions (`start_privately_funded_building_construction`).
 
    Ideas from [plan 09](plans/09_INFRASTRUCTURE_FUNDING_AND_RAIL_ECONOMICS_IDEAS.md), part 4.
+6. **Public Works hub results (2026-11-13).** Built and tested in three 10-year games; four decisions wait for you (steel, the free base, debt, cab telemetry). See [plan 12](plans/12_PUBLIC_WORKS_HUB_IMPLEMENTATION.md), "Where to pick up".
 
 ## 7. Where the archived documents are out of date
 

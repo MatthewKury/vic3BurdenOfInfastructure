@@ -1,0 +1,6 @@
+﻿# Script-tools probes. events = { } only.
+on_monthly_pulse_country = {
+	events = {
+		boitm_st.1
+	}
+}

@@ -186,11 +186,12 @@ head -c 3 "$f" | od -An -tx1                     # ef bb bf
 If the counts move after a patch, that is real information — Paradox added,
 removed, or re-owned states. Diff the numbers before assuming the script broke.
 
-## 3. Housing — building shadows and buy packages
+## 3. Housing — rural building injects and buy packages
 
 `tools/Build-Housing.ps1` writes five files into the mod root:
-`common/buildings/00_boi_housing_rural_generated.txt` (31 vanilla rural and
-subsistence buildings with a housing PM group added),
+`common/buildings/50_boi_housing_rural_inject_generated.txt` (one `INJECT:` per vanilla
+rural or subsistence building, 33 in all, adding the housing PM group; full vanilla
+copies until 2026-11-13),
 `common/buy_packages/00_buy_packages.txt` (all 99 vanilla wealth packages with
 housing demand added), `common/scripted_effects/zz_boi_housing_fallback_generated.txt`
 `common/modifier_type_definitions/zz_boi_housing_generated.txt`, and the 1836 seed
@@ -206,7 +207,7 @@ again as `tools/Get-HousingSeedDemand.py` describes, then re-run the generator.
 .\tools\Test-Housing.ps1 -GamePath 'C:\Program Files (x86)\Steam\steamapps\common\Victoria 3\game'
 ```
 
-It copies vanilla buildings only. If BOI defines or shadows a rural building
+It injects into vanilla buildings only. If BOI defines a rural building
 itself (today only `building_boi_horse_ranch`), that block must list
 `pmg_boi_company_housing` by hand; the script stops with an error otherwise. If
 a patch changes the number of rural or subsistence buildings, the script and
